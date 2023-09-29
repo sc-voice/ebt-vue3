@@ -1,0 +1,116 @@
+<article class="ebt-wiki">
+<div class="ebt-wiki-heading">
+ <a href="https://www.pexels.com/photo/black-pencils-and-design-word-6444/" target="_blank">
+  <img src="/ebt-vue3/img/pexels-kaboompics-com-6444.png" alt="undefined" title="undefined"/>
+ </a>
+ <div class="ebt-wiki-heading-text">
+  <div class="ebt-wiki-breadcrumbs">
+   <a href="/ebt-vue3/#/wiki/toc" >wiki</a>&nbsp;&gt;&nbsp;
+   <a href="/ebt-vue3/#/wiki/design/toc" >design</a>&nbsp;&gt;&nbsp;
+   markdown
+  </div><!--ebt-wiki-breadcrumbs-->
+  <h1>Designing with Markdown</h1>
+  <div class="ebt-wiki-description">Style your wiki using Markdown</div>
+ </div><!--ebt-wiki-heading-text-->
+</div><!--ebt-wiki-heading-->
+<h2>Markdown</h2>
+<p>EBT website wikis are written using
+<a href="https://www.markdownguide.org/basic-syntax" target="_blank">Github Markdown</a>.</p>
+<p>NOTE: The Markdown processor used by EBT websites
+has less features than Gihub Markdown but
+supports HTML5 elements.</p>
+<h3>Mardown metadata</h3>
+<p>At the top of each Markdown file is a <em>metadata</em> block which
+describes the page.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">wiki page title</td>
+</tr>
+<tr>
+<td style="text-align:left">description</td>
+<td style="text-align:left">short description shown under title</td>
+</tr>
+<tr>
+<td style="text-align:left">detail</td>
+<td style="text-align:left">(optional, multiple) detailed description items</td>
+</tr>
+<tr>
+<td style="text-align:left">img</td>
+<td style="text-align:left">file name of image</td>
+</tr>
+<tr>
+<td style="text-align:left">alt</td>
+<td style="text-align:left">image accessible title</td>
+</tr>
+<tr>
+<td style="text-align:left">link</td>
+<td style="text-align:left">image source and/or attribution</td>
+</tr>
+<tr>
+<td style="text-align:left">category</td>
+<td style="text-align:left">category title for grouping in wiki table of contents</td>
+</tr>
+<tr>
+<td style="text-align:left">order</td>
+<td style="text-align:left">order within category (alphabetical otherwise)</td>
+</tr>
+</tbody>
+</table>
+<h2>Images</h2>
+<p>Each wiki page has its own image.
+You can also add your own images.
+Add new images to the following folder:</p>
+<ul>
+<li><kbd>public/img</kbd> folder.</li>
+</ul>
+<p>To preserve disk space and network performance, keep your images small.
+For example, each wiki page header image should be 250wx200h pixels, preferably in PNG format.</p>
+<h2>Footnotes</h2>
+<h3>Inline footnotes</h3>
+<p>Markdown footnotes are written using the following syntax for
+inline footnotes<sup class="footnote-ref"><a href="#/wiki/design/markdown/-footnotes">[1]</a></sup>:</p>
+<blockquote>
+<p><code>...the following syntax^[footnote-text]</code>.</p>
+</blockquote>
+<h3>Normal footnotes</h3>
+<p>Alternatively, you can use a different syntax with:</p>
+<ul>
+<li>Inline footnote reference<sup class="footnote-ref"><a href="#/wiki/design/markdown/-footnotes">[2]</a></sup>. E.g., <code>...reference[^a]</code>.</li>
+<li>Appended footnote text. E.g., <code>[^a]: this is a normal footnote</code></li>
+</ul>
+<p>For more documentation, see this <a href="https://github.com/markdown-it/markdown-it-footnote" target="_blank">link</a></p>
+<h2>HTML5</h2>
+<p>You can include many HTML5 elements such as <code>&lt;audio&gt;</code> on your
+EBT site wiki pages.
+For example, if you have an audio file at:</p>
+<ul>
+<li><code>public/audio/simple-bell.ogg</code></li>
+</ul>
+<p>Then you can add the following HTML to any of your Markdown files:</p>
+<ul>
+<li><code>&lt;audio controls src=&quot;audio/simple-bell.ogg&quot;&gt;simple-bell&lt;/audio&gt;</code></li>
+</ul>
+<p><audio controls src="audio/simple-bell.ogg">simple-bell</audio></p>
+<h2>Emojis</h2>
+<p>Copy emojis from <a href="https://emojipedia.org/red-heart/" target="_blank">emojipedia</a>.
+For example, here is a red heart:</p>
+<p>❤️</p>
+<section class="footnotes">
+<div id="/wiki/design/markdown/-footnotes" class="footnotes-link">&nbsp;</div>
+<div class="footnotes-title">Footnotes</div>
+<ol class="footnotes-list">
+<li class="footnote-item"><p>this is an inline footnote</p>
+</li>
+<li class="footnote-item"><p>this is a normal footnote</p>
+</li>
+</ol>
+</section>
+</article>
