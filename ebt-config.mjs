@@ -9,7 +9,7 @@ const EbtConfig = {
     "index": "toc",
   },
   "github": {
-    "account": "ebt-site",
+    "account": "sc-voice",
     "repository": "ebt-vue3"
   }
 }
