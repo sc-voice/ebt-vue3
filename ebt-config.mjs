@@ -1,6 +1,6 @@
 const EbtConfig = {
   "appName": "EBT-Vue3",
-  "basePath": "/ebt-vue3/",
+  "basePath": "/",
   "homePath": "#/wiki/welcome",
   "monolingual": false,
   "privacyLink": "#/wiki/privacy",
