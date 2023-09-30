@@ -10,9 +10,9 @@ set -e
 git pull
 echo -e "${SCRIPT}: updating dependencies..."
 npm install --save \
-  scv-esm \
-  log-instance \
-  merkle-json \
+  scv-esm@latest \
+  log-instance@latest \
+  merkle-json@latest \
   vuetify@latest
 npm install --save-dev \
   memo-again@latest 
