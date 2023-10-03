@@ -23,7 +23,7 @@ const renderer = new MarkdownItRenderer();
       'wikiPath',
     ].sort());
     should(emd).properties({
-      basePath: '/ebt-vue3/',
+      basePath: '/',
       wikiPath: 'wiki',
       renderer: undefined,
     });
