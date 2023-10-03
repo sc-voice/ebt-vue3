@@ -225,3 +225,6 @@ blockquote {
 code {
   background-color: rgba(var(--v-theme-on-surface), 0.2);
 }
+.v-spacer {
+  flex-grow: 1;
+}
