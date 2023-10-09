@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "1.331.17",
+  "version": "1.331.18",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "main": "src/index.mjs",
   "private": false,
