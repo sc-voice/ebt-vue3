@@ -46,7 +46,7 @@
       }
       let card = settings.pathToCard(path);
 
-      logger.info(msg, this, card);
+      //logger.info(msg, this, card);
 
       if (card == null) {
         logger.warn(msg+"UNEXPECTED", {$route, path});
@@ -133,7 +133,7 @@
           logger.debug(`${msg} => card`, {$route, to, from, card});
         } else {
           card.isOpen = true;
-          logger.info(`${msg} => opened card`, {$route, to, from, card});
+          //logger.info(`${msg} => opened card`, {$route, to, from, card});
         }
         if (card.context === EbtCard.CONTEXT_WIKI) {
           volatile.fetchWikiHtml(card.location, msg);

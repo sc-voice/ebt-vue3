@@ -29,7 +29,7 @@
       const msg = "HomeView.mounted() ";
       let { card, volatile } = this;
       let { location } = card;
-      logger.info(msg, {location});
+      //logger.info(msg, {location});
       await volatile.fetchWikiHtml(location, msg);
     },
     computed: {

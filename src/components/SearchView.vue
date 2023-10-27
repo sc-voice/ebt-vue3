@@ -37,6 +37,7 @@
   import { logger } from "log-instance/index.mjs";
   import { Examples } from "scv-esm";
   import { ref, nextTick } from "vue";
+  const msg = "SearchView.";
 
   export default {
     props: {
@@ -72,7 +73,7 @@
         let eg = langEx[iExample];
         this.search = eg;
         nextTick(()=>{ this.onSearch(); });
-        logger.info('onInspireMe', eg);
+        //logger.info(msg, 'onInspireMe()', eg);
       },
       searchFilter(item, queryText, itemText) {
         let it = itemText.toLowerCase();
@@ -81,11 +82,10 @@
       },
       onEnter(evt) {
         let { search } = this;
-        logger.info('onEnter()', {evt});
+        //logger.info(msg, 'onEnter()', {evt});
         search && this.onSearch();
       },
       async onSearch() {
-        const msg = "SearchView.onSearch() ";
         let { settings, $t, volatile, url, search, card, suttas, } = this;
         let { highlightExamples } = settings;
         let res;
@@ -94,7 +94,7 @@
         }
         try {
           volatile.waitBegin('ebt.searching');
-          logger.info('SearchView.onSearch()', url);
+          //logger.info(msg, 'onSearch()', url);
           this.results = undefined;
           card.location[0] = search;
           res = await volatile.fetchJson(url);
@@ -123,6 +123,9 @@
                 idbSutta.merge({mlDoc, highlightExamples});
               } else {
                 idbSutta = IdbSutta.create(mlDoc);
+                if (highlightExamples) {
+                  idbSutta.highlightExamples();
+                }
               }
 
               suttas.saveIdbSutta(idbSutta);
@@ -153,7 +156,7 @@
       onSearchKey(evt) {
         if (evt.code === "Enter") {
           let { card, search } = this;
-          logger.info('onSearchKey', {card, search});
+          //logger.info(msg, 'onSearchKey()', {card, search});
           search && this.onSearch();
           evt.preventDefault();
         }
@@ -164,9 +167,8 @@
       },
     },
     mounted() {
-      const msg = "SearchView.mounted() ";
       let { card, } = this;
-      logger.debug(msg, {card, });
+      //logger.info(msg, 'mounted()', {card, });
       this.search = card.location[0];
       if (card.data == null) {
         nextTick(()=>this.onSearch());

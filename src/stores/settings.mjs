@@ -89,7 +89,7 @@ export const useSettingsStore = defineStore('settings', {
         this.locale = config.monolingual;
         EbtSettings.validate(this);
       }
-      logger.info(msg, 'loaded');
+      //logger.info(msg, 'loaded');
       this.loaded = true;
       return this;
     },
@@ -116,7 +116,7 @@ export const useSettingsStore = defineStore('settings', {
       logger.logLevel = saved.logLevel;
       let validRes = EbtSettings.validate(saved);
       if (validRes.changed) {
-        logger.info(msg, "settings changed", validRes.changed);
+        //logger.info(msg, "settings changed", validRes.changed);
         Object.assign(this, validRes.changed);
       }
       if (validRes.error) {
@@ -158,13 +158,13 @@ export const useSettingsStore = defineStore('settings', {
         case EbtCard.CONTEXT_SEARCH:
         case EbtCard.CONTEXT_SUTTA:
         case EbtCard.CONTEXT_WIKI:
-          logger.info("addCard", {context, location, langTrans});
+          //logger.info("addCard", {context, location, langTrans});
           card = new EbtCard(Object.assign({langTrans}, opts));
           this.cards.push(card);
           this.saveSettings();
           break;
         default:
-          logger.info(`addCard => null [INVALID CONTEXT]`, opts);
+          //logger.info(`addCard => null [INVALID CONTEXT]`, opts);
           break;
       }
       return card;

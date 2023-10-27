@@ -185,7 +185,7 @@
       let wikiCard = wikiHash
         ? settings.pathToCard(wikiHash)
         : settings.pathToCard(config.homePath);
-      logger.info(msg, {wikiCard});
+      //logger.info(msg, {wikiCard});
 
       $vuetify.theme.global.name = settings.theme === 'dark' ? 'dark' : 'light';;
       $i18n.locale = settings.locale;
@@ -214,7 +214,7 @@
         }
       });
       let { activeElement } = document;
-      logger.info(msg, {activeElement});
+      //logger.info(msg, {activeElement});
     },
     computed: {
       privacyLink(ctx) {

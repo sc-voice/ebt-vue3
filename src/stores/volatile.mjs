@@ -149,10 +149,8 @@ export const useVolatileStore = defineStore('volatile', {
       let text;
       if (res.ok) {
         text = await res.text();
-        //console.trace(msg, 'ok', {href});
-        logger.info(msg, `${href} => OK`);
+        //logger.info(msg, `${href} => OK`);
       } else {
-        //console.trace(msg, 'error', {href, res});
         logger.warn(msg, `Could not fetch URL`, href);
       }
       return text;

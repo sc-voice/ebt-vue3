@@ -8,6 +8,8 @@ const EXAMPLE_CLASS = 'ebt-example';
 const RE_EXAMPLE_CLASS = new RegExp(EXAMPLE_CLASS);
 const EXAMPLE_TEMPLATE = `<span class="${EXAMPLE_CLASS}">\$&</span>`;
 
+const msg = 'IdbSuttas.';
+
 export default class IdbSutta {
   static #privateCtor;
 
@@ -196,7 +198,7 @@ export default class IdbSutta {
       volatile.waitEnd();
     }
     let msElapsed = Date.now() - msStart;
-    updated && logger.debug(msg, {updated, segment, msElapsed});
+    logger.info(msg, {updated, segment, msElapsed});
 
     return updated;
   }

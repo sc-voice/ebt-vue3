@@ -19,13 +19,13 @@ import NotFound from './components/NotFound.vue';
 import EbtCards from './components/EbtCards.vue';
 import * as VueRouter from "vue-router";
 import { default as EbtConfig } from "../ebt-config.mjs";
+const msg = 'ebt-main.';
 
 export default class EbtMain {
   static async main(opts={}) {
     let {
       config=EbtConfig,
     } = opts;
-    const msg = "EbtMain.main() ";
     const pinia = createPinia();
 
     const vuetifyOpts = VuetifyOpts.options();
@@ -56,7 +56,7 @@ export default class EbtMain {
 
     var app = createApp(App);
     app.provide('config', config);
-    console.log(msg, config);
+    //logger.info(msg, 'main()', config);
     app.use(i18n);
     app.use(pinia);
     app.use(vuetify);

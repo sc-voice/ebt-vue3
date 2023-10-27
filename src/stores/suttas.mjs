@@ -11,6 +11,8 @@ import * as Idb from 'idb-keyval';
 const MSDAY = 24 * 3600 * 1000;
 const VUEREFS = new Map();
 
+const msg = 'stores.suttas.';
+
 export const useSuttasStore = defineStore('suttas', {
   state: () => {
     return {
@@ -45,11 +47,9 @@ export const useSuttasStore = defineStore('suttas', {
       let idbSutta;
 
       if (refresh || !idbData || maxAge < age) {
-        //console.log(msg, {refresh, maxAge, age});
         let volatile = useVolatileStore();
         let url = this.suttaUrl(suttaRef);
         let json = await volatile.fetchJson(url);
-        //console.log(msg, url, json);
         this.nFetch++;
         let { mlDocs, results } = json;
         if (mlDocs.length < 1) {
@@ -58,31 +58,29 @@ export const useSuttasStore = defineStore('suttas', {
           return null;
         }
         idbSutta = IdbSutta.create(mlDocs[0]);
-        logger.info(`suttas.loadIdbSutta()`,
-          url,
-          '=>',
-          `segments:${idbSutta.segments.length}`,
-          );
+        logger.info(msg, `${url} => `,
+          `segments:${idbSutta.segments.length}`);
         await this.saveIdbSutta(idbSutta);
       } else {
-        logger.debug(`suttas.loadIdbSutta() idb(${idbKey})`);
+        logger.info(msg, `cached idb(${idbKey})`);
         idbSutta = IdbSutta.create(idbData);
       } 
 
       return idbSutta;
     },
     async saveIdbSutta(idbSutta) { // low-level API
+      const msg = 'suttas.saveIdbSutta()';
       let { idbKey } = idbSutta;
       let vueRef = VUEREFS.get(idbKey);
       if (vueRef == null) {
         vueRef = ref(idbSutta);
         VUEREFS.set(idbKey, vueRef);
         idbSutta.saved = Date.now();
-        logger.info(`suttas.saveIdbSutta() ADD`, idbKey, idbSutta.saved);
+        logger.info(msg, 'ADD', idbKey, idbSutta.saved);
       } else if (vueRef.value !== idbSutta) {
         vueRef.value = idbSutta;
         idbSutta.saved = Date.now();
-        logger.info(`suttas.saveIdbSutta() UPDATE`, idbKey, idbSutta.saved);
+        logger.info(msg, 'UPDATE', idbKey, idbSutta.saved);
       }
       await Idb.set(idbKey, idbSutta);
       this.nSet++;

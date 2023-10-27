@@ -80,7 +80,7 @@ export default class EbtCard {
 
     // secondary properties
 
-    logger.info(msg, `${context} ${id} ${location[0]}`);
+    //logger.info(msg, `${context} ${id} ${location[0]}`);
   }
 
   static get CONTEXT_WIKI() { return CONTEXT_WIKI; }
@@ -100,7 +100,7 @@ export default class EbtCard {
   }
 
   static pathToCard(args) {
-    let msg = 'EbtCard.pathToCard() ';
+    let msg = 'EbtCard.pathToCard()';
     let {path='/', cards=[], addCard, defaultLang} = args;
     path = path.replace(/^.*\/#/, ''); // ignore non-hash part of path
     let [ ignored, context, ...location ] = path.split('/');
@@ -111,8 +111,7 @@ export default class EbtCard {
         throw new Error(msg+"addCard is required");
       }
       card = addCard({context, location});
-      //console.log(msg, {card, path});
-      card && logger.info(msg+`${args} (NEW)`, {card, context, location});
+      //card && logger.info(`${msg} ${args}`, {card, context, location});
     } else {
       logger.debug(msg+`(EXISTING))`, {args,card});
     } 
@@ -360,7 +359,7 @@ export default class EbtCard {
     let result = null;
     if (context === CONTEXT_SUTTA) {
       if (segments.length <= 0) {
-        logger.info(msg, "no segments");
+        //logger.info(msg, "no segments");
         return result;
       }
       let iSegNext = delta >= 0 ? delta : segments.length+delta;
@@ -421,7 +420,8 @@ export default class EbtCard {
     let iSegCur = segments.findIndex(seg=>seg.scid === scid);
     iSegCur = iSegCur < 0 ? 0 : iSegCur;
     let iSegPrev = iSegCur;
-    let iSegNext = Math.min(segments.length-1, Math.max(0, iSegPrev+delta));
+    let iSegNext = Math.min(segments.length-1, 
+      Math.max(0, iSegPrev+delta));
     let iSegment = iSegNext;
 
     if (delta < 0) {
