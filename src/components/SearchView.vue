@@ -87,7 +87,6 @@
       },
       async onSearch() {
         let { settings, $t, volatile, url, search, card, suttas, } = this;
-        let { highlightExamples } = settings;
         let res;
         if (!search) {
           return;
@@ -120,12 +119,9 @@
               let msStart2 = Date.now();
               if (idbData) {
                 idbSutta = IdbSutta.create(idbData);
-                idbSutta.merge({mlDoc, highlightExamples});
+                idbSutta.merge({mlDoc});
               } else {
                 idbSutta = IdbSutta.create(mlDoc);
-                if (highlightExamples) {
-                  idbSutta.highlightExamples();
-                }
               }
 
               suttas.saveIdbSutta(idbSutta);

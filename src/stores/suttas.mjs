@@ -82,6 +82,11 @@ export const useSuttasStore = defineStore('suttas', {
         idbSutta.saved = Date.now();
         logger.info(msg, 'UPDATE', idbKey, idbSutta.saved);
       }
+      let settings = useSettingsStore();
+      let { highlightExamples } = settings;
+      if (highlightExamples) {
+        idbSutta.highlightExamples();
+      }
       await Idb.set(idbKey, idbSutta);
       this.nSet++;
       return vueRef;
