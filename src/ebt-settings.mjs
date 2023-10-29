@@ -14,9 +14,9 @@ const SERVERS = [{
   value: 'https://voice.suttacentral.net/scv',
   hint: 'Voice server (AWS production)',
 },{
-  title: 's2.sc-voice.net',
-  value: 'https://s2.sc-voice.net/scv',
-  hint: 'Voice server (Linode staging)',
+  title: 'www.api.sc-voice.net',
+  value: 'https://www.api.sc-voice.net/scv',
+  hint: 'Voice API server (Linode production)',
 },{
   title: 'localhost:8080',
   value: 'http://localhost:8080/scv',
