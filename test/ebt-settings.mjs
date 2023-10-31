@@ -81,7 +81,7 @@ import should from "should";
       refLang: 'en',
       refAuthor: 'sujato',
       scid: undefined,
-      serverUrl: 'https://s1.sc-voice.net/scv',
+      serverUrl: 'https://www.api.sc-voice.net/scv',
       showGdpr: true,
       showId: false,
       showPali: true,

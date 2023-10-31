@@ -6,17 +6,21 @@ import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 const AUDIO = { MP3: 'mp3', OGG: 'ogg', OPUS: 'opus', };
 
 const SERVERS = [{
-  title: 's1.sc-voice.net',
-  value: 'https://s1.sc-voice.net/scv',
-  hint: 'ScvServer (Linode staging)',
+  title: 'www.api.sc-voice.net',
+  value: 'https://www.api.sc-voice.net/scv',
+  hint: 'Voice API server (Linode production)',
+},{
+  title: 'staging.api.sc-voice.net',
+  value: 'https://staging.api.sc-voice.net/scv',
+  hint: 'Voice API server (Linode pre-production)',
+},{
+  title: 's1.api.sc-voice.net',
+  value: 'https://www.api.sc-voice.net/scv',
+  hint: 'Voice API server (Linode legacy)',
 },{
   title: 'voice.suttacentral.net',
   value: 'https://voice.suttacentral.net/scv',
   hint: 'Voice server (AWS production)',
-},{
-  title: 'www.api.sc-voice.net',
-  value: 'https://www.api.sc-voice.net/scv',
-  hint: 'Voice API server (Linode production)',
 },{
   title: 'localhost:8080',
   value: 'http://localhost:8080/scv',

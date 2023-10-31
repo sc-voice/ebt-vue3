@@ -28,7 +28,7 @@ import 'mock-local-storage'
 
 const MSSEC = 1000;
 const MSDAY = 24*3600*MSSEC;
-const SERVER_ROOT = 'https://s1.sc-voice.net/scv';
+const SERVER_ROOT = 'https://www.api.sc-voice.net/scv';
 
 
 (typeof describe === 'function') && describe("stores/audio.mjs", function () {
@@ -207,7 +207,7 @@ const SERVER_ROOT = 'https://s1.sc-voice.net/scv';
     let card = volatile.setRoute(`#/sutta/${idOrRef}`);
     let segAudio = await audio.bindSegmentAudio();
     let { vnameRoot, vnameTrans, langTrans } = segAudio;
-    let url = `https://s1.sc-voice.net/scv/audio/${sutta_uid}`;
+    let url = `https://www.api.sc-voice.net/scv/audio/${sutta_uid}`;
     let pliGuid = '44e4c425d93b9146ef5b8b16cbd8bac5';
     should(audio.pliAudioUrl)
       .equal(`${url}/pli/${author}/${vnameRoot}/${pliGuid}`);

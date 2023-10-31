@@ -47,7 +47,7 @@ const MSDAY = 24*3600*MSSEC;
     settings.langTrans = langTrans;
     should(settings.langTrans).equal(langTrans);
     let suttas = useSuttasStore();
-    let server = 'https://s1.sc-voice.net/scv';
+    let server = 'https://www.api.sc-voice.net/scv';
     let suttaRef = SuttaRef.create(THIG1_1_SOMA);
     let docRef = '-dl en -da sujato -rl en -ra sujato -ml1';
     let pattern = encodeURIComponent(`thig1.1/en/soma ${docRef}`);
