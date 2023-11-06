@@ -232,6 +232,7 @@ export default {
     "general": "Všeobecný",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
+    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Inspiruj Mě!",
     "languageCode": "Čeština / CS",
     "languages": "Jazyky",

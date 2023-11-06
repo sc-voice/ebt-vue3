@@ -84,7 +84,7 @@ export const useSettingsStore = defineStore('settings', {
       if (savedState) {
         Utils.assignTyped(this, savedState, EbtSettings.INITIAL_STATE);
       }
-      if (config.monolingual) {
+      if (config?.monolingual) {
         this.langTrans = config.monolingual;
         this.locale = config.monolingual;
         EbtSettings.validate(this);
@@ -259,6 +259,9 @@ export const useSettingsStore = defineStore('settings', {
     },
   },
   getters: {
+    showLegacyVoice(state) {
+      return !state.ignoreLegacyVoice;
+    },
     development(state) {
       let { logLevel } = state;
       return logLevel === 'debug' || logLevel === 'info';

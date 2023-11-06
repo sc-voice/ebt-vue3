@@ -40,6 +40,7 @@ export default class Settings {
       docLang, // bilara translation document language (e.g., 'jpn')
       fullLine,
       highightExamples,
+      ignoreLegacyVoice, // Show legacy voice dialog
       ips,
       langTrans, // UI translation language (e.g., 'ja') 
       locale,
@@ -72,6 +73,7 @@ export default class Settings {
       return l.code === langTrans ? langTrans : a;
     }, 'en');
     this.docAuthor = docAuthor;
+    this.ignoreLegacyVoice = ignoreLegacyVoice;
     this.locale = Settings.WEB_LANGUAGES.reduce((a, l) => {
       return l.code === locale ? locale : a;
     }, 'en');
@@ -120,6 +122,7 @@ export default class Settings {
       fullLine: false,
       highlightExamples: false,
       id: 1,
+      ignoreLegacyVoice: undefined,
       ips: 6,
       langRoot: 'pli',
       langs: `pli+${NAV_LANG}`,

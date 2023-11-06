@@ -220,9 +220,14 @@
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-checkbox v-model="settings.highlightExamples" density="compact"
+            <v-checkbox v-model="settings.highlightExamples" 
+              density="compact"
               :label="$t('ebt.highlightExamples')"
             />
+            <v-checkbox v-model="settings.ignoreLegacyVoice" 
+              density="compact"
+              :label="$t('ebt.ignoreLegacyVoice')">
+            </v-checkbox>
             <div class='settings-confirm'>
               <Confirm 
                 i18nButton='ebt.resetSettings'

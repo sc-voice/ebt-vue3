@@ -234,6 +234,7 @@ export default {
     "general": "General",
     "highlightExamples": "Show all example links (slow)",
     "homeSound": "Home",
+    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Inspire Me!",
     "languageCode": "English / EN",
     "languages": "Languages",

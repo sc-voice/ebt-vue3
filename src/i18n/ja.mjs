@@ -233,6 +233,7 @@ export default {
     "general": "一般",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
+    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "心に響く経典を！",
     "languageCode": "日本語 / JA",
     "languages": "言語",

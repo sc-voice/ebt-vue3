@@ -233,6 +233,7 @@ export default {
     "general": "Geral",
     "highlightExamples": "Mostre exemplos de referências (slow)",
     "homeSound": "Página inicial",
+    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Inspire-me!",
     "languageCode": "Português / PT",
     "languages": "Idiomas",

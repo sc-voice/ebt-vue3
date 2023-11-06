@@ -231,6 +231,7 @@ export default {
     "general": "साधारण",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
+    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "मुझे प्रेरित करे!",
     "languageCode": "हिंदी / HI",
     "languages": "भाषाएँ",

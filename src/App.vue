@@ -62,6 +62,7 @@
       <v-sheet>
         <div>
           <ebt-processing />
+          <LegacyVoice />
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
           <!--router-view /-->
@@ -103,6 +104,7 @@
   import EbtChips from './components/EbtChips.vue';
   import Settings from './components/Settings.vue';
   import EbtProcessing from './components/EbtProcessing.vue';
+  import LegacyVoice from './components/LegacyVoice.vue';
   import { useSettingsStore } from './stores/settings.mjs';
   import { useVolatileStore } from './stores/volatile.mjs';
   import { useAudioStore } from './stores/audio.mjs';
@@ -130,6 +132,7 @@
       EbtChips,
       Settings,
       EbtProcessing,
+      LegacyVoice,
     },
     methods: {
       onHome(evt) {
