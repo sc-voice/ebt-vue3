@@ -4,7 +4,6 @@ description: Save time with keyboard shortcust
 img: sergi-kabrera-2xU7rYxsTiM-unsplash.png
 img-alt: picture of keyooard
 link: https://unsplash.com/photos/2xU7rYxsTiM
-category: 1. General
 order: 2
 ---
 
