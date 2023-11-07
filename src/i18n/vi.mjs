@@ -234,7 +234,6 @@ export default {
     "general": "Phần chung",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
-    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Truyền linh cảm cho tôi!",
     "languageCode": "Tiếng Việt / VI",
     "languages": "Ngôn ngữ",

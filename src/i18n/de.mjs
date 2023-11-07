@@ -229,7 +229,6 @@ export default {
     "general": "Allgemein",
     "highlightExamples": "Zeige Beispiel-Links (langsam)",
     "homeSound": "Startseitenton",
-    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Such mir etwas aus!",
     "languageCode": "Deutsch / DE",
     "languages": "Sprachen",

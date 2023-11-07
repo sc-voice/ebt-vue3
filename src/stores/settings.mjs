@@ -259,9 +259,6 @@ export const useSettingsStore = defineStore('settings', {
     },
   },
   getters: {
-    showLegacyVoice(state) {
-      return !state.ignoreLegacyVoice;
-    },
     development(state) {
       let { logLevel } = state;
       return logLevel === 'debug' || logLevel === 'info';

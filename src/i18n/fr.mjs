@@ -230,7 +230,6 @@ export default {
     "general": "Général",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
-    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Inspire Moi!",
     "languageCode": "Français / FR",
     "languages": "Langues",

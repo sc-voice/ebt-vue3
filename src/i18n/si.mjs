@@ -231,7 +231,6 @@ export default {
     "general": "පොදු",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
-    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "සොයන්න!",
     "languageCode": "සිංහල / SI",
     "languages": "භාෂා",

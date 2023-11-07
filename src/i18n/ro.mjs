@@ -231,7 +231,6 @@ export default {
     "general": "General",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
-    "ignoreLegacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "inspireMe": "Vreau o sugestie!",
     "languageCode": "Română / RO",
     "languages": "Limbi",

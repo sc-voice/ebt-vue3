@@ -15,7 +15,7 @@ import should from "should";
       fullLine: false,
       ips: 6,
       langTrans: 'en',
-      ignoreLegacyVoice: false,
+      legacyVoice: false,
       maxResults: 5,
       refAuthor: 'sujato',
       refLang: 'en',
