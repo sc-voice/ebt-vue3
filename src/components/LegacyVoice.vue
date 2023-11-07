@@ -1,19 +1,22 @@
 <template>
-  <v-dialog v-model="showDialog"
+  <v-dialog v-if="showDialog" v-model="showDialog"
     transition="dialog-top-transition"
     @update:modelValue="onClose"
     @keyup.enter="(legacyVoice !== 'ask') && onSave()"
   >
   <v-card width="30em" class="card">
     <v-card-actions class="">
-      <div class="ml-4">There's a new SuttaCentral Voice!</div>
+      <div class="ml-4 text-h6">
+        SuttaCentral Voice
+        <v-icon icon="mdi-new-box" color="green"/>
+      </div>
       <v-spacer />
       <!--v-btn icon="mdi-close" @click="onCancel()"/-->
     </v-card-actions>
     <v-card-text>
       <div class="form">
-        <v-radio-group v-model="legacyVoice" >
-          <v-radio class="recommend" value="new"
+        <v-radio-group id="rg" v-model="legacyVoice" >
+          <v-radio id="rnew" class="recommend" value="new"
             label="Try new Voice!"
           />
           <div :class="legacyVoice!=='old' ? '' : 'dim'">
@@ -24,7 +27,7 @@
               <li>...</li>
             </ul>
           </div>
-          <v-radio class="caution" value="old"
+          <v-radio id="rold" class="caution" value="old"
             label="Use original Voice today"
           />
           <div :class="legacyVoice!=='old' ? 'dim' : ''">
@@ -57,8 +60,9 @@
   </v-dialog>
 </template>
 <script setup>
-  import { computed, ref } from "vue";
+  import { onUpdated, onMounted, nextTick, computed, ref } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
+  const msg = "LegacyVoice.setup()"
 
   // WARNING: Settings is not loaded yet in setup!
   const settings = useSettingsStore();
@@ -76,9 +80,11 @@
   settings.loadSettings().then(()=>{
     const msg = 'LegacyVoice.loadSettings()';
     legacyVoice.value = settings.legacyVoice;
+    if (legacyVoice.value === "ask") {
+      legacyVoice.value = "new";
+    }
     let { search='' } = location;
     let isSrcSC = search.search('src=sc') >= 0;
-    console.log(msg, location, isSrcSC);
     showDialog.value = isSrcSC && settings.legacyVoice !== 'new';
   });
 
@@ -111,6 +117,23 @@
       ? ''
       : 'dim'
   }
+
+  onUpdated(()=>{
+    nextTick(()=>{
+      let msg = 'LegacyVoice.onUpdated()';
+      let id = `r${legacyVoice.value}`;
+      let eltId = document.getElementById(id);
+      if (!eltId) {
+        id = "rnew";
+        eltId = document.getElementById(id);
+        console.log(msg, {id, eltId});
+      }
+      if (eltId && document.activeElement !== eltId) {
+        console.log(msg, id, eltId, eltId.focused);
+        eltId.focus();
+      }
+    });
+  });
 </script>
 <style scoped>
 .form {
