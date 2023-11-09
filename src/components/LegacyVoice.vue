@@ -11,7 +11,7 @@
         {{settings.langTrans.toLocaleUpperCase()}}
         <span class="recommend">
           &#x27A1;
-          {{EbtConfig.appName}}
+          {{config.appName}}
         </span>
       </div>
       <v-spacer />
@@ -63,10 +63,12 @@
   </v-dialog>
 </template>
 <script setup>
-  import { onUpdated, onMounted, nextTick, computed, ref } from "vue";
+  import { 
+    onUpdated, inject, nextTick, computed, ref 
+  } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
-  import { default as EbtConfig } from "../../ebt-config.mjs";
   const msg = "LegacyVoice.setup()"
+  const config = inject('config');
 
   // WARNING: Settings is not loaded yet in setup!
   const settings = useSettingsStore();
