@@ -281,6 +281,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral सेगमेंट आयडी दिखाए",
     "showTransText": "अनुवाद ही दिखाए",
+    "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "वेब ब्राउज़र कुकीज़ में सेटिंग स्टोर करे।",

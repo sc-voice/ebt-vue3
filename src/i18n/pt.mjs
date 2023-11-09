@@ -212,6 +212,7 @@ export default {
     "clearSettings": "Desfazer seleções e redefinir configurações padrão?",
     "clearSoundCache": "Limpar cache",
     "click": "Clique",
+    "clickPlaySegment": "Click/play any segment",
     "clickRefresh": "Um erro ocorreu. Clique Recarregar Página para continuar",
     "closeCard": "Fechar",
     "confirm": "Confirmar",

@@ -284,6 +284,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Hiển thị SuttaCentral segment IDs",
     "showTransText": "Hiển thị bản dịch",
+    "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",

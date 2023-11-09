@@ -285,6 +285,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Pokazuj segmentacje tekstów SuttaCentral",
     "showTransText": "Pokaż tłumaczenie",
+    "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Zachowaj ustawienia w ciasteczkach internetowej przeglądarki",

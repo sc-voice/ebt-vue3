@@ -283,6 +283,7 @@ export default {
     "showReference": "Zeige Vergleichstext",
     "showTextSegmentIds": "SuttaCentral-ID zeigen",
     "showTransText": "Zeige lokale Übersetzung",
+    "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Pali sprechen",
     "speakSearchText": "Suchtext vorlesen",
     "speakTranslation": "Übersetzung sprechen",
