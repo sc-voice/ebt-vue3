@@ -211,7 +211,7 @@ export default {
     "clearSettings": "Einstellungen zurücksetzen?",
     "clearSoundCache": "Audio-Cache leeren",
     "click": "Klickton",
-    "clickPlaySegment": "Klicken/spielen Sie ein beliebiges Segment",
+    "clickPlaySegment": "Beliebiges Segment klicken und abspielen",
     "clickRefresh": "In der Web-Anwendung ist ein Fehler aufgetreten. Klicken Sie „Seite neu laden“, um fortzufahren.",
     "closeCard": "Schließen",
     "confirm": "Bestätigen",
