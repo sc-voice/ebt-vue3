@@ -233,7 +233,7 @@ export default {
     "inspireMe": "Such mir etwas aus!",
     "languageCode": "Deutsch / DE",
     "languages": "Sprachen",
-    "latestContent": "Zeigt neuesten Text für Sutta/Vinaya",
+    "latestContent": "Neuester Text für Sutta/Vinaya",
     "legacyVoice": "Nicht mehr an altes voice.suttacentral.net erinnern",
     "loadingAudio": "Audio laden...",
     "loadingSutta": "A_SUTTA wird geladen...",
