@@ -283,7 +283,6 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Vis SuttaCentral segmentidentifikasjon",
     "showTransText": "Vis oversatt tekst",
-    "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Lagre innstillinger i nettleser informasjonskapsler",

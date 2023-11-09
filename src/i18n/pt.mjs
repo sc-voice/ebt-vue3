@@ -249,6 +249,7 @@ export default {
     "no-location-wiki": "Bem-vindo",
     "noBell": "Ouvir sutta imediatamente",
     "noHTML5": "Seu browser não carrega áudio HTML5. Tente usar o Chrome",
+    "noNewContent": "No new content",
     "noTranslationAvailable": "(tradução não disponível)",
     "notFound": "\"A_PATTERN\" não encontrado. Tente no Voice.suttacentral.net",
     "pageNotFound": "Página não encontrada",

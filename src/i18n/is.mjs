@@ -286,7 +286,6 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Sýna SuttaCentral auðkenni hlutans",
     "showTransText": "Sýna þýðingu",
-    "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Geyma stillingar í vafrakökum",

@@ -247,6 +247,7 @@ export default {
     "no-location-wiki": "Welcome",
     "noBell": "すぐに経典を再生",
     "noHTML5": "このブラウザはHTML5オーディオをサポートしていません。ChromeまたはFirefoxを試して下さい。",
+    "noNewContent": "No new content",
     "noTranslationAvailable": "(翻訳はありません)",
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
     "ok": "OK",

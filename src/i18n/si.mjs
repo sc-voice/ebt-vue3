@@ -283,7 +283,6 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral හි කොටස් හැඳුනුම් අංක පෙන්වන්න",
     "showTransText": "පරිවර්තන පෙළ පෙන්වන්න",
-    "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",
     "speakSearchText": "සෙවුම් පෙළ පවසන්න",
     "speakTranslation": "Speak translation",

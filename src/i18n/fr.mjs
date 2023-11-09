@@ -283,7 +283,6 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Montrer les segments ids SuttaCentral",
     "showTransText": "Montrer les textes traduits",
-    "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
