@@ -17,7 +17,7 @@
               <v-icon icon="mdi-home" class="home-icon" size="24px"
                 @click.stop="onHome"
               />
-              <div>{{config.appName}}</div>
+              <div :title="titlePopup">{{config.appName}}</div>
             </div>
           </v-app-bar-title>
           
@@ -220,6 +220,10 @@
       //logger.info(msg, {activeElement});
     },
     computed: {
+      titlePopup(ctx) {
+        let { settings } = this;
+        return `SuttaCentral Voice / ${settings.langTrans}`;
+      },
       privacyLink(ctx) {
         let { config } = ctx;
         return config.privacyLink || "#/wiki/privacy";

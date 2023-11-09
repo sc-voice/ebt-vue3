@@ -7,33 +7,36 @@
   <v-card width="30em" class="card">
     <v-card-actions class="">
       <div class="ml-4 text-h6">
-        SuttaCentral Voice
-        <v-icon icon="mdi-new-box" color="green"/>
+        SuttaCentral Voice / 
+        {{settings.langTrans.toLocaleUpperCase()}}
+        <span class="recommend">
+          &#x27A1;
+          {{EbtConfig.appName}}
+        </span>
       </div>
       <v-spacer />
-      <!--v-btn icon="mdi-close" @click="onCancel()"/-->
     </v-card-actions>
     <v-card-text>
       <div class="form">
         <v-radio-group id="rg" v-model="legacyVoice" >
           <v-radio id="rnew" class="recommend" value="new"
-            label="Try new Voice!"
+            :label="$t('ebt.tryNewVoice')"
           />
           <div :class="legacyVoice!=='old' ? '' : 'dim'">
             <ul style="padding-left:4em">
-              <li>Latest sutta/vinaya content</li>
-              <li>Click any segment and play it</li>
-              <li>Open multiple suttas at the same time</li>
+              <li>{{$t('ebt.latestContent')}}</li>
+              <li>{{$t('ebt.clickPlaySegment')}}</li>
+              <li>{{$t('ebt.viewHearUntranslated')}}</li>
               <li>...</li>
             </ul>
           </div>
           <v-radio id="rold" class="caution" value="old"
-            label="Use original Voice today"
+            :label="$t('ebt.useOriginalVoice')"
           />
           <div :class="legacyVoice!=='old' ? 'dim' : ''">
             <ul style="padding-left:4em">
-              <li class="warning">Scheduled shutdown in 2024</li>
-              <li>No new content</li>
+              <li class="warning">{{$t('ebt.shutdown2024')}}</li>
+              <li>{{$t('ebt.noNewContent')}}</li>
             </ul>
           </div>
         </v-radio-group>
@@ -62,6 +65,7 @@
 <script setup>
   import { onUpdated, onMounted, nextTick, computed, ref } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
+  import { default as EbtConfig } from "../../ebt-config.mjs";
   const msg = "LegacyVoice.setup()"
 
   // WARNING: Settings is not loaded yet in setup!
