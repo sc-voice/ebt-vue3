@@ -302,6 +302,7 @@ export default {
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",
     "viewEditGithub": "View/Edit page on Github",
+    "viewHearUntranslated": "View/hear untranslated Pali texts",
     "weeks": "A_WEEKS weeks",
     "wikiAria": "Home.md",
     "wikiHome": "Welcome"
