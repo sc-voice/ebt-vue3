@@ -20,7 +20,7 @@ if (keyPath.indexOf('.') < 0) {
 }
 
 (async ()=>{
-  let files = await fs.promises.readdir(I18NDIR);
+  let [...files] = await fs.promises.readdir(I18NDIR);
   for (f of files) {
     let fpath = path.join(I18NDIR, f);
     let srcJson = await tsImport.load(fpath)
@@ -40,11 +40,10 @@ if (keyPath.indexOf('.') < 0) {
     if (value === "DELETE") {
       delete groupObj[key];
       let ts = 'export default ' + JSON.stringify(dstJson, null, 2);
-      fs.promises.writeFile(fpath, ts);
+      await fs.promises.writeFile(fpath, ts);
       console.log(`FILE: ${fpath} ${keyPath}: (deleted)`);
     } else if (value != null) {
       groupObj[key] = value;
-      console.log(`FILE: ${fpath} => ${keyPath}: "${groupObj[key]}"`);
       let groupKeys = Object.keys(groupObj).sort();
       let groupSorted = groupKeys.reduce((a,key,i)=>{
         a[key] = groupObj[key];
@@ -52,7 +51,8 @@ if (keyPath.indexOf('.') < 0) {
       }, {});
       groupParent[groupKey] = groupSorted;
       let ts = 'export default ' + JSON.stringify(dstJson, null, 2);
-      fs.promises.writeFile(fpath, ts);
+      await fs.promises.writeFile(fpath, ts);
+      console.log(`FILE: ${fpath} => ${keyPath}: "${groupObj[key]}"`);
     } else {
       let value = groupObj[key] == null ? "undefined" : `"${groupObj[key]}"`;
       console.log(`FILE: ${fpath} ${keyPath}: ${value}`);

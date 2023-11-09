@@ -234,7 +234,7 @@ export default {
     "inspireMe": "मुझे प्रेरित करे!",
     "languageCode": "हिंदी / HI",
     "languages": "भाषाएँ",
-    "latestContent": "Latest sutta/vinaya content",
+    "latestContent": "View latest sutta/vinaya content",
     "legacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading A_SUTTA...",

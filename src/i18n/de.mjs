@@ -232,7 +232,7 @@ export default {
     "inspireMe": "Such mir etwas aus!",
     "languageCode": "Deutsch / DE",
     "languages": "Sprachen",
-    "latestContent": "Latest sutta/vinaya content",
+    "latestContent": "View latest sutta/vinaya content",
     "legacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "loadingAudio": "Audio laden...",
     "loadingSutta": "A_SUTTA wird geladen...",
