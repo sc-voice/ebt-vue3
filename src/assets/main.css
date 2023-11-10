@@ -152,11 +152,11 @@ a:focus {
   align-items: flex-start;
 }
 .ebt-wiki-heading img {
-  margin-right: 1em;
-  height: 175px;
+  height: 90px;
   border-top-left-radius: 0.5em;
 }
 .ebt-wiki-heading-text {
+  margin-left: 1em;
   display: flex;
   flex-flow: column;
 }
