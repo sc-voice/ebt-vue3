@@ -293,7 +293,6 @@
     .ebt-card-wiki {
       max-width: calc(30vw - 10px);
     }
-    margin-right: 0.5em;
   }
   .v-card-text {
     min-width: 20em;
