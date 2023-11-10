@@ -207,9 +207,11 @@
       },
       cardClass(ctx) {
         let { settings, volatile, card } = ctx;
-        return volatile.routeCard === card
-          ? 'ebt-card ebt-card-current'
-          : 'ebt-card';
+        let cardClass = volatile.routeCard === card
+          ? `ebt-card ebt-card-${card.context} ebt-card-current`
+          : `ebt-card ebt-card-${card.context}`;
+
+        return cardClass;
       },
       cardLink: (ctx) => {
         let { card } = ctx;
@@ -280,7 +282,18 @@
   @media (max-width: 600px) {
     .ebt-card {
       max-width: calc(100vw - 10px);
+      margin-right: 2px;
     }
+  }
+  .ebt-card {
+    max-width: calc(50vw - 10px);
+    margin-right: 1em;
+  }
+  @media (max-width: 1300px) {
+    .ebt-card-wiki {
+      max-width: calc(30vw - 10px);
+    }
+    margin-right: 0.5em;
   }
   .v-card-text {
     min-width: 20em;
