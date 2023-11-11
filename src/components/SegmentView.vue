@@ -233,7 +233,7 @@
 }
 .seg-ref {
   font-family: var(--ebt-sc-serif-font);
-  font-size: 14px;
+  font-size: 100%;
 }
 .seg-lang-1col-sm {
   width: 310px;

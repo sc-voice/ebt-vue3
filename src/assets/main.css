@@ -123,7 +123,7 @@ a:focus {
 .ebt-wiki {
   padding: 1em;
   padding-bottom: 20em;
-  font-size: 14px;
+  font-size: 107%;
 }
 .ebt-wiki li {
   margin-left: 1.2em;
@@ -152,7 +152,7 @@ a:focus {
   align-items: flex-start;
 }
 .ebt-wiki-heading img {
-  height: 90px;
+  height: 150px;
   border-top-left-radius: 0.5em;
 }
 .ebt-wiki-heading-text {
@@ -227,4 +227,120 @@ code {
 }
 .v-spacer {
   flex-grow: 1;
+}
+.card-top-anchor {
+  font-size: 12px;
+  position: relative;
+  overflow: hidden;
+  border-left: 1pt solid rgb(0,0,0,0);
+  width: 1px;
+  height: 118px;
+  top: 0em;
+}
+.card-title-anchor {
+  position: relative;
+}
+.card-icon {
+  opacity: 0.5;
+  margin-right: 0.2em;
+}
+.ebt-card {
+  background: rgb(var(--v-theme-surface)) !important;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 4px;
+}
+.ebt-card-current {
+  -webkit-box-shadow:0px 0px 3px 3px rgba(var(--v-theme-focus), 0.5);
+  -moz-box-shadow: 0px 0px 3px 3px 1px rgba(var(--v-theme-focus), 0.5);
+  box-shadow: 0px 0px 3px 3px rgba(var(--v-theme-focus), 0.5);
+}
+.ebt-card > .v-card {
+  opacity: 0.5 !important;
+}
+.ebt-card-current > .v-card--variant-flat {
+  opacity: 1 !important;
+}
+.ebt-card {
+  margin-right: 1em;
+}
+.v-card-text {
+  min-width: 20em;
+}
+.close-item {
+  cursor: pointer;
+}
+.close-item:hover {
+  color: rgb(var(--v-theme-link));
+}
+.card-sheet {
+  background: rgba(0,0,0,0);
+}
+.card-sheet-closed {
+  display: none;
+}
+.last-tab {
+  display: flex;
+  opacity: 0.0;
+  justify-content: center;
+  cursor: pointer;
+}
+.last-tab:focus {
+  outline: 1pt solid green;
+}
+
+/*
+ * Accessible desktop
+ */
+@media (max-width: 1300px) {
+  .ebt-wiki-heading img {
+    height: 80px;
+  }
+  .ebt-wiki-heading-text { 
+    /* color: green !important; /* DEBUG */
+  }
+  .ebt-card-wiki {
+    max-width: calc(35vw - 10px);
+  }
+  .ebt-card-search {
+    max-width: calc(45vw - 10px);
+  }
+}
+
+/*
+ * Mobile large
+ */
+@media (max-width: 1100px) {
+  .ebt-wiki-heading img {
+    height: 55px;
+  }
+  .ebt-wiki-heading-text {
+    /* color: yellow !important; /* DEBUG */
+  }
+  .ebt-card {
+    max-width: calc(100vw - 10px);
+    margin-right: 2px;
+  }
+  .ebt-card-wiki {
+    max-width: calc(100vw - 10px);
+  }
+  .ebt-card-search {
+    max-width: calc(100vw - 10px);
+  }
+}
+
+/*
+ * Mobile small
+ */
+@media (max-width: 600px) {
+  .ebt-wiki-heading img {
+    height: 55px;
+  }
+  .ebt-wiki-heading-text {
+    /* color: red !important; /* DEBUG */
+  }
+  .ebt-card {
+    max-width: calc(100vw - 10px);
+    margin-right: 2px;
+  }
 }
