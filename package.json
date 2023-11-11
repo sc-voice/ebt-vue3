@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "1.342.0",
+  "version": "1.343.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "main": "src/index.mjs",
   "private": false,
@@ -15,7 +15,7 @@
     "merkle-json": "^2.6.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.82.35",
+    "scv-esm": "^1.82.36",
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
     "vue": "^3.3.4",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
-    "axios": "^0.27.2",
+    "axios": "^1.6.1",
     "esm": "^3.2.25",
     "execa": "^6.1.0",
     "fake-indexeddb": "^4.0.0",
