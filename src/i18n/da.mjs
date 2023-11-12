@@ -294,7 +294,7 @@ export default {
     "transLanguage": "Oversættelsessprog",
     "translatedBy": "Oversat af",
     "translation": "Oversættelse",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Webstedssprog",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

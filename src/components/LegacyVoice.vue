@@ -7,8 +7,7 @@
   <v-card width="30em" class="card">
     <v-card-actions class="">
       <div class="ml-4 text-h6">
-        SuttaCentral Voice / 
-        {{settings.langTrans.toLocaleUpperCase()}}
+        SuttaCentral Voice / {{lang}}
         <span class="recommend">
           &#x27A1;
           {{config.appName}}
@@ -20,7 +19,7 @@
       <div class="form">
         <v-radio-group id="rg" v-model="legacyVoice" >
           <v-radio id="rnew" class="recommend" value="new"
-            :label="$t('ebt.tryNewVoice')"
+            :label="$t('ebt.tryNewVoice', {APPNAME:config.appName})"
           />
           <div :class="legacyVoice!=='old' ? '' : 'dim'">
             <ul style="padding-left:4em">
@@ -64,11 +63,12 @@
 </template>
 <script setup>
   import { 
-    onUpdated, inject, nextTick, computed, ref 
+    onUpdated, inject, nextTick, computed, ref, onMounted,
   } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
   const msg = "LegacyVoice.setup()"
   const config = inject('config');
+  const i18n = inject('i18n');
 
   // WARNING: Settings is not loaded yet in setup!
   const settings = useSettingsStore();
@@ -83,12 +83,30 @@
     return `${VOICE}?search=${search}&lang=${lang}`;
   });
 
+  const lang = computed(()=>{
+    const hash = location.hash.replace("#/sutta/",'');
+    let [search,lang='en'] = hash.split('/');
+    return lang.toUpperCase();
+  });
+
+  onMounted(()=>{
+    const msg = 'LegacyVoice.onMounted()';
+    //console.error(msg);
+  });
+
   settings.loadSettings().then(()=>{
     const msg = 'LegacyVoice.loadSettings()';
     legacyVoice.value = settings.legacyVoice;
     if (legacyVoice.value === "ask") {
       legacyVoice.value = "new";
     }
+    const hash = location.hash.replace("#/sutta/",'');
+    let [hashSearch,lang] = hash.split('/');
+    settings.langTrans = lang || settings.langTrans;
+    let locale = settings.langTrans;
+    i18n.locale = locale;
+    console.log(msg, {lang, locale, i18n});
+
     let { search='' } = location;
     let isSrcSC = search.search('src=sc') >= 0;
     showDialog.value = isSrcSC && settings.legacyVoice !== 'new';

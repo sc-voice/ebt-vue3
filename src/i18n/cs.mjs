@@ -297,7 +297,7 @@ export default {
     "transLanguage": "Jazyk překladu",
     "translatedBy": "Přeložil",
     "translation": "Překlad",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Jazyk webové stránky",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

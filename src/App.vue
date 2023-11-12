@@ -169,7 +169,9 @@
     },
     async mounted() {
       let msg = 'App.mounted() ';
-      let { $t, audio, config, $vuetify, settings, $i18n, volatile, } = this;
+      let { 
+        $t, audio, config, $vuetify, settings, $i18n, volatile, 
+      } = this;
       volatile.$t = $t;
       volatile.config = config;
 

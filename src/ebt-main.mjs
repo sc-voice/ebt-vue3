@@ -56,6 +56,7 @@ export default class EbtMain {
 
     var app = createApp(App);
     app.provide('config', config);
+    app.provide('i18n', i18n);
     //logger.info(msg, 'main()', config);
     app.use(i18n);
     app.use(pinia);

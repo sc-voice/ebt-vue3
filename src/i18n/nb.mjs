@@ -293,7 +293,7 @@ export default {
     "transLanguage": "Oversettelsesspråk",
     "translatedBy": "Oversatt av",
     "translation": "Translation",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Nettsidespråk",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",
