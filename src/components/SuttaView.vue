@@ -82,7 +82,8 @@
       }
       let { sutta_uid, lang, author, segnum } = suttaRef;
       let idbKey = IdbSutta.idbKey({sutta_uid, lang, author});
-      let idbSuttaRef = await suttas.getIdbSuttaRef({sutta_uid, lang, author});
+      let idbSuttaRef = await suttas.getIdbSuttaRef({
+        sutta_uid, lang, author});
       let { langTrans:defaultLang } = settings;
       this.idbSuttaRef = idbSuttaRef?.value;
 

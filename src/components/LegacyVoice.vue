@@ -92,6 +92,8 @@
   onMounted(()=>{
     const msg = 'LegacyVoice.onMounted()';
     //console.error(msg);
+    let { locale } = i18n;
+    console.log(msg, {locale});
   });
 
   settings.loadSettings().then(()=>{
@@ -102,10 +104,13 @@
     }
     const hash = location.hash.replace("#/sutta/",'');
     let [hashSearch,lang] = hash.split('/');
-    settings.langTrans = lang || settings.langTrans;
-    let locale = settings.langTrans;
+    let langTrans = lang || settings.langTrans;
+    console.log(msg, `langTrans ${settings.langTrans} <= ${langTrans}`);
+    settings.langTrans = langTrans;
+    let locale = langTrans;
+    settings.locale = locale;
+    console.log(msg, `locale ${i18n.locale} <= ${locale}`);
     i18n.locale = locale;
-    console.log(msg, {lang, locale, i18n});
 
     let { search='' } = location;
     let isSrcSC = search.search('src=sc') >= 0;
@@ -153,7 +158,7 @@
         console.log(msg, {id, eltId});
       }
       if (eltId && document.activeElement !== eltId) {
-        console.log(msg, id, eltId, eltId.focused);
+        // console.log(msg, id, eltId, eltId.focused);
         eltId.focus();
       }
     });

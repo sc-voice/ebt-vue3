@@ -44,6 +44,18 @@ logger.logLevel = 'warn';
     let card2 = new EbtCard(Object.assign({}, card1));
     should(card2).properties(card1);
   });
+  it("TESTTESTcustom ctor sutta/thig1.1/pt", ()=>{
+    let id = 'test-id';
+    let context = 'sutta';
+    let location = ['thig1.1', 'pt'];
+    let data = "test-data";
+    let author = 'laera-quaresma';
+    let langTrans = 'en';
+    let card1 = new EbtCard({id, context, location, data, langTrans});
+    should(card1).properties({id, context, location, data});
+    let card2 = new EbtCard(Object.assign({}, card1));
+    should(card2).properties(card1);
+  });
   it("icon", async() => {
     let card = new EbtCard();
     should(card.icon).equal("mdi-wikipedia");

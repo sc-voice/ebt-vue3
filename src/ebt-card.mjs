@@ -64,9 +64,11 @@ export default class EbtCard {
         }
         break;
       case CONTEXT_SUTTA:
+        //console.log(msg, 'before', location);
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
-          (location[2] = AuthorsV2.langAuthor(langTrans));
+          (location[2] = AuthorsV2.langAuthor(location[1]));
+        console.log(msg, 'after', location);
         break;
     }
 
@@ -106,6 +108,7 @@ export default class EbtCard {
     let [ ignored, context, ...location ] = path.split('/');
     location = location.map(loc => decodeURIComponent(loc));
     let card = cards.find(card => card.matchPath({path, defaultLang}));
+    //console.trace(msg, {card, path, context, location});
     if (card == null) {
       if (!addCard) {
         throw new Error(msg+"addCard is required");

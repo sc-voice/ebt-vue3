@@ -37,13 +37,13 @@ export default class Settings {
       blockVolume,
       clickVolume,
       docAuthor, 
-      docLang, // bilara translation document language (e.g., 'jpn')
+      docLang,    // bilara translation document language (e.g., 'jpn')
       fullLine,
       highightExamples,
-      legacyVoice, // Show legacy voice dialog
+      legacyVoice,// Show legacy voice dialog
       ips,
-      langTrans, // UI translation language (e.g., 'ja') 
-      locale,
+      langTrans,  // UI translation language (e.g., 'ja') 
+      locale,     // Web page language
       maxResults,
       refAuthor,
       refLang,
