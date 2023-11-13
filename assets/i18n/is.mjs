@@ -296,7 +296,7 @@ export default {
     "transLanguage": "Þýðingamál",
     "translatedBy": "Translated by",
     "translation": "Translation",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Tungumál vefsíðu",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

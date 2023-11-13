@@ -296,7 +296,7 @@ export default {
     "transLanguage": "訳文の言語",
     "translatedBy": "翻訳者",
     "translation": "翻訳",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "ウェブサイトの言語",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

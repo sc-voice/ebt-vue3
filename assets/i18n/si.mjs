@@ -294,7 +294,7 @@ export default {
     "transLanguage": "පරිවර්තන භාෂාව",
     "translatedBy": "විසින් පරිවර්තනය කරන ලදි",
     "translation": "පරිවර්තනය",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "වෙබ් අඩවි භාෂාව",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

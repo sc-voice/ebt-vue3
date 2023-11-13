@@ -294,7 +294,7 @@ export default {
     "transLanguage": "Langue de traduction",
     "translatedBy": "Traduit par",
     "translation": "Traduction",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Langue du site",
     "useOriginalVoice": "Use original Voice today",
     "viewEditGithub": "View/Edit page on Github",

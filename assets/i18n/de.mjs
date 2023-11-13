@@ -299,7 +299,7 @@ export default {
     "transLanguage": "Übersetzungssprache",
     "translatedBy": "Übersetzt von",
     "translation": "Übersetzung",
-    "tryNewVoice": "Dhammaregen ausprobieren!",
+    "tryNewVoice": "{APPNAME} ausprobieren!",
     "uiLanguage": "Webseitensprache",
     "useOriginalVoice": "Heute ursprüngliches Voice benutzen",
     "viewDocument": "Zum Dokument",

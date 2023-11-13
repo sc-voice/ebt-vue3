@@ -297,7 +297,7 @@ export default {
     "transLanguage": "Taal van vertaling",
     "translatedBy": "Vertaald door",
     "translation": "Translation",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Taal van website",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

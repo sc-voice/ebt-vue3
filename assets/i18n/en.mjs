@@ -301,7 +301,7 @@ export default {
     "transLanguage": "Translation language",
     "translatedBy": "Translated by",
     "translation": "Translation",
-    "tryNewVoice": "Try new Voice!",
+    "tryNewVoice": "Try new {APPNAME}!",
     "uiLanguage": "Website language",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",
