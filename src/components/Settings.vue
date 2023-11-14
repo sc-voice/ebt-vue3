@@ -41,6 +41,12 @@
             <v-checkbox v-model="settings.showGdpr" density="compact"
               :label="$t('ebt.showGdpr')">
             </v-checkbox>
+            <v-btn @click="showTutorials(true)" 
+              :disabled="tutorialState(true)"
+              >Show Tutorials</v-btn>
+            <v-btn @click="showTutorials(false)" 
+              :disabled="tutorialState(false)"
+              >Hide Tutorials</v-btn>
           </v-expansion-panel-text>
         </v-expansion-panel><!--General-->
 
@@ -327,6 +333,18 @@ export default {
     logger.debug("Settings.mounted()", this.host);
   },
   methods: {
+    showTutorials(show) {
+      let { settings } = this;
+      settings.tutorPlay = show;
+      settings.tutorSearch = show;
+      settings.tutorSettings = show;
+    },
+    tutorialState(show) {
+      let { settings } = this;
+      return show === settings.tutorPlay &&
+        show === settings.tutorSearch &&
+        show === settings.tutorSettings;
+    },
     validate() {
       const msg = "Settings.validate() ";
       let { settings } = this;
