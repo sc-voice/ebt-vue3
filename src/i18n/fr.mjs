@@ -297,7 +297,7 @@ export default {
     "translation": "Traduction",
     "tryNewVoice": "Essayez le nouveau {APPNAME}!",
     "uiLanguage": "Langue du site",
-    "useOriginalVoice": "Je ne suis pas encore prêt, je veux juste utiliser la voix originale aujourd’hui",
+    "useOriginalVoice": "Je ne suis pas encore prêt, je veux juste utiliser la Voice originale aujourd’hui",
     "viewEditGithub": "View/Edit page on Github",
     "viewHearUntranslated": "Afficher et entendre des textes pali non traduits",
     "weeks": "A_WEEKS weeks",

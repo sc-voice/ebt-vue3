@@ -76,6 +76,14 @@ export const useSettingsStore = defineStore('settings', {
           cards.forEach((card,i) => {
             cards[i] = new EbtCard(card);
           });
+          
+          let pathCard = EbtCard.pathToCard({ 
+            path: window.location.hash,  // update card if necessary
+            cards, 
+            addCard: null,
+            defaultLang: this.langTrans,
+          });
+          //console.log(msg, {pathCard});
         } catch(e) {
           logger.warn(msg,  savedState, e.message);
           savedState = null;

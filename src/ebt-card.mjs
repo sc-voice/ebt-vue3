@@ -68,7 +68,7 @@ export default class EbtCard {
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
-        console.log(msg, 'after', location);
+        //console.log(msg, 'after', location);
         break;
     }
 
@@ -110,18 +110,28 @@ export default class EbtCard {
     let card = cards.find(card => card.matchPath({path, defaultLang}));
     //console.trace(msg, {card, path, context, location});
     if (card == null) {
-      if (!addCard) {
+      if (addCard === undefined) {
         throw new Error(msg+"addCard is required");
+      } else {
+        card = addCard ? addCard({context, location}) : null;
       }
-      card = addCard({context, location});
       //card && logger.info(`${msg} ${args}`, {card, context, location});
     } else {
       logger.debug(msg+`(EXISTING))`, {args,card});
     } 
 
-    if (card && card.context === CONTEXT_WIKI) {
-      let newLocation = path.split('/').slice(2);
-      card.location = newLocation;
+    if (card) {
+      switch (card.context) {
+        case CONTEXT_WIKI: {
+          let newLocation = path.split('/').slice(2);
+          card.location = newLocation;
+        } break;
+        case CONTEXT_SUTTA: {
+          if (location[0].indexOf(':') >= 0) { // different scid
+            card.location[0] = location[0];
+          }
+        } break;
+      }
     }
 
     return card;
