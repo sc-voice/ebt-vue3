@@ -230,6 +230,7 @@ export default {
     "exploreBuddhasTeaching": "Explorer les Enseignements du Bouddha",
     "foundSuttas": "Trouvé A_RESULTCOUNT sutras",
     "general": "Général",
+    "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Inspire Moi!",

@@ -230,6 +230,7 @@ export default {
     "findSutta": "Finde ein sutta",
     "foundSuttas": "\"A_SEARCH\" in A_RESULTCOUNT Suttas gefunden",
     "general": "Allgemein",
+    "hideTutorials": "Hide tutorials",
     "highlightExamples": "Zeige Beispiel-Links (langsam)",
     "homeSound": "Startseitenton",
     "inspireMe": "Such mir etwas aus!",

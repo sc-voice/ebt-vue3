@@ -231,6 +231,7 @@ export default {
     "exploreBuddhasTeaching": "බුද්ධ දේශනාව ගවේෂණයට",
     "foundSuttas": "සූත්‍ර A_RESULTCOUNT ක් සම්බ වුනි",
     "general": "පොදු",
+    "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "සොයන්න!",
