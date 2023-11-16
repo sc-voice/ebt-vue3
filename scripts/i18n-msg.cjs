@@ -24,7 +24,7 @@ if (keyPath.indexOf('.') < 0) {
   for (f of files) {
     let fpath = path.join(I18NDIR, f);
     let srcJson = await tsImport.load(fpath)
-    let dstJson = srcJson.default;
+    let dstJson = JSON.parse(JSON.stringify(srcJson.default));
     let groupObj = dstJson;
     let groupParent;
     let groupKey;
