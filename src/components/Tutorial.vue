@@ -29,10 +29,12 @@
 </template>
 <script setup>
   import { computed, ref, } from "vue";
+  import { useAudioStore } from "../stores/audio.mjs";
   import { useSettingsStore } from "../stores/settings.mjs";
   import { useVolatileStore } from "../stores/volatile.mjs";
   import { default as EbtCard } from "../ebt-card.mjs";
 
+  const audio = useAudioStore();
   const settings = useSettingsStore();
   const volatile = useVolatileStore();
   const props = defineProps({
@@ -44,23 +46,35 @@
   });
   const showTutorial = computed(()=>{
     let { setting, } = props;
-    let { loaded, cards=[] } = settings;
+    let { 
+      tutorPlay, tutorSearch, tutorSettings, loaded, cards=[] 
+    } = settings;
     let { showSettings } = volatile;
     let show = !showSettings && settings[setting];
+    if (!show) {
+      return show;
+    }
+
+    let hasSearch = cards.reduce((a,card)=>{
+      return card.context === EbtCard.CONTEXT_SEARCH ? true : a;
+    }, false);
+    let hasSutta = cards.reduce((a,card)=>{
+      return card.context === EbtCard.CONTEXT_SUTTA ? true : a;
+    }, false);
     switch (setting) {
       case 'tutorSearch':
-        let nSearch = cards.reduce((a,card)=>{
-          return card.context === EbtCard.CONTEXT_SEARCH ? a+1 : a;
-        }, 0);
-        show = show && nSearch === 0;
+        show = show && !hasSearch;
         break;
       case 'tutorSettings':
-        show = show && !settings.tutorSearch;
+        show = show && !tutorSearch && !tutorPlay;
         break;
       case 'tutorPlay':
+        show = show && audio.audioScid;
+        break;
       default:
         break;
     }
+
     return show;
   });
   const contentClass = computed(()=>{

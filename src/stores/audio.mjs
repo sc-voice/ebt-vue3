@@ -147,6 +147,9 @@ export const useAudioStore = defineStore('audio', {
     },
     clickPlayOne() {
       let msg = 'audio.clickPlayOne() ';
+      let settings = useSettingsStore();
+
+      settings.tutorPlay = false;
 
       if (this.playPause(PLAY_ONE)) {
         logger.info(msg + 'toggled');
