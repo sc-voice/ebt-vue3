@@ -232,6 +232,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "Der blev fundet A_RESULTCOUNT suttas",
     "general": "Generelt",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

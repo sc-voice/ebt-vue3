@@ -234,6 +234,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "Fundnar A_RESULTCOUNT Suttur",
     "general": "Almennt",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

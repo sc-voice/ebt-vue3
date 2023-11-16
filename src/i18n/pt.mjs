@@ -234,6 +234,7 @@ export default {
     "findSutta": "Encontre um sutta",
     "foundSuttas": "Foram encontrados A_RESULTCOUNT suttas",
     "general": "Geral",
+    "hearSutta": "Ouvir o sutta",
     "hideTutorials": "Esconder os tutoriais",
     "highlightExamples": "Mostre exemplos de referências (slow)",
     "homeSound": "Página inicial",

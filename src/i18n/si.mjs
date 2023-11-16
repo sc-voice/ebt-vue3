@@ -232,6 +232,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "සූත්‍ර A_RESULTCOUNT ක් සම්බ වුනි",
     "general": "පොදු",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

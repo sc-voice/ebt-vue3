@@ -234,6 +234,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT 経典が見つかりました",
     "general": "一般",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

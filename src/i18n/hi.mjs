@@ -230,6 +230,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT सुत्त मिले",
     "general": "साधारण",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

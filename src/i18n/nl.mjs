@@ -235,6 +235,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT soetras gevonden",
     "general": "Algemeen",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

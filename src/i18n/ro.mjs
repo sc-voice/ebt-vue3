@@ -231,6 +231,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT sutta găsite",
     "general": "General",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",

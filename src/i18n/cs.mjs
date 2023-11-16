@@ -233,6 +233,7 @@ export default {
     "findSutta": "Find a sutta",
     "foundSuttas": "Nalezeno A_RESULTCOUNT rozprav",
     "general": "Všeobecný",
+    "hearSutta": "Hear the sutta",
     "hideTutorials": "Hide tutorials",
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
