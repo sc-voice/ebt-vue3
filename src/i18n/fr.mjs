@@ -227,6 +227,7 @@ export default {
     "downloading": "Téléchargement:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Explorer les Enseignements du Bouddha",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Trouvé A_RESULTCOUNT sutras",
     "general": "Général",
     "highlightExamples": "Show example links (slow)",

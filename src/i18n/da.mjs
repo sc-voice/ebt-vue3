@@ -228,6 +228,7 @@ export default {
     "downloading": "Overfører:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Udforsk Buddhas undervisning",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Der blev fundet A_RESULTCOUNT suttas",
     "general": "Generelt",
     "highlightExamples": "Show example links (slow)",

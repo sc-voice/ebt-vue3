@@ -230,6 +230,7 @@ export default {
     "downloading": "ダウンロード中...:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "ブッダの教えを探求する",
+    "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT 経典が見つかりました",
     "general": "一般",
     "highlightExamples": "Show example links (slow)",

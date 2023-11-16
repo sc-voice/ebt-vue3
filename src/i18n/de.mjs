@@ -226,6 +226,7 @@ export default {
     "downloading": "Herunterladen:",
     "examples": "Beispiele",
     "exploreBuddhasTeaching": "Die Lehren des Buddha erkunden",
+    "findSutta": "Finde ein sutta",
     "foundSuttas": "\"A_SEARCH\" in A_RESULTCOUNT Suttas gefunden",
     "general": "Allgemein",
     "highlightExamples": "Zeige Beispiel-Links (langsam)",

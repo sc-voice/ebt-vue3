@@ -229,6 +229,7 @@ export default {
     "downloading": "Pobieranie:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Odkrywaj nauki Buddy",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Znaleziono A_RESULTCOUNT sutt",
     "general": "Ustawienia ogólne",
     "highlightExamples": "Show example links (slow)",

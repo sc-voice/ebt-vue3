@@ -230,6 +230,7 @@ export default {
     "downloading": "Fazendo downloads:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Explore os Ensinamentos do Buda",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Foram encontrados A_RESULTCOUNT suttas",
     "general": "Geral",
     "highlightExamples": "Mostre exemplos de referências (slow)",

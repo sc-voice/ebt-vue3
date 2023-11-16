@@ -228,6 +228,7 @@ export default {
     "downloading": "Se descarcă:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Explorează învățăturile budiste",
+    "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT sutta găsite",
     "general": "General",
     "highlightExamples": "Show example links (slow)",

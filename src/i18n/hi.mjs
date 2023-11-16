@@ -227,6 +227,7 @@ export default {
     "downloading": "डाउनलोड हो रहा है:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "बुद्ध की शिक्षा खोजे",
+    "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT सुत्त मिले",
     "general": "साधारण",
     "highlightExamples": "Show example links (slow)",

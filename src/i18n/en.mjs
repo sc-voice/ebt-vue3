@@ -231,6 +231,7 @@ export default {
     "downloading": "Downloading:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Explore the Buddha's Teaching",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Found A_RESULTCOUNT suttas",
     "general": "General",
     "highlightExamples": "Show all example links (slow)",

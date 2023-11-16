@@ -229,6 +229,7 @@ export default {
     "downloading": "Stahuji:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Prozkoumat Učení Buddhy",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Nalezeno A_RESULTCOUNT rozprav",
     "general": "Všeobecný",
     "highlightExamples": "Show example links (slow)",

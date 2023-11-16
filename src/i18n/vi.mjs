@@ -230,6 +230,7 @@ export default {
     "downloading": "Đang download:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Khám phá giáo lí Phật pháp",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Tìm thấy A_RESULTCOUNT kinh",
     "general": "Phần chung",
     "highlightExamples": "Show example links (slow)",
