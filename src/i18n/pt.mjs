@@ -220,7 +220,7 @@ export default {
     "context-home": "Página inicial",
     "context-search": "Buscar",
     "context-sutta": "Sutta",
-    "customizeSettings": "Customize settings",
+    "customizeSettings": "Personalizar configurações",
     "days": "A_DAYS days",
     "dedicated": "Para aqueles na escuridão e tendo a luz como destino",
     "dedicatedSearch": "aqueles na escuridão e tendo a luz como destino",
