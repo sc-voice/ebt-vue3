@@ -148,7 +148,6 @@ export const useAudioStore = defineStore('audio', {
     clickPlayOne() {
       let msg = 'audio.clickPlayOne() ';
       let settings = useSettingsStore();
-
       settings.tutorPlay = false;
 
       if (this.playPause(PLAY_ONE)) {
@@ -162,6 +161,9 @@ export const useAudioStore = defineStore('audio', {
     },
     async playToEnd() {
       const msg = 'audio.playToEnd() ';
+      let settings = useSettingsStore();
+      settings.tutorPlay = false;
+
       logger.info(msg+'PLAY', this.audioScid);
       let segPlayed;
       do {
