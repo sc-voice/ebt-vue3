@@ -21,7 +21,16 @@
             </div>
           </v-app-bar-title>
           
-          <v-menu location="left" attach v-if="narrowView">
+          <div v-if="!narrowView" class="pr-3">
+            <v-btn id='btn-search' icon @click="onClickSearch" >
+              <v-icon icon="mdi-magnify"/>
+            </v-btn>
+            <v-btn id='btn-settings' icon @click="onClickSettings">
+              <v-icon icon="mdi-cog"/>
+            </v-btn>
+          </div>
+          <v-menu location="left" attach 
+            v-if="narrowView"><!--DEPRECATED-->
             <template v-slot:activator="{ props }">
               <div class="app-menu-activator">
                 <v-btn v-bind="props" icon>
@@ -31,21 +40,14 @@
             </template>
             <v-sheet class="app-menu-items">
               <v-btn icon href="#/search" >
-                <v-icon icon="mdi-magnify"/>
+                <v-icon icon="mdi-magnify"
+                ></v-icon>
               </v-btn>
               <v-btn icon @click.stop="onClickSettings">
                 <v-icon icon="mdi-cog"/>
               </v-btn>
             </v-sheet>
-          </v-menu>
-          <div v-if="!narrowView" class="pr-3">
-            <v-btn icon href="#/search" >
-              <v-icon icon="mdi-magnify"/>
-            </v-btn>
-            <v-btn id='btn-settings' icon @click="onClickSettings">
-              <v-icon icon="mdi-cog"/>
-            </v-btn>
-          </div>
+          </v-menu><!--DEPRECATED-->
         </template>
         <template v-if="!collapsed" v-slot:extension>
           <ebt-chips />
@@ -94,12 +96,19 @@
           <div v-html="alertHtml" class="alert-html"/>
         </div>
       </v-snackbar>
+      <Tutorial setting="tutorSearch" :title="$t('ebt.search')" 
+        :text="$t('ebt.findSutta')" arrow="top"
+      ></Tutorial>
+      <Tutorial setting="tutorSettings" :title="$t('ebt.settingsTitle')" 
+        :text="$t('ebt.changeSettings')" arrow="top"
+      ></Tutorial>
     </v-main>
   </v-app>
 </template>
 
 <script>
   import { default as HomeView } from './components/HomeView.vue';
+  import Tutorial from './components/Tutorial.vue';
   import EbtCards from './components/EbtCards.vue';
   import EbtChips from './components/EbtChips.vue';
   import Settings from './components/Settings.vue';
@@ -133,6 +142,7 @@
       Settings,
       EbtProcessing,
       LegacyVoice,
+      Tutorial,
     },
     methods: {
       onHome(evt) {
@@ -156,11 +166,17 @@
         settings.showGdpr = false;
         evt.preventDefault();
       },
+      onClickSearch(evt) {
+        let { settings } = this;
+        window.location = "#/search";
+        settings.tutorSearch = false;
+      },
       onClickSettings(evt) {
-        let { volatile, audio } = this;
+        let { settings, volatile, audio } = this;
         let btn = document.getElementById('btn-settings');
         btn && btn.blur();
         volatile.showSettings = true;
+        settings.tutorSettings = false;
         nextTick(()=>{
           let autofocus = document.getElementById('settings-autofocus');
           autofocus && autofocus.focus();
@@ -245,6 +261,7 @@
         return ctx.volatile.displayBox.value;
       },
       narrowView(ctx) {
+        return false;
         let { displayBox } = ctx;
         return displayBox.w < 400;
       },
@@ -286,6 +303,7 @@
 .ebt-title {
   display: flex;
   align-items: center;
+  font-size: min(20px, 4vw);
 }
 .ebt-title:focus-within a {
   border: none !important;

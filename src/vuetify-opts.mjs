@@ -39,6 +39,7 @@ export default class VuetifyOpts {
         example: COLOR_SAFFRON,
         focus: COLOR_SAFFRON,
         alert: colors.red.darken4,
+        tutorial: colors.green.darken4,
       },
     }
   } // lightTheme
@@ -63,6 +64,7 @@ export default class VuetifyOpts {
         example: COLOR_SAFFRON,
         focus: COLOR_SAFFRON,
         alert: colors.red.darken4,
+        tutorial: colors.green.darken4,
       },
     }
   } // darkTheme
