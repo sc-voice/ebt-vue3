@@ -120,7 +120,7 @@
 }
 .tutorial-content-tutorPlay {
   bottom: 40px !important;
-  right: calc(50vw - 100px)  !important;
+  right: calc(50vw - 106px)  !important;
 }
 .v-snackbar__content .tutorial-arrow-top {
   position: absolute;
