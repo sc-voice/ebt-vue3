@@ -284,6 +284,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Vis SuttaCentral segmentidentifikasjon",
     "showTransText": "Vis oversatt tekst",
+    "showTutorials": "Show tutorials",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Lagre innstillinger i nettleser informasjonskapsler",

@@ -286,6 +286,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Toon SuttaCentral segment-identificatiecodes",
     "showTransText": "Toon vertaalde tekst",
+    "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",
     "speakSearchText": "Speak search text",

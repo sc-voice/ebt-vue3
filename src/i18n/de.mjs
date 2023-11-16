@@ -286,6 +286,7 @@ export default {
     "showReference": "Zeige Vergleichstext",
     "showTextSegmentIds": "SuttaCentral-ID zeigen",
     "showTransText": "Zeige lokale Übersetzung",
+    "showTutorials": "Show tutorials",
     "shutdown2024": "Stillegung 2024",
     "speakPali": "Pali sprechen",
     "speakSearchText": "Suchtext vorlesen",

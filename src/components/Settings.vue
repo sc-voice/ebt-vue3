@@ -43,10 +43,10 @@
             </v-checkbox>
             <v-btn @click="showTutorials(true)" 
               :disabled="tutorialState(true)"
-              >Show Tutorials</v-btn>
+              >{{$t('ebt.showTutorials')}}</v-btn>
             <v-btn @click="showTutorials(false)" 
               :disabled="tutorialState(false)"
-              >Hide Tutorials</v-btn>
+              >{{$t('ebt.hideTutorials')}}</v-btn>
           </v-expansion-panel-text>
         </v-expansion-panel><!--General-->
 

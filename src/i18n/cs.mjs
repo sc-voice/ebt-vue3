@@ -287,6 +287,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Zobraz čísla SuttaCentral segmentů",
     "showTransText": "Zobraz překlad",
+    "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",
     "speakSearchText": "Řekni hledaný text",

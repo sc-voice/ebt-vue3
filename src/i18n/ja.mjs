@@ -286,6 +286,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral セグメントIDを表示",
     "showTransText": "訳文の表示",
+    "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "検索テキストを音声化",
     "speakTranslation": "Speak translation",

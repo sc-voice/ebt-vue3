@@ -287,6 +287,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Sýna SuttaCentral auðkenni hlutans",
     "showTransText": "Sýna þýðingu",
+    "showTutorials": "Show tutorials",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Geyma stillingar í vafrakökum",
