@@ -228,6 +228,7 @@ export default {
     "downloading": "Laster ned:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Utforsk Buddhas lære",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Fant A_RESULTCOUNT sutta-er",
     "general": "Generelt",
     "hideTutorials": "Hide tutorials",

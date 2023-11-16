@@ -231,6 +231,7 @@ export default {
     "downloading": "Að hala niður:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Kynntu þér kennslu Búdda",
+    "findSutta": "Find a sutta",
     "foundSuttas": "Fundnar A_RESULTCOUNT Suttur",
     "general": "Almennt",
     "hideTutorials": "Hide tutorials",

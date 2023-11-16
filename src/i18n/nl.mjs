@@ -232,6 +232,7 @@ export default {
     "downloading": "Downloaden:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Ontdek de Boeddha's leer",
+    "findSutta": "Find a sutta",
     "foundSuttas": "A_RESULTCOUNT soetras gevonden",
     "general": "Algemeen",
     "hideTutorials": "Hide tutorials",

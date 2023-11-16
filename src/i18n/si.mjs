@@ -229,6 +229,7 @@ export default {
     "downloading": "බාගත කරමින්:",
     "examples": "Examples",
     "exploreBuddhasTeaching": "බුද්ධ දේශනාව ගවේෂණයට",
+    "findSutta": "Find a sutta",
     "foundSuttas": "සූත්‍ර A_RESULTCOUNT ක් සම්බ වුනි",
     "general": "පොදු",
     "hideTutorials": "Hide tutorials",
