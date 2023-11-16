@@ -102,6 +102,9 @@
       <Tutorial setting="tutorSettings" :title="$t('ebt.settingsTitle')" 
         :text="$t('ebt.customizeSettings')" arrow="top"
       ></Tutorial>
+      <Tutorial setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
+        :text="$t('ebt.hearSutta')" arrow="bottom"
+      ></Tutorial>
     </v-main>
   </v-app>
 </template>

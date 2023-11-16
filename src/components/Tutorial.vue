@@ -1,12 +1,15 @@
 <template>
   <v-snackbar 
+    v-if="settings.loaded"
     v-model="showTutorial"
     color="tutorial"
     timeout="-1"
     :content-class="contentClass"
-    location="top right"
-    max-width="300px"
-    min-width="250px"
+    :location="location"
+    min-width="200px"
+    max-width="200px"
+    min-height="100px"
+    max-height="100px"
     transition="fab-transition"
     @click="onClick"
   >
@@ -41,7 +44,7 @@
   });
   const showTutorial = computed(()=>{
     let { setting, } = props;
-    let { cards=[] } = settings;
+    let { loaded, cards=[] } = settings;
     let { showSettings } = volatile;
     let show = !showSettings && settings[setting];
     switch (setting) {
@@ -63,6 +66,12 @@
   const contentClass = computed(()=>{
     let { setting } = props;
     return `tutorial-content-${setting}`;
+  });
+  const location = computed(()=>{
+    let { setting, arrow } = props;
+    return arrow === "top"
+      ? "top right"
+      : "bottom right"
   });
 
   function onClick() {
@@ -95,6 +104,10 @@
   top: 45px !important;
   right: 0px !important;
 }
+.tutorial-content-tutorPlay {
+  bottom: 40px !important;
+  right: calc(50vw - 100px)  !important;
+}
 .v-snackbar__content .tutorial-arrow-top {
   position: absolute;
   right: 15px;
@@ -104,7 +117,7 @@
 }
 .v-snackbar__content .tutorial-arrow-bottom {
   position: absolute;
-  right: 15px;
+  right: 10px;
   bottom: 0px;
   color: yellow;
   opacity: 1;
