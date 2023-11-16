@@ -100,7 +100,7 @@
         :text="$t('ebt.findSutta')" arrow="top"
       ></Tutorial>
       <Tutorial setting="tutorSettings" :title="$t('ebt.settingsTitle')" 
-        :text="$t('ebt.changeSettings')" arrow="top"
+        :text="$t('ebt.customizeSettings')" arrow="top"
       ></Tutorial>
     </v-main>
   </v-app>

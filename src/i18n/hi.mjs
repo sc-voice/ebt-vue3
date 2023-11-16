@@ -217,6 +217,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "context-sutta": "Sutta",
+    "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "उजाले के लिए अँधेरी सीमा की ओर",
     "dedicatedSearch": "the dark bound for light",
