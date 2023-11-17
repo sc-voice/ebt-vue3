@@ -1,31 +1,68 @@
 <template>
-  <v-list>
-    <v-list-item v-for="(result,i) in matchedSuttas" 
-      :key="result"
-    >
-      <div>
-        <div class="result-title-main">
-          <div class="result-title-number">{{i+1}}</div>
-          <a :href="`#/sutta/${href(card.data[i])}`" class="scv-matched">
-            <div class="result-title-body" 
-              :title="resultAria(result, i)"
-              v-html="resultTitle(result, i)"
-            ></div>
-          </a>
-        </div> <!-- result-title-main -->
-      </div>
-    </v-list-item>
-  </v-list>
+  <v-expansion-panels v-model="panels" class="mt-2" 
+  >
+    <template v-for="(result,i) in matchedSuttas" >
+      <v-expansion-panel :value="i" class="result-expansion">
+        <v-expansion-panel-title
+          expand-icon="mdi-dots-vertical"
+          collapse-icon="mdi-dots-horizontal"
+          class="expansion-panel-title"
+          :aria-label="result.uid"
+        >
+          <div class="result-title">
+            <div class="result-title-main">
+              <div class="result-title-number">{{i+1}}</div>
+              <div class="result-title-body">
+                {{resultTitle(card.data[i])}}
+              </div> <!-- result-title-body -->
+              <div class="result-title-stats">
+                {{suttaDuration(result)}}
+              </div> <!-- result-title-stats -->
+            </div> <!-- result-title-main -->
+            <div class="result-subtitle" v-html="card.data[i].title">
+            </div><!-- result-subtitle -->
+          </div> <!-- result-title -->
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <div>
+            <a :href="`#/sutta/${href(card.data[i])}`" class="scv-matched">
+              {{result.suttaplex?.acronym}}
+            </a>
+            <span class="result-blurb pl-2">
+              {{result.blurb || result.suttaplex?.blurb}}
+            </span>
+          </div>
+          <table>
+            <tr v-for="seg in matchedSegments(result)">
+              <th>
+                <a :href="`#/sutta/${href(card.data[i], seg.scid)}`" 
+                  class="scv-matched"
+                >
+                  <span>{{seg.scid}}</span>
+                </a>
+              </th>
+              <td>
+                <span v-html="seg[settings.langTrans]" />
+              </td>
+            </tr>
+          </table>
+          <div v-if="result.showMatched < result.segsMatched">
+            <v-btn icon @click="showMoreSegments(result)">
+              <v-icon icon="mdi-dots-horizontal"/>
+            </v-btn>
+          </div>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </template>
+  </v-expansion-panels>
 </template>
 
 <script>
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
-  import { SuttaRef, Tipitaka } from 'scv-esm';
+  import { SuttaRef } from 'scv-esm';
   import { ref } from "vue";
-
-  const tipitaka = new Tipitaka();
 
   export default {
     props: {
@@ -117,19 +154,12 @@
         let suttaRef = new SuttaRef({sutta_uid, lang, author});
         return `${suttaRef.toString()}`;
       },
-      resultAria(result, i) {
-        let { card } = this;
-        let sutta = card.data[i];
-        let duration = this.suttaDuration(result);
-        let name = tipitaka.canonicalSuttaId(sutta.uid, 'name');
-        return `${name} (${duration})`;
-      },
-      resultTitle(result, i) {
-        let { card } = this;
-        let sutta = card.data[i];
-        let duration = this.suttaDuration(result);
-        let acro = tipitaka.canonicalSuttaId(sutta.uid, 'acro');
-        return `${acro} ${sutta.title}`;
+      resultTitle(sutta) {
+        return [
+          sutta.uid,
+          sutta.lang,
+          sutta.author_uid,
+        ].join('/');
       },
     },
     computed: {
@@ -175,10 +205,6 @@ th {
 }
 .result-title-body {
   margin-right: 10px;
-  height: 1.25em;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 .result-title-stats {
 }

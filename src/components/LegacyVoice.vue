@@ -105,7 +105,7 @@
     const hash = location.hash.replace("#/sutta/",'');
     let [hashSearch,lang] = hash.split('/');
     let langTrans = lang || settings.langTrans;
-    //console.log(msg, `langTrans ${settings.langTrans} <= ${langTrans}`);
+    console.log(msg, `langTrans ${settings.langTrans} <= ${langTrans}`);
     settings.langTrans = langTrans;
     let locale = langTrans;
     settings.locale = locale;
