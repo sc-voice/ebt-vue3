@@ -102,18 +102,22 @@
     if (legacyVoice.value === "ask") {
       legacyVoice.value = "new";
     }
-    const hash = location.hash.replace("#/sutta/",'');
-    let [hashSearch,lang] = hash.split('/');
-    let langTrans = lang || settings.langTrans;
-    console.log(msg, `langTrans ${settings.langTrans} <= ${langTrans}`);
-    settings.langTrans = langTrans;
-    let locale = langTrans;
-    settings.locale = locale;
-    //console.log(msg, `locale ${i18n.locale} <= ${locale}`);
-    i18n.locale = locale;
-
     let { search='' } = location;
     let isSrcSC = search.search('src=sc') >= 0;
+    let isSutta = location.hash.indexOf("#/sutta/") >= 0;
+
+    if (isSrcSC && isSutta) {
+      const hash = location.hash.replace("#/sutta/",'');
+      let [hashSearch,lang] = hash.split('/');
+      let langTrans = lang || settings.langTrans;
+      console.log(msg, `langTrans ${settings.langTrans} <= ${langTrans}`);
+      settings.langTrans = langTrans;
+      let locale = langTrans;
+      settings.locale = locale;
+      //console.log(msg, `locale ${i18n.locale} <= ${locale}`);
+      i18n.locale = locale;
+    }
+
     showDialog.value = isSrcSC && settings.legacyVoice !== 'new';
   });
 
