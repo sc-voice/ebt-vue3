@@ -108,8 +108,8 @@ export const useVolatileStore = defineStore('volatile', {
       return `${searchPath}/${langTrans}?${query}`
     },
     setRoute(cardOrRoute, keepFocus, caller) {
-      const msg = 'volatile.setRoute() ';
-      //console.trace(msg, cardOrRoute, keepFocus);
+      const msg = 'volatile.setRoute()';
+      console.log(msg, cardOrRoute, keepFocus);
       let { config, } = this;
       let settings = useSettingsStore();
       cardOrRoute = cardOrRoute || config?.homePath;

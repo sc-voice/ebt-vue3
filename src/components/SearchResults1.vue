@@ -91,6 +91,10 @@
     async mounted() {
     },
     methods: {
+      matchedSegment(result) {
+        let ms = this.matchedSegments(result) || [];
+        return ms.slice(0,1);
+      },
       matchedSegments(result) {
         let segments = result?.segments;
         if (segments == null) {

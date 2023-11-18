@@ -22,7 +22,7 @@
         {{$t('ebt.inspireMe')}}
       </v-btn>
     </div>
-    <SearchResults1 :card="card" :results="results" 
+    <SearchResults :card="card" :results="results" 
       :class="resultsClass"/>
   </v-sheet>
 </template>

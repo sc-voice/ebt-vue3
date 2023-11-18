@@ -3,7 +3,7 @@
     <v-list-item v-for="(result,i) in matchedSuttas" 
       :key="result"
     >
-      <div>
+      <div class="result">
         <div class="result-title-main">
           <div class="result-title-number">{{i+1}}</div>
           <a :href="`#/sutta/${href(card.data[i])}`" class="scv-matched">
@@ -13,7 +13,19 @@
             ></div>
           </a>
         </div> <!-- result-title-main -->
-      </div>
+        <div class="result-body">
+          <div class="result-blurb" 
+            @click="clickResult(result,i)">
+            {{result.blurb || result.suttaplex?.blurb}}
+          </div>
+          <template v-for="seg in matchedSegment(result)">
+            <a :href="`#/sutta/${href(card.data[i], seg.scid)}`">
+              <span class="result-scid">{{seg.scid}}</span>
+              <span v-html="seg[settings.langTrans]" />
+            </a>
+          </template>
+        </div><!-- result-body -->
+      </div><!--result-->
     </v-list-item>
   </v-list>
 </template>
@@ -23,7 +35,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
   import { SuttaRef, Tipitaka } from 'scv-esm';
-  import { ref } from "vue";
+  import { nextTick, ref } from "vue";
 
   const tipitaka = new Tipitaka();
 
@@ -54,6 +66,26 @@
     async mounted() {
     },
     methods: {
+      matchedSegment(result) {
+        let ms = this.matchedSegments(result) || [];
+        return ms.slice(0,1);
+      },
+      clickResult(result, i) {
+        const msg = 'SearchResults.clickResult()';
+        let { volatile, card } = this;
+        let { origin, pathname } = window.location;
+        let hash = `#/sutta/${this.href(card.data[i])}`;
+        let url = `${origin}${pathname}${hash}`;
+        nextTick(()=>{
+          try {
+            volatile.setRoute(hash);
+            window.location.reload();
+            console.log(msg, {hash, url}, window.location);
+          } catch(e){
+            console.log(msg, {url,e});
+          }
+        });
+      },
       matchedSegments(result) {
         let segments = result?.segments;
         if (segments == null) {
@@ -129,7 +161,7 @@
         let sutta = card.data[i];
         let duration = this.suttaDuration(result);
         let acro = tipitaka.canonicalSuttaId(sutta.uid, 'acro');
-        return `${acro} ${sutta.title}`;
+        return `${acro} \u2022 ${sutta.title}`;
       },
     },
     computed: {
@@ -140,68 +172,5 @@
   }
 </script>
 
-<style scoped>
-th {
-  padding-left: 0.5rem;
-  padding-right: 0.3rem;
-  text-align: end;
-  vertical-align: top;
-}
-.result-title {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: baseline;
-  min-width: 220px;
-  max-width: 40em;
-  justify-content: space-between;
-}
-.result-title-main {
-  display: flex;
-  flex-flow: row nowrap;
-  min-width: 210px;
-  max-width: 30em;
-  justify-content: space-between;
-  margin-bottom: 0.3rem;
-  margin-left: 0.5rem;
-}
-.result-subtitle {
-  margin-left: 1rem;
-  margin-right: 0.3rem;
-  margin-bottom: 0.3rem;
-  text-align: right;
-  font-size: small;
-  font-style: italic;
-  width: 270px;
-}
-.result-title-body {
-  margin-right: 10px;
-  height: 1.25em;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.result-title-stats {
-}
-.result-expansion {
-  border-left: 3pt solid rgb(var(--v-theme-expansion));
-  margin-top: 2pt;
-}
-.result-title-number {
-  position: absolute;
-  font-size: x-large;
-  top: 0.55em;
-  left: 0.2rem;
-  opacity: 0.4;
-}
-.result-blurb {
-  font-style: italic;
-  padding-bottom: 0.2em;
-}
-.result-quote {
-  display: inline-block;
-  margin-left: 0.3em;
-}
-.expansion-panel-title {
-  cursor: zoom-in;
-}
+<style >
 </style>

@@ -91,9 +91,8 @@
 
   onMounted(()=>{
     const msg = 'LegacyVoice.onMounted()';
-    //console.error(msg);
-    let { locale } = i18n;
-    console.log(msg, {locale});
+    // let { locale } = i18n;
+    // console.log(msg, {locale});
   });
 
   settings.loadSettings().then(()=>{
