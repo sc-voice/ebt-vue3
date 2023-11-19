@@ -4,12 +4,13 @@
       :key="result"
     >
       <div class="result">
+      {{durationDisplay(result.stats.seconds)}}
         <div class="result-title-main">
           <div class="result-title-number">{{i+1}}</div>
           <a :href="`#/sutta/${href(card.data[i])}`" class="scv-matched">
             <div class="result-title-body" 
               :title="resultAria(result, i)"
-              v-html="resultTitle(result, i) + resultAria(result,i)"
+              v-html="resultTitle(result, i)"
             ></div>
           </a>
         </div> <!-- result-title-main -->
@@ -94,15 +95,17 @@
         seconds -= hours * 3600;
         var minutes = Math.trunc(seconds / 60);
         seconds -= minutes * 60;
+        var tDisplay;
+        var tAria;
         if (hours) {
-            var tDisplay = $t('ebt.HHMM');
-            var tAria = $t('ebt.ariaHHMM');
+            tDisplay = $t('ebt.HHMM');
+            tAria = $t('ebt.ariaHHMM');
         } else if (minutes) {
-            var tDisplay = $t('ebt.MMSS');
-            var tAria = $t('ebt.ariaMMSS');
+            tDisplay = $t('ebt.MMSS');
+            tAria = $t('ebt.ariaMMSS');
         } else {
-            var tDisplay = $t('ebt.seconds');
-            var tAria = $t('ebt.ariaSeconds');
+            tDisplay = $t('ebt.seconds');
+            tAria = $t('ebt.ariaSeconds');
         }
         var display = tDisplay
             .replace(/A_HOURS/, hours)
@@ -145,7 +148,7 @@
         let sutta = card.data[i];
         let duration = this.suttaDuration(result);
         let acro = tipitaka.canonicalSuttaId(sutta.uid, 'acro');
-        return `${acro} \u2022 ${sutta.title}`;
+        return `${acro} \u2022 ${sutta.title} (${duration})`;
       },
     },
     computed: {
