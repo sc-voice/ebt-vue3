@@ -109,7 +109,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      console.log(msg, cardOrRoute, keepFocus);
+      //console.log(msg, cardOrRoute, keepFocus);
       let { config, } = this;
       let settings = useSettingsStore();
       cardOrRoute = cardOrRoute || config?.homePath;

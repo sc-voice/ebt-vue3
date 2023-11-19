@@ -28,7 +28,6 @@
 </template>
 
 <script>
-  import { default as SearchResults1 } from "./SearchResults1.vue";
   import { default as SearchResults } from "./SearchResults.vue";
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
@@ -63,7 +62,6 @@
       }
     },
     components: {
-      SearchResults1,
       SearchResults,
     },
     methods: {

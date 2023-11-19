@@ -270,6 +270,9 @@ code {
 .ebt-card {
   margin-right: 1em;
 }
+.ebt-card-search {
+  max-width: 600px;
+}
 .v-card-text {
   min-width: 20em;
 }
@@ -352,12 +355,13 @@ code {
   font-style: italic;
   padding-bottom: 0.2em;
   cursor: pointer;
+  margin-left: 0.6em;
 }
 .result-quote {
   display: inline-block;
   margin-left: 0.3em;
 }
-.result-body {
+.result-segment {
   margin-left: 0.6em;
 }
 .result-scid {
@@ -372,6 +376,11 @@ code {
 .result a,
 .ebt-card:hover .result a {
   font-weight: 400;
+}
+
+.result-title-main:has(+ .result-blurb:hover) {
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--v-theme-matched));
 }
 
 :is(

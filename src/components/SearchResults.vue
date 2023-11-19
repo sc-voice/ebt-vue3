@@ -9,22 +9,22 @@
           <a :href="`#/sutta/${href(card.data[i])}`" class="scv-matched">
             <div class="result-title-body" 
               :title="resultAria(result, i)"
-              v-html="resultTitle(result, i)"
+              v-html="resultTitle(result, i) + resultAria(result,i)"
             ></div>
           </a>
         </div> <!-- result-title-main -->
-        <div class="result-body">
-          <div class="result-blurb" 
-            @click="clickResult(result,i)">
-            {{result.blurb || result.suttaplex?.blurb}}
-          </div>
-          <template v-for="seg in matchedSegment(result)">
-            <a :href="`#/sutta/${href(card.data[i], seg.scid)}`">
-              <span class="result-scid">{{seg.scid}}</span>
-              <span v-html="seg[settings.langTrans]" />
-            </a>
-          </template>
-        </div><!-- result-body -->
+        <div class="result-blurb" 
+          @click="clickResult(result,i)">
+          {{result.blurb || result.suttaplex?.blurb}}
+        </div>
+        <div v-for="seg in matchedSegment(result)"
+          class="result-segment"
+        >
+          <a :href="`#/sutta/${href(card.data[i], seg.scid)}`">
+            <span class="result-scid">{{seg.scid}}</span>
+            <span v-html="seg[settings.langTrans]" />
+          </a>
+        </div><!-- result-segment -->
       </div><!--result-->
     </v-list-item>
   </v-list>
@@ -66,10 +66,6 @@
     async mounted() {
     },
     methods: {
-      matchedSegment(result) {
-        let ms = this.matchedSegments(result) || [];
-        return ms.slice(0,1);
-      },
       clickResult(result, i) {
         const msg = 'SearchResults.clickResult()';
         let { volatile, card } = this;
@@ -86,21 +82,9 @@
           }
         });
       },
-      matchedSegments(result) {
-        let segments = result?.segments;
-        if (segments == null) {
-          return [];
-        }
-        return result.segments
-          .filter(seg=>seg.matched)
-          .slice(0,result.showMatched);
-      },
-      showMoreSegments(result) {
-        result.showMatched = Math.min( 
-          result.showMatched+3, 
-          result.segsMatched, 
-        );
-        logger.debug("showMoreSegments", result.showMatched);
+      matchedSegment(result) {
+        let segments = result?.segments || [];
+        return segments.filter(seg=>seg.matched).slice(0,1);
       },
       durationDisplay(totalSeconds) {
         let { $t } = this;
