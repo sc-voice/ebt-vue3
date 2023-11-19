@@ -233,9 +233,11 @@
   max-width: 50em;
 }
 .ebt-results-new {
+  margin-top: 1em;
 }
 .ebt-results-old {
   opacity: 0.5;
+  margin-top: 1em;
 }
 .v-autocomplete__content {
   border: 1pt solid rgb(var(--v-theme-matched));

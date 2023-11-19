@@ -1,3 +1,6 @@
+/////////////// CORE CSS /////////////////////
+//
+
 @font-face {
   font-family: "SourceSansPro";
   font-weight: 400;
@@ -291,6 +294,13 @@ code {
 .last-tab:focus {
   outline: 1pt solid green;
 }
+
+//
+///////////////////// CORE CSS (END) ////////////////
+
+///////////////////// Search Results (BEGIN)  ////////////////
+//
+
 .result-title {
   display: flex;
   flex-flow: row wrap;
@@ -355,24 +365,31 @@ code {
   font-size: 80%;
   padding-right: 0.5em;
 }
-.ebt-card:hover .result a {
-  font-weight: 400;
-  color: rgb(var(--v-theme-on-surface));
-}
-.result a {
-  font-weight: 400;
-  color: rgb(var(--v-theme-on-surface));
-}
-.result .scv-matched {
-  color: rgb(var(--v-theme-on-surface));
+.result:hover .result-scid {
+  opacity: 1.0;
 }
 
-.ebt-card:hover .result:hover a {
+.result a,
+.ebt-card:hover .result a {
+  font-weight: 400;
+}
+
+:is(
+  .result a,
+  .result .scv-matched,
+  .ebt-card:hover .result a 
+){
+  color: rgb(var(--v-theme-on-surface));
+}
+:is(
+  .ebt-card:hover .result:hover .scv-matched,
+  .ebt-card:hover .result:hover a 
+){
   color: rgb(var(--v-theme-matched));
 }
-.ebt-card:hover .result:hover .scv-matched {
-  color: rgb(var(--v-theme-matched));
-}
+
+//
+/////////////// SearchResults (END) /////////////////////
 
 /*
  * Accessible desktop
