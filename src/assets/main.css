@@ -1,5 +1,4 @@
-/////////////// CORE CSS /////////////////////
-//
+/****************** CORE CSS (BEGIN) *********************/
 
 @font-face {
   font-family: "SourceSansPro";
@@ -298,11 +297,9 @@ code {
   outline: 1pt solid green;
 }
 
-//
-///////////////////// CORE CSS (END) ////////////////
+/******************** CORE CSS (END) ********************/
 
-///////////////////// Search Results (BEGIN)  ////////////////
-//
+/**************** Search Results (BEGIN)  ***************/
 
 .result-title {
   display: flex;
@@ -397,8 +394,7 @@ code {
   color: rgb(var(--v-theme-matched));
 }
 
-//
-/////////////// SearchResults (END) /////////////////////
+/************** SearchResults (END) *************/
 
 /*
  * Accessible desktop
