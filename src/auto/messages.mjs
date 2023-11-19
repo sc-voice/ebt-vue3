@@ -787,7 +787,7 @@ const messages =  {
     "ebt": {
       "HHMM": "A_HOURSh A_MINUTESm",
       "HHMMSS": "A_HOURSh A_MINUTESm A_SECONDSs",
-      "MMSS": "A_HOURS h A_MINUTES m A_SECONDS s",
+      "MMSS": "A_MINUTES m A_SECONDS s",
       "aboutTitle": "Über Voice",
       "addingExamples": "Beispiele hinzufügen",
       "advanced": "Erweitert",
