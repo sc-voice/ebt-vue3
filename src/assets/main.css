@@ -375,7 +375,7 @@ code {
   font-weight: 400;
 }
 
-.result-title-main:has(+ .result-blurb:hover) {
+.result-sutta:hover .result-title-main {
   text-decoration: underline;
   text-decoration-color: rgb(var(--v-theme-matched));
 }
