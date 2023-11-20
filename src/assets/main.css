@@ -258,7 +258,7 @@ code {
   box-shadow: 0px 0px 3px 3px rgba(var(--v-theme-focus), 0.5);
 }
 .ebt-card > .v-card {
-  opacity: 0.5 !important;
+  opacity: 0.8 !important;
 }
 .ebt-card:hover > .v-card {
   opacity: 1 !important;

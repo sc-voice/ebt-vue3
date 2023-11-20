@@ -221,6 +221,7 @@ export default {
     "days": "A_DAYS Tage",
     "dedicated": "Den Dunklen auf dem Weg zum Licht",
     "dedicatedSearch": "dunklen auf dem weg zum licht",
+    "docAuthor": "Übersetzer",
     "downloadComplete": "Herunterladen abgeschlossen:",
     "downloadPlaylist": "Wiedergabeliste herunterladen",
     "downloadTimeout": "Herunterladen Zeitüberschreitung:",

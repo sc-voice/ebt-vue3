@@ -105,7 +105,10 @@
         let { ebtChips } = volatile;
         ebtChips && ebtChips.focus();
         volatile.setRoute(card, true);
-        if (!card.isOpen) {
+        if (card.isOpen) {
+          console.log(msg, "open", {card, });
+        } else {
+          console.log(msg, "closed", {card, });
           card.isOpen = true;
           let scrolled = await settings.scrollToCard(card);
           if (!scrolled) {

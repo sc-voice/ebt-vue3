@@ -18,6 +18,7 @@
                 @click.stop="onHome"
               />
               <div :title="titlePopup">{{config.appName}}</div>
+              <div class="activeElt">{{activeElt}}</div>
             </div>
           </v-app-bar-title>
           
@@ -129,6 +130,7 @@
       return {
         tabs: ref([]),
         clickElt: ref(undefined),
+        activeElt: ref("foo"),
       }
     },
     data: ()=>({
@@ -237,8 +239,12 @@
           audio.playClick();
         }
       });
-      let { activeElement } = document;
-      //logger.info(msg, {activeElement});
+      let that = this;
+      setInterval(()=>{
+        let elt = window?.document?.activeElement;
+        that.activeElt = elt?.id || elt;
+        //console.log("activeElt", that.activeElt);
+      }, 1000);
     },
     computed: {
       titlePopup(ctx) {
@@ -359,6 +365,10 @@
 .home-icon {
   margin-bottom: 0.2em;
   margin-right: 0.2em;
+}
+.activeElt{
+  margin-left: 0.5em;
+  font-size: 12px;
 }
 </style>
 

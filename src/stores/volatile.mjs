@@ -109,7 +109,6 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      //console.log(msg, cardOrRoute, keepFocus);
       let { config, } = this;
       let settings = useSettingsStore();
       cardOrRoute = cardOrRoute || config?.homePath;
@@ -124,6 +123,9 @@ export const useVolatileStore = defineStore('volatile', {
       const { window } = globalThis;
       if (window == null) {
         console.trace(msg, 'DBG0418', 'no window');
+      } else if (window.location.hash === route) {
+        let activeElement = document?.activeElement;
+        console.log(msg, "same route", {activeElement, cardOrRoute, keepFocus});
       } else if (window.location.hash !== route) {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
@@ -132,7 +134,9 @@ export const useVolatileStore = defineStore('volatile', {
         window.location.hash = route;
         let expected = activeElement;
         let actual = document?.activeElement;
-        if (expected !== actual) {
+        if (expected === actual) {
+          console.log(msg, "same element", {cardOrRoute, keepFocus});
+        } else {
           if (keepFocus) {
             activeElement.focus(); // Why do we need to do this?
           } else {
