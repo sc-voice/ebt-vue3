@@ -316,7 +316,7 @@ code {
   max-width: 30em;
   justify-content: space-between;
   margin-bottom: 0.3rem;
-  margin-left: 0.5rem;
+  margin-left: 1rem;
 }
 .result-subtitle {
   margin-left: 1rem;
@@ -343,23 +343,25 @@ code {
 }
 .result-title-number {
   position: absolute;
-  font-size: x-large;
+  font-size: 140%;
+  text-align: right;
   top: 0.35em;
-  left: 0.2rem;
+  left: 0rem;
+  width: 1.3em;
   opacity: 0.4;
 }
 .result-blurb {
   font-style: italic;
   padding-bottom: 0.2em;
   cursor: pointer;
-  margin-left: 0.6em;
+  margin-left: 1em;
 }
 .result-quote {
   display: inline-block;
   margin-left: 0.3em;
 }
 .result-segment {
-  margin-left: 0.6em;
+  margin-left: 1em;
 }
 .result-scid {
   opacity: 0.5;
