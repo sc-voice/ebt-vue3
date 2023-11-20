@@ -448,6 +448,9 @@ code {
   .ebt-wiki-heading-text {
     /* color: red !important; /* DEBUG */
   }
+  .v-app-bar-title {
+    min-width: calc(50vw);
+  }
   .ebt-card {
     max-width: calc(100vw - 10px);
     margin-right: 2px;
