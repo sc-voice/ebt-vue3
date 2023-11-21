@@ -164,7 +164,6 @@ export default {
     "allowSettings": "Não recolher ou partilhar os meus dados",
     "allowSettingsLink": "(more...)",
     "alwaysShowLatestText": "Sempre mostre o texto mais recente",
-    "alwaysShowLatestText:": "Mostrar conteúdo mais recente",
     "and": "e",
     "applicationError": "Erro Encontrado",
     "ariaAbout": "Sobre o Voice",
