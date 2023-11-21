@@ -15,7 +15,7 @@ const SERVERS = [{
   hint: 'Voice API server (Linode pre-production)',
 },{
   title: 's1.api.sc-voice.net',
-  value: 'https://www.api.sc-voice.net/scv',
+  value: 'https://s1.api.sc-voice.net/scv',
   hint: 'Voice API server (Linode legacy)',
 },{
   title: 'voice.suttacentral.net',
