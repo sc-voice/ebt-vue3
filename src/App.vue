@@ -5,6 +5,7 @@
         :extension-height="collapsed ? 0 : 40"
         :collapse="collapsed"
         density="compact"
+        v-touch="{right:()=>swipeRight()}" 
       >
         <template v-if="collapsed">
           <v-btn icon @click="collapsed=false" class="pr-5">
@@ -17,8 +18,7 @@
               <v-icon icon="mdi-home" class="home-icon" size="24px"
                 @click.stop="onHome"
               />
-              <div :title="titlePopup"
-                v-touch="{right:()=>swipeRight()}" > 
+              <div :title="titlePopup">
                 {{config.appName}}
               </div>
               <div v-if="settings.logLevel==='info'" class="activeElt">
@@ -26,8 +26,7 @@
               </div>
             </div>
           </v-app-bar-title>
-          
-          <div v-if="!narrowView" class="pr-3">
+          <div class="pr-3">
             <v-btn id='btn-search' icon @click="onClickSearch" >
               <v-icon icon="mdi-magnify"/>
             </v-btn>
@@ -35,25 +34,6 @@
               <v-icon icon="mdi-cog"/>
             </v-btn>
           </div>
-          <v-menu location="left" attach 
-            v-if="narrowView"><!--DEPRECATED-->
-            <template v-slot:activator="{ props }">
-              <div class="app-menu-activator">
-                <v-btn v-bind="props" icon>
-                  <v-icon icon="mdi-menu" />
-                </v-btn>
-              </div>
-            </template>
-            <v-sheet class="app-menu-items">
-              <v-btn icon href="#/search" >
-                <v-icon icon="mdi-magnify"
-                ></v-icon>
-              </v-btn>
-              <v-btn icon @click.stop="onClickSettings">
-                <v-icon icon="mdi-cog"/>
-              </v-btn>
-            </v-sheet>
-          </v-menu><!--DEPRECATED-->
         </template>
         <template v-if="!collapsed" v-slot:extension>
           <ebt-chips />
@@ -278,11 +258,6 @@
       },
       displayBox(ctx) {
         return ctx.volatile.displayBox.value;
-      },
-      narrowView(ctx) {
-        return false;
-        let { displayBox } = ctx;
-        return displayBox.w < 400;
       },
     },
   }
