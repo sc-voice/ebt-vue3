@@ -11,6 +11,7 @@ git pull
 echo -e "${SCRIPT}: updating dependencies..."
 npm install 
 
+npm run build:messages
 npm run build:dist
 npm run build:html
 npm run git:commit -npm

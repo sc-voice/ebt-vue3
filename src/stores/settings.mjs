@@ -240,7 +240,7 @@ export const useSettingsStore = defineStore('settings', {
       card.isOpen = true;
       return true;
     },
-    clickUrl(s) {
+    clickUrl() {
       let { clickVolume } = this;
       let volume = clickVolume || 0;
       return `audio/click${volume}.mp3`;
