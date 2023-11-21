@@ -46,10 +46,19 @@
           </audio>
         </template>
       </v-app-bar>
-
       <v-sheet>
         <div>
           <ebt-processing />
+          <v-container>
+            <v-row class="debug-swipe"
+              v-touch="{
+                left:()=>onSwipe('left'),
+                right:()=>onSwipe('right')
+              }"
+            >
+              <div>{{swipe}} </div>
+            </v-row>
+          </v-container>
           <LegacyVoice />
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
@@ -124,6 +133,7 @@
       volatile: useVolatileStore(),
       unsubSettings: undefined,
       collapsed: false,
+      swipe: 'loading',
     }),
     components: {
       HomeView,
@@ -135,6 +145,9 @@
       Tutorial,
     },
     methods: {
+      onSwipe(dir) {
+        this.swipe = dir;
+      },
       swipeRight() {
         let { audio } = this;
         this.collapsed = true;
@@ -354,6 +367,11 @@
 .activeElt{
   margin-left: 0.5em;
   font-size: 12px;
+}
+.debug-swipe{
+  height: 4em;
+  width: 100%;
+  border: 1pt solid red;
 }
 </style>
 
