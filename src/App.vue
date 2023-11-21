@@ -5,7 +5,6 @@
         :extension-height="collapsed ? 0 : 40"
         :collapse="collapsed"
         density="compact"
-        v-touch="{right:()=>swipeRight()}" 
       >
         <template v-if="collapsed">
           <v-btn icon @click="collapsed=false" class="pr-5">
@@ -49,20 +48,9 @@
       <v-sheet>
         <div>
           <ebt-processing />
-          <v-container>
-            <v-row class="debug-swipe"
-              v-touch="{
-                left:()=>onSwipe('left'),
-                right:()=>onSwipe('right')
-              }"
-            >
-              <div>{{swipe}} </div>
-            </v-row>
-          </v-container>
           <LegacyVoice />
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
-          <!--router-view /-->
         </div>
       </v-sheet>
 
