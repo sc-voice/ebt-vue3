@@ -12,12 +12,15 @@
           </v-btn>
         </template> <!-- collapsed -->
         <template v-if="!collapsed">
-          <v-app-bar-title v-touch="{right:()=>swipeRight()}" > 
+          <v-app-bar-title>
             <div class="ebt-title">
               <v-icon icon="mdi-home" class="home-icon" size="24px"
                 @click.stop="onHome"
               />
-              <div :title="titlePopup">{{config.appName}}</div>
+              <div :title="titlePopup"
+                v-touch="{right:()=>swipeRight()}" > 
+                {{config.appName}}
+              </div>
               <div v-if="settings.logLevel==='info'" class="activeElt">
                 {{activeElt}}
               </div>
@@ -154,8 +157,8 @@
     methods: {
       swipeRight() {
         let { audio } = this;
-        audio.playSwoosh();
         this.collapsed = true;
+        audio.playSwoosh();
       },
       onHome(evt) {
         let msg = 'App.onHome() ';
