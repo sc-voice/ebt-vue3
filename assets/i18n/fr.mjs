@@ -221,7 +221,7 @@ export default {
     "dedicated": "A ceux dans l’obscurité destinés à la lumière",
     "dedicatedSearch": "the dark bound for light",
     "discardCard": "Discard",
-    "docAuthor": "Translator",
+    "docAuthor": "Traducteur",
     "downloadComplete": "Téléchargement terminé:",
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Expiration téléchargement:",
