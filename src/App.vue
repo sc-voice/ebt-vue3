@@ -7,7 +7,10 @@
         density="compact"
       >
         <template v-if="collapsed">
-          <v-btn icon @click="collapsed=false" class="pr-5">
+          <v-btn icon 
+            @click="volatile.collapseAppBar=false" 
+            class="pr-5"
+          >
             <v-icon icon="mdi-arrow-expand-left" />
           </v-btn>
         </template> <!-- collapsed -->
@@ -120,7 +123,6 @@
       settings: useSettingsStore(),
       volatile: useVolatileStore(),
       unsubSettings: undefined,
-      collapsed: false,
       swipe: 'loading',
     }),
     components: {
@@ -133,14 +135,6 @@
       Tutorial,
     },
     methods: {
-      onSwipe(dir) {
-        this.swipe = dir;
-      },
-      swipeRight() {
-        let { audio } = this;
-        this.collapsed = true;
-        audio.playSwoosh();
-      },
       onHome(evt) {
         let msg = 'App.onHome() ';
         let { volatile, audio, config } = this;
@@ -238,6 +232,10 @@
       }, 1000);
     },
     computed: {
+      collapsed(ctx) {
+        let { volatile } = this;
+        return volatile.collapseAppBar;
+      },
       titlePopup(ctx) {
         let { settings } = this;
         return `SuttaCentral Voice / ${settings.langTrans}`;

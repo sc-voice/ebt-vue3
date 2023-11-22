@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   $t: t=>t,
   alertMsg: ref(null),
   alertHtml: ref("hello<br>there"),
+  collapseAppBar: ref(true),
   config: ref(undefined),
   showAlertMsg: ref(false),
   waiting: 0,
@@ -33,6 +34,7 @@ const INITIAL_STATE = {
   homeHtml: ref('loading...'),
   debugText: ref('debugText:'),
   trilingual: ref(true),
+  touchSwipe: ref('waiting...'),
 };
 
 export const useVolatileStore = defineStore('volatile', {

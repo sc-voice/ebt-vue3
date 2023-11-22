@@ -1,16 +1,10 @@
 <template>
-  <v-sheet class="debug-card">
+  <v-sheet class="debug-card" >
     <div>
-      <h3>Actions</h3>
-      {{message}}
-      <div class="buttons">
-        <v-btn @click="clickBell" variant="outlined">
-          Audio Bell 
-        </v-btn>
-      </div>
-
-      <h3 class="mt-4"> Layout </h3>
       Layout: {{volatile.displayBox}}
+      <div class="test-touch" >
+        collapseAppBar {{volatile.collapseAppBar}}
+      </div>
 
       <h3 class="mt-4">Links</h3>
       <div style="width: 20em">
@@ -46,10 +40,6 @@
       updateMessage(msg) {
         this.message = msg;
         logger.info(msg);
-      },
-      clickBell() {
-        let { audio } = this;
-        audio.playBell();
       },
     },
     mounted() {
@@ -87,6 +77,11 @@
 }
 .buttons .v-btn {
   margin: 0.5em;
+}
+.test-touch {
+  width: 100%;
+  height: 10em;
+  border: 1pt solid red;
 }
 </style>
 

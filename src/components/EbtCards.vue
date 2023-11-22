@@ -1,6 +1,10 @@
 <template>
   <v-sheet id="ebt-cards" 
     color="background" :class="cardsClass" 
+    v-touch="{
+      left: ()=>onSwipe('left'),
+      right: ()=>onSwipe('right'),
+    }"
   >
     <div v-for="card in settings.cards">
       <ebt-card-vue 
@@ -62,6 +66,27 @@
       }
     },
     methods: {
+      onSwipe(dir) {
+        const msg = "EbtCards.onSwipe()";
+        let { audio, volatile } = this;
+        let collapseAppBar = volatile.collapseAppBar;
+        //console.log(msg, {dir});
+        volatile.touchSwipe = dir;
+        switch (dir) {
+          case 'left': 
+            collapseAppBar = false;
+            break;
+          case 'right': 
+            collapseAppBar = true;
+            break;
+        }
+        if (collapseAppBar !== volatile.collapseAppBar) {
+          audio.playSwoosh();
+          setTimeout(()=>{
+            volatile.collapseAppBar = collapseAppBar;
+          }, 200);
+        }
+      },
       onFocusIn(card) {
         const msg = "EbtCards.onFocusIn() ";
         let { volatile, settings } = this;
