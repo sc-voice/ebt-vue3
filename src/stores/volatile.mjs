@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   $t: t=>t,
   alertMsg: ref(null),
   alertHtml: ref("hello<br>there"),
-  collapseAppBar: ref(true),
+  collapseAppBar: ref(false),
   config: ref(undefined),
   showAlertMsg: ref(false),
   waiting: 0,
