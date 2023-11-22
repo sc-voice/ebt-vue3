@@ -25,6 +25,7 @@
               </div>
               <div v-if="settings.logLevel==='info'" class="activeElt">
                 {{activeElt}}
+                w:{{viewWidth}}
               </div>
             </div>
           </v-app-bar-title>
@@ -232,6 +233,9 @@
       }, 1000);
     },
     computed: {
+      viewWidth(ctx) {
+        return window?.innerWidth || root?.clientWidth;
+      },
       collapsed(ctx) {
         let { volatile } = this;
         return volatile.collapseAppBar;

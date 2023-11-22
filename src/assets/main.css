@@ -398,18 +398,70 @@ code {
 
 /************** SearchResults (END) *************/
 
+/************** EbtCards (BEGIN) ***************/
+
+.ebt-cards {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  min-height: 50em;
+  padding-bottom: calc(80vw);
+}
+.ebt-cards1 {
+  background-color: rgb(var(--v-theme-surface)) !important;
+}
+.play-col {
+  display: flex;
+  flex-flow: column nowrap;
+}
+.play-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 1;
+}
+.play-row button {
+  padding: 0;
+  min-width: 48px;
+  max-width: 54px;
+}
+.play-scid {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  font-family: var(--ebt-sc-sans-font);
+  font-size: larger;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+.progressTime {
+  font-weight: 400;
+}
+.ebt-card-wiki {
+  max-width: calc(min(45em,100vw - 10px));
+}
+.ebt-cards1 .ebt-card-wiki {
+  max-width: calc(min(50em,100vw - 10px));
+}
+/************** EbtCards (END) ***************/
+
 /*
- * Accessible desktop
+ * Accessible desktop (green)
  */
 @media (max-width: 1300px) {
   .ebt-wiki-heading img {
     height: 80px;
   }
   .ebt-wiki-heading-text { 
-    /* color: green !important; /* DEBUG */
+    color: green !important; /* DEBUG */
   }
   .ebt-card-wiki {
     max-width: calc(35vw - 10px);
+  }
+  .ebt-cards1 .ebt-card-wiki {
+    max-width: calc(min(40em,100vw - 10px));
   }
   .ebt-card-search {
     max-width: calc(45vw - 10px);
@@ -417,21 +469,18 @@ code {
 }
 
 /*
- * Mobile large
+ * Mobile large (yellow)
  */
 @media (max-width: 1100px) {
   .ebt-wiki-heading img {
     height: 55px;
   }
   .ebt-wiki-heading-text {
-    /* color: yellow !important; /* DEBUG */
+    color: yellow !important; /* DEBUG */
   }
   .ebt-card {
     max-width: calc(100vw - 10px);
     margin-right: 2px;
-  }
-  .ebt-card-wiki {
-    max-width: calc(100vw - 10px);
   }
   .ebt-card-search {
     max-width: calc(100vw - 10px);
@@ -439,14 +488,14 @@ code {
 }
 
 /*
- * Mobile small
+ * Mobile small (red)
  */
 @media (max-width: 600px) {
   .ebt-wiki-heading img {
     height: 55px;
   }
   .ebt-wiki-heading-text {
-    /* color: red !important; /* DEBUG */
+    color: red !important; /* DEBUG */
   }
   .v-app-bar-title {
     min-width: calc(50vw);

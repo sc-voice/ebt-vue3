@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="home">
+  <v-sheet class="wikihome">
     <div v-html="volatile.homeHtml" />
   </v-sheet>
 </template>
@@ -37,15 +37,6 @@
   }
 </script>
 
-<style scoped>
-.home {
-  max-width: 40em;
-  margin-left: auto;
-  margin-right: auto;
-}
-.text {
-  max-width: 20em;
-  margin-bottom: 1em;
-}
+<style >
 </style>
 

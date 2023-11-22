@@ -174,44 +174,5 @@
     },
   }
 </script>
-<style scoped>
-  .ebt-cards {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    min-height: 50em;
-    padding-bottom: calc(80vw);
-  }
-  .ebt-cards1 {
-    background-color: rgb(var(--v-theme-surface)) !important;
-  }
-  .play-col {
-    display: flex;
-    flex-flow: column nowrap;
-  }
-  .play-row {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    opacity: 1;
-  }
-  .play-row button {
-    padding: 0;
-    min-width: 48px;
-    max-width: 54px;
-  }
-  .play-scid {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    font-family: var(--ebt-sc-sans-font);
-    font-size: larger;
-    font-weight: 600;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-  }
-  .progressTime {
-    font-weight: 400;
-  }
+<style>
 </style>

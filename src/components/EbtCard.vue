@@ -54,7 +54,6 @@
   import { default as DebugView } from './DebugView.vue';
   import { default as HomeView } from './HomeView.vue';
   import { default as SearchView } from './SearchView.vue';
-  import { default as WikiView } from './WikiView.vue';
   import { default as SuttaView } from './SuttaView.vue';
   import { default as EbtCard } from '../ebt-card.mjs';
   import { useSettingsStore } from '../stores/settings.mjs';
@@ -82,7 +81,6 @@
       HomeView,
       SearchView,
       SuttaView,
-      WikiView,
     },
     mounted() {
       const msg = 'EbtCard.mounted() ';
