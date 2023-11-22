@@ -253,17 +253,18 @@ export const useSettingsStore = defineStore('settings', {
       let curId = card.currentElementId;
       let topId = card.topAnchor;
       let scrolled = false;
+      let dbg = 0;
       if (curId === card.titleAnchor) {
         scrolled = await this.scrollToElementId(curId, topId);
-        logger.debug("[1]scrollToCard()", {curId, topId, scrolled});
+        dbg && console.log("[1]scrollToCard()", {curId, topId, scrolled});
         return scrolled;
       } 
 
       scrolled = await this.scrollToElementId(curId);
       if (scrolled) {
-        logger.debug("[2]scrollToCard()", {curId, scrolled});
+        dbg && console.log("[2]scrollToCard()", {curId, scrolled});
       } else {
-        logger.debug("[3]scrollToCard()", {curId, scrolled});
+        dbg && console.log("[3]scrollToCard()", {curId, scrolled});
       }
       return scrolled;
     },

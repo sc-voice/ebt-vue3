@@ -129,6 +129,12 @@ export const useVolatileStore = defineStore('volatile', {
         if (card.isOpen) {
           //console.log(msg, "same route");
           switch (card.context) {
+            case 'wiki':
+              if (!card.visible) {
+                settings.scrollToCard(card);
+              }
+              break;
+            case 'search':
             case 'sutta':
               settings.scrollToCard(card);
               break;
