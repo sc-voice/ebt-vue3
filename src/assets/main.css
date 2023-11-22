@@ -455,7 +455,7 @@ code {
     height: 80px;
   }
   .ebt-wiki-heading-text { 
-    color: green !important; /* DEBUG */
+    /* color: green !important; /* DEBUG */
   }
   .ebt-card-wiki {
     max-width: calc(35vw - 10px);
@@ -476,7 +476,7 @@ code {
     height: 55px;
   }
   .ebt-wiki-heading-text {
-    color: yellow !important; /* DEBUG */
+    /* color: yellow !important; /* DEBUG */
   }
   .ebt-card {
     max-width: calc(100vw - 10px);
@@ -495,7 +495,7 @@ code {
     height: 55px;
   }
   .ebt-wiki-heading-text {
-    color: red !important; /* DEBUG */
+    /* color: red !important; /* DEBUG */
   }
   .v-app-bar-title {
     min-width: calc(50vw);
