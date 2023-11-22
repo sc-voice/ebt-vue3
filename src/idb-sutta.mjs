@@ -198,7 +198,7 @@ export default class IdbSutta {
       volatile.waitEnd();
     }
     let msElapsed = Date.now() - msStart;
-    logger.info(msg, {updated, segment, msElapsed});
+    //console.log(msg, {updated, segment, msElapsed});
 
     return updated;
   }

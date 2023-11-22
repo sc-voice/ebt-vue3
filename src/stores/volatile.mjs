@@ -126,8 +126,14 @@ export const useVolatileStore = defineStore('volatile', {
       if (window == null) {
         console.trace(msg, 'DBG0418', 'no window');
       } else if (window.location.hash === route) {
-        //card.isOpen && console.log(msg, "same route");
-        card.isOpen && settings.scrollToCard(card);
+        if (card.isOpen) {
+          //console.log(msg, "same route");
+          switch (card.context) {
+            case 'sutta':
+              settings.scrollToCard(card);
+              break;
+          }
+        }
       } else if (window.location.hash !== route) {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
