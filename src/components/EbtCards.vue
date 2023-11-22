@@ -82,9 +82,7 @@
         }
         if (collapseAppBar !== volatile.collapseAppBar) {
           audio.playSwoosh();
-          setTimeout(()=>{
-            volatile.collapseAppBar = collapseAppBar;
-          }, 200);
+          volatile.collapseAppBar = collapseAppBar;
         }
       },
       onFocusIn(card) {
