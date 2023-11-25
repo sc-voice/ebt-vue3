@@ -53,11 +53,11 @@
     },
     methods: {
       onSpace(evt) {
-        const msg = 'App.onSpace() ';
-        //console.log(msg);
+        const msg = 'EbtChips.onSpace() ';
+        //console.log(msg, {evt});
       },
       onEnter(evt) {
-        const msg = 'App.onEnter() ';
+        const msg = 'EbtChips.onEnter() ';
         //console.log(msg);
       },
       onNextChip(delta) {

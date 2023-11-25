@@ -131,9 +131,8 @@
         let { settings, volatile, card } = this;
         let { location, id, context } = card;
         let chipTitle = card.chipTitle();
-        console.log(msg, "scrollToCard", {id, evt}, evt.eventPhase);
+        //console.log(msg, "scrollToCard", {id, evt}, evt.eventPhase);
         settings.scrollToCard(card);
-        //volatile.setRoute(card, undefined, msg);
       },
       clickDelete() {
         let { card, settings, config } = this;

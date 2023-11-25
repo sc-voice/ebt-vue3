@@ -164,7 +164,7 @@
         nextTick(() => { 
           let { ebtChips } = volatile;
           if (ebtChips !== activeElement) {
-            console.log(msg, card);
+            //console.log(msg, card);
             card.focus();
           }
         })

@@ -191,7 +191,7 @@ export const useSettingsStore = defineStore('settings', {
       let eltScroll = idScroll 
         ? document.getElementById(idScroll) 
         : eltShow;
-      let dbg = 1;
+      let dbg = 0;
       if (eltShow == null) {
         dbg && console.log(msg, `DBG1 (${idShow}) no element`);
         return false;
@@ -254,7 +254,7 @@ export const useSettingsStore = defineStore('settings', {
       let curId = card.currentElementId;
       let topId = card.topAnchor;
       let scrolled = false;
-      let dbg = 1;
+      let dbg = 0;
       if (curId === card.titleAnchor) {
         scrolled = await this.scrollToElementId(curId, topId);
         dbg && console.log(msg, "[1]", {curId, topId, scrolled});

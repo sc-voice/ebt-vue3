@@ -219,7 +219,7 @@
         switch (evt.code) {
           case 'Home': this.onHome(evt); break;
           default: 
-            //console.log(msg, evt); 
+            //console.log(msg, {evt}); 
             break;
         }
       })
