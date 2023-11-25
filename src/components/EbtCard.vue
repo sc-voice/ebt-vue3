@@ -119,6 +119,7 @@
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
         let { volatile, card } = this;
+        //console.log(msg, card);
         volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
@@ -127,10 +128,12 @@
       },
       onFocusIn(evt) {
         const msg = "EbtCard.onFocusIn() ";
-        let { volatile, card } = this;
+        let { settings, volatile, card } = this;
         let { location, id, context } = card;
         let chipTitle = card.chipTitle();
-        volatile.setRoute(card, undefined, msg);
+        console.log(msg, "scrollToCard", {id, evt}, evt.eventPhase);
+        settings.scrollToCard(card);
+        //volatile.setRoute(card, undefined, msg);
       },
       clickDelete() {
         let { card, settings, config } = this;

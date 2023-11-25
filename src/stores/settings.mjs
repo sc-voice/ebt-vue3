@@ -142,11 +142,11 @@ export const useSettingsStore = defineStore('settings', {
       const msg = "settings.removeCard() ";
       const { window } = globalThis;
       if (window == null) {
-        console.trace(msg, "no window");
+        //console.trace(msg, "no window");
         return;
       }
       if (config == null) {
-        console.trace(msg, "no config");
+        //console.trace(msg, "no config");
         return;
       }
       let { cards, langTrans:defaultLang } = this;
@@ -191,7 +191,7 @@ export const useSettingsStore = defineStore('settings', {
       let eltScroll = idScroll 
         ? document.getElementById(idScroll) 
         : eltShow;
-      let dbg = 0;
+      let dbg = 1;
       if (eltShow == null) {
         dbg && console.log(msg, `DBG1 (${idShow}) no element`);
         return false;
@@ -246,6 +246,7 @@ export const useSettingsStore = defineStore('settings', {
       return `audio/click${volume}.mp3`;
     },
     async scrollToCard(card) {
+      const msg = 'settings.scrollToCard()';
       if (this.openCard(card)) {
         await new Promise(resolve => setTimeout(()=>resolve(), 100));
       }
@@ -253,18 +254,18 @@ export const useSettingsStore = defineStore('settings', {
       let curId = card.currentElementId;
       let topId = card.topAnchor;
       let scrolled = false;
-      let dbg = 0;
+      let dbg = 1;
       if (curId === card.titleAnchor) {
         scrolled = await this.scrollToElementId(curId, topId);
-        dbg && console.log("[1]scrollToCard()", {curId, topId, scrolled});
+        dbg && console.log(msg, "[1]", {curId, topId, scrolled});
         return scrolled;
       } 
 
       scrolled = await this.scrollToElementId(curId);
       if (scrolled) {
-        dbg && console.log("[2]scrollToCard()", {curId, scrolled});
+        dbg && console.log(msg, "[2]", {curId, scrolled});
       } else {
-        dbg && console.log("[3]scrollToCard()", {curId, scrolled});
+        dbg && console.log(msg, "[3]", {curId, scrolled});
       }
       return scrolled;
     },

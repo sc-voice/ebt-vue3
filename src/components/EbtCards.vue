@@ -142,7 +142,7 @@
           defaultLang: settings.langTrans,
         });
         let { activeElement } = document;
-        //console.log(msg, 'before setRoute', { activeElement, to, from});
+        //console.log(msg, 'before setRoute', {activeElement, to, from});
         volatile.setRoute(card, undefined, msg);
         //console.log(msg, 'after setRoute', document.activeElement);
         this.bindAudioSutta(to.href);
@@ -162,8 +162,11 @@
           volatile.fetchWikiHtml(card.location, msg);
         }
         nextTick(() => { 
-      //TODO    settings.scrollToCard(card); 
-          logger.debug(msg, document.activeElement, volatile.routeCard);
+          let { ebtChips } = volatile;
+          if (ebtChips !== activeElement) {
+            console.log(msg, card);
+            card.focus();
+          }
         })
       }
     }, 

@@ -63,7 +63,8 @@
     methods: {
       onClickSegBody(evt) {
         let { 
-          segment, currentScid, routeCard, card, settings, idbSuttaRef, volatile,
+          segment, currentScid, routeCard, card, settings, 
+          idbSuttaRef, volatile,
         } = this;
         const msg = `SegmentView.onClickSegBody(${segment.scid}) `;
         let { srcElement } = evt;
@@ -74,12 +75,16 @@
           if (className === 'ebt-example') {
             let pattern = encodeURIComponent(innerText);
             let hash = `#/search/${pattern}`;
+            //console.log(msg, 'example', scid, pattern);
             volatile.setRoute(hash, undefined, msg);
-          } 
+          } else {
+            //console.log(msg, 'same card', scid);
+          }
         } else {
           let [ locationScid, lang, author ] = card.location;
           let hash = `#/sutta/${scid}/${lang}/${author}`
           card.location[0] = scid;
+          //console.log(msg, 'segment', scid);
           volatile.setRoute(hash, undefined, msg);
           //idbSuttaRef.highlightExamples({segment});
         }

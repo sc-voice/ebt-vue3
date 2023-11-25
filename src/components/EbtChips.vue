@@ -80,6 +80,7 @@
         let { routeCard } = volatile;
         if (routeCard) {
           settings.openCard(routeCard);
+          //console.log(msg, {routeCard});
           nextTick(()=> routeCard.focus());
         }
       },

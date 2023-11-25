@@ -143,7 +143,10 @@
 
         let location = `${config.basePath}${config.homePath}`;
         window.location = location;
-        volatile.ebtChips && nextTick(()=>volatile.ebtChips.focus());
+        volatile.ebtChips && nextTick(()=>{
+          //console.log(msg, 'ebtChips.focus()');
+          volatile.ebtChips.focus();
+        });
         logger.debug(msg);
       },
       allowLocalStorage() {
@@ -163,6 +166,7 @@
         settings.tutorSearch = false;
       },
       onClickSettings(evt) {
+        const msg = "App.onClickSettings()";
         let { settings, volatile, audio } = this;
         let btn = document.getElementById('btn-settings');
         btn && btn.blur();
@@ -170,6 +174,7 @@
         settings.tutorSettings = false;
         nextTick(()=>{
           let autofocus = document.getElementById('settings-autofocus');
+          //console.log(msg, {autoFocus});
           autofocus && autofocus.focus();
         });
       },
@@ -213,7 +218,9 @@
         let { audio } = this;
         switch (evt.code) {
           case 'Home': this.onHome(evt); break;
-          //default: console.log(msg, evt); break;
+          default: 
+            //console.log(msg, evt); 
+            break;
         }
       })
       window.addEventListener('focusin', evt=>{
@@ -229,7 +236,7 @@
       setInterval(()=>{
         let elt = window?.document?.activeElement;
         that.activeElt = elt?.id || elt;
-        //console.log("activeElt", that.activeElt);
+        //console.log("activeElt", that.activeElt, {elt});
       }, 1000);
     },
     computed: {

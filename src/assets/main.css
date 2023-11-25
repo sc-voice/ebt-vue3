@@ -315,6 +315,7 @@ code {
   min-width: 210px;
   max-width: 30em;
   justify-content: space-between;
+  margin-top: 0.2rem;
   margin-bottom: 0.3rem;
   margin-left: 1rem;
 }

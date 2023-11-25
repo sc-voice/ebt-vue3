@@ -52,7 +52,7 @@
     let { showSettings } = volatile;
     let show = !showSettings && settings[setting];
     if (!show) {
-      return show;
+      return !!show;
     }
 
     let hasSearch = cards.reduce((a,card)=>{

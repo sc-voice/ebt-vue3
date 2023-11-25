@@ -161,7 +161,7 @@
         console.log(msg, {id, eltId});
       }
       if (eltId && document.activeElement !== eltId) {
-        // console.log(msg, id, eltId, eltId.focused);
+        console.log(msg, {eltId});
         eltId.focus();
       }
     });

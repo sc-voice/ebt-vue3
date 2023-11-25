@@ -105,10 +105,12 @@
     },
     methods: {
       onKeyDownSutta(evt) {
+        const msg = "SuttaView.onKeyDownSutta()";
         let { audio } = this;
         switch (evt.code) {
           case 'Tab': {
             let elt = document.getElementById('ebt-chips');
+            console.log(msg, {elt});
             elt && elt.focus();
             evt.preventDefault();
             break;
@@ -119,10 +121,12 @@
         }
       },
       onFocusSutta(evt) {
+        const msg = "SuttaView.onFocusSutta()";
         let { settings, audio, card } = this;
         audio.audioFocused = true;
         let segmentElementId = card.segmentElementId();
-        settings.scrollToElementId(segmentElementId);
+        //console.log(msg, segmentElementId);
+        //settings.scrollToElementId(segmentElementId);
       },
       onBlurSutta(evt) {
         let { audio } = this;
@@ -133,9 +137,9 @@
       },
       onClickSutta(evt) {
         let { $refs, card } = this;
-        const msg = `SuttaView.onClickSutta(${card.chipTitle()})`;
+        const msg = 'SuttaView.onClickSutta()';
+        //console.log(msg, "DEBUG", {evt, card});
         let elt = card.focus();
-        logger.info(msg, {evt, elt});
       },
     },
     computed: {

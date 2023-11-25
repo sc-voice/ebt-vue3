@@ -170,17 +170,19 @@ export default class EbtCard {
   }
 
   focus() {
-    const msg = 'EbtCard.focus() ';
+    const msg = 'EbtCard.focus()';
     let { autofocusId, tab1Id, volatile } = this;
     let elt = document.getElementById(autofocusId);
+    //console.log(msg, {elt});
     if (elt) {
       elt.focus();
-      logger.debug(msg, autofocusId);
+      //console.log(msg, {autofocusId});
     } else if ((elt = document.getElementById(tab1Id))) {
       elt.focus();
-      logger.debug(msg, tab1Id);
+      //console.log(msg, {tab1Id});
     } else {
-      logger.warn(msg, 'element not found', { autofocusId, tab1Id, volatile});
+      logger.warn(msg, 'element not found', { 
+        autofocusId, tab1Id, volatile});
     }
     return elt;
   }

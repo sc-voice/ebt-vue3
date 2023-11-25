@@ -144,6 +144,7 @@ export const useVolatileStore = defineStore('volatile', {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
         this.debugText += `${msg}-${caller}-${route}`;
+        //console.log(msg, "different route", {route});
         window.location.hash = route;
         let expected = activeElement;
         let actual = document?.activeElement;
@@ -151,7 +152,7 @@ export const useVolatileStore = defineStore('volatile', {
           if (keepFocus) {
             activeElement.focus(); // Why do we need to do this?
           } else {
-            console.trace(msg, 'DBG0418', `activeElement`, {expected, actual, route});
+            //console.trace(msg, 'DBG0418', `activeElement`, {expected, actual, route});
           }
         }
       }
