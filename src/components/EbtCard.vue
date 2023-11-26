@@ -86,18 +86,22 @@
       const msg = 'EbtCard.mounted() ';
       let { card, $route, settings } = this;
       let { langTrans:defaultLang } = settings;
-      let { id } = card;
+      let { id, location } = card;
+      let { fullPath, } = $route;
+      let dbg = 1;
       this.addIntersectionObserver();
-      if (card.matchPath({path:$route.fullPath, defaultLang})) {
+      if (card.matchPath({path:fullPath, defaultLang})) {
         nextTick(() => {
           let { activeElement } = document;
-          //console.log(msg, 'before focus', {$route, activeElement});
-          card.focus();
-          //console.log(msg, 'after focus', document.activeElement);
+          dbg && console.log(msg, '[1] focus', 
+            {fullPath, $route, activeElement});
+          card.focus(fullPath);
+          dbg && console.log(msg, '[2] focus', document.activeElement);
         });
         logger.debug(msg, "routeCard:", {id});
       } else {
-        logger.debug(msg, {id});
+        let routeHash = card.routeHash();
+        dbg && console.log(msg, '[4]', {id, routeHash});
       }
     },
     updated() {
@@ -131,8 +135,17 @@
         let { settings, volatile, card } = this;
         let { location, id, context } = card;
         let chipTitle = card.chipTitle();
-        //console.log(msg, "scrollToCard", {id, evt}, evt.eventPhase);
-        settings.scrollToCard(card);
+        let dbg = 1;
+        switch (card.context) {
+          case EbtCard.CONTEXT_SUTTA:
+          case EbtCard.CONTEXT_SEARCH:
+            dbg && console.log(msg, "[1]scrollToCard", {id, evt});
+            settings.scrollToCard(card);
+            break;
+          default:
+            dbg && console.log(msg, "[2]scrollToCard", {id, evt});
+            break;
+        }
       },
       clickDelete() {
         let { card, settings, config } = this;

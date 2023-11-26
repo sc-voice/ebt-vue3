@@ -40,7 +40,7 @@ const MSDAY = 24*3600*MSSEC;
       maxAge: MSDAY,
     });
   });
-  it("TESTTESTsuttaUrl", async () => {
+  it("suttaUrl", async () => {
     let settings = useSettingsStore();
     should(settings.langTrans).equal('en');
     let langTrans = 'zz';

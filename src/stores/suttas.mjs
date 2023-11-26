@@ -45,6 +45,7 @@ export const useSuttasStore = defineStore('suttas', {
       this.nGet++;
       let age = idbData?.saved ? Date.now()-idbData.saved : maxAge+1;
       let idbSutta;
+      let dbg = 0;
 
       if (refresh || !idbData || maxAge < age) {
         let volatile = useVolatileStore();
@@ -58,11 +59,11 @@ export const useSuttasStore = defineStore('suttas', {
           return null;
         }
         idbSutta = IdbSutta.create(mlDocs[0]);
-        logger.info(msg, `${url} => `,
+        dbg && console.log(msg, `${url} => `,
           `segments:${idbSutta.segments.length}`);
         await this.saveIdbSutta(idbSutta);
       } else {
-        logger.info(msg, `cached idb(${idbKey})`);
+        dbg && console.log(msg, `cached idb(${idbKey})`);
         idbSutta = IdbSutta.create(idbData);
       } 
 
@@ -72,15 +73,16 @@ export const useSuttasStore = defineStore('suttas', {
       const msg = 'suttas.saveIdbSutta()';
       let { idbKey } = idbSutta;
       let vueRef = VUEREFS.get(idbKey);
+      let dbg = 0;
       if (vueRef == null) {
         vueRef = ref(idbSutta);
         VUEREFS.set(idbKey, vueRef);
         idbSutta.saved = Date.now();
-        logger.info(msg, 'ADD', idbKey, idbSutta.saved);
+        dbg && console.log(msg, 'ADD', idbKey, idbSutta.saved);
       } else if (vueRef.value !== idbSutta) {
         vueRef.value = idbSutta;
         idbSutta.saved = Date.now();
-        logger.info(msg, 'UPDATE', idbKey, idbSutta.saved);
+        dbg && console.log(msg, 'UPDATE', idbKey, idbSutta.saved);
       }
       let settings = useSettingsStore();
       let { highlightExamples } = settings;
@@ -97,7 +99,7 @@ export const useSuttasStore = defineStore('suttas', {
         let idbKey = IdbSutta.idbKey(suttaRef);
         let vueRef = VUEREFS.get(idbKey);
         let idbSutta = vueRef?.value;
-
+        let dbg = 0;
 
         if (idbSutta == null) {
           if (!opts.refresh) {
@@ -108,14 +110,14 @@ export const useSuttasStore = defineStore('suttas', {
           VUEREFS.set(idbKey, vueRef);
 
           idbSutta = await promise;
-          //console.log(msg, {idbKey}, idbSutta);
+          dbg && console.log(msg, {idbKey}, idbSutta);
           vueRef.value = idbSutta;
           VUEREFS.set(idbKey, vueRef);
         } else {
           if (vueRef.value instanceof Promise) {
             vueRef.value = await vueRef.value;
           }
-          //console.log("Suttas.getIdbSuttaRef() found", {idbKey, idbSutta});
+          dbg && console.log(msg, 'found', {idbKey, idbSutta});
         }
 
         return vueRef;

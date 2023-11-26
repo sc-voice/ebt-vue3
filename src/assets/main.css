@@ -210,19 +210,23 @@ blockquote {
   border-left: 3px solid grey;
   padding-left: 0.5em;
 }
-.footnotes-link {
-  position: relative;
-  top: -8em;
-}
 .footnotes {
-  margin-top: 3em;
+  padding-top: 8em;
 }
-.footnotes-line {
-  border-top: 1pt solid rgba(var(--v-theme-on-surface), 0.2);
+.footnotes-body {
+  padding: 1em;
 }
 .footnotes-title {
-  border-top: 1pt solid rgba(var(--v-theme-on-surface), 0.2);
+  text-decoration: overline;
   opacity: 0.5;
+  width: fit-content;
+}
+.footnotes:focus-within .footnotes-body {
+  outline: 2pt dashed rgb(var(--v-theme-link));
+}
+.footnotes:focus {
+  outline: none !important;
+  border: none !important;
 }
 code {
   background-color: rgba(var(--v-theme-on-surface), 0.2);

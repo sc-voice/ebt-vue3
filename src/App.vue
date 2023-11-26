@@ -181,8 +181,10 @@
     },
     async mounted() {
       let msg = 'App.mounted() ';
+      let dbg = 1;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
+        $route
       } = this;
       volatile.$t = $t;
       volatile.config = config;
@@ -202,13 +204,13 @@
       let wikiCard = wikiHash
         ? settings.pathToCard(wikiHash)
         : settings.pathToCard(config.homePath);
-      //logger.info(msg, {wikiCard});
+      dbg && console.log(msg, '[1]', {wikiCard, $route});
 
       $vuetify.theme.global.name = settings.theme === 'dark' ? 'dark' : 'light';;
       $i18n.locale = settings.locale;
       this.unsubSettings = settings.$subscribe((mutation, state) => {
         $vuetify.theme.global.name = settings.theme === 'dark' ? 'dark' : 'light';;
-        logger.debug("App.mounted() settings.subscribe()", 
+        dbg && console.log(msg, "[2]settings.subscribe()", 
           {mutation, state, settings});
         settings.saveSettings();
         $i18n.locale = settings.locale;
@@ -219,7 +221,7 @@
         switch (evt.code) {
           case 'Home': this.onHome(evt); break;
           default: 
-            //console.log(msg, {evt}); 
+            dbg && console.log(msg, '[3]', {evt}); 
             break;
         }
       })
@@ -235,8 +237,11 @@
       let that = this;
       setInterval(()=>{
         let elt = window?.document?.activeElement;
-        that.activeElt = elt?.id || elt;
-        //console.log("activeElt", that.activeElt, {elt});
+        let activeElt = elt?.id || elt;
+        if (activeElt !== that.activeElt) {
+          that.activeElt = activeElt;
+          dbg && console.log(msg, "[4]activeElt", {activeElt, elt});
+        }
       }, 1000);
     },
     computed: {

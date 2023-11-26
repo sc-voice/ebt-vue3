@@ -23,7 +23,7 @@ const CONTEXTS = {
 
 export default class EbtCard {
   constructor(opts = {}) {
-    let msg = 'EbtCard.ctor() ';
+    let msg = 'ebt-card.ctor() ';
     let {
       id,
       context,
@@ -91,7 +91,7 @@ export default class EbtCard {
   static get CONTEXT_DEBUG() { return CONTEXT_DEBUG; }
 
   static routeSuttaRef(route, langTrans='en') {
-    const msg = 'EbtCard.routeSuttaRef() ';
+    const msg = 'ebt-card.routeSuttaRef() ';
     let routeParts = route.split('#/sutta');
     //console.log(msg, {route, langTrans, routeParts});
     if (routeParts.length !== 2) {
@@ -102,7 +102,7 @@ export default class EbtCard {
   }
 
   static pathToCard(args) {
-    let msg = 'EbtCard.pathToCard()';
+    let msg = 'ebt-card.pathToCard()';
     let {path='/', cards=[], addCard, defaultLang} = args;
     path = path.replace(/^.*\/#/, ''); // ignore non-hash part of path
     let [ ignored, context, ...location ] = path.split('/');
@@ -169,20 +169,20 @@ export default class EbtCard {
     }
   }
 
-  focus() {
-    const msg = 'EbtCard.focus()';
-    let { autofocusId, tab1Id, volatile } = this;
-    let elt = document.getElementById(autofocusId);
-    //console.log(msg, {elt});
+  focus(eltId=this.autofocusId) {
+    const msg = 'ebt-card.focus()';
+    let { tab1Id, volatile } = this;
+    let elt = document.getElementById(eltId);
+    let dbg = 1;
     if (elt) {
       elt.focus();
-      //console.log(msg, {autofocusId});
+      dbg && console.log(msg, '[1]', {eltId, elt});
     } else if ((elt = document.getElementById(tab1Id))) {
       elt.focus();
-      //console.log(msg, {tab1Id});
+      dbg && console.log(msg, '[2]', {eltId, tab1Id, elt});
     } else {
-      logger.warn(msg, 'element not found', { 
-        autofocusId, tab1Id, volatile});
+      console.warn(msg, '[3] element not found', { 
+        eltId, tab1Id, volatile, elt});
     }
     return elt;
   }
@@ -263,7 +263,7 @@ export default class EbtCard {
   }
 
   matchPath(strOrObj) {
-    const msg = 'EbtCard.matchPath() ';
+    const msg = 'ebt-card.matchPath() ';
     let opts = typeof strOrObj === 'string'
       ? { path: strOrObj }
       : strOrObj;
@@ -367,7 +367,7 @@ export default class EbtCard {
   }
 
   setLocation({segments, delta=0}) {
-    const msg = 'EbtCard.setLocation() ';
+    const msg = 'ebt-card.setLocation() ';
     let { context } = this;
     let [...newLocation] = this.location;
 
@@ -397,7 +397,7 @@ export default class EbtCard {
   }
 
   groupStartIndex({segments=[], iSegCur=0}) {
-    const msg = 'EbtCard.groupStartIndex() ';
+    const msg = 'ebt-card.groupStartIndex() ';
     let { context, } = this;
 
     if (context !== CONTEXT_SUTTA || segments.length <= 0) {
@@ -421,7 +421,7 @@ export default class EbtCard {
   }
 
   incrementGroup({segments=[], delta=1}) {
-    const msg = 'EbtCard.incrementGroup() ';
+    const msg = 'ebt-card.incrementGroup() ';
     let result = null;
     let { context } = this;
     let [...location] = this.location;

@@ -255,7 +255,7 @@ const renderer = new MarkdownItRenderer();
     should(EbtMarkdown.compareMetadata(c2t1, c1t2)).above(0);
     should(EbtMarkdown.compareMetadata(c2t1, c1t1)).above(0);
   });
-  it("footnote title", async ()=>{
+  it("TESTTESTfootnote title", async ()=>{
     let markdown = [
       'This is a footnote^[test-footnote]',
       'in a sentence.',
@@ -270,26 +270,27 @@ const renderer = new MarkdownItRenderer();
       EbtMarkdown.HTML_HEAD,
       `<p>This is a footnote<sup class="footnote-ref"><a href="#${footnotesId}">[1]</a></sup>`,   
       'in a sentence.</p>',
-      '<section class="footnotes">',
-      `<div id="${footnotesId}" class="footnotes-link">&nbsp;</div>`,
+      `<section id="${footnotesId}" tabindex="0" class="footnotes">`,
+      `<div class="footnotes-body">`,
       '<div class="footnotes-title">test-footnotes</div>',
       '<ol class="footnotes-list">',
       '<li class="footnote-item"><p>test-footnote</p>',
       '</li>',
       '</ol>',
-      '</section>',
+      '</div><!-- footnotes-body -->',
+      '</section><!-- footnotes -->',
       EbtMarkdown.HTML_TAIL,
     ]);
     should(emd.metadata).equal(undefined);
   });
-  it("footnote no title", async ()=>{
+  it("TESTTESTfootnote no title", async ()=>{
     let markdown = [
       'This is a footnote^[test-footnote]',
       'in a sentence.',
     ].join('\n');;
     let appName = 'TEST-APPNAME';
     let wikiPath = 'wiki/testpath';
-    let footnotes = '';
+    let footnotes = 'bloop';
     let emd = new EbtMarkdown({renderer, appName, wikiPath, footnotes});
     let { htmlLines } = await emd.render(markdown);
     let footnotesId = `/${wikiPath}/-footnotes`;
@@ -297,14 +298,15 @@ const renderer = new MarkdownItRenderer();
       EbtMarkdown.HTML_HEAD,
       `<p>This is a footnote<sup class="footnote-ref"><a href="#${footnotesId}">[1]</a></sup>`,   
       'in a sentence.</p>',
-      '<section class="footnotes footnotes-line">',
-      `<div id="${footnotesId}" class="footnotes-link">&nbsp;</div>`,
-      '',
+      `<section id="${footnotesId}" tabindex="0" class="footnotes">`,
+      `<div class="footnotes-body">`,
+      `<div class="footnotes-title">${footnotes}</div>`,
       '<ol class="footnotes-list">',
       '<li class="footnote-item"><p>test-footnote</p>',
       '</li>',
       '</ol>',
-      '</section>',
+      '</div><!-- footnotes-body -->',
+      '</section><!-- footnotes -->',
       EbtMarkdown.HTML_TAIL,
     ]);
     should(emd.metadata).equal(undefined);

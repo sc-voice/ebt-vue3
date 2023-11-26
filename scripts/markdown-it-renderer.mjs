@@ -28,17 +28,30 @@ export default class MarkdownItRenderer {
 
     rules.footnote_block_open = (tokens, idx, options, env) => {
       const msg = "MarkdownItRenderer.footnote_block_open() ";
-      let { footnotes } = this;
+      let { footnotes="Footnotes" } = this;
       let id = this.footnoteId();
-      let sectionClass = footnotes ? "footnotes" : "footnotes footnotes-line";
       let html =  [
-        `<section class="${sectionClass}">`,
-        `<div id="${id}" class="footnotes-link">&nbsp;</div>`,
-        footnotes ? `<div class="footnotes-title">${footnotes}</div>` : '',
+        `<section id="${id}" tabindex="0" class="footnotes">`,
+        `<div class="footnotes-body">`,
+        `<div class="footnotes-title">${footnotes}</div>`,
         '<ol class="footnotes-list">',
         '',
       ].join('\n');
       //console.log(msg, html);
+      return html;
+    }
+
+    rules.footnote_block_close = (tokens, idx, options, env) => {
+      const msg = "MarkdownItRenderer.footnote_block_close() ";
+      let { footnotes } = this;
+      if (!footnotes) {
+        return '';
+      }
+      let html = [
+        '</ol>',
+        `</div><!-- footnotes-body -->`,
+        '</section><!-- footnotes -->',
+      ].join('\n');
       return html;
     }
 

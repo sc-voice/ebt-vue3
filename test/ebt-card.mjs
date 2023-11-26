@@ -44,7 +44,7 @@ logger.logLevel = 'warn';
     let card2 = new EbtCard(Object.assign({}, card1));
     should(card2).properties(card1);
   });
-  it("TESTTESTcustom ctor sutta/thig1.1/pt", ()=>{
+  it("custom ctor sutta/thig1.1/pt", ()=>{
     let id = 'test-id';
     let context = 'sutta';
     let location = ['thig1.1', 'pt'];
