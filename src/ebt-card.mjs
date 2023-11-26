@@ -1,6 +1,10 @@
 import { logger } from 'log-instance/index.mjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
+import { 
+  DEBUG_FOCUS,
+  DEBUG_PATH, 
+} from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
 const CONTEXT_SEARCH = "search";
@@ -173,10 +177,10 @@ export default class EbtCard {
     const msg = 'ebt-card.focus()';
     let { tab1Id, volatile } = this;
     let elt = document.getElementById(eltId);
-    let dbg = 1;
+    let dbg = DEBUG_FOCUS;
     if (elt) {
       elt.focus();
-      dbg && console.log(msg, '[1]', {eltId, elt});
+      dbg && console.log(msg, '[1]', {eltId, elt}, document.activeElement);
     } else if ((elt = document.getElementById(tab1Id))) {
       elt.focus();
       dbg && console.log(msg, '[2]', {eltId, tab1Id, elt});
@@ -223,7 +227,7 @@ export default class EbtCard {
 
   matchPathSutta({opts, context, location, cardLocation, }) {
     let { path, defaultLang } = opts;
-    let dbg = 0;
+    let dbg = DEBUG_PATH;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
     if (loc === '') {

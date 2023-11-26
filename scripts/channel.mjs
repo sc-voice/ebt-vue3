@@ -58,7 +58,9 @@ export default class Channel {
   
   async #convertMarkDownFile(fnSrc, fnDst, ) {
     const msg = 'Channel.convertMarkDownFile() ';
-    let { config, renderer, categories, srcDir, htmlHead, htmlTail, basePath } = this;
+    let { 
+      config, renderer, categories, srcDir, htmlHead, htmlTail, basePath 
+    } = this;
     let markdown = fs.readFileSync(fnSrc).toString();
     let location = fnSrc
       .replace(srcDir,'')
@@ -118,7 +120,7 @@ export default class Channel {
         //console.log(msg, "skipping", kid);
         return a; // omit custom index file from index
       }
-      console.log(msg, {name, category, }, kid.name);
+      console.log(msg, `[1]${name} "${category}"`, kid.name);
       let imgSrc = img.startsWith('http') 
         ? img.replace(' //', '//') 
         : `${basePath}img/${img}`
@@ -171,9 +173,10 @@ export default class Channel {
     const msg = 'Channel.buildChannelFiles() ';
     let { indexSrcFile } = this;
     const entries = await fsp.readdir(srcDir, {
-      recursive: true,
+      recursive: false,
       withFileTypes: true,
     });
+    console.log(msg, '[0]readdir', {srcDir, entries});
 
     for (let i = 0; i < entries.length; i++) {
       let entry = entries[i];
@@ -183,12 +186,14 @@ export default class Channel {
       if (entry.isFile()) {
         if (name.endsWith('.md')) {
           fnDst = fnDst.replace(/.md$/, '.html');
-          let { metadata }  = await this.#convertMarkDownFile(fnSrc, fnDst);
+          logger.info(msg, `[1]Channel ${channel.name}/${name}`, 
+            {fnSrc, fnDst});
+          let rescmd = await this.#convertMarkDownFile(fnSrc, fnDst);
+          let { metadata }  = rescmd;
           let kid = { name, fnSrc, fnDst, metadata };
           channel.kids.push(kid);
-          logger.debug(msg, `Channel ${channel.name}/${name}`);
         } else {
-          logger.warn(msg, 'FILE ignored', {name, fnsSrc});
+          logger.warn(msg, '[2]FILE ignored', {name, fnsSrc});
         }
       } else if (entry.isDirectory()) {
         let kid = { name, fnSrc, fnDst};
@@ -198,12 +203,14 @@ export default class Channel {
           kidIndex = Object.assign({}, kidIndex);
           kidIndex.name = `${name}/${kidIndex.name}`;
           channel.kids.push(kidIndex);
-          logger.info(msg, `built channel ${channel.name}/${name}`, );
+          logger.info(msg, `[3]built channel ${channel.name}/${name}`, );
         } else {
-          logger.info(msg, `built hidden channel ${channel.name}/${name}`);
+          logger.info(msg, `[4]built hidden channel`,
+            `${channel.name}/${name}`);
         }
       } else {
-        logger.warn(msg, 'IGNORING CHANNEL ENTRY', {channel, name, fnSrc});
+        logger.warn(msg, '[5]IGNORING CHANNEL ENTRY', 
+          {channel, name, fnSrc});
       }
     }
   }
@@ -213,9 +220,11 @@ export default class Channel {
     let fnDst = fnSrc.replace(this.srcDir, this.dstDir);
     let channel = {name, fnSrc, fnDst, kids:[]};
 
+    logger.info(msg, '[1]', channel);
     await fsp.mkdir(fnDst, {recursive: true});
     await this.#buildChannelFiles(channel, fnSrc);
     await this.#buildChannelIndex(channel, fnSrc);
+    logger.info(msg, '[2]', channel);
 
     return channel;
   }
@@ -229,6 +238,7 @@ export default class Channel {
       await this.#buildChannel('main', srcDir);
     } catch(e) {
       logger.warn(msg, e);
+      throw e;
     }
   }
 

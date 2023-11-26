@@ -5,6 +5,7 @@ import Utils from "../utils.mjs";
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
+import { DEBUG_SCROLL, DEBUG_FOCUS } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
 const SETTINGS_KEY = "settings";
@@ -191,7 +192,7 @@ export const useSettingsStore = defineStore('settings', {
       let eltScroll = idScroll 
         ? document.getElementById(idScroll) 
         : eltShow;
-      let dbg = 1;
+      let dbg = DEBUG_SCROLL;
       if (eltShow == null) {
         dbg && console.log(msg, `DBG1 (${idShow}) no element`);
         return false;
@@ -254,7 +255,7 @@ export const useSettingsStore = defineStore('settings', {
       let curId = card.currentElementId;
       let topId = card.topAnchor;
       let scrolled = false;
-      let dbg = 1;
+      let dbg = DEBUG_SCROLL;
       if (curId === card.titleAnchor) {
         scrolled = await this.scrollToElementId(curId, topId);
         dbg && console.log(msg, "[1]", {curId, topId, scrolled});

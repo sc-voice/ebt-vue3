@@ -6,8 +6,13 @@ let [ nodePath, shPath, srcDir, dstDir, configPath ] = argv;
 
 const { default:config } = await import(configPath);
 
-Channel.buildRoot({
-  srcDir, 
-  dstDir, 
-  config,
-});
+try {
+  Channel.buildRoot({
+    srcDir, 
+    dstDir, 
+    config,
+  });
+} catch (e) {
+  console.warn(e);
+  exit -1;
+}

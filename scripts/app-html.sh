@@ -3,6 +3,8 @@
 DIR=`dirname $0`
 SCRIPT=`basename $0`
 
+echo $SCRIPT: BEGIN `date`
+
 if [ ! -e 'package.json' ]; then
   echo -e "$SCRIPT: package.json not found in current folder (ERROR)"
   exit 911
@@ -24,3 +26,11 @@ mkdir -p $DSTDIR
 SRCDIR=`realpath content`
 echo -e $SCRIPT: generating HTML files ...
 node $DIR/app-html.mjs $SRCDIR $DSTDIR $CONFIG_PATH
+RC=$?
+if [ "$RC" != "0" ]; then
+  echo $SCRIPT: !!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!
+  echo $SCRIPT: !!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!
+  echo $SCRIPT: !!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!
+fi
+
+echo $SCRIPT: END `date`

@@ -29,6 +29,7 @@
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
+  import { DEBUG_FOCUS, DEBUG_SCROLL } from '../defines.mjs';
 
   export default {
     setup() {
@@ -44,14 +45,14 @@
       let { settings, volatile, $route }  = this;
 
       let { params, path='/home' }  = $route;
-      let { cards } = settings;
-      let dbg = 0;
+      let { cards, debugScroll } = settings;
+      let dbg = DEBUG_SCROLL;
       if (path === "/" ) {
         path = "/home"
       }
       let card = settings.pathToCard(path);
 
-      dbg && console.log(msg, '[1]', {$route, card});
+      dbg && console.log(msg, '[1]', {$route}, card?.id);
 
       if (card == null) {
         dbg && console.warn(msg+"[2]UNEXPECTED", {$route, path});
@@ -135,8 +136,8 @@
       $route (to, from) {
         const msg = 'EbtCards.watch.$route';
         let { volatile, settings, $route }  = this;
-        let { cards } = settings;
-        let dbg = 1;
+        let { cards, debugScroll, debugFocus } = settings;
+        let dbg = DEBUG_SCROLL || DEBUG_FOCUS;
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 

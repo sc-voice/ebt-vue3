@@ -44,6 +44,7 @@
   import { default as SegmentView } from './SegmentView.vue';
   import { default as SegmentHeader } from './SegmentHeader.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
+  import { DEBUG_FOCUS } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
   export default {
@@ -71,8 +72,15 @@
     async mounted() {
       const msg = 'SuttaView.mounted() ';
       let { $route, suttas, settings, volatile, card, config, } = this;
-      let { location, data } = card;
-      let ref = {sutta_uid:location[0], lang:location[1], author:location[2]}
+      let { fullPath } = $route;
+      let { development, langTrans } = settings;
+      let { id, location, data } = card;
+      let dbg = development && (DEBUG_FOCUS || DEBUG_SCROLL);
+      let ref = {
+        sutta_uid:location[0], 
+        lang:location[1], 
+        author:location[2],
+      }
       let suttaRef = SuttaRef.create(ref);
       if (suttaRef == null) {
         volatile.alert(`Invalid SuttaRef ${JSON.stringify(ref)}`);
@@ -88,20 +96,19 @@
       this.idbSuttaRef = idbSuttaRef?.value;
 
       if (card.matchPath({path:$route.fullPath, defaultLang})) {
-        nextTick(()=>{
-          let { activeElement } = document;
-          let segmentElementId = card.segmentElementId();
-          settings.scrollToElementId(segmentElementId);
-          let routeHash = card.routeHash();
-          if (window.location.hash !== routeHash) {
-            volatile.setRoute(routeHash, undefined, msg);
-          }
-          logger.debug(msg+'matchPath', {suttaRef, activeElement});
-        });
-      } else {
-        logger.debug(msg, {suttaRef});
+        let { activeElement } = document;
+        dbg && console.log(msg, '[1]focus', 
+          {fullPath, $route, activeElement});
+        card.focus(fullPath);
+        dbg && console.log(msg, '[2]scroll', document.activeElement);
+        let segmentElementId = card.segmentElementId();
+        settings.scrollToElementId(segmentElementId);
+        let routeHash = card.routeHash();
+        if (window.location.hash !== routeHash) {
+          dbg && console.log(msg, '[3]setRoute', {routeHash});
+          volatile.setRoute(routeHash, undefined, msg);
+        }
       }
-      //nextTick(()=>{ console.log(msg, document.activeElement); });
     },
     methods: {
       onKeyDownSutta(evt) {

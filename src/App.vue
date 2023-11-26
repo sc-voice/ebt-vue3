@@ -109,6 +109,7 @@
   import { useAudioStore } from './stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
+  import { DEBUG_FOCUS, DEBUG_SCROLL } from './defines.mjs';
 
   export default {
     inject: ['config'],
@@ -180,12 +181,12 @@
       },
     },
     async mounted() {
-      let msg = 'App.mounted() ';
-      let dbg = 1;
+      let msg = 'App.mounted()';
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route
       } = this;
+      let dbg = settings.development && (DEBUG_FOCUS || DEBUG_SCROLL);
       volatile.$t = $t;
       volatile.config = config;
 
@@ -206,10 +207,12 @@
         : settings.pathToCard(config.homePath);
       dbg && console.log(msg, '[1]', {wikiCard, $route});
 
-      $vuetify.theme.global.name = settings.theme === 'dark' ? 'dark' : 'light';;
+      $vuetify.theme.global.name = settings.theme === 'dark' 
+        ? 'dark' : 'light';;
       $i18n.locale = settings.locale;
       this.unsubSettings = settings.$subscribe((mutation, state) => {
-        $vuetify.theme.global.name = settings.theme === 'dark' ? 'dark' : 'light';;
+        $vuetify.theme.global.name = settings.theme === 'dark' 
+          ? 'dark' : 'light';
         dbg && console.log(msg, "[2]settings.subscribe()", 
           {mutation, state, settings});
         settings.saveSettings();
@@ -219,9 +222,12 @@
         let msg = `App.mounted().keydown:${evt.code}`;
         let { audio } = this;
         switch (evt.code) {
-          case 'Home': this.onHome(evt); break;
+          case 'Home': 
+            dbg && console.log(msg, '[3]onHome', {evt}); 
+            this.onHome(evt); 
+            break;
           default: 
-            dbg && console.log(msg, '[3]', {evt}); 
+            dbg && console.log(msg, '[4]', {evt}); 
             break;
         }
       })

@@ -61,6 +61,7 @@
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from 'log-instance/index.mjs';
   import { nextTick, ref } from "vue";
+  import { DEBUG_FOCUS, DEBUG_SCROLL } from '../defines.mjs';
 
   export default {
     inject: ['config'],
@@ -88,7 +89,7 @@
       let { langTrans:defaultLang } = settings;
       let { id, location } = card;
       let { fullPath, } = $route;
-      let dbg = 1;
+      let dbg = DEBUG_FOCUS;
       this.addIntersectionObserver();
       if (card.matchPath({path:fullPath, defaultLang})) {
         nextTick(() => {
@@ -135,7 +136,7 @@
         let { settings, volatile, card } = this;
         let { location, id, context } = card;
         let chipTitle = card.chipTitle();
-        let dbg = 1;
+        let dbg = DEBUG_FOCUS;
         switch (card.context) {
           case EbtCard.CONTEXT_SUTTA:
           case EbtCard.CONTEXT_SEARCH:

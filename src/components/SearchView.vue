@@ -37,6 +37,7 @@
   import { logger } from "log-instance/index.mjs";
   import { Examples } from "scv-esm";
   import { ref, nextTick } from "vue";
+  import { DEBUG_SEARCH } from '../defines.mjs';
   const msg = "SearchView.";
 
   export default {
@@ -163,11 +164,25 @@
       },
     },
     mounted() {
-      let { card, } = this;
-      //logger.info(msg, 'mounted()', {card, });
+      const msg = 'SearchView.mounted()';
+      let { card, $route, settings} = this;
+      let { langTrans, development } = settings;
+      let { fullPath } = $route;
+      let dbg = development && DEBUG_SEARCH;
       this.search = card.location[0];
       if (card.data == null) {
+        dbg && console.log(msg, '[1] onSearch', {card, });
         nextTick(()=>this.onSearch());
+      }
+      if (card.matchPath({path:fullPath, defaultLang:langTrans})) {
+        let { activeElement } = document;
+        dbg && console.log(msg, '[2] focus', 
+          {fullPath, $route, activeElement});
+        card.focus(fullPath);
+        dbg && console.log(msg, '[3] focus', document.activeElement);
+      } else {
+        let routeHash = card.routeHash();
+        dbg && console.log(msg, '[4]', {id:card.id, routeHash});
       }
     },
     computed: {

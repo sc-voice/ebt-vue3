@@ -7,6 +7,7 @@ import { useVolatileStore } from './volatile.mjs';
 import { default as IdbSutta } from '../idb-sutta.mjs';
 import { ref, shallowRef } from 'vue';
 import * as Idb from 'idb-keyval';
+import { DEBUG_LOAD } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
 const VUEREFS = new Map();
@@ -45,7 +46,7 @@ export const useSuttasStore = defineStore('suttas', {
       this.nGet++;
       let age = idbData?.saved ? Date.now()-idbData.saved : maxAge+1;
       let idbSutta;
-      let dbg = 0;
+      let dbg = DEBUG_LOAD;
 
       if (refresh || !idbData || maxAge < age) {
         let volatile = useVolatileStore();
@@ -73,7 +74,7 @@ export const useSuttasStore = defineStore('suttas', {
       const msg = 'suttas.saveIdbSutta()';
       let { idbKey } = idbSutta;
       let vueRef = VUEREFS.get(idbKey);
-      let dbg = 0;
+      let dbg = DEBUG_LOAD;
       if (vueRef == null) {
         vueRef = ref(idbSutta);
         VUEREFS.set(idbKey, vueRef);
@@ -99,7 +100,7 @@ export const useSuttasStore = defineStore('suttas', {
         let idbKey = IdbSutta.idbKey(suttaRef);
         let vueRef = VUEREFS.get(idbKey);
         let idbSutta = vueRef?.value;
-        let dbg = 0;
+        let dbg = DEBUG_LOAD;
 
         if (idbSutta == null) {
           if (!opts.refresh) {

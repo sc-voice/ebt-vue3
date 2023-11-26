@@ -8,6 +8,7 @@
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { logger } from 'log-instance/index.mjs';
+  import { DEBUG_WIKI } from '../defines.mjs';
   import { ref } from "vue";
 
   export default {
@@ -27,10 +28,24 @@
     },
     async mounted() {
       const msg = "HomeView.mounted() ";
-      let { card, volatile } = this;
-      let { location } = card;
-      //logger.info(msg, {location});
+      let { card, $route, volatile, settings } = this;
+      let { langTrans } = settings;
+      let { fullPath } = $route;
+      let { id, location } = card;
+      let dbg = settings.development && (DEBUG_WIKI);
+      dbg && console.log(msg, '[1]fetchWikiHtml', {location});
       await volatile.fetchWikiHtml(location, msg);
+      dbg && console.log(msg, '[2]fetchWikiHtml', {location});
+      if (card.matchPath({path:fullPath, defaultLang:langTrans})) {
+        let { activeElement } = document;
+        dbg && console.log(msg, '[1] focus', 
+          {fullPath, $route, activeElement});
+        card.focus(fullPath);
+        dbg && console.log(msg, '[2] focus', document.activeElement);
+      } else {
+        let routeHash = card.routeHash();
+        dbg && console.log(msg, '[3]', {id, routeHash});
+      }
     },
     computed: {
     },
