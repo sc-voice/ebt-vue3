@@ -44,7 +44,7 @@
   import { default as SegmentView } from './SegmentView.vue';
   import { default as SegmentHeader } from './SegmentHeader.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
-  import { DEBUG_FOCUS } from '../defines.mjs';
+  import { DEBUG_SCROLL, DEBUG_FOCUS } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
   export default {
