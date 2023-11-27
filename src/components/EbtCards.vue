@@ -168,9 +168,21 @@
         nextTick(() => { 
           let { ebtChips } = volatile;
           let { fullPath } = to;
+          let { id, context } = card;
           if (ebtChips !== activeElement) {
-            dbg && console.log(msg, '[6]focus', {fullPath,card});
-            card.focus(fullPath);
+            switch(context) {
+              case EbtCard.CONTEXT_WIKI:
+                dbg && console.log(msg, '[6]focus', `${id} ${context}`, 
+                  fullPath);
+                card.focus(fullPath);
+                break;
+              default:
+              case EbtCard.CONTEXT_SEARCH:
+              case EbtCard.CONTEXT_SUTTA:
+                dbg && console.log(msg, '[7]focus', `${id} ${context}`);
+                card.focus();
+                break;
+            }
           }
         })
       }

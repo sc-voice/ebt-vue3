@@ -110,6 +110,7 @@ export const useAudioStore = defineStore('audio', {
           return;
       }
       evt.preventDefault();
+      evt.stopPropagation();
     },
     playPause(playMode) {
       let { idbAudio, mainContext, } = this;
@@ -368,14 +369,18 @@ export const useAudioStore = defineStore('audio', {
       let url =  volume ? `audio/block${volume}.mp3` : null;
       return this.playUrl(url, {audioContext});
     },
+    async playElt(elt) {
+      const msg = 'audio.playElt()';
+      try {
+        await elt.play();
+      } catch (e) {
+        console.trace(msg, e.message, {elt});
+      }
+    },
     playClick(audioContext) {
       const msg = 'audio.playClick() ';
       let { clickElt } = this;
-      if (typeof(clickElt?.play) === 'function') {
-        clickElt.play()
-      } else {
-        console.trace(msg, "no clickElt");
-      }
+      this.playElt(clickElt);
     },
     playBell(audioContext) {
       const msg = 'audio.playBell() ';

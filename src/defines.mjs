@@ -1,10 +1,10 @@
-export const DEBUG_FOCUS = true;
-export const DEBUG_SCROLL = false;
-export const DEBUG_PATH = false;
-export const DEBUG_LOAD = false;
-export const DEBUG_WIKI = false;
-export const DEBUG_SEARCH = false;
-export const DEBUG_KEY = true;
-export const DEBUG_SUTTA = true;
-export const DEBUG_MOUNTED = false;
-
+export const DEBUG_CLICK    = 0;
+export const DEBUG_FOCUS    = 0;
+export const DEBUG_KEY      = 0;
+export const DEBUG_LOAD     = 0;
+export const DEBUG_MOUNTED  = 0;
+export const DEBUG_PATH     = 0;
+export const DEBUG_SCROLL   = 0;
+export const DEBUG_SEARCH   = 0;
+export const DEBUG_SUTTA    = 0;
+export const DEBUG_WIKI     = 0;

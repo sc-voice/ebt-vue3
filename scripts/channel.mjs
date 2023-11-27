@@ -134,7 +134,7 @@ export default class Channel {
         lastCategory = category;
       }
       a.push(`  <div class="ebt-toc-item">`);
-      a.push(`   <a href="${tocHref}">`);
+      a.push(`   <a href="${tocHref}" tabindex=-1 >`);
       a.push(`    <div class="ebt-thumbnail"><img src="${imgSrc}" /></div>`);
       a.push(`   </a>`);
       a.push(`   <div class="ebt-toc-item-text">`);

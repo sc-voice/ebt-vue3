@@ -44,8 +44,7 @@ const INITIAL_STATE = {
 export const useVolatileStore = defineStore('volatile', {
   state: () => {
     let s = Object.assign({}, INITIAL_STATE);
-    logger.debug(`volatile.state() => `, s);
-    console.log('volatile.state()');
+    //console.log('volatile.state()', s);
     return s;
   },
   getters: {

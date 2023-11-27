@@ -62,7 +62,7 @@
   import { logger } from 'log-instance/index.mjs';
   import { nextTick, ref } from "vue";
   import { 
-    DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL 
+    DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL 
   } from '../defines.mjs';
 
   export default {
@@ -108,7 +108,8 @@
     methods: {
       onClickLastTab(evt) {
         const msg = 'EbtCard.onClickLastTab() ';
-        //console.log(msg);
+        let dbg = DEBUG_CLICK;
+        dbg && console.log(msg);
       },
       onFocusLastTab(evt) {
         const msg = 'EbtCard.onFocusLastTab() ';
@@ -122,8 +123,8 @@
         const msg = "EbtCard.onClickCard() ";
         let { volatile, settings, card } = this;
         let { development } = settings;
-        let dbg = development && DEBUG_FOCUS;
-        dbg && console.log(msg, card);
+        let dbg = development && (DEBUG_FOCUS||DEBUG_CLICK);
+        dbg && console.log(msg, 'setRoute', card.id);
         volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
@@ -148,14 +149,20 @@
         }
       },
       clickDelete() {
+        const msg = "EbtCard.clickDelete()";
         let { card, settings, config } = this;
+        let dbg = DEBUG_CLICK;
         this.clickMinimize();
         setTimeout(()=>{
+          dbg && console.log(msg, card.id);
           settings.removeCard(card, config);
         }, 500);
       },
       clickMinimize() {
+        const msg = "EbtCard.clickMinimize()";
         let { audio, card, settings } = this;
+        let dbg = DEBUG_CLICK;
+        dbg && console.log(msg, card.id);
         audio.playClick();
         this.closeCard(card, settings);
       },

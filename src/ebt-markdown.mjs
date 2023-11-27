@@ -146,7 +146,8 @@ export default class EbtMarkdown {
     let imgHtml = [];
     if (img) {
       let imgHref = imgSrc || link;
-      imgHref && imgHtml.push(` <a href="${imgHref}" target="_blank">`);
+      imgHref && imgHtml.push(
+        ` <a href="${imgHref}" target="_blank" tabindex=-1>`);
       let src = img.match(/^https?:/i)
         ? img.replace(': /', ':/') 
         : `${basePath}img/${img}`;

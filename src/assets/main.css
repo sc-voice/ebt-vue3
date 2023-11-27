@@ -188,6 +188,10 @@ a:focus {
   margin-top: 0.3em;
   margin-left: 1em;
 }
+a:focus-within > .ebt-toc-item-title {
+  padding: 1pt;
+  outline: 1pt dashed rgb(var(--v-theme-link));
+} 
 .ebt-toc-detail summary {
   font-size: .93em;
 }
