@@ -112,7 +112,7 @@ const renderer = new MarkdownItRenderer();
       '</article>',
     ]);
   });
-  it("html heading", async ()=>{
+  it("TESTTESThtml heading", async ()=>{
     let appName = "TEST_APPNAME";
     let imgSrc = "test-img-src";
     let markdown = [
@@ -147,7 +147,7 @@ const renderer = new MarkdownItRenderer();
     should.deepEqual(htmlLines, [
       EbtMarkdown.HTML_HEAD,
       '<div class="ebt-wiki-heading">',
-      ` <a href="${imgSrc}" target="_blank">`,
+      ` <a href="${imgSrc}" target="_blank" tabindex=-1>`,
       `  <img src="${src}" alt="test-img-alt" title="test-img-alt"/>`,
       ' </a>',
       ' <div class="ebt-wiki-heading-text">',
@@ -164,7 +164,7 @@ const renderer = new MarkdownItRenderer();
       EbtMarkdown.HTML_TAIL,
     ]);
   });
-  it("html heading optional", async ()=>{
+  it("TESTTESThtml heading optional", async ()=>{
     let appName = "TEST_APPNAME";
     let imgSrc = "test-img-src";
     let markdown = [
@@ -203,7 +203,7 @@ const renderer = new MarkdownItRenderer();
     should.deepEqual(htmlLines, [
       EbtMarkdown.HTML_HEAD,
       '<div class="ebt-wiki-heading">',
-      ` <a href="${imgSrc}" target="_blank">`,
+      ` <a href="${imgSrc}" target="_blank" tabindex=-1>`,
       `  <img src="${src}" alt="test-img-alt" title="test-img-alt"/>`,
       ' </a>',
       ' <div class="ebt-wiki-heading-text">',
