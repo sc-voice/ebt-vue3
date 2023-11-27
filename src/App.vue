@@ -23,9 +23,12 @@
               <div :title="titlePopup">
                 {{config.appName}}
               </div>
-              <div v-if="settings.logLevel==='info'" class="activeElt">
-                {{activeElt}}
-                w:{{viewWidth}}
+              <div v-if="settings.logLevel==='info'" class="app-debug">
+                <span title="activeElt">{{activeElt}}</span>
+                &nbsp;
+                <span title="routeCard">{{volatile.routeCard?.id}}</span>
+                &nbsp;
+                <span title="viewWidth">w{{viewWidth}}</span>
               </div>
             </div>
           </v-app-bar-title>
@@ -372,7 +375,7 @@
   margin-bottom: 0.2em;
   margin-right: 0.2em;
 }
-.activeElt{
+.app-debug{
   margin-left: 0.5em;
   font-size: 12px;
 }

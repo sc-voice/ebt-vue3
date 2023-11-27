@@ -61,7 +61,9 @@
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from 'log-instance/index.mjs';
   import { nextTick, ref } from "vue";
-  import { DEBUG_FOCUS, DEBUG_SCROLL } from '../defines.mjs';
+  import { 
+    DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL 
+  } from '../defines.mjs';
 
   export default {
     inject: ['config'],
@@ -83,27 +85,22 @@
       SearchView,
       SuttaView,
     },
+    beforeMount() {
+      const msg = 'EbtCard.beforeMount() ';
+      let { card, $route, volatile, settings } = this;
+      let { fullPath:path } = $route;
+      let { langTrans:defaultLang } = settings;
+      let { id, location, context } = card;
+      let dbg = DEBUG_MOUNTED || DEBUG_FOCUS;
+      if (card.matchPath({path, defaultLang})) {
+        dbg && console.log(msg, '[1]routeCard',
+          `${id}_${context}:${location[0]}`);
+        volatile.setRouteCard(card);
+      }
+    },
     mounted() {
       const msg = 'EbtCard.mounted() ';
-      let { card, $route, settings } = this;
-      let { langTrans:defaultLang } = settings;
-      let { id, location } = card;
-      let { fullPath, } = $route;
-      let dbg = DEBUG_FOCUS;
       this.addIntersectionObserver();
-      if (card.matchPath({path:fullPath, defaultLang})) {
-        nextTick(() => {
-          let { activeElement } = document;
-          dbg && console.log(msg, '[1] focus', 
-            {fullPath, $route, activeElement});
-          card.focus(fullPath);
-          dbg && console.log(msg, '[2] focus', document.activeElement);
-        });
-        logger.debug(msg, "routeCard:", {id});
-      } else {
-        let routeHash = card.routeHash();
-        dbg && console.log(msg, '[4]', {id, routeHash});
-      }
     },
     updated() {
       this.addIntersectionObserver();
@@ -123,8 +120,10 @@
       },
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
-        let { volatile, card } = this;
-        //console.log(msg, card);
+        let { volatile, settings, card } = this;
+        let { development } = settings;
+        let dbg = development && DEBUG_FOCUS;
+        dbg && console.log(msg, card);
         volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
@@ -220,10 +219,18 @@
         return logLevel === 'info' || logLevel === 'debug';
       },
       cardClass(ctx) {
+        const msg = 'EbtCard.cardClass';
         let { settings, volatile, card } = ctx;
-        let cardClass = volatile.routeCard === card
-          ? `ebt-card ebt-card-${card.context} ebt-card-current`
-          : `ebt-card ebt-card-${card.context}`;
+        let dbg = settings.development && DEBUG_FOCUS;
+        let cardClass = `ebt-card ebt-card-${card.context}`;
+        let { routeCard } = volatile;
+
+        if (routeCard?.id === card?.id) {
+          cardClass += ' ebt-card-current';
+          dbg && console.log(msg, '[1]routeCard', card.id); 
+        } else {
+          //dbg && console.log(msg, '[2]card', card, routeCard);
+        }
 
         return cardClass;
       },

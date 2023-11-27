@@ -165,7 +165,7 @@
     },
     mounted() {
       const msg = 'SearchView.mounted()';
-      let { card, $route, settings} = this;
+      let { card, $route, settings, volatile} = this;
       let { langTrans, development } = settings;
       let { fullPath } = $route;
       let dbg = development && DEBUG_SEARCH;
@@ -174,16 +174,7 @@
         dbg && console.log(msg, '[1] onSearch', {card, });
         nextTick(()=>this.onSearch());
       }
-      if (card.matchPath({path:fullPath, defaultLang:langTrans})) {
-        let { activeElement } = document;
-        dbg && console.log(msg, '[2] focus', 
-          {fullPath, $route, activeElement});
-        card.focus(fullPath);
-        dbg && console.log(msg, '[3] focus', document.activeElement);
-      } else {
-        let routeHash = card.routeHash();
-        dbg && console.log(msg, '[4]', {id:card.id, routeHash});
-      }
+      card.onAfterMounted({settings, volatile});
     },
     computed: {
       resultsClass(ctx) {

@@ -36,16 +36,7 @@
       dbg && console.log(msg, '[1]fetchWikiHtml', {location});
       await volatile.fetchWikiHtml(location, msg);
       dbg && console.log(msg, '[2]fetchWikiHtml', {location});
-      if (card.matchPath({path:fullPath, defaultLang:langTrans})) {
-        let { activeElement } = document;
-        dbg && console.log(msg, '[1] focus', 
-          {fullPath, $route, activeElement});
-        card.focus(fullPath);
-        dbg && console.log(msg, '[2] focus', document.activeElement);
-      } else {
-        let routeHash = card.routeHash();
-        dbg && console.log(msg, '[3]', {id, routeHash});
-      }
+      card.onAfterMounted({settings, volatile});
     },
     computed: {
     },

@@ -4,6 +4,9 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
+import {
+  DEBUG_FOCUS,
+} from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
 
@@ -24,7 +27,7 @@ const INITIAL_STATE = {
   delayedWaiting: 0,
   ebtChips: ref(undefined),
   homeHtml: ref('loading...'),
-  routeCard: ref(undefined),
+  routeCard: undefined,
   showAlertMsg: ref(false),
   showSettings,
   showWaiting: ref(false),
@@ -42,6 +45,7 @@ export const useVolatileStore = defineStore('volatile', {
   state: () => {
     let s = Object.assign({}, INITIAL_STATE);
     logger.debug(`volatile.state() => `, s);
+    console.log('volatile.state()');
     return s;
   },
   getters: {
@@ -53,7 +57,8 @@ export const useVolatileStore = defineStore('volatile', {
     },
     audioCard() {
       let { routeCard } = this;
-      return routeCard?.context === EbtCard.CONTEXT_SUTTA ? routeCard : null;
+      return routeCard?.context === EbtCard.CONTEXT_SUTTA 
+        ? routeCard : null;
     },
     displayBox() {
       let root = document?.documentElement;
@@ -78,6 +83,12 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    setRouteCard(card) {
+      const msg = 'volatile.setRouteCard()';
+      let dbg = DEBUG_FOCUS;
+      dbg && console.log(msg, `${card.id} ${card.context}`);
+      this.routeCard = card;
+    },
     trilingualPattern(search) {
       const msg = 'volatile.trilingualPattern() ';
       let settings = useSettingsStore();
@@ -114,29 +125,34 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.setRoute()';
       let { config, } = this;
       let settings = useSettingsStore();
+      let { development } = settings;
+      let dbg = development && (DEBUG_FOCUS);
       cardOrRoute = cardOrRoute || config?.homePath;
       if (!cardOrRoute) {
-        console.trace(msg, 'ERROR: cardOrRoute is required');
+        console.trace(msg, '[1]ERROR: cardOrRoute is required');
         return;
       }
       let isCard = !(typeof cardOrRoute === 'string');
       let route = isCard ? cardOrRoute.routeHash() : cardOrRoute;
       let card = isCard ? cardOrRoute : settings.pathToCard(route);
+      let { visible } = card;
 
       const { window } = globalThis;
       if (window == null) {
-        console.trace(msg, 'DBG0418', 'no window');
+        console.trace(msg, '[2]', 'no window');
       } else if (window.location.hash === route) {
         if (card.isOpen) {
-          //console.log(msg, "same route");
           switch (card.context) {
             case 'wiki':
+              dbg && console.log(msg, "[3]same route", card.id, 
+                {visible});
               if (!card.visible) {
                 settings.scrollToCard(card);
               }
               break;
             case 'search':
             case 'sutta':
+              dbg && console.log(msg, "[4]same route", card.id);
               settings.scrollToCard(card);
               break;
           }
@@ -145,7 +161,7 @@ export const useVolatileStore = defineStore('volatile', {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
         this.debugText += `${msg}-${caller}-${route}`;
-        //console.log(msg, "different route", {route});
+        dbg && console.log(msg, "[5]different route", {route});
         window.location.hash = route;
         let expected = activeElement;
         let actual = document?.activeElement;
@@ -153,12 +169,16 @@ export const useVolatileStore = defineStore('volatile', {
           if (keepFocus) {
             activeElement.focus(); // Why do we need to do this?
           } else {
-            //console.trace(msg, 'DBG0418', `activeElement`, {expected, actual, route});
+            dbg && console.log(msg, `[6]activeElement`, 
+              {expected, actual, route});
           }
         }
       }
 
-      this.routeCard = card;
+      if (this.routeCard !== card) {
+        this.routeCard = card;
+        dbg && console.log(msg, '[7]routeCard <=', card.id);
+      }
       return card;
     },
     async fetchText(href) {

@@ -4,6 +4,7 @@ import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DEBUG_FOCUS,
   DEBUG_PATH, 
+  DEBUG_SCROLL,
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
@@ -191,6 +192,25 @@ export default class EbtCard {
     return elt;
   }
 
+  onAfterMounted({settings, volatile}) {
+    const msg = "ebt-card.onAfterMounted()";
+    let { langTrans, development } = settings;
+    let { id } = this;
+    let route = window.location.hash.split('#')[1] || '';
+    let dbg = development && (DEBUG_FOCUS || DEBUG_SCROLL);
+    if (this.matchPath({path:route, defaultLang:langTrans})) {
+      let { activeElement } = document;
+      if (volatile.routeCard?.id !== id) {
+        volatile.routeCard = this;
+        dbg && console.log(msg, `[1]focus ${id}`, {route, activeElement});
+        this.focus(route);
+      } else {
+        this.focus(route);
+        dbg && console.log(msg, `[2]focus ${id} activeElement:`, document.activeElement);
+      }
+    }
+  }
+
   routeHash(dstPath) {
     let { context, location } = this;
     switch (context) {
@@ -201,7 +221,9 @@ export default class EbtCard {
         
       case CONTEXT_SUTTA: 
         if (dstPath) {
-          let [ ignored, ctx, suttaSeg, lang, author ] =  dstPath.split('/');
+          let [ 
+            ignored, ctx, suttaSeg, lang, author 
+          ] =  dstPath.split('/');
           location[0] = suttaSeg;
         }
         let [ suttaSeg, lang, author ] = location;

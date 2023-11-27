@@ -44,7 +44,7 @@
   import { default as SegmentView } from './SegmentView.vue';
   import { default as SegmentHeader } from './SegmentHeader.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
-  import { DEBUG_SCROLL, DEBUG_FOCUS } from '../defines.mjs';
+  import { DEBUG_KEY, DEBUG_SCROLL, DEBUG_FOCUS } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
   export default {
@@ -75,7 +75,6 @@
       let { fullPath } = $route;
       let { development, langTrans } = settings;
       let { id, location, data } = card;
-      let dbg = development && (DEBUG_FOCUS || DEBUG_SCROLL);
       let ref = {
         sutta_uid:location[0], 
         lang:location[1], 
@@ -95,34 +94,24 @@
       let { langTrans:defaultLang } = settings;
       this.idbSuttaRef = idbSuttaRef?.value;
 
-      if (card.matchPath({path:$route.fullPath, defaultLang})) {
-        let { activeElement } = document;
-        dbg && console.log(msg, '[1]focus', 
-          {fullPath, $route, activeElement});
-        card.focus(fullPath);
-        dbg && console.log(msg, '[2]scroll', document.activeElement);
-        let segmentElementId = card.segmentElementId();
-        settings.scrollToElementId(segmentElementId);
-        let routeHash = card.routeHash();
-        if (window.location.hash !== routeHash) {
-          dbg && console.log(msg, '[3]setRoute', {routeHash});
-          volatile.setRoute(routeHash, undefined, msg);
-        }
-      }
+      card.onAfterMounted({settings, volatile});
     },
     methods: {
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
+        const { settings } = this;
+        let dbg = DEBUG_KEY && settings.development;
         let { audio } = this;
         switch (evt.code) {
           case 'Tab': {
             let elt = document.getElementById('ebt-chips');
-            console.log(msg, {elt});
+            dbg && console.log(msg, '[1]focus', {elt,evt});
             elt && elt.focus();
             evt.preventDefault();
             break;
           }
           default:
+            dbg && console.log(msg, '[2]audio.keydown', {evt});
             audio.keydown(evt);
             break;
         }

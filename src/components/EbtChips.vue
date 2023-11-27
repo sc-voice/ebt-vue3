@@ -135,10 +135,13 @@
         let { volatile } = this;
         let chipClass = [];
 
-        card.context === EbtCard.CONTEXT_WIKI && chipClass.push('chip-home');
+        card.context === EbtCard.CONTEXT_WIKI && 
+          chipClass.push('chip-home');
         chipClass.push(card.isOpen ? 'chip-open' : 'chip-closed');
         card.isOpen && card.visible && chipClass.push('card-in-view');
-        card === volatile.routeCard && chipClass.push('chip-route-card');
+        if (card?.id === volatile.routeCard?.id) {
+          chipClass.push('chip-route-card');
+        }
         return chipClass.join(' ');
       },
     },
