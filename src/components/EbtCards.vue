@@ -29,9 +29,12 @@
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
-  import { DEBUG_FOCUS, DEBUG_SCROLL } from '../defines.mjs';
+  import { 
+    DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL 
+  } from '../defines.mjs';
 
   export default {
+    inject: ["config"],
     setup() {
       return {
         audio: useAudioStore(),
@@ -42,28 +45,28 @@
     },
     mounted() {
       let msg = 'EbtCards.mounted() ';
-      let { settings, volatile, $route }  = this;
+      let { settings, volatile, $route, config }  = this;
 
-      let { params, path='/home' }  = $route;
+      let { params, path }  = $route;
       let { cards, debugScroll } = settings;
-      let dbg = DEBUG_SCROLL;
-      if (path === "/" ) {
-        path = "/home"
+      let dbg = DEBUG_STARTUP || DEBUG_SCROLL;
+      if (!path || path === "/" ) {
+        path = `${config.basePath}${config.homePath}`;
       }
       let card = settings.pathToCard(path);
 
-      dbg && console.log(msg, '[1]', {$route}, card?.id);
+      dbg && console.log(msg, `[1]${card.id} ${path}`);
 
       if (card == null) {
-        dbg && console.warn(msg+"[2]UNEXPECTED", {$route, path});
+        dbg && console.warn(msg, "[2]UNEXPECTED", {$route, path});
       } else {
-        let { activeElement } = document;
         volatile.setRoute(card, true, msg);
+        let { activeElement } = document;
         nextTick(() => {
           volatile.setRoute(card, true);
           settings.scrollToCard(card);
           this.bindAudioSutta(window.location.hash);
-          dbg && console.log(msg, '[3]', {card, activeElement});
+          dbg && console.log(msg, '[3]bindAudioSutta', {activeElement});
         });
       }
     },

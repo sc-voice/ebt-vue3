@@ -17,7 +17,9 @@
     </v-card-actions>
     <v-card-text>
       <div class="form">
-        <v-radio-group id="rg" v-model="legacyVoice" >
+        <v-radio-group id="rg" v-model="legacyVoice" 
+          @update:modelValue="onChangedChoice"
+        >
           <v-radio id="rnew" class="recommend" value="new"
             :label="$t('ebt.tryNewVoice', {APPNAME:config.appName})"
           />
@@ -45,14 +47,14 @@
       <v-btn icon="mdi-close" @click="onCancel()"/>
       <v-spacer />
       <div v-if="legacyVoice==='new'">
-        <v-btn icon="mdi-check-bold" 
+        <v-btn id="legacy-commit" icon="mdi-check-bold" 
           :disabled="legacyVoice==='ask'"
           @click="onSave()"
           class="recommend"
         ></v-btn>
       </div>
       <div v-if="legacyVoice!=='new'">
-        <v-btn icon="mdi-check-bold" 
+        <v-btn id="legacy-commit" icon="mdi-check-bold" 
           :disabled="legacyVoice==='ask'"
           @click="onSave()"
         ></v-btn>
@@ -66,6 +68,7 @@
     onUpdated, inject, nextTick, computed, ref, onMounted,
   } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
+  import { DEBUG_STARTUP } from '../defines.mjs';
   const msg = "LegacyVoice.setup()"
   const config = inject('config');
   const i18n = inject('i18n');
@@ -94,6 +97,28 @@
     // let { locale } = i18n;
     // console.log(msg, {locale});
   });
+
+  function onChangedChoice(evt) {
+    const msg = 'LegacyVoice.onChangedChoice()';
+    let dbg = DEBUG_STARTUP;
+    switch (legacyVoice.value) {
+      case 'old': {
+        nextTick(()=>{
+          let eltSave = document.getElementById('legacy-commit');
+          dbg && console.log(msg, `[1]${legacyVoice.value}`, 
+            {evt, eltSave});
+          eltSave && eltSave.focus();
+        });
+        break;
+      }
+      default: {
+        let eltSave = document.getElementById('legacy-commit');
+        dbg && console.log(msg, `[2]${legacyVoice.value}`, 
+          {evt, eltSave});
+        break;
+      }
+    }
+  }
 
   settings.loadSettings().then(()=>{
     const msg = 'LegacyVoice.loadSettings()';
@@ -150,7 +175,9 @@
       : 'dim'
   }
 
+  /*
   onUpdated(()=>{
+    let dbg = DEBUG_STARTUP;
     nextTick(()=>{
       let msg = 'LegacyVoice.onUpdated()';
       let id = `r${legacyVoice.value}`;
@@ -158,14 +185,15 @@
       if (!eltId) {
         id = "rnew";
         eltId = document.getElementById(id);
-        console.log(msg, {id, eltId});
+        dbg && console.log(msg, '[1]', {id, eltId});
       }
       if (eltId && document.activeElement !== eltId) {
-        console.log(msg, {eltId});
+        dbg && console.log(msg, '[2]', {eltId});
         eltId.focus();
       }
     });
   });
+  */
 </script>
 <style scoped>
 .form {
