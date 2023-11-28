@@ -183,13 +183,22 @@
         });
       },
     },
+    updated() {
+      let msg = 'App.updated()';
+      let { volatile } = this;
+      let dbg = DEBUG_STARTUP;
+      volatile.updated = true;
+      dbg && console.log(msg);
+    },
     async mounted() {
       let msg = 'App.mounted()';
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route
       } = this;
-      let dbg = settings.development && (DEBUG_FOCUS || DEBUG_SCROLL);
+      let dbg = settings.development && (
+        DEBUG_STARTUP || DEBUG_FOCUS || DEBUG_SCROLL
+      );
       volatile.$t = $t;
       volatile.config = config;
 

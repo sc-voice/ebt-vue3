@@ -28,6 +28,7 @@ const INITIAL_STATE = {
   ebtChips: ref(undefined),
   homeHtml: ref('loading...'),
   routeCard: undefined,
+  updated: false,
   showAlertMsg: ref(false),
   showSettings,
   showWaiting: ref(false),

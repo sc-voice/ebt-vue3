@@ -9,6 +9,7 @@ import { default as IdbAudio } from '../idb-audio.mjs';
 import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
+import { DEBUG_STARTUP } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
 const VUEREFS = new Map();
@@ -371,10 +372,17 @@ export const useAudioStore = defineStore('audio', {
     },
     async playElt(elt) {
       const msg = 'audio.playElt()';
-      try {
-        await elt.play();
-      } catch (e) {
-        console.trace(msg, e.message, {elt});
+      let volatile = useVolatileStore();
+      let dbg = DEBUG_STARTUP;
+      if (volatile.updated) {
+        try {
+          dbg && console.log(msg, '[1]play', elt);
+          await elt.play();
+        } catch (e) {
+          dbg && console.trace(msg, `[2]${e.message}`, {elt});
+        }
+      } else {
+        //dbg && console.trace(msg, `[3]ignored`);
       }
     },
     playClick(audioContext) {
