@@ -248,7 +248,7 @@ export default {
     "no-location-debug": "Debug",
     "no-location-home": "Home",
     "no-location-sutta": "Sutta...",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "すぐに経典を再生",
     "noHTML5": "このブラウザはHTML5オーディオをサポートしていません。ChromeまたはFirefoxを試して下さい。",
     "noNewContent": "No new content",

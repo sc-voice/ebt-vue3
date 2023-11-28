@@ -248,7 +248,7 @@ export default {
     "logLevel": "Console messages",
     "no-location-home": "",
     "no-location-sutta": "Sutta...",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Đọc kinh ngay",
     "noHTML5": "Trình duyệt không hỗ trợ âm thanh HTML5. Hãy dùng Chrome",
     "noNewContent": "No new content",

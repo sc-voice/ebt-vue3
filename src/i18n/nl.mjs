@@ -249,7 +249,7 @@ export default {
     "no-location-home": "",
     "no-location-search": "Search...",
     "no-location-sutta": "Sutta",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Speel soetra direct af",
     "noHTML5": "Uw browser ondersteunt geen HTML5-audio. Probeer Chrome",
     "noNewContent": "No new content",

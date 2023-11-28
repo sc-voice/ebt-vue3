@@ -250,7 +250,7 @@ export default {
     "no-location-home": "Home",
     "no-location-search": "Search...",
     "no-location-sutta": "Sutta",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Spila Suttu strax",
     "noHTML5": "Vafrinn þinn styður ekki HTML5 hljóð. Prófaðu Chrome",
     "noNewContent": "No new content",

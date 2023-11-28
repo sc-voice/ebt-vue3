@@ -247,7 +247,7 @@ export default {
     "no-location-home": "",
     "no-location-search": "...",
     "no-location-sutta": "Sutta...",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "වහා සූත්‍රය වාදනය කරන්න",
     "noHTML5": "ඔබගේ බ්‍රව්සරය HTML5 audio හට සහාය නොදක්වයි. Chrome අත්හදා බලන්න",
     "noNewContent": "No new content",

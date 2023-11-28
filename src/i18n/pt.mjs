@@ -250,7 +250,7 @@ export default {
     "no-location-home": "",
     "no-location-search": "...",
     "no-location-sutta": "Sutta...",
-    "no-location-wiki": "Bem-vindo",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Ouvir sutta imediatamente",
     "noHTML5": "Seu browser não carrega áudio HTML5. Tente usar o Chrome",
     "noNewContent": "Nemhum conteúdo novo",

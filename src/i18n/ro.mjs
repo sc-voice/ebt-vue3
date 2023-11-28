@@ -247,7 +247,7 @@ export default {
     "no-location-home": "Home",
     "no-location-search": "Search...",
     "no-location-sutta": "Sutta...",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Redă sutta imediat",
     "noHTML5": "Browserul nu are capacitatea de a reda audio folosind HTML5. Vă recomandăm să încercați Chrome",
     "noNewContent": "No new content",

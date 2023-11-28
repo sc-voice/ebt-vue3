@@ -249,7 +249,7 @@ export default {
     "no-location-home": "Home",
     "no-location-search": "Search...",
     "no-location-sutta": "Sutta",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Odtwarzaj suttę bez dzwonka",
     "noHTML5": "Brak obsługi HTML5 audio w twojej przeglądarce. Spróbuj w Chrome",
     "noNewContent": "No new content",

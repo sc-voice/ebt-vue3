@@ -247,7 +247,7 @@ export default {
     "no-location-home": "Home",
     "no-location-search": "Search...",
     "no-location-sutta": "Sutta",
-    "no-location-wiki": "Welcome",
+    "no-location-wiki": "Unknown wiki location",
     "noBell": "Afspil suttaen med det samme",
     "noHTML5": "Din browser understøtter ikke lyd i HTML5-format. Prøv Chrome",
     "noNewContent": "No new content",
