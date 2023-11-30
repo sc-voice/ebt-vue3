@@ -279,6 +279,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSs",
     "settingsTitle": "Innstillinger",
+    "show": "Show",
     "showGdpr": "Show GDPR notice",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",

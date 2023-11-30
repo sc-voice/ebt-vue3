@@ -281,6 +281,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSs",
     "settingsTitle": "Thiết lập",
+    "show": "Show",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",
     "showOnlyPaliText": "Chỉ hiển thị văn bản Pali",

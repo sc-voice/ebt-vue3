@@ -276,6 +276,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSसे",
     "settingsTitle": "सेटिंग्स",
+    "show": "Show",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",
     "showOnlyPaliText": "केवल पालि ही दिखाए",

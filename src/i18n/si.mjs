@@ -279,6 +279,7 @@ export default {
     "searching": "Searching...",
     "seconds": "තA_SECONDS",
     "settingsTitle": "සැකසීම්",
+    "show": "Show",
     "showGdpr": "Show GDPR notice",
     "showGithub": "Show Github source",
     "showLineByLine": "පේළියෙන් පේළිය පෙන්වන්න",

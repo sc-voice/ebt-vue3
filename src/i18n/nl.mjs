@@ -282,6 +282,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSs",
     "settingsTitle": "Instellingen",
+    "show": "Show",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",
     "showOnlyPaliText": "Toon uitsluitend tekst in Pali",

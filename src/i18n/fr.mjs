@@ -280,6 +280,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSs",
     "settingsTitle": "Paramètres",
+    "show": "Show",
     "showGithub": "Show Github source",
     "showLineByLine": "Afficher ligne par ligne",
     "showOnlyPaliText": "Montrer seulement textes Pali",

@@ -91,7 +91,7 @@
         :text="$t('ebt.closeWiki')" arrow="top"
       ></Tutorial>
       <Tutorial setting="tutorWiki" :title="$t('ebt.show')" 
-        :text="$t('ebt.openWiki')" arrow="top" hflip
+        :text="$t('ebt.openWiki')" arrow="top" hflip :msDelay="1000"
       ></Tutorial>
       <Tutorial setting="tutorSearch" :title="$t('ebt.search')" 
         :text="$t('ebt.findSutta')" arrow="top" :msDelay="3000"

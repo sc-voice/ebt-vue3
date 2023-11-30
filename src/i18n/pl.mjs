@@ -281,6 +281,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSs",
     "settingsTitle": "Ustawienia",
+    "show": "Show",
     "showGdpr": "Show GDPR notice",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",

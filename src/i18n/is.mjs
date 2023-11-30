@@ -283,6 +283,7 @@ export default {
     "searching": "Searching...",
     "seconds": "A_SECONDSs",
     "settingsTitle": "Stillingar",
+    "show": "Show",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",
     "showOnlyPaliText": "Sýna aðeins texta á Pali",

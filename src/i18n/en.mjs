@@ -283,6 +283,7 @@ export default {
     "seconds": "A_SECONDSs",
     "server": "Server",
     "settingsTitle": "Settings",
+    "show": "Show",
     "showGdpr": "Show GDPR notice",
     "showGithub": "Show Github source",
     "showLineByLine": "Show line by line",

@@ -281,6 +281,7 @@ export default {
     "seconds": "A_SECONDS s",
     "server": "Server",
     "settingsTitle": "Einstellungen",
+    "show": "Show",
     "showGdpr": "DSGVO-Info zeigen",
     "showGithub": "Zum GitHub-Quellcode",
     "showLineByLine": "Zeile für Zeile darstellen",
