@@ -299,6 +299,7 @@ export default {
     "translatedBy": "Oversat af",
     "translation": "Oversættelse",
     "tryNewVoice": "Try new {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Webstedssprog",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

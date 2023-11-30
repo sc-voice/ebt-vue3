@@ -300,6 +300,7 @@ export default {
     "transLanguage": "Ngôn ngữ bản dịch",
     "translatedBy": "Translated by",
     "translation": "Translation",
+    "tutorial": "Tutorial",
     "uiLanguage": "Ngôn ngữ giao diên trong web",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

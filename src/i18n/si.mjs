@@ -300,6 +300,7 @@ export default {
     "translatedBy": "විසින් පරිවර්තනය කරන ලදි",
     "translation": "පරිවර්තනය",
     "tryNewVoice": "Try new {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "වෙබ් අඩවි භාෂාව",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

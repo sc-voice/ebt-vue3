@@ -295,6 +295,7 @@ export default {
     "transLanguage": "अनुवाद की भाषा",
     "translatedBy": "द्वारा अनुवाद",
     "translation": "Translation",
+    "tutorial": "Tutorial",
     "uiLanguage": "वेब साइट भाषा",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

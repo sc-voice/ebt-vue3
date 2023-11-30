@@ -18,6 +18,17 @@ if (keyPath == null) {
 if (keyPath.indexOf('.') < 0) {
   keyPath = `ebt.${keyPath}`;
 }
+let [groupKey, key, ...extraKeys] = keyPath.split('.');
+if (extraKeys.length) {
+  throw new Error(`unsupported key ${keyPath}`);
+}
+if (key == null) {
+  key = groupKey;
+  groupKey = 'ebt';
+}
+console.log({key, keyPath, groupKey});
+
+let WRITE=1;
 
 (async ()=>{
   let [...files] = await fs.promises.readdir(I18NDIR);
@@ -25,33 +36,28 @@ if (keyPath.indexOf('.') < 0) {
     let fpath = path.join(I18NDIR, f);
     let srcJson = await tsImport.load(fpath)
     let dstJson = JSON.parse(JSON.stringify(srcJson.default));
-    let groupObj = dstJson;
-    let groupParent;
-    let groupKey;
-    let groupKeys = keyPath.split('.');
-    let key = groupKeys.pop();
+    let groupObj = dstJson[groupKey];
+    let groupKeys = Object.keys(groupObj).sort;
 
-    while (groupKeys.length) {
-      groupKey = groupKeys.shift();
-      groupObj[groupKey] = groupObj[groupKey] || {};
-      groupParent = groupObj;
-      groupObj = groupObj[groupKey];
-    }
     if (value === "DELETE") {
       delete groupObj[key];
       let ts = 'export default ' + JSON.stringify(dstJson, null, 2);
-      await fs.promises.writeFile(fpath, ts);
+      WRITE && await fs.promises.writeFile(fpath, ts);
       console.log(`FILE: ${fpath} ${keyPath}: (deleted)`);
     } else if (value != null) {
       groupObj[key] = value;
       let groupKeys = Object.keys(groupObj).sort();
-      let groupSorted = groupKeys.reduce((a,key,i)=>{
-        a[key] = groupObj[key];
+      let groupSorted = groupKeys.reduce((a,k,i)=>{
+        a[k] = groupObj[k];
         return a;
       }, {});
-      groupParent[groupKey] = groupSorted;
+      dstJson[groupKey] = groupSorted;
+      console.log('keys', 
+        Object.keys(groupObj).length,
+        Object.keys(groupSorted).length,
+        groupKeys.length);
       let ts = 'export default ' + JSON.stringify(dstJson, null, 2);
-      await fs.promises.writeFile(fpath, ts);
+      WRITE && await fs.promises.writeFile(fpath, ts);
       console.log(`FILE: ${fpath} => ${keyPath}: "${groupObj[key]}"`);
     } else {
       let value = groupObj[key] == null ? "undefined" : `"${groupObj[key]}"`;

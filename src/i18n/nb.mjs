@@ -298,6 +298,7 @@ export default {
     "translatedBy": "Oversatt av",
     "translation": "Translation",
     "tryNewVoice": "Try new {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Nettsidespråk",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

@@ -303,6 +303,7 @@ export default {
     "translatedBy": "Přeložil",
     "translation": "Překlad",
     "tryNewVoice": "Try new {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Jazyk webové stránky",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

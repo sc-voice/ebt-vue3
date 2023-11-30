@@ -298,6 +298,7 @@ export default {
     "transLanguage": "Limba de traducere",
     "translatedBy": "Tradus de",
     "translation": "Traducere",
+    "tutorial": "Tutorial",
     "uiLanguage": "Limba site-ului web",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

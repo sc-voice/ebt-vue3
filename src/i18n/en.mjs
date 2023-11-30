@@ -308,6 +308,7 @@ export default {
     "translatedBy": "Translated by",
     "translation": "Translation",
     "tryNewVoice": "Try new {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Website language",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

@@ -306,6 +306,7 @@ export default {
     "translatedBy": "Übersetzt von",
     "translation": "Übersetzung",
     "tryNewVoice": "{APPNAME} ausprobieren!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Webseitensprache",
     "useOriginalVoice": "Heute ursprüngliches Voice benutzen",
     "viewDocument": "Zum Dokument",

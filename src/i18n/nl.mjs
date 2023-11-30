@@ -302,6 +302,7 @@ export default {
     "translatedBy": "Vertaald door",
     "translation": "Translation",
     "tryNewVoice": "Try new {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Taal van website",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",

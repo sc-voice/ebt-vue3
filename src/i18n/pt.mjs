@@ -303,6 +303,7 @@ export default {
     "translatedBy": "Traduzido por",
     "translation": "Tradução",
     "tryNewVoice": "Experimente o novo {APPNAME}!",
+    "tutorial": "Tutorial",
     "uiLanguage": "Idioma da página",
     "useOriginalVoice": "Use a Voice original hoje",
     "viewDocument": "Visualizar documento",

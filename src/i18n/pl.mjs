@@ -300,6 +300,7 @@ export default {
     "transLanguage": "Język tłumaczenia",
     "translatedBy": "Translated by",
     "translation": "Translation",
+    "tutorial": "Tutorial",
     "uiLanguage": "Język strony internetowej",
     "useOriginalVoice": "Use original Voice today",
     "viewDocument": "View document",
