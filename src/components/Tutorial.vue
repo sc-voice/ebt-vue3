@@ -55,7 +55,7 @@
   const audio = useAudioStore();
   const settings = useSettingsStore();
   const volatile = useVolatileStore();
-  const isShown = ref(false);
+  const isDelayed = ref(true);
   const props = defineProps({
     arrow: String,
     icon: String,
@@ -75,12 +75,12 @@
 
     if (msDelay) {
       setTimeout(()=>{
-        isShown.value = true;
+        isDelayed.value = false;
         dbg && console.log(msg, `[1]${setting}`, {msDelay});
       }, msDelay);
     } else {
       dbg && console.log(msg, `[2]${setting}`, {hflip});
-      isShown.value = true;
+      isDelayed.value = false;
     }
   });
   const showTutorial = computed(()=>{
@@ -96,7 +96,7 @@
       return false;
     }
     let { showSettings } = volatile;
-    let show = isShown.value && !showSettings && settings[setting];
+    let show = !isDelayed.value && !showSettings && settings[setting];
     if (!show) {
       return !!show;
     }

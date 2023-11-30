@@ -2,6 +2,7 @@
   <v-dialog v-if="showLegacyDialog" 
     v-model="showLegacyDialog"
     transition="dialog-top-transition"
+    persistent
     @update:modelValue="onClose"
     @keyup.enter="(legacyVoice !== 'ask') && onSave()"
   >

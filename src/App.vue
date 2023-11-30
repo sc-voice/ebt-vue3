@@ -89,20 +89,28 @@
         </div>
       </v-snackbar>
       <div v-if="settings.loaded && settings.legacyVoice!=='ask'">
-        <Tutorial setting="tutorClose" :title="$t('ebt.closeCard')" 
-          containerId="home-card-id" :msDelay="3000"
+        <Tutorial v-if="settings.tutorClose"
+          setting="tutorClose" :title="$t('ebt.closeCard')" 
+          containerId="home-card-id" 
           :text="$t('ebt.closeWiki')" arrow="top"
+          :msDelay="3000"
         ></Tutorial>
-        <Tutorial setting="tutorWiki" :title="$t('ebt.show')" 
-          :text="$t('ebt.openWiki')" arrow="top" hflip :msDelay="1000"
+        <Tutorial v-if="!settings.tutorClose"
+          setting="tutorWiki" :title="$t('ebt.show')" 
+          :text="$t('ebt.openWiki')" arrow="top" hflip 
+          :msDelay="1000"
         ></Tutorial>
-        <Tutorial setting="tutorSearch" :title="$t('ebt.search')" 
-          :text="$t('ebt.findSutta')" arrow="top" :msDelay="3000"
+        <Tutorial v-if="!settings.tutorWiki"
+          setting="tutorSearch" :title="$t('ebt.search')" 
+          :text="$t('ebt.findSutta')" arrow="top" 
+          :msDelay="3000"
         ></Tutorial>
-        <Tutorial setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
+        <Tutorial v-if="!settings.tutorSearch"
+          setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
           :text="$t('ebt.hearSutta')" arrow="bottom" hflip
         ></Tutorial>
-        <Tutorial setting="tutorSettings" 
+        <Tutorial v-if="!settings.tutorPlay"
+          setting="tutorSettings" 
           :title="$t('ebt.settingsTitle')" 
           :text="$t('ebt.customizeSettings')" arrow="top"
           :msDelay="10000"
