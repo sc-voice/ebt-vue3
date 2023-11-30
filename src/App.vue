@@ -86,14 +86,21 @@
           <div v-html="alertHtml" class="alert-html"/>
         </div>
       </v-snackbar>
+      <Tutorial setting="tutorClose" :title="$t('ebt.closeCard')" 
+        containerId="home-card-id" :msDelay="3000"
+        :text="$t('ebt.closeWiki')" arrow="top"
+      ></Tutorial>
+      <Tutorial setting="tutorWiki" :title="$t('ebt.show')" 
+        :text="$t('ebt.openWiki')" arrow="top" hflip
+      ></Tutorial>
       <Tutorial setting="tutorSearch" :title="$t('ebt.search')" 
-        :text="$t('ebt.findSutta')" arrow="top"
+        :text="$t('ebt.findSutta')" arrow="top" :msDelay="3000"
       ></Tutorial>
       <Tutorial setting="tutorSettings" :title="$t('ebt.settingsTitle')" 
         :text="$t('ebt.customizeSettings')" arrow="top"
       ></Tutorial>
       <Tutorial setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
-        :text="$t('ebt.hearSutta')" arrow="bottom"
+        :text="$t('ebt.hearSutta')" arrow="bottom" hflip
       ></Tutorial>
     </v-main>
   </v-app>
@@ -112,7 +119,9 @@
   import { useAudioStore } from './stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
-  import { DEBUG_FOCUS, DEBUG_SCROLL } from './defines.mjs';
+  import { 
+    DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL 
+  } from './defines.mjs';
 
   export default {
     inject: ['config'],

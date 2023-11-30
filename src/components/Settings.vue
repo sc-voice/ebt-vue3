@@ -335,15 +335,19 @@ export default {
   methods: {
     showTutorials(show) {
       let { settings } = this;
+      settings.tutorClose = show;
       settings.tutorPlay = show;
       settings.tutorSearch = show;
       settings.tutorSettings = show;
+      settings.tutorWiki = show;
     },
     tutorialState(show) {
       let { settings } = this;
-      return show === settings.tutorPlay &&
+      return show === settings.tutorClose &&
+        show === settings.tutorPlay &&
         show === settings.tutorSearch &&
-        show === settings.tutorSettings;
+        show === settings.tutorSettings &&
+        show === settings.tutorWiki;
     },
     validate() {
       const msg = "Settings.validate() ";

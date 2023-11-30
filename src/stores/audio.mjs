@@ -9,7 +9,9 @@ import { default as IdbAudio } from '../idb-audio.mjs';
 import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
-import { DEBUG_STARTUP } from '../defines.mjs';
+import { 
+  DEBUG_AUDIO, DEBUG_STARTUP 
+} from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
 const VUEREFS = new Map();
@@ -675,6 +677,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async bindSegmentAudio(args={}) {
       const msg = 'sutta.bindSegmentAudio() ';
+      let dbg = DEBUG_AUDIO;
       let { 
         $t=(t=>t),
         volatile=useVolatileStore(),
@@ -688,10 +691,10 @@ export const useAudioStore = defineStore('audio', {
       let { langTrans, vnameRoot, serverUrl } = settings;
       let [ scid, lang=langTrans, author ] = routeCard?.location || {};
       let srefStr = routeCard.location.join('/');
-      console.log(msg, {lang, routeCard});
+      dbg && console.log(msg, {lang, routeCard});
       let suttaRef = SuttaRef.create(srefStr, langTrans);
       let { sutta_uid, segnum, } = suttaRef;
-      console.log(msg, {sutta_uid, scid});
+      dbg && console.log(msg, {sutta_uid, scid});
       try {
         volatile.waitBegin('ebt.loadingAudio');
 
@@ -713,7 +716,7 @@ export const useAudioStore = defineStore('audio', {
             this.pliAudioUrl = URL_NOAUDIO;
           }
         }
-        console.log(msg, {segAudio, lang, segment});
+        dbg && console.log(msg, {segAudio, lang, segment});
         if (segment && settings.speakTranslation) {
           let langText = segment[lang];
           if (langText) {
@@ -731,7 +734,7 @@ export const useAudioStore = defineStore('audio', {
             this.transAudioUrl = URL_NOAUDIO;
           }
         }
-        logger.debug(msg + segment.scid);
+        dbg && console.log(msg + segment.scid);
         result = segAudio;
       } finally {
         volatile.waitEnd();

@@ -119,6 +119,11 @@
             }
           }
         }
+        switch (card.context) {
+          case EbtCard.CONTEXT_WIKI:
+            settings.tutorWiki = false;
+            break;
+        }
       },
       onClose: (card, settings) => { // DEPRECATED
         let { cards } = settings;

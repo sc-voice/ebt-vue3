@@ -162,6 +162,7 @@
         const msg = "EbtCard.clickMinimize()";
         let { audio, card, settings } = this;
         let dbg = DEBUG_CLICK;
+        settings.tutorClose = false;
         dbg && console.log(msg, card.id);
         audio.playClick();
         this.closeCard(card, settings);
