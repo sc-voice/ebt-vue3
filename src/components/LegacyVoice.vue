@@ -1,5 +1,6 @@
 <template>
-  <v-dialog v-if="showDialog" v-model="showDialog"
+  <v-dialog v-if="showLegacyDialog" 
+    v-model="showLegacyDialog"
     transition="dialog-top-transition"
     @update:modelValue="onClose"
     @keyup.enter="(legacyVoice !== 'ask') && onSave()"
@@ -68,16 +69,18 @@
     onUpdated, inject, nextTick, computed, ref, onMounted,
   } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
-  import { DEBUG_STARTUP } from '../defines.mjs';
+  import { useVolatileStore } from "../stores/volatile.mjs";
+  import { DEBUG_LEGACY, DEBUG_STARTUP } from '../defines.mjs';
   const msg = "LegacyVoice.setup()"
   const config = inject('config');
   const i18n = inject('i18n');
 
   // WARNING: Settings is not loaded yet in setup!
   const settings = useSettingsStore();
+  const volatile = useVolatileStore();
+  const showLegacyDialog = ref(false);
 
   const legacyVoice = ref();
-  const showDialog = ref(false);
   const voiceUrl = computed(()=>{
     const VOICE = "https://voice.suttacentral.net/scv/#/";
     const hash = location.hash.replace("#/sutta/",'');
@@ -142,7 +145,7 @@
       i18n.locale = locale;
     }
 
-    showDialog.value = isSrcSC && settings.legacyVoice !== 'new';
+    showLegacyDialog.value = isSrcSC && settings.legacyVoice !== 'new';
   });
 
   function onClose() {
@@ -151,21 +154,28 @@
   }
 
   function onCancel() {
-    showDialog.value = false;
+    showLegacyDialog.value = false;
   }
 
-  function onSave() {
+  async function onSave() {
     const msg = 'LegacyVoice.onSave()';
-    showDialog.value = false;
+    let dbg = DEBUG_LEGACY;
+    showLegacyDialog.value = false;
     settings.legacyVoice = legacyVoice.value;
+    await settings.saveSettings();
     switch (settings.legacyVoice) {
       case 'new':
         location.search = '';
+        dbg && console.log(msg, "[1]legacyVoice", settings.legacyVoice);
         break;
       case 'old': {
         location = voiceUrl.value;
+        dbg && console.log(msg, "[2]legacyVoice", settings.legacyVoice);
         break;
       }
+      default:
+        dbg && console.log(msg, "[3]legacyVoice", settings.legacyVoice);
+        break;
     }
   }
 

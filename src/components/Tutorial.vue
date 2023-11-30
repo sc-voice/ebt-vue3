@@ -89,8 +89,12 @@
     let { setting, containerId } = props;
     let { 
       tutorClose, tutorPlay, tutorSearch, tutorSettings, tutorWiki,
-      loaded, cards=[] 
+      legacyVoice, loaded, cards=[] 
     } = settings;
+    if (legacyVoice === 'ask' || legacyVoice === 'old') {
+      dbg && console.log(msg, setting, {legacyVoice});
+      return false;
+    }
     let { showSettings } = volatile;
     let show = isShown.value && !showSettings && settings[setting];
     if (!show) {
@@ -134,6 +138,15 @@
 
     return show;
   });
+  function tutorialsAllowed() {
+    let dbg = DEBUG_TUTORIAL;
+    if (!settings.loaded) {
+      dbg && console.log(msg, "false");
+      return false;
+    }
+    dbg && console.log(msg, "true");
+    return true;
+  }
   const contentClass = computed(()=>{
     let { setting } = props;
     return `tutorial-content-${setting}`;

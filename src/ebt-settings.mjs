@@ -40,9 +40,9 @@ export default class Settings {
       docLang,    // bilara translation document language (e.g., 'jpn')
       fullLine,
       highightExamples,
-      legacyVoice,// Show legacy voice dialog
       ips,
       langTrans,  // UI translation language (e.g., 'ja') 
+      legacyVoice,// Show legacy voice dialog
       locale,     // Web page language
       maxResults,
       refAuthor,
@@ -57,8 +57,8 @@ export default class Settings {
       speakPali,
       speakTranslation,
       swooshVolume,
-      tutorPlay,
       tutorClose,
+      tutorPlay,
       tutorSearch,
       tutorSettings,
       tutorWiki,

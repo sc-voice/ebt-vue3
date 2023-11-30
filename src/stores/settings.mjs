@@ -5,7 +5,9 @@ import Utils from "../utils.mjs";
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
-import { DEBUG_SCROLL, DEBUG_FOCUS } from '../defines.mjs';
+import { 
+  DEBUG_SETTINGS, DEBUG_SCROLL, DEBUG_FOCUS 
+} from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
 const SETTINGS_KEY = "settings";
@@ -91,7 +93,7 @@ export const useSettingsStore = defineStore('settings', {
         }
       }
       if (savedState) {
-        Utils.assignTyped(this, savedState, EbtSettings.INITIAL_STATE);
+        Utils.assignTyped(this, EbtSettings.INITIAL_STATE, savedState);
       }
       if (config?.monolingual) {
         this.langTrans = config.monolingual;
@@ -119,21 +121,21 @@ export const useSettingsStore = defineStore('settings', {
       }
       return card;
     },
-    saveSettings() {
+    async saveSettings() {
       const msg = "settings.saveSettings() ";
-      let saved = Utils.assignTyped({}, this, EbtSettings.INITIAL_STATE);
+      let dbg = DEBUG_SETTINGS;
+      let saved = Utils.assignTyped({}, EbtSettings.INITIAL_STATE, this);
       logger.logLevel = saved.logLevel;
       let validRes = EbtSettings.validate(saved);
       if (validRes.changed) {
-        //logger.info(msg, "settings changed", validRes.changed);
         Object.assign(this, validRes.changed);
       }
       if (validRes.error) {
         logger.warn(msg, error);
       }
       let json = JSON.stringify(saved);
-      Idb.set(SETTINGS_KEY, JSON.parse(json));
-      logger.debug(msg, saved);
+      await Idb.set(SETTINGS_KEY, JSON.parse(json));
+      dbg && console.log(msg, saved);
     },
     validate() {
       const msg = "settings.validate() ";
@@ -172,7 +174,7 @@ export const useSettingsStore = defineStore('settings', {
           //logger.info("addCard", {context, location, langTrans});
           card = new EbtCard(Object.assign({langTrans}, opts));
           this.cards.push(card);
-          this.saveSettings();
+          /* await */ this.saveSettings();
           break;
         default:
           //logger.info(`addCard => null [INVALID CONTEXT]`, opts);
@@ -221,7 +223,7 @@ export const useSettingsStore = defineStore('settings', {
       }, 300);
       return true; // element originally not in viewport
     },
-    clear() {
+    async clear() {
       const msg = 'settings.clear() ';
       // remove legacy ebt-site settings
       delete localStorage.settings; 
@@ -231,7 +233,7 @@ export const useSettingsStore = defineStore('settings', {
 
       // Save new settings
       Utils.assignTyped(this, EbtSettings.INITIAL_STATE);
-      this.saveSettings();
+      await this.saveSettings();
       //console.log(msg, this);
     },
     openCard(card) {

@@ -29,6 +29,8 @@
                 <span title="routeCard">{{volatile.routeCard?.id}}</span>
                 &nbsp;
                 <span title="viewWidth">w{{viewWidth}}</span>
+                &nbsp;
+                <span title="legacyVoice">{{settings.legacyVoice}}</span>
               </div>
             </div>
           </v-app-bar-title>
@@ -86,22 +88,26 @@
           <div v-html="alertHtml" class="alert-html"/>
         </div>
       </v-snackbar>
-      <Tutorial setting="tutorClose" :title="$t('ebt.closeCard')" 
-        containerId="home-card-id" :msDelay="3000"
-        :text="$t('ebt.closeWiki')" arrow="top"
-      ></Tutorial>
-      <Tutorial setting="tutorWiki" :title="$t('ebt.show')" 
-        :text="$t('ebt.openWiki')" arrow="top" hflip :msDelay="1000"
-      ></Tutorial>
-      <Tutorial setting="tutorSearch" :title="$t('ebt.search')" 
-        :text="$t('ebt.findSutta')" arrow="top" :msDelay="3000"
-      ></Tutorial>
-      <Tutorial setting="tutorSettings" :title="$t('ebt.settingsTitle')" 
-        :text="$t('ebt.customizeSettings')" arrow="top"
-      ></Tutorial>
-      <Tutorial setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
-        :text="$t('ebt.hearSutta')" arrow="bottom" hflip
-      ></Tutorial>
+      <div v-if="settings.loaded && settings.legacyVoice!=='ask'">
+        <Tutorial setting="tutorClose" :title="$t('ebt.closeCard')" 
+          containerId="home-card-id" :msDelay="3000"
+          :text="$t('ebt.closeWiki')" arrow="top"
+        ></Tutorial>
+        <Tutorial setting="tutorWiki" :title="$t('ebt.show')" 
+          :text="$t('ebt.openWiki')" arrow="top" hflip :msDelay="1000"
+        ></Tutorial>
+        <Tutorial setting="tutorSearch" :title="$t('ebt.search')" 
+          :text="$t('ebt.findSutta')" arrow="top" :msDelay="3000"
+        ></Tutorial>
+        <Tutorial setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
+          :text="$t('ebt.hearSutta')" arrow="bottom" hflip
+        ></Tutorial>
+        <Tutorial setting="tutorSettings" 
+          :title="$t('ebt.settingsTitle')" 
+          :text="$t('ebt.customizeSettings')" arrow="top"
+          :msDelay="10000"
+        ></Tutorial>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -162,9 +168,9 @@
         });
         logger.debug(msg);
       },
-      allowLocalStorage() {
+      async allowLocalStorage() {
         let { settings } = this;
-        settings.saveSettings();
+        await settings.saveSettings();
         logger.debug("allowLocalStorage()", settings);
       },
       onClickGdrp(evt) {
@@ -231,14 +237,15 @@
       $vuetify.theme.global.name = settings.theme === 'dark' 
         ? 'dark' : 'light';;
       $i18n.locale = settings.locale;
-      this.unsubSettings = settings.$subscribe((mutation, state) => {
+      let onSettingsChanged = async (mutation, state) => {
         $vuetify.theme.global.name = settings.theme === 'dark' 
           ? 'dark' : 'light';
-        dbg && console.log(msg, "[2]settings.subscribe()", 
+        dbg && console.log(msg, "[2]settings.onSettingsChanged()", 
           {mutation, state, settings});
-        settings.saveSettings();
+        await settings.saveSettings();
         $i18n.locale = settings.locale;
-      });
+      };
+      this.unsubSettings = settings.$subscribe(onSettingsChanged);
       window.addEventListener('keydown', evt=>{
         let msg = `App.mounted().keydown:${evt.code}`;
         let { audio } = this;

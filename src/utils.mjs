@@ -1,6 +1,6 @@
 
 export default class Utils {
-  static assignTyped(dst, src, initial=src) {
+  static assignTyped(dst, initial, src=initial) {
     let keys = Object.keys(initial);
     keys.forEach(k=>{
       let value = src[k];

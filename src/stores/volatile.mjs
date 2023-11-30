@@ -32,6 +32,7 @@ const INITIAL_STATE = {
   showAlertMsg: ref(false),
   showSettings,
   showWaiting: ref(false),
+  showLegacyDialog: ref(false),
   suttas,
   touchSwipe: ref('waiting...'),
   trilingual: ref(true),
