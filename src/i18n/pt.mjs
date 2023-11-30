@@ -256,6 +256,7 @@ export default {
     "noNewContent": "Nemhum conteúdo novo",
     "noTranslationAvailable": "(tradução não disponível)",
     "notFound": "\"A_PATTERN\" não encontrado. Tente no Voice.suttacentral.net",
+    "openWiki": "Open Wiki card",
     "pageNotFound": "Página não encontrada",
     "pinned": "Seleção: A_DATE",
     "playAll": "Ler tudo",

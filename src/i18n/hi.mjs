@@ -250,6 +250,7 @@ export default {
     "noTranslationAvailable": "(कोई अनुवादक उपलब्ध नही)",
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
     "ok": "OK",
+    "openWiki": "Open Wiki card",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
     "playAll": "Play all",

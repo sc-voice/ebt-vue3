@@ -254,6 +254,7 @@ export default {
     "noTranslationAvailable": "(පරිවර්තනයක් නොමැත)",
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
     "ok": "OK",
+    "openWiki": "Open Wiki card",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
     "playAll": "සියල්ල වාදනය කරන්න",
