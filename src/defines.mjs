@@ -9,5 +9,5 @@ export const DEBUG_SCROLL   = 0;
 export const DEBUG_SEARCH   = 0;
 export const DEBUG_STARTUP  = 0;
 export const DEBUG_SUTTA    = 0;
-export const DEBUG_TUTORIAL = 0;
+export const DEBUG_TUTORIAL = true;
 export const DEBUG_WIKI     = 0;
