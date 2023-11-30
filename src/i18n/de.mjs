@@ -214,6 +214,7 @@ export default {
     "clickPlaySegment": "Beliebiges Segment klicken und abspielen",
     "clickRefresh": "In der Web-Anwendung ist ein Fehler aufgetreten. Klicken Sie „Seite neu laden“, um fortzufahren.",
     "closeCard": "Schließen",
+    "closeWiki": "Close wiki card",
     "confirm": "Bestätigen",
     "context-home": "",
     "context-search": "Suche",

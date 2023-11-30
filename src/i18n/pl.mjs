@@ -214,6 +214,7 @@ export default {
     "click": "Click",
     "clickRefresh": "An application error has occurred. Click Refresh Page to continue",
     "closeCard": "Close",
+    "closeWiki": "Close wiki card",
     "confirm": "Confirm",
     "contentSutta": "Sutta",
     "context-home": "Home",

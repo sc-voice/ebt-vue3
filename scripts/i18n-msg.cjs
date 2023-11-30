@@ -37,7 +37,6 @@ let WRITE=1;
     let srcJson = await tsImport.load(fpath)
     let dstJson = JSON.parse(JSON.stringify(srcJson.default));
     let groupObj = dstJson[groupKey];
-    let groupKeys = Object.keys(groupObj).sort;
 
     if (value === "DELETE") {
       delete groupObj[key];

@@ -214,6 +214,7 @@ export default {
     "clickPlaySegment": "Clique para ouvir qualquer parte do texto",
     "clickRefresh": "Um erro ocorreu. Clique Recarregar Página para continuar",
     "closeCard": "Fechar",
+    "closeWiki": "Close wiki card",
     "confirm": "Confirmar",
     "contentWiki": "Wiki",
     "context-home": "Página inicial",

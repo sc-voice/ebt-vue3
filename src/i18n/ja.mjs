@@ -216,6 +216,7 @@ export default {
     "clickPlaySegment": "Click/play any segment",
     "clickRefresh": "An application error has occurred. Click Refresh Page to continue",
     "closeCard": "Close",
+    "closeWiki": "Close wiki card",
     "confirm": "Confirm",
     "context-home": "Home",
     "context-search": "Search",
