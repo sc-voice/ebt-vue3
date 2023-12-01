@@ -100,12 +100,12 @@
           :text="$t('ebt.openWiki')" arrow="top" hflip 
           :msDelay="1000"
         ></Tutorial>
-        <Tutorial v-if="!settings.tutorWiki"
+        <Tutorial v-if="showTutorSearch"
           setting="tutorSearch" :title="$t('ebt.search')" 
           :text="$t('ebt.findSutta')" arrow="top" 
           :msDelay="3000"
         ></Tutorial>
-        <Tutorial v-if="!settings.tutorSearch"
+        <Tutorial v-if="showTutorPlay"
           setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
           :text="$t('ebt.hearSutta')" arrow="bottom" hflip
         ></Tutorial>
@@ -123,6 +123,7 @@
 <script>
   import { default as HomeView } from './components/HomeView.vue';
   import Tutorial from './components/Tutorial.vue';
+  import EbtCard from './ebt-card.mjs';
   import EbtCards from './components/EbtCards.vue';
   import EbtChips from './components/EbtChips.vue';
   import Settings from './components/Settings.vue';
@@ -287,6 +288,19 @@
       }, 1000);
     },
     computed: {
+      showTutorPlay(ctx) {
+        let { audio, settings, } = this;
+        let { tutorWiki } = settings;
+        let show = audio.audioScid && !tutorWiki;
+        return show;
+      },
+      showTutorSearch(ctx) {
+        let { audio, settings, } = this;
+        let { tutorWiki, cards } = settings;
+        let nOpen = cards.reduce((a,c,i)=> (c.isOpen ? a+1 : a), 0);
+        let show = !audio.audioScid && !tutorWiki && nOpen <= 1;
+        return show;
+      },
       viewWidth(ctx) {
         return window?.innerWidth || root?.clientWidth;
       },

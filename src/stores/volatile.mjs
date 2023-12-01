@@ -6,6 +6,7 @@ import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
   DEBUG_FOCUS,
+  DEBUG_ROUTE,
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -127,7 +128,7 @@ export const useVolatileStore = defineStore('volatile', {
       let { config, } = this;
       let settings = useSettingsStore();
       let { development } = settings;
-      let dbg = development && (DEBUG_FOCUS);
+      let dbg = development && (DEBUG_ROUTE || DEBUG_FOCUS);
       cardOrRoute = cardOrRoute || config?.homePath;
       if (!cardOrRoute) {
         console.trace(msg, '[1]ERROR: cardOrRoute is required');

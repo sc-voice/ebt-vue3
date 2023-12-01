@@ -122,17 +122,14 @@
         show = show && !tutorClose && !wikiCard.isOpen;
         dbg && console.log(msg, `[1]${setting}`, {show});
         break;
-      case 'tutorSearch':
-        show = show && !tutorWiki && !hasSearch;
-        dbg && console.log(msg, `[1]${setting}`, {show, tutorWiki});
         break;
       case 'tutorSettings':
         show = show && !tutorSearch && !tutorPlay;
         break;
+      case 'tutorSearch':
       case 'tutorPlay':
-        show = show && audio.audioScid;
-        break;
       default:
+        // See App.mjs (showTutorSearch, showTutorPlay, etc.)
         break;
     }
 
@@ -226,7 +223,7 @@
 }
 .tutorial-content-tutorPlay {
   bottom: 40px !important;
-  right: calc(50vw - 110px)  !important;
+  right: calc(50vw - 113px)  !important;
 }
 .tutorial-content-tutorClose {
   top: 50px !important;

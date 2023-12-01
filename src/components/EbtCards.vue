@@ -30,7 +30,7 @@
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { 
-    DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL 
+    DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL 
   } from '../defines.mjs';
 
   export default {
@@ -60,13 +60,14 @@
       if (card == null) {
         dbg && console.warn(msg, "[2]UNEXPECTED", {$route, path});
       } else {
+        dbg && console.log(msg, '[3]setRoute', card.context, card.id);
         volatile.setRoute(card, true, msg);
         let { activeElement } = document;
         nextTick(() => {
           volatile.setRoute(card, true);
           settings.scrollToCard(card);
           this.bindAudioSutta(window.location.hash);
-          dbg && console.log(msg, '[3]bindAudioSutta', {activeElement});
+          dbg && console.log(msg, '[4]bindAudioSutta', {activeElement});
         });
       }
     },
@@ -140,7 +141,7 @@
         const msg = 'EbtCards.watch.$route';
         let { volatile, settings, $route }  = this;
         let { cards, debugScroll, debugFocus } = settings;
-        let dbg = DEBUG_SCROLL || DEBUG_FOCUS;
+        let dbg = DEBUG_ROUTE || DEBUG_SCROLL || DEBUG_FOCUS;
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DEBUG_FOCUS,
-  DEBUG_PATH, 
+  DEBUG_ROUTE, 
   DEBUG_SCROLL,
 } from './defines.mjs';
 
@@ -249,7 +249,7 @@ export default class EbtCard {
 
   matchPathSutta({opts, context, location, cardLocation, }) {
     let { path, defaultLang } = opts;
-    let dbg = DEBUG_PATH;
+    let dbg = DEBUG_ROUTE;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
     if (loc === '') {
