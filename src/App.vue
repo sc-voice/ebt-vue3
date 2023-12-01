@@ -109,7 +109,7 @@
           setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
           :text="$t('ebt.hearSutta')" arrow="bottom" hflip
         ></Tutorial>
-        <Tutorial v-if="!settings.tutorPlay"
+        <Tutorial v-if="!settings.tutorPlay && !settings.tutorSearch"
           setting="tutorSettings" 
           :title="$t('ebt.settingsTitle')" 
           :text="$t('ebt.customizeSettings')" arrow="top"

@@ -124,8 +124,6 @@
         break;
         break;
       case 'tutorSettings':
-        show = show && !tutorSearch && !tutorPlay;
-        break;
       case 'tutorSearch':
       case 'tutorPlay':
       default:
