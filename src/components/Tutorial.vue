@@ -4,8 +4,9 @@
     v-model="showTutorial"
     :absolute="!!props.containerId"
     :attach="containerElt()"
-    color="tutorial"
+    xcolor="tutorial"
     timeout="-1"
+    color="tutorial"
     :content-class="contentClass"
     :location="location"
     :transition="transition()"
@@ -227,7 +228,7 @@
   top: 50px !important;
 }
 .tutorial-content-tutorWiki {
-  left: 5px !important;
+  left: -5px !important;
   top: 80px !important;
 }
 .tutorial-arrow {

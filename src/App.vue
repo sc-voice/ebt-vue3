@@ -296,9 +296,10 @@
       },
       showTutorSearch(ctx) {
         let { audio, settings, } = this;
-        let { tutorWiki, cards } = settings;
+        let { tutorClose, tutorWiki, cards } = settings;
         let nOpen = cards.reduce((a,c,i)=> (c.isOpen ? a+1 : a), 0);
-        let show = !audio.audioScid && !tutorWiki && nOpen <= 1;
+        let show = !audio.audioScid && !tutorClose &&
+          !tutorWiki && nOpen <= 1;
         return show;
       },
       viewWidth(ctx) {

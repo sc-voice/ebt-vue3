@@ -3,6 +3,7 @@
   <v-sheet v-if="card.isOpen " :class="cardSheetClass"
     @focusin="onFocusIn"
     @click="onClickCard"
+    id="`${card.id}-sheet`"
   >
     <div :id="`${card.topAnchor}`" class="card-top-anchor debug">
       {{card.topAnchor}}
@@ -122,9 +123,8 @@
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
         let { volatile, settings, card } = this;
-        let { development } = settings;
-        let dbg = development && (DEBUG_FOCUS||DEBUG_CLICK);
-        dbg && console.log(msg, 'setRoute', card.id);
+        let dbg = DEBUG_FOCUS||DEBUG_CLICK;
+        dbg && console.log(msg, 'setRoute', card.id, evt);
         volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
