@@ -127,8 +127,7 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.setRoute()';
       let { config, } = this;
       let settings = useSettingsStore();
-      let { development } = settings;
-      let dbg = development && (DEBUG_ROUTE || DEBUG_FOCUS);
+      let dbg = DEBUG_ROUTE || DEBUG_FOCUS;
       cardOrRoute = cardOrRoute || config?.homePath;
       if (!cardOrRoute) {
         console.trace(msg, '[1]ERROR: cardOrRoute is required');

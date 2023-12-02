@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="wikihome">
+  <v-sheet class="wikihome" >
     <div v-html="volatile.homeHtml" />
   </v-sheet>
 </template>

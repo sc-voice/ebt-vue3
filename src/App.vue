@@ -5,6 +5,7 @@
         :extension-height="collapsed ? 0 : 40"
         :collapse="collapsed"
         density="compact"
+        class="ebt-app-bar"
       >
         <template v-if="collapsed">
           <v-btn icon 
@@ -335,6 +336,11 @@
   }
 </script>
 <style>
+.ebt-app-bar {
+  background: 
+    linear-gradient(130deg, #000, rgb(var(--v-theme-toolbar)))
+    !important;
+}
 .gdrp {
   position: fixed;
   color: rgb(var(--v-theme-chip));
@@ -378,9 +384,6 @@
 .ebt-title:focus-within img {
   font-size: 1.5rem !important;
   border: 1pt dashed rgb(var(--v-theme-chip));
-}
-.v-app-bar.v-toolbar {
-  background: linear-gradient(130deg, #000, rgb(var(--v-theme-toolbar)));
 }
 .app-menu-activator {
   padding-right: 10px;
