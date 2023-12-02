@@ -272,6 +272,13 @@ export const useSettingsStore = defineStore('settings', {
       }
       return scrolled;
     },
+    tutorialState(show) {
+      return show === this.tutorClose &&
+        show === this.tutorPlay &&
+        show === this.tutorSearch &&
+        show === this.tutorSettings &&
+        show === this.tutorWiki;
+    },
   },
   getters: {
     development(state) {

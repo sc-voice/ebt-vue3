@@ -144,8 +144,11 @@
             dbg && console.log(msg, "[1]scrollToCard", {id, evt});
             settings.scrollToCard(card);
             break;
+          case EbtCard.CONTEXT_WIKI:
+            dbg && console.log(msg, "[2]wiki", {id, evt});
+            break;
           default:
-            dbg && console.log(msg, "[2]scrollToCard", {id, evt});
+            dbg && console.warn(msg, "[3]", {id, evt});
             break;
         }
       },
@@ -168,9 +171,12 @@
         audio.playClick();
         this.closeCard(card, settings);
       },
-      focusTop() {
+      focusTop(evt) {
+        const msg = "EbtCard.focusTop()";
         let { settings, card } = this;
         let topId = card.topAnchor;
+        let dbg = DEBUG_FOCUS;
+        dbg && console.log(msg, {evt,topId});
         settings.scrollToElementId(topId);
       },
       closeCard: (card, settings) => {

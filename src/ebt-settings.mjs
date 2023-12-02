@@ -141,7 +141,7 @@ export default class Settings {
       scid: undefined,
       serverUrl: SERVERS[0].value,
       showGdpr: true,
-      showId: false,
+      showId: true,
       showPali: true,
       showReference: false,
       showTrans: true,

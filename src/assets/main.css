@@ -151,6 +151,21 @@ a:focus {
 .ebt-wiki th {
   border-bottom: 1pt solid grey;
 }
+.ebt-wiki details {
+  padding-left: 1em;
+}
+.ebt-wiki details:focus-within {
+  outline: 1pt dashed rgb(var(--v-theme-link));
+}
+.ebt-wiki summary {
+  margin-left: -0.5em;
+  font-weight: 700;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+.ebt-wiki summary {
+  outline: none;
+}
 .ebt-wiki-heading {
   display: flex;
   flex-flow: row wrap;

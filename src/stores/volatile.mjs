@@ -124,6 +124,15 @@ export const useVolatileStore = defineStore('volatile', {
       ].join('&');
       return `${searchPath}/${langTrans}?${query}`
     },
+    homePath() {
+      const msg = 'volatile.homePath()';
+      let { config, } = this;
+      let settings = useSettingsStore();
+      let { homePath, tutorialPath } = config;
+      let hp = settings.tutorialState(false)
+        ? homePath
+        : tutorialPath || homePath;
+    },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
       let { config, } = this;
@@ -148,8 +157,8 @@ export const useVolatileStore = defineStore('volatile', {
             case 'wiki':
               dbg && console.log(msg, "[3]same route", card.id, 
                 {visible});
-              if (!card.visible) {
-                settings.scrollToCard(card);
+              if (!visible) {
+                //settings.scrollToCard(card);
               }
               break;
             case 'search':
