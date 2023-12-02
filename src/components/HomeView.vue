@@ -8,7 +8,7 @@
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { logger } from 'log-instance/index.mjs';
-  import { DEBUG_WIKI } from '../defines.mjs';
+  import { DEBUG_HOME, DEBUG_WIKI } from '../defines.mjs';
   import { ref } from "vue";
 
   export default {
@@ -32,7 +32,7 @@
       let { langTrans } = settings;
       let { fullPath } = $route;
       let { id, location } = card;
-      let dbg = settings.development && (DEBUG_WIKI);
+      let dbg = DEBUG_HOME ||  DEBUG_WIKI;
       dbg && console.log(msg, '[1]fetchWikiHtml', {location});
       await volatile.fetchWikiHtml(location, msg);
       dbg && console.log(msg, '[2]fetchWikiHtml', {location});

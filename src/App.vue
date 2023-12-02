@@ -89,7 +89,7 @@
           <div v-html="alertHtml" class="alert-html"/>
         </div>
       </v-snackbar>
-      <div v-if="settings.loaded && settings.legacyVoice!=='ask'">
+      <div v-if="showTutorial">
         <Tutorial v-if="settings.tutorClose"
           setting="tutorClose" :title="$t('ebt.closeCard')" 
           containerId="home-card-id" 
@@ -136,7 +136,8 @@
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
   import { 
-    DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL 
+    DEBUG_TUTORIAL, DEBUG_HOME, DEBUG_KEY, DEBUG_STARTUP, 
+    DEBUG_FOCUS, DEBUG_SCROLL 
   } from './defines.mjs';
 
   export default {
@@ -167,16 +168,18 @@
     methods: {
       onHome(evt) {
         let msg = 'App.onHome() ';
-        let { volatile, audio, config } = this;
+        let { settings, volatile, audio, config } = this;
+        let dbg = DEBUG_HOME;
         audio.playBlock();
 
-        let location = `${config.basePath}${config.homePath}`;
+        let homePath = settings.homePath(config);
+        let location = `${config.basePath}${homePath}`;
+        dbg && console.log(msg, `[1]`, {location});
         window.location = location;
         volatile.ebtChips && nextTick(()=>{
-          //console.log(msg, 'ebtChips.focus()');
+          dbg && console.log(msg, `[2]ebtChips.focus()`);
           volatile.ebtChips.focus();
         });
-        logger.debug(msg);
       },
       async allowLocalStorage() {
         let { settings } = this;
@@ -206,6 +209,20 @@
           //console.log(msg, {autoFocus});
           autofocus && autofocus.focus();
         });
+      },
+      onKeydown(evt) {
+        let msg = `App.onKeydown:${evt.code}`;
+        let dbg = DEBUG_KEY;
+        let { audio } = this;
+        switch (evt.code) {
+          case 'Home': 
+            dbg && console.log(msg, '[3]onHome', {evt}); 
+            this.onHome(evt); 
+            break;
+          default: 
+            dbg && console.log(msg, '[4]', {evt}); 
+            break;
+        }
       },
     },
     updated() {
@@ -239,9 +256,10 @@
       });
 
       let wikiHash = hash.startsWith("#/wiki") ? hash : null;
+      let homePath = settings.homePath(config);
       let wikiCard = wikiHash
         ? settings.pathToCard(wikiHash)
-        : settings.pathToCard(config.homePath);
+        : settings.pathToCard(homePath);
       dbg && console.log(msg, '[1]', {wikiCard, $route});
 
       $vuetify.theme.global.name = settings.theme === 'dark' 
@@ -256,19 +274,8 @@
         $i18n.locale = settings.locale;
       };
       this.unsubSettings = settings.$subscribe(onSettingsChanged);
-      window.addEventListener('keydown', evt=>{
-        let msg = `App.mounted().keydown:${evt.code}`;
-        let { audio } = this;
-        switch (evt.code) {
-          case 'Home': 
-            dbg && console.log(msg, '[3]onHome', {evt}); 
-            this.onHome(evt); 
-            break;
-          default: 
-            dbg && console.log(msg, '[4]', {evt}); 
-            break;
-        }
-      })
+      let that = this;
+      window.addEventListener('keydown', (evt)=>this.onKeydown(evt));
       window.addEventListener('focusin', evt=>{
         let msg = 'App.mounted().focusin';
         let { audio } = this;
@@ -278,7 +285,6 @@
           audio.playClick();
         }
       });
-      let that = this;
       setInterval(()=>{
         let elt = window?.document?.activeElement;
         let activeElt = elt?.id || elt;
@@ -289,6 +295,30 @@
       }, 1000);
     },
     computed: {
+      showTutorial(ctx) {
+        const msg = "App.showTutorial";
+        let { search } = window.location;
+        let { settings } = ctx;
+        let isSrcSC = search.search('src=sc') >= 0;
+        let legacyAsk = settings.legacyVoice==='ask';
+        let dbg = DEBUG_TUTORIAL;
+        
+        if (!settings.loaded) {
+          //dbg && console.log(msg, '[1]not loaded');
+          return false;
+        }
+        if (settings.tutorialState(false)) {
+          //dbg && console.log(msg, '[2]completed');
+          return false;
+        }
+        if (isSrcSC && settings.legacyVoice === 'new') {
+          dbg && console.log(msg, '[3]legacy');
+          return true;
+        } 
+
+        dbg && console.log(msg, '[4]standalone');
+        return true;
+      },
       showTutorPlay(ctx) {
         let { audio, settings, } = this;
         let { tutorWiki } = settings;

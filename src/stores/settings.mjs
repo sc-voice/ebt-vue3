@@ -6,7 +6,7 @@ import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
-  DEBUG_SETTINGS, DEBUG_SCROLL, DEBUG_FOCUS 
+  DEBUG_HOME, DEBUG_SETTINGS, DEBUG_SCROLL, DEBUG_FOCUS 
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -278,6 +278,16 @@ export const useSettingsStore = defineStore('settings', {
         show === this.tutorSearch &&
         show === this.tutorSettings &&
         show === this.tutorWiki;
+    },
+    homePath(config) {
+      const msg = 'settings.homePath()';
+      let dbg = DEBUG_HOME;
+      let { homePath, tutorialPath } = config;
+      let hp = this.tutorialState(false)
+        ? homePath
+        : tutorialPath || homePath;
+      dbg && console.log(msg, hp);
+      return hp;
     },
   },
   getters: {

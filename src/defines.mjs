@@ -1,6 +1,7 @@
 export const DEBUG_AUDIO    = 0;
 export const DEBUG_CLICK    = 0;
 export const DEBUG_FOCUS    = 0;
+export const DEBUG_HOME     = 0;
 export const DEBUG_KEY      = 0;
 export const DEBUG_LEGACY   = 0;
 export const DEBUG_LOAD     = 0;

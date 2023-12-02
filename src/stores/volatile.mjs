@@ -5,6 +5,7 @@ import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
+  DEBUG_HOME,
   DEBUG_FOCUS,
   DEBUG_CLICK,
   DEBUG_ROUTE,
@@ -124,23 +125,18 @@ export const useVolatileStore = defineStore('volatile', {
       ].join('&');
       return `${searchPath}/${langTrans}?${query}`
     },
-    homePath() {
-      const msg = 'volatile.homePath()';
-      let { config, } = this;
-      let settings = useSettingsStore();
-      let { homePath, tutorialPath } = config;
-      let hp = settings.tutorialState(false)
-        ? homePath
-        : tutorialPath || homePath;
-    },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
       let { config, } = this;
       let settings = useSettingsStore();
       let dbg = DEBUG_ROUTE || DEBUG_FOCUS;
-      cardOrRoute = cardOrRoute || config?.homePath;
       if (!cardOrRoute) {
-        console.trace(msg, '[1]ERROR: cardOrRoute is required');
+        let homePath = settings.homePath(config);
+        dbg && console.log(msg, `[1]`, {homePath});
+        cardOrRoute = homePath;
+      }
+      if (!cardOrRoute) {
+        console.trace(msg, '[2]ERROR: cardOrRoute is required');
         return;
       }
       let isCard = !(typeof cardOrRoute === 'string');
@@ -150,12 +146,12 @@ export const useVolatileStore = defineStore('volatile', {
 
       const { window } = globalThis;
       if (window == null) {
-        console.trace(msg, '[2]', 'no window');
+        console.trace(msg, '[3]', 'no window');
       } else if (window.location.hash === route) {
         if (card.isOpen) {
           switch (card.context) {
             case 'wiki':
-              dbg && console.log(msg, "[3]same route", card.id, 
+              dbg && console.log(msg, "[4]same route", card.id, 
                 {visible});
               if (!visible) {
                 //settings.scrollToCard(card);
@@ -163,7 +159,7 @@ export const useVolatileStore = defineStore('volatile', {
               break;
             case 'search':
             case 'sutta':
-              dbg && console.log(msg, "[4]same route", card.id);
+              dbg && console.log(msg, "[5]same route", card.id);
               settings.scrollToCard(card);
               break;
           }
@@ -172,7 +168,7 @@ export const useVolatileStore = defineStore('volatile', {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
         this.debugText += `${msg}-${caller}-${route}`;
-        dbg && console.log(msg, "[5]different route", {route});
+        dbg && console.log(msg, "[6]different route", {route});
         window.location.hash = route;
         let expected = activeElement;
         let actual = document?.activeElement;
@@ -180,7 +176,7 @@ export const useVolatileStore = defineStore('volatile', {
           if (keepFocus) {
             activeElement.focus(); // Why do we need to do this?
           } else {
-            dbg && console.log(msg, `[6]activeElement`, 
+            dbg && console.log(msg, `[7]activeElement`, 
               {expected, actual, route});
           }
         }
@@ -188,7 +184,7 @@ export const useVolatileStore = defineStore('volatile', {
 
       if (this.routeCard !== card) {
         this.routeCard = card;
-        dbg && console.log(msg, '[7]routeCard <=', card.id);
+        dbg && console.log(msg, '[8]routeCard <=', card.id);
       }
       return card;
     },
@@ -213,9 +209,14 @@ export const useVolatileStore = defineStore('volatile', {
     async fetchWikiHtml(location, caller) {
       const msg = 'volatile.fetchWikiHtml() ';
       let { config } = this;
-      let { homePath } = config;
-      let hashPath = window?.location?.hash || 'homePath';
+      let settings = useSettingsStore();
+      let dbg = DEBUG_HOME;
+      let homePath = settings.homePath(config);
+      let windowHash = window?.location?.hash;
+      let hashPath = windowHash || homePath;
       let locationPath = location.join('/');
+      dbg && console.log(msg, 
+        {homePath, hashPath, windowHash, locationPath});
 
       let html = '';
       let paths = [
@@ -223,7 +224,9 @@ export const useVolatileStore = defineStore('volatile', {
         locationPath, 
       ].filter(p=>!!p);
       let hrefs = paths.map(p => this.contentPath(p));
-      let hrefMap = hrefs.reduce((a,hr,i) => { a[hr] = i; return a; }, {});
+      let hrefMap = hrefs.reduce((a,hr,i) => { 
+        a[hr] = i; return a; 
+      }, {});
       hrefs = Object.keys(hrefMap); // unique hrefs
       //console.log(msg, hrefs);
 

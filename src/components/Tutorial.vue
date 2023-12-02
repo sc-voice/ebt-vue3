@@ -92,14 +92,10 @@
       tutorClose, tutorPlay, tutorSearch, tutorSettings, tutorWiki,
       legacyVoice, loaded, cards=[] 
     } = settings;
-    if (legacyVoice === 'ask' || legacyVoice === 'old') {
-      dbg && console.log(msg, setting, {legacyVoice});
-      return false;
-    }
     let { showSettings } = volatile;
     let show = !isDelayed.value && !showSettings && settings[setting];
     if (!show) {
-      return !!show;
+      return false;
     }
 
     let wikiCard = cards.reduce((a,card)=>{
