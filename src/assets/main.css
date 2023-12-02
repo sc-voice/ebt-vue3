@@ -128,7 +128,7 @@ a:focus {
   font-size: 107%;
 }
 .ebt-wiki li {
-  margin-left: 1.2em;
+  margin-left: 1.8em;
   margin-top: 0.15em;
   margin-bottom: 0.15em;
 }
@@ -137,8 +137,11 @@ a:focus {
   padding-bottom: 0.2em;
 }
 .ebt-wiki h1,h2,h3,h4,h5,h6 {
-  padding-top: 0.8em;
+  padding-top: 0.3em;
   padding-bottom: 0.4em;
+}
+.ebt-wiki h1 {
+  font-size: 1.2em !important;
 }
 .ebt-wiki td {
   vertical-align: top;
@@ -163,7 +166,10 @@ a:focus {
   flex-flow: column;
 }
 .ebt-wiki-description {
-  padding-top: 0.5em;
+  padding-top: 0em;
+  padding-bottom: 0.5em;
+  font-size: 90%;
+  font-style: italic;
 }
 .ebt-wiki-breadcrumbs {
   font-weight: 500;

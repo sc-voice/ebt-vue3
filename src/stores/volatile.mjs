@@ -6,6 +6,7 @@ import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
   DEBUG_FOCUS,
+  DEBUG_CLICK,
   DEBUG_ROUTE,
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
@@ -309,6 +310,15 @@ export const useVolatileStore = defineStore('volatile', {
         res = { error: `ERROR: ${url.value} ${e.message}` };
       }
       return res;
+    },
+    onClickCard(evt, card) {
+      const msg = "volatile.onClickCard() ";
+      let { settings, } = this;
+      let { target } = evt || {};
+      let { localName, href, hash } = target;
+      let dbg = DEBUG_FOCUS||DEBUG_CLICK;
+      dbg && console.log(msg, 'setRoute', card.id, evt);
+      this.setRoute(card, undefined, msg);
     },
   },
 })

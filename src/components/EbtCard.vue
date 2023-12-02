@@ -32,7 +32,7 @@
         <v-card-text>
           <debug-view :card="card" v-if="card.context===CONTEXT_DEBUG"/>
           <template v-if="volatile.config">
-            <home-view v-if="card.context===CONTEXT_WIKI" :card="card" />
+            <HomeView v-if="card.context===CONTEXT_WIKI" :card="card" />
           </template>
           <search-view :card="card" v-if="card.context===CONTEXT_SEARCH"/>
           <sutta-view v-if="card.context===CONTEXT_SUTTA && routeCard" 
@@ -123,9 +123,10 @@
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
         let { volatile, settings, card } = this;
-        let dbg = DEBUG_FOCUS||DEBUG_CLICK;
-        dbg && console.log(msg, 'setRoute', card.id, evt);
-        volatile.setRoute(card, undefined, msg);
+        volatile.onClickCard(evt, card);
+        //let dbg = DEBUG_FOCUS||DEBUG_CLICK;
+        //dbg && console.log(msg, 'setRoute', card.id, evt);
+        //volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
         let { volatile } = this;
