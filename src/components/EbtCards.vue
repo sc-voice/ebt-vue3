@@ -30,7 +30,8 @@
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { 
-    DEBUG_HOME, DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL 
+    DEBUG_HOME, DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL,
+    DEBUG_OPEN_CARD,
   } from '../defines.mjs';
 
   export default {
@@ -66,12 +67,22 @@
         dbg && console.log(msg, '[4]setRoute', card.context, card.id);
         volatile.setRoute(card, true, msg);
         let { activeElement } = document;
-        nextTick(() => {
-          volatile.setRoute(card, true);
-          settings.scrollToCard(card);
+        let scroll = true;
+        volatile.setRoute(card, true);
+        switch (card.context) {
+          case EbtCard.CONTEXT_WIKI:
+            if (settings.tutorialState(false)) {
+              settings.scrollToCard(card);
+            }
+            break;
+          default:
+            settings.scrollToCard(card);
+            break;
+        }
+        //nextTick(() => {
           this.bindAudioSutta(window.location.hash);
           dbg && console.log(msg, '[5]bindAudioSutta', {activeElement});
-        });
+        //});
       }
     },
     methods: {
@@ -144,7 +155,8 @@
         const msg = 'EbtCards.watch.$route';
         let { volatile, settings, $route }  = this;
         let { cards, debugScroll, debugFocus } = settings;
-        let dbg = DEBUG_ROUTE || DEBUG_SCROLL || DEBUG_FOCUS;
+        let dbg = DEBUG_ROUTE || DEBUG_SCROLL || 
+          DEBUG_FOCUS || DEBUG_OPEN_CARD;
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 
@@ -162,15 +174,20 @@
           return;
         }
 
-        if (card.isOpen) {
-          dbg && console.log(msg, `[4]card`, {$route, to, from, card});
-        } else {
-          card.isOpen = true;
-          dbg && console.log(msg, `[5]opened card`, 
-            {$route, to, from, card});
-        }
-        if (card.context === EbtCard.CONTEXT_WIKI) {
-          volatile.fetchWikiHtml(card.location, msg);
+        switch (card.context) {
+          case EbtCard.CONTEXT_WIKI:
+            volatile.fetchWikiHtml(card.location, msg);
+            if (settings.tutorialState(false)) {
+              card.open(true);
+              dbg && console.log(msg, `[4]opened card`, 
+                {$route, to, from, card});
+            }
+            break;
+          default:
+            card.open(true);
+            dbg && console.log(msg, `[5]opened card`, 
+              {$route, to, from, card});
+            break;
         }
         nextTick(() => { 
           let { ebtChips } = volatile;
@@ -179,9 +196,11 @@
           if (ebtChips !== activeElement) {
             switch(context) {
               case EbtCard.CONTEXT_WIKI:
-                dbg && console.log(msg, '[6]focus', `${id} ${context}`, 
-                  fullPath);
-                card.focus(fullPath);
+                if (card.isOpen) {
+                  dbg && console.log(msg, '[6]focus', `${id} ${context}`, 
+                    fullPath);
+                  card.focus(fullPath);
+                }
                 break;
               default:
               case EbtCard.CONTEXT_SEARCH:

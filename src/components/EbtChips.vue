@@ -35,6 +35,9 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { ref, nextTick } from "vue";
   import { logger } from "log-instance/index.mjs";
+  import {
+    DEBUG_CLICK, DEBUG_OPEN_CARD,
+  } from "../defines.mjs";
 
   export default {
     inject: ['config'],
@@ -103,14 +106,15 @@
         const msg = `EbtChips.onClickChip() ${card?.id} `;
         const settings = await useSettingsStore();
         const volatile = await useVolatileStore();
+        const dbg = DEBUG_CLICK;
         let { ebtChips } = volatile;
         ebtChips && ebtChips.focus();
         volatile.setRoute(card, true);
         if (card.isOpen) {
-          //console.log(msg, "open", {card, });
+          dbg && console.log(msg, "[1]open", {card, });
         } else {
-          //console.log(msg, "closed", {card, });
-          card.isOpen = true;
+          dbg && console.log(msg, "[2]closed", {card, });
+          card.open(true);
           let scrolled = await settings.scrollToCard(card);
           if (!scrolled) {
             let { topAnchor, currentElementId } = card;

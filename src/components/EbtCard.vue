@@ -180,7 +180,7 @@
         settings.scrollToElementId(topId);
       },
       closeCard: (card, settings) => {
-        card.isOpen = false;
+        card.open(false);
         let volatile = useVolatileStore();
         let { ebtChips } = volatile;
         ebtChips && ebtChips.focus();

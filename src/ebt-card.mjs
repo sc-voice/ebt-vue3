@@ -2,6 +2,8 @@ import { logger } from 'log-instance/index.mjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
+  DEBUG_ADD_CARD,
+  DEBUG_OPEN_CARD,
   DEBUG_FOCUS,
   DEBUG_ROUTE, 
   DEBUG_SCROLL,
@@ -29,11 +31,12 @@ const CONTEXTS = {
 export default class EbtCard {
   constructor(opts = {}) {
     let msg = 'ebt-card.ctor() ';
+    let dbg = DEBUG_ADD_CARD;
     let {
       id,
       context,
       location=[],
-      isOpen = true,
+      isOpen,
       data = undefined,
       langTrans, // factory prop
     } = opts;
@@ -54,10 +57,16 @@ export default class EbtCard {
     if (!(location instanceof Array)) {
       throw new Error('Expected location array');
     }
+    let contextLoc = [context, ...location].join('/');
     switch (context) {
+      case CONTEXT_WIKI:
+        isOpen = isOpen === undefined ? false : isOpen;
+        dbg && console.log(msg, `[1]${context}`, {isOpen, contextLoc});
+        break;
       case CONTEXT_DEBUG: 
         if (location[0] == null) {
           location[0] = 'Debug';
+          dbg && console.log(msg, `[2]${context}`, location);
         }
         break;
       case CONTEXT_SEARCH:
@@ -65,15 +74,16 @@ export default class EbtCard {
           location[0] = '';
         }
         if (location.length === 1) {
+          dbg && console.log(msg, `[3]${context}`, {langTrans});
           langTrans && location.push(langTrans);
         }
         break;
       case CONTEXT_SUTTA:
-        //console.log(msg, 'before', location);
+        dbg && console.log(msg, `[4]${context} before`, location);
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
-        //console.log(msg, 'after', location);
+        dbg && console.log(msg, `[4]${context} after`, location);
         break;
     }
 
@@ -82,7 +92,7 @@ export default class EbtCard {
       location,
       context,
       data,
-      isOpen,
+      isOpen: isOpen === undefined ? true : isOpen,
     });
 
     // secondary properties
@@ -108,21 +118,27 @@ export default class EbtCard {
 
   static pathToCard(args) {
     let msg = 'ebt-card.pathToCard()';
-    let {path='/', cards=[], addCard, defaultLang} = args;
+    let dbg = DEBUG_ROUTE || DEBUG_ADD_CARD;
+    let {
+      path='/', cards=[], addCard, defaultLang, isOpen,
+    } = args;
     path = path.replace(/^.*\/#/, ''); // ignore non-hash part of path
     let [ ignored, context, ...location ] = path.split('/');
     location = location.map(loc => decodeURIComponent(loc));
     let card = cards.find(card => card.matchPath({path, defaultLang}));
-    //console.trace(msg, {card, path, context, location});
+    dbg && console.log(msg, '[1]find', {card, path});
     if (card == null) {
       if (addCard === undefined) {
         throw new Error(msg+"addCard is required");
-      } else {
-        card = addCard ? addCard({context, location}) : null;
+      } 
+      if (addCard) {
+        dbg && console.log(msg, '[2]addCard', {isOpen},
+          [context,...location].join('/'));
+        card = addCard ? addCard({context, location, isOpen}) : null;
       }
       //card && logger.info(`${msg} ${args}`, {card, context, location});
     } else {
-      logger.debug(msg+`(EXISTING))`, {args,card});
+      dbg && console.log(msg, '[3]existing', card.id, card.context);
     } 
 
     if (card) {
@@ -190,6 +206,20 @@ export default class EbtCard {
         eltId, tab1Id, volatile, elt});
     }
     return elt;
+  }
+
+  open(value=true) {
+    const msg = 'ebt-card.open()';
+    const dbg = DEBUG_OPEN_CARD;
+    let { isOpen, id, context, location } = this;
+    let contextLoc = [context, ...location].join('/');
+    if (isOpen === value) {
+      return false;
+    }
+
+    dbg && console.log(msg, '[1]isOpen<=${value}', id, contextLoc);
+    this.isOpen = value;
+    return true;
   }
 
   onAfterMounted({settings, volatile}) {

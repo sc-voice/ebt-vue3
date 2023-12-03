@@ -116,9 +116,8 @@
         break;
       }
       case 'tutorWiki':
-        show = show && !tutorClose && !wikiCard.isOpen;
+        show = show && !wikiCard.isOpen;
         dbg && console.log(msg, `[1]${setting}`, {show});
-        break;
         break;
       case 'tutorSettings':
       case 'tutorSearch':

@@ -94,9 +94,9 @@
           setting="tutorClose" :title="$t('ebt.closeCard')" 
           containerId="home-card-id" 
           :text="$t('ebt.closeWiki')" arrow="top"
-          :msDelay="3000"
+          :msDelay="5000"
         ></Tutorial>
-        <Tutorial v-if="!settings.tutorClose"
+        <Tutorial v-if="showTutorWiki"
           setting="tutorWiki" :title="$t('ebt.show')" 
           :text="$t('ebt.openWiki')" arrow="top" hflip 
           :msDelay="1000"
@@ -304,11 +304,11 @@
         let dbg = DEBUG_TUTORIAL;
         
         if (!settings.loaded) {
-          //dbg && console.log(msg, '[1]not loaded');
+          dbg && console.log(msg, '[1]not loaded');
           return false;
         }
         if (settings.tutorialState(false)) {
-          //dbg && console.log(msg, '[2]completed');
+          dbg && console.log(msg, '[2]completed');
           return false;
         }
         if (isSrcSC && settings.legacyVoice === 'new') {
@@ -318,6 +318,25 @@
 
         dbg && console.log(msg, '[4]standalone');
         return true;
+      },
+      showTutorWiki(ctx) {
+        const msg = "App.showTutorWiki()";
+        let { audio, settings, } = this;
+        let { cards, tutorWiki } = settings;
+        let dbg = DEBUG_TUTORIAL;
+        let nOpen = cards.reduce((a,c,i)=>{
+          if (c?.isOpen) {
+            dbg && console.log(msg, '[1]isOpen', 
+              c.id, c.context, c.location.join('/'));
+            return a+1;
+          }
+          return a;
+        }, 0);
+        let inTutorial = !settings.tutorialState(false);
+        let show = inTutorial && tutorWiki && nOpen === 0;
+        dbg && console.log(msg, '[2]show',
+          {nOpen, inTutorial, tutorWiki, show});
+        return show;
       },
       showTutorPlay(ctx) {
         let { audio, settings, } = this;
@@ -353,7 +372,8 @@
       },
       alertTitle(ctx) {
         let { $t } = ctx;
-        let titleKey = ctx.volatile.alertMsg?.context || 'ebt.applicationError';
+        let titleKey = ctx.volatile.alertMsg?.context || 
+          'ebt.applicationError';
         return $t(titleKey);
       },
       alertMsg(ctx) {

@@ -6,7 +6,8 @@ import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
-  DEBUG_HOME, DEBUG_SETTINGS, DEBUG_SCROLL, DEBUG_FOCUS 
+  DEBUG_OPEN_CARD, DEBUG_ADD_CARD, DEBUG_HOME, DEBUG_SETTINGS, 
+  DEBUG_SCROLL, DEBUG_FOCUS 
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -64,6 +65,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async loadSettings(config) {
       let msg = 'settings.loadSettings() ';
+      let dbg = DEBUG_ADD_CARD;
       if (this.loaded) {
         return this;
       }
@@ -77,6 +79,7 @@ export const useSettingsStore = defineStore('settings', {
             cards = savedState.cards = [{context:'home'}];
           }
           cards.forEach((card,i) => {
+            dbg && console.log(msg, '[1]loaded', card.context, card.id);
             cards[i] = new EbtCard(card);
           });
           
@@ -163,21 +166,31 @@ export const useSettingsStore = defineStore('settings', {
       }
     },
     addCard(opts) {
+      const msg = "settings.addCard()";
       let { cards, langTrans } = this;
-      let { context, location } = opts;
+      let { isOpen, context, location } = opts;
+      let dbg = DEBUG_ADD_CARD, DEBUG_OPEN_CARD;
       let card = null;
+      let loc = location ? location.join('/') : loc;
       switch (context) {
+        case EbtCard.CONTEXT_WIKI:
+          dbg && console.log(msg, `[1]${context}`, {isOpen, loc});
+          card = new EbtCard(Object.assign({
+            isOpen:false, // let user open card in tutorial
+            langTrans
+          }, opts));
+          this.cards.push(card);
+          break;
         case EbtCard.CONTEXT_DEBUG:
         case EbtCard.CONTEXT_SEARCH:
         case EbtCard.CONTEXT_SUTTA:
-        case EbtCard.CONTEXT_WIKI:
-          //logger.info("addCard", {context, location, langTrans});
+          dbg && console.log(msg, `[2]${context}`, {isOpen, loc});
           card = new EbtCard(Object.assign({langTrans}, opts));
           this.cards.push(card);
           /* await */ this.saveSettings();
           break;
         default:
-          //logger.info(`addCard => null [INVALID CONTEXT]`, opts);
+          dbg && console.warn(msg, `[3]${context}`, {isOpen, loc});
           break;
       }
       return card;
@@ -237,10 +250,14 @@ export const useSettingsStore = defineStore('settings', {
       //console.log(msg, this);
     },
     openCard(card) {
-      if (card.IsOpen) {
+      const msg = "settings.openCard()";
+      const dbg = DEBUG_OPEN_CARD;
+      if (card.isOpen) {
+        dbg && console.log(msg, `[1]already open`, card.id);
         return false;
       }
-      card.isOpen = true;
+      dbg && console.log(msg, `[2]opening`, card.id);
+      card.open(true);
       return true;
     },
     clickUrl() {
