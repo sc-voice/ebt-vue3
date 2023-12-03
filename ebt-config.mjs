@@ -2,7 +2,7 @@ const EbtConfig = {
   "appName": "EBT-Vue3",
   "basePath": "/",
   "homePath": "#/wiki/welcome",
-  "tutorialPath": "#/wiki/tutorial",
+  "tutorialPath": "#/wiki/tutorial/tutorial",
   "monolingual": false,
   "privacyLink": "#/wiki/privacy",
   "footnotes": "Footnotes",
