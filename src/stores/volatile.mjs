@@ -6,6 +6,7 @@ import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
   DEBUG_WIKI,
+  DEBUG_SCROLL,
   DEBUG_HOME,
   DEBUG_FOCUS,
   DEBUG_CLICK,
