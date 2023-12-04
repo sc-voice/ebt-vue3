@@ -5,6 +5,7 @@ const EbtConfig = {
   "tutorialPath": "#/wiki/tutorial/tutorial",
   "monolingual": false,
   "privacyLink": "#/wiki/privacy",
+  "searchDropdown": 5,
   "footnotes": "Footnotes",
   "content": {
     "index": "toc",

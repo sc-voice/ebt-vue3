@@ -104,7 +104,7 @@
         <Tutorial v-if="showTutorSearch"
           setting="tutorSearch" :title="$t('ebt.search')" 
           :text="$t('ebt.findSutta')" arrow="top" 
-          :msDelay="3000"
+          :msDelay="1000"
         ></Tutorial>
         <Tutorial v-if="showTutorPlay"
           setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
@@ -199,6 +199,7 @@
       },
       onClickSettings(evt) {
         const msg = "App.onClickSettings()";
+        const dbg = DEBUG_FOCUS || DEBUG_CLICK;
         let { settings, volatile, audio } = this;
         let btn = document.getElementById('btn-settings');
         btn && btn.blur();
@@ -206,7 +207,7 @@
         settings.tutorSettings = false;
         nextTick(()=>{
           let autofocus = document.getElementById('settings-autofocus');
-          //console.log(msg, {autoFocus});
+          dbg && console.log(msg, {autoFocus});
           autofocus && autofocus.focus();
         });
       },
@@ -348,8 +349,9 @@
         let { audio, settings, } = this;
         let { tutorClose, tutorWiki, cards } = settings;
         let nOpen = cards.reduce((a,c,i)=> (c.isOpen ? a+1 : a), 0);
-        let show = !audio.audioScid && !tutorClose &&
-          !tutorWiki && nOpen <= 1;
+        let show = !audio.audioScid && 
+          !tutorClose && !tutorWiki && 
+          nOpen < 1;
         return show;
       },
       viewWidth(ctx) {

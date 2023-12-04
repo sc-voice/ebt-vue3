@@ -92,7 +92,7 @@
       let { fullPath:path } = $route;
       let { langTrans:defaultLang } = settings;
       let { id, location, context } = card;
-      let dbg = DEBUG_MOUNTED || DEBUG_FOCUS;
+      let dbg = DEBUG_MOUNTED;
       if (card.matchPath({path, defaultLang})) {
         dbg && console.log(msg, '[1]routeCard',
           `${id}_${context}:${location[0]}`);
@@ -114,9 +114,10 @@
       },
       onFocusLastTab(evt) {
         const msg = 'EbtCard.onFocusLastTab() ';
+        const dbg = DEBUG_FOCUS;
         let { volatile, audio } = this;
         let { ebtChips } = volatile;
-        //console.log(msg, ebtChips);
+        dbg && console.log(msg, {ebtChips});
         ebtChips && ebtChips.focus();
         audio.playBlock();
       },
@@ -129,15 +130,19 @@
         //volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
+        const msg = 'EbtCard.onBackTabOut()';
+        const dbg = DEBUG_FOCUS;
         let { volatile } = this;
-        volatile.ebtChips && volatile.ebtChips.focus();
+        let { ebtChips } = volatile;
+        dbg && console.log(msg, 'focus', {ebtChips});
+        ebtChips && ebtChips.focus();
       },
       onFocusIn(evt) {
         const msg = "EbtCard.onFocusIn() ";
+        const dbg = DEBUG_FOCUS;
         let { settings, volatile, card } = this;
         let { location, id, context } = card;
         let chipTitle = card.chipTitle();
-        let dbg = DEBUG_FOCUS;
         switch (card.context) {
           case EbtCard.CONTEXT_SUTTA:
           case EbtCard.CONTEXT_SEARCH:
@@ -176,13 +181,16 @@
         let { settings, card } = this;
         let topId = card.topAnchor;
         let dbg = DEBUG_FOCUS;
-        dbg && console.log(msg, {evt,topId});
+        dbg && console.log(msg, 'scrollToElementId', {evt,topId});
         settings.scrollToElementId(topId);
       },
       closeCard: (card, settings) => {
+        const msg = "EbtCad.closeCard)(";
+        const dbg = DEBUG_FOCUS;
         card.open(false);
         let volatile = useVolatileStore();
         let { ebtChips } = volatile;
+        dbg && console.log(msg, 'focus', {ebtChips});
         ebtChips && ebtChips.focus();
       },
       addIntersectionObserver() {

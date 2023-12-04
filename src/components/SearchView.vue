@@ -1,7 +1,13 @@
 <template>
   <v-sheet class="ebt-search">
+    <div class="inspire" v-if="hasExamples" >
+      <v-btn variant=tonal @click="onInspireMe"
+        :id='card.autofocusId'
+      >
+        {{$t('ebt.inspireMe')}}
+      </v-btn>
+    </div>
     <v-autocomplete 
-      :id='card.autofocusId'
       v-model="search" 
       :append-icon="search ? 'mdi-magnify' : ''"
 
@@ -17,11 +23,6 @@
       :placeholder="$t('ebt.searchPrompt')"
       variant="underlined"
     />
-    <div class="inspire" v-if="hasExamples">
-      <v-btn variant=tonal @click="onInspireMe">
-        {{$t('ebt.inspireMe')}}
-      </v-btn>
-    </div>
     <SearchResults :card="card" :results="results" 
       :class="resultsClass"/>
   </v-sheet>
@@ -41,6 +42,7 @@
   const msg = "SearchView.";
 
   export default {
+    inject: ['config'],
     props: {
       card: {
         type: Object,
@@ -174,6 +176,7 @@
         dbg && console.log(msg, '[1] onSearch', {card, });
         nextTick(()=>this.onSearch());
       }
+
       card.onAfterMounted({settings, volatile});
     },
     computed: {
@@ -184,7 +187,7 @@
           : "ebt-results-old";
       },
       exampleItems() {
-        let { card, search, settings } = this;
+        let { card, search, config, settings } = this;
         search = search || ''; // might be null or undefined 
         let { langTrans, maxResults } = settings;
         var searchLower = search.toLowerCase();
@@ -205,7 +208,7 @@
           ? [...examples ]
           : [`${this.search}`, ...examples];
 
-        let MAX_CHOICES = 8; // TODO: Ayya Sabbamitta wants more
+        let MAX_CHOICES = config.searchDropdown || 5;
         return examples.slice(0,MAX_CHOICES);
       },
       url: (ctx) => {
@@ -232,6 +235,7 @@
 .inspire {
   display: flex;
   justify-content: center;
+  margin-bottom: 0.8em;
 }
 .ebt-search {
   max-width: 50em;

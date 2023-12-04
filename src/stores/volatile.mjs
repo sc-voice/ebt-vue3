@@ -87,9 +87,15 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    focusElement(element) {
+      const msg = 'volatile.focusElement()';
+      const dbg = DEBUG_FOCUS;
+      dbg && console.log(msg, {element});
+      element.focus();
+    },
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';
-      let dbg = DEBUG_FOCUS;
+      const dbg = DEBUG_ROUTE;
       dbg && console.log(msg, `${card.id} ${card.context}`);
       this.routeCard = card;
     },
@@ -129,7 +135,7 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.setRoute()';
       let { config, } = this;
       let settings = useSettingsStore();
-      let dbg = DEBUG_ROUTE || DEBUG_FOCUS;
+      let dbg = DEBUG_ROUTE ;
       if (!cardOrRoute) {
         let homePath = settings.homePath(config);
         dbg && console.log(msg, `[1]`, {homePath});
@@ -174,7 +180,7 @@ export const useVolatileStore = defineStore('volatile', {
         let actual = document?.activeElement;
         if (expected !== actual) {
           if (keepFocus) {
-            activeElement.focus(); // Why do we need to do this?
+            this.focusElement(activeElement); // why?
           } else {
             dbg && console.log(msg, `[7]activeElement`, 
               {expected, actual, route});
@@ -328,7 +334,7 @@ export const useVolatileStore = defineStore('volatile', {
       let { settings, } = this;
       let { target } = evt || {};
       let { localName, href, hash } = target;
-      let dbg = DEBUG_FOCUS||DEBUG_CLICK;
+      let dbg = DEBUG_CLICK;
       dbg && console.log(msg, 'setRoute', card.id, evt);
       this.setRoute(card, undefined, msg);
     },

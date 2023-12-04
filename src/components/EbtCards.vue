@@ -107,6 +107,7 @@
       },
       onFocusIn(card) {
         const msg = "EbtCards.onFocusIn() ";
+        const dbg = DEBUG_FOCUS;
         let { volatile, settings } = this;
         let { cards } = settings;
         let { context, location } = card;
@@ -117,7 +118,10 @@
           addCard: (opts) => {},
           defaultLang: settings.langTrans,
         });
-        if (routeCard !== card) {
+        if (routeCard === card) {
+          dbg && console.log(msg, `[1]card`, card.debugString)
+        } else {
+          dbg && console.log(msg, `[2]routeCard`, card.debugString)
           volatile.setRoute(card.routeHash(), true, msg);
         }
       },
@@ -154,9 +158,8 @@
       $route (to, from) {
         const msg = 'EbtCards.watch.$route';
         let { volatile, settings, $route }  = this;
-        let { cards, debugScroll, debugFocus } = settings;
-        let dbg = DEBUG_ROUTE || DEBUG_SCROLL || 
-          DEBUG_FOCUS || DEBUG_OPEN_CARD;
+        let { cards, } = settings;
+        let dbg = DEBUG_ROUTE || DEBUG_SCROLL || DEBUG_OPEN_CARD;
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 
@@ -199,14 +202,14 @@
                 if (card.isOpen) {
                   dbg && console.log(msg, '[6]focus', `${id} ${context}`, 
                     fullPath);
-                  card.focus(fullPath);
+                  card.focusElementId(fullPath);
                 }
                 break;
               default:
               case EbtCard.CONTEXT_SEARCH:
               case EbtCard.CONTEXT_SUTTA:
                 dbg && console.log(msg, '[7]focus', `${id} ${context}`);
-                card.focus();
+                card.focusElementId();
                 break;
             }
           }

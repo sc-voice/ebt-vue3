@@ -7,13 +7,13 @@ import should from "should";
 logger.logLevel = 'warn';
 
 (typeof describe === 'function') && describe("ebt-card.mjs", function () {
-  it("default ctor", async () => {
+  it("TESTTESTdefault ctor", async () => {
     let card1 = new EbtCard();
     let card2 = new EbtCard();
     let defaultProps = {
       context: EbtCard.CONTEXT_WIKI,
       location: [],
-      isOpen: true,
+      isOpen: false,
       data: undefined,
     }
     should(card1.id.length).equal(12);
@@ -43,6 +43,15 @@ logger.logLevel = 'warn';
     should(card1).properties({id, context, location: [location,langTrans], data});
     let card2 = new EbtCard(Object.assign({}, card1));
     should(card2).properties(card1);
+  });
+  it("TESTTESTdebugString", ()=>{
+    let id = 'test-id';
+    let context = 'search';
+    let location = ['a','b'];
+    let data = "test-data";
+    let langTrans = "test-lang";
+    let card = new EbtCard({id, context, location, data, langTrans});
+    should(card.debugString).equal(`${id} ${context}/a/b`);
   });
   it("custom ctor sutta/thig1.1/pt", ()=>{
     let id = 'test-id';
@@ -464,7 +473,7 @@ logger.logLevel = 'warn';
     should.deepEqual(card.incrementLocation({segments, delta:-1}), null);
     should.deepEqual(card.location, [ scids[0], langTrans, author, ]);
   });
-  it("focus()", ()=>{
+  it("focusElementId()", ()=>{
     let card = new EbtCard();
     let { tab1Id, autofocusId } = card;
     let elts = [];
@@ -478,18 +487,18 @@ logger.logLevel = 'warn';
 
     // No element
     console.warn("EXPECTED WARNING BEGIN");
-    should(card.focus()).equal(undefined);
+    should(card.focusElementId()).equal(undefined);
     console.warn("EXPECTED WARNING END");
     should(document.activeElement).equal(undefined);
 
     // tab1 element but no autofocus element
     elts.push(testElt1);
-    should(card.focus()).equal(testElt1);
+    should(card.focusElementId()).equal(testElt1);
     should(document.activeElement).equal(testElt1);
 
     // both autofocus and tab1 elements
     elts.push(testElt2);
-    should(card.focus()).equal(testElt2);
+    should(card.focusElementId()).equal(testElt2);
     should(document.activeElement).equal(testElt2);
   });
   it("setLocation()", ()=>{

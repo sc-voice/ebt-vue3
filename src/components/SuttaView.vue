@@ -100,7 +100,7 @@
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
         const { settings } = this;
-        let dbg = DEBUG_KEY && settings.development;
+        let dbg = DEBUG_KEY || DEBUG_FOCUS;
         let { audio } = this;
         switch (evt.code) {
           case 'Tab': {
@@ -135,7 +135,7 @@
         let { $refs, card } = this;
         const msg = 'SuttaView.onClickSutta()';
         //console.log(msg, "DEBUG", {evt, card});
-        let elt = card.focus();
+        let elt = card.focusElementId();
       },
     },
     computed: {

@@ -104,12 +104,12 @@
 
   function onChangedChoice(evt) {
     const msg = 'LegacyVoice.onChangedChoice()';
-    let dbg = DEBUG_STARTUP;
+    let dbg = DEBUG_STARTUP || DEBUG_FOCUS;
     switch (legacyVoice.value) {
       case 'old': {
         nextTick(()=>{
           let eltSave = document.getElementById('legacy-commit');
-          dbg && console.log(msg, `[1]${legacyVoice.value}`, 
+          dbg && console.log(msg, `[1]focus${legacyVoice.value}`, 
             {evt, eltSave});
           eltSave && eltSave.focus();
         });
@@ -188,7 +188,7 @@
 
   /*
   onUpdated(()=>{
-    let dbg = DEBUG_STARTUP;
+    let dbg = DEBUG_STARTUP || DEBUG_FOCUS;
     nextTick(()=>{
       let msg = 'LegacyVoice.onUpdated()';
       let id = `r${legacyVoice.value}`;
@@ -199,7 +199,7 @@
         dbg && console.log(msg, '[1]', {id, eltId});
       }
       if (eltId && document.activeElement !== eltId) {
-        dbg && console.log(msg, '[2]', {eltId});
+        dbg && console.log(msg, '[2]focus', {eltId});
         eltId.focus();
       }
     });

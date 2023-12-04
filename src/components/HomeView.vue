@@ -36,6 +36,7 @@
       dbg && console.log(msg, '[1]fetchWikiHtml', {location});
       await volatile.fetchWikiHtml(location, msg);
       dbg && console.log(msg, '[2]fetchWikiHtml', {location});
+
       card.onAfterMounted({settings, volatile});
     },
     computed: {

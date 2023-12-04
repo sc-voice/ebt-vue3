@@ -36,7 +36,7 @@
   import { ref, nextTick } from "vue";
   import { logger } from "log-instance/index.mjs";
   import {
-    DEBUG_CLICK, DEBUG_OPEN_CARD,
+    DEBUG_FOCUS, DEBUG_CLICK, DEBUG_OPEN_CARD,
   } from "../defines.mjs";
 
   export default {
@@ -84,7 +84,7 @@
         if (routeCard) {
           settings.openCard(routeCard);
           //console.log(msg, {routeCard});
-          nextTick(()=> routeCard.focus());
+          nextTick(()=> routeCard.focusElementId());
         }
       },
       startDrag(evt, card) {
@@ -104,16 +104,17 @@
       },
       async onClickChip(card, cards) {
         const msg = `EbtChips.onClickChip() ${card?.id} `;
+        const dbg = DEBUG_CLICK || DEBUG_FOCUS;
         const settings = await useSettingsStore();
         const volatile = await useVolatileStore();
-        const dbg = DEBUG_CLICK;
         let { ebtChips } = volatile;
+        dbg && console.log(msg, "[1]focus", {card, });
         ebtChips && ebtChips.focus();
         volatile.setRoute(card, true);
         if (card.isOpen) {
-          dbg && console.log(msg, "[1]open", {card, });
+          dbg && console.log(msg, "[2]open", {card, });
         } else {
-          dbg && console.log(msg, "[2]closed", {card, });
+          dbg && console.log(msg, "[3]opening", {card, });
           card.open(true);
           let scrolled = await settings.scrollToCard(card);
           if (!scrolled) {

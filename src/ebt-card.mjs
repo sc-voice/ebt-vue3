@@ -190,16 +190,17 @@ export default class EbtCard {
     }
   }
 
-  focus(eltId=this.autofocusId) {
-    const msg = 'ebt-card.focus()';
+  focusElementId(eltId=this.autofocusId) {
+    const msg = 'ebt-card.focusElementId()';
     let { tab1Id, volatile } = this;
     let elt = document.getElementById(eltId);
     let dbg = DEBUG_FOCUS;
     if (elt) {
-      elt.focus();
-      dbg && console.log(msg, '[1]', {eltId, elt}, document.activeElement);
+      elt.focus(); // focusElementId
+      dbg && console.log(msg, '[1]', {eltId, elt}, 
+        document.activeElement);
     } else if ((elt = document.getElementById(tab1Id))) {
-      elt.focus();
+      elt.focus(); // focusElementId
       dbg && console.log(msg, '[2]', {eltId, tab1Id, elt});
     } else {
       console.warn(msg, '[3] element not found', { 
@@ -224,19 +225,21 @@ export default class EbtCard {
 
   onAfterMounted({settings, volatile}) {
     const msg = "ebt-card.onAfterMounted()";
-    let { langTrans, development } = settings;
+    let { langTrans, } = settings;
     let { id } = this;
     let route = window.location.hash.split('#')[1] || '';
-    let dbg = development && (DEBUG_FOCUS || DEBUG_SCROLL);
+    let dbg = DEBUG_ROUTE;
     if (this.matchPath({path:route, defaultLang:langTrans})) {
       let { activeElement } = document;
       if (volatile.routeCard?.id !== id) {
         volatile.routeCard = this;
-        dbg && console.log(msg, `[1]focus ${id}`, {route, activeElement});
-        this.focus(route);
+        dbg && console.log(msg, `[1]routeCard ${id}`, 
+          {route, activeElement});
+        this.focusElementId(route);
       } else {
-        this.focus(route);
-        dbg && console.log(msg, `[2]focus ${id} activeElement:`, document.activeElement);
+        this.focusElementId(route);
+        dbg && console.log(msg, `[2]focus ${id} activeElement:`, 
+          document.activeElement);
       }
     }
   }
@@ -540,6 +543,11 @@ export default class EbtCard {
     // to prevent the browser from auto-navigating
     // to segmentElementId's when the route changes
     return `suttaref-${scid}/${lang}/${author}`;
+  }
+
+  get debugString() {
+    let { id, context, location} = this;
+    return `${id} ${[context, ...location].join('/')}`;
   }
 
 }

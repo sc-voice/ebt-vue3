@@ -241,7 +241,7 @@
   font-size: 100%;
 }
 .seg-lang-1col-sm {
-  width: 310px;
+  width: calc(100svw-30px);
 }
 .seg-lang-1col-lg.seg-root,
 .seg-lang-1col-sm.seg-root {
@@ -268,10 +268,10 @@
   width: 300px;
 }
 .seg-lang-2col-lg {
-  width: 300px;
+  width: calc(45lvw);
 }
 .seg-lang-3col-sm {
-  width: 210px;
+  width: calc(30svw);
 }
 .seg-lang-3col-lg {
   width: 350px;
