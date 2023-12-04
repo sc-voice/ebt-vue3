@@ -239,44 +239,5 @@
 </script>
 
 <style >
-.sutta {
-  outline: none;
-}
-.sutta:focus {
-}
-.sutta-1col {
-  max-width: 40em;
-}
-.sutta-2col {
-  max-width: 60em;
-}
-.sutta-3col {
-  max-width: 100em;
-}
-.sutta-title {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  font-family: var(--ebt-sc-sans-font);
-  font-size: larger;
-  font-weight: 600;
-  line-height: 1.5em;
-  margin-bottom: 1em;
-}
-.sutta-title div:first-child {
-  font-size: smaller;
-  font-weight: 400;
-}
-.tipitaka-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  opacity: 0.4;
-  margin-bottom: 0.5rem;
-}
-.tipitaka-nav:focus-within,
-.tipitaka-nav:hover {
-  opacity: 1;
-}
 </style>
 

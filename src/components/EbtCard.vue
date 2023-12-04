@@ -3,7 +3,7 @@
   <v-sheet v-if="card.isOpen " :class="cardSheetClass"
     @focusin="onFocusIn"
     @click="onClickCard"
-    id="`${card.id}-sheet`"
+    :id="`${card.id}-sheet`"
   >
     <div :id="`${card.topAnchor}`" class="card-top-anchor debug">
       {{card.topAnchor}}

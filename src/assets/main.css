@@ -477,6 +477,167 @@ code {
 }
 /************** EbtCards (END) ***************/
 
+/************** SegmentView (BEGIN) ***************/
+.seg-match {
+  display: flex;
+  border-left: 2pt solid rgba(0,0,0,0);
+}
+.seg-matched {
+  border-left-color: rgba(var(--v-theme-matched), 0.5);
+}
+.seg-id-col {
+  flex-flow: column;
+}
+.seg-id-row {
+  flex-flow: row;
+}
+.seg-id {
+  font-size: x-small;
+  margin-left: 10px;
+  color: rgba(var(--v-theme-on-surface), 0.6);
+}
+.seg-id-col .seg-id {
+  margin-left: 5px;
+}
+.seg-text {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+.seg-text-1col {
+  flex-flow: column;
+  max-width: calc(min(100vw - 30px, 600px));
+}
+.seg-lang {
+  margin-bottom: 0.8em;
+  margin-left: 10px;
+}
+.seg-root {
+  font-style: italic;
+  font-family: var(--ebt-sc-sans-font);
+}
+.seg-trans {
+  font-family: var(--ebt-sc-sans-font);
+}
+.seg-ref {
+  font-family: var(--ebt-sc-serif-font);
+  font-size: 100%;
+}
+.seg-lang-1col-sm {
+  width: calc(100svw-30px);
+}
+.seg-lang-1col-lg.seg-root,
+.seg-lang-1col-sm.seg-root {
+  padding-left: 0px;
+}
+.seg-lang-1col-lg.seg-trans,
+.seg-lang-1col-sm.seg-trans {
+  padding-left: 1.2em;
+  background: linear-gradient(90deg,
+    rgba(var(--v-theme-on-surface),0.1),
+    rgba(0,0,0,0) 40% 
+    );
+}
+.seg-lang-1col-lg.seg-ref,
+.seg-lang-1col-sm.seg-ref {
+  padding-left: 0px;
+  font-size: 107%;
+}
+.seg-lang-1col-lg {
+  width: calc(min(100vw - 30px, 500px));
+  padding-left: 1em;
+}
+.seg-lang-2col-sm {
+  width: 300px;
+}
+.seg-lang-2col-lg {
+  width: calc(min(45vw - 30px, 330px));
+}
+.seg-lang-3col-sm {
+  width: calc(30svw);
+}
+.seg-lang-3col-lg {
+  width: 350px;
+}
+.seg-anchor {
+  position: relative;
+  font-size: 10px;
+  top: -110px;
+  height: 1px;
+}
+.seg-current {
+  background-color: rgba(var(--v-theme-currentbg),1);
+  border-radius: 5px;
+}
+.seg-current .seg-text {
+  opacity: 1;
+  font-size: larger;
+}
+.seg-audio {
+  border: 2px dashed rgba(var(--v-theme-matched), 1);
+}
+.seg-audio .ebt-example:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.empty-text {
+  color: #888;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.seg-body {
+}
+.seg-body:focus {
+  border: 2px dotted rgba(var(--v-theme-matched), 1);
+}
+
+/************** SegmentView (BEGIN) ***************/
+
+/************** SuttaView (BEGIN) ***************/
+.sutta {
+  outline: none;
+}
+.sutta:focus {
+}
+.sutta-1col {
+  max-width: calc(min(100vw - 30px, 70em));
+}
+.sutta-2col {
+  max-width: 60em;
+}
+.sutta-3col {
+  max-width: 100em;
+}
+.sutta-title {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  font-family: var(--ebt-sc-sans-font);
+  font-size: larger;
+  font-weight: 600;
+  line-height: 1.5em;
+  margin-bottom: 1em;
+}
+.sutta-title div:first-child {
+  font-size: smaller;
+  font-weight: 400;
+}
+.tipitaka-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  opacity: 0.4;
+  margin-bottom: 0.5rem;
+}
+.tipitaka-nav:focus-within,
+.tipitaka-nav:hover {
+  opacity: 1;
+}
+
+/******************* SuttaVeew (END) ***********************/
+
 /*
  * Accessible desktop (green)
  */
