@@ -137,7 +137,7 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.setRoute()';
       let { config, } = this;
       let settings = useSettingsStore();
-      let dbg = DEBUG_ROUTE ;
+      let dbg = DEBUG_ROUTE || DEBUG_SCROLL;
       if (!cardOrRoute) {
         let homePath = settings.homePath(config);
         dbg && console.log(msg, `[1]`, {homePath});
@@ -159,11 +159,7 @@ export const useVolatileStore = defineStore('volatile', {
         if (card.isOpen) {
           switch (card.context) {
             case 'wiki':
-              dbg && console.log(msg, "[4]same route", card.id, 
-                {visible});
-              if (!visible) {
-                //settings.scrollToCard(card);
-              }
+              dbg && console.log(msg, "[4]same route", card.id, )
               break;
             case 'search':
             case 'sutta':
@@ -192,7 +188,11 @@ export const useVolatileStore = defineStore('volatile', {
 
       if (this.routeCard !== card) {
         this.routeCard = card;
-        dbg && console.log(msg, '[8]routeCard <=', card.id);
+        dbg && console.log(msg, '[8]routeCard <=', card.debugString,
+          {visible});
+        if (!visible) {
+          settings.scrollToCard(card);
+        }
       }
       return card;
     },
