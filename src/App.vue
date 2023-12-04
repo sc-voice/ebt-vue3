@@ -207,7 +207,7 @@
         settings.tutorSettings = false;
         nextTick(()=>{
           let autofocus = document.getElementById('settings-autofocus');
-          dbg && console.log(msg, {autoFocus});
+          dbg && console.log(msg, {autofocus});
           autofocus && autofocus.focus();
         });
       },
