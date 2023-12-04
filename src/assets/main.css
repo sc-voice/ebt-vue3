@@ -135,6 +135,7 @@ a:focus {
 .ebt-wiki p {
   padding-top: 0.5em;
   padding-bottom: 0.2em;
+  max-width: calc(min(100vw - 30px, 700px));
 }
 .ebt-wiki h1,h2,h3,h4,h5,h6 {
   padding-top: 0.3em;

@@ -1,7 +1,7 @@
 export const DEBUG_ADD_CARD = 0;
 export const DEBUG_AUDIO    = 0;
 export const DEBUG_CLICK    = 0;
-export const DEBUG_FOCUS    = true;
+export const DEBUG_FOCUS    = 0;
 export const DEBUG_HOME     = 0;
 export const DEBUG_KEY      = 0;
 export const DEBUG_LEGACY   = 0;
@@ -15,4 +15,4 @@ export const DEBUG_SETTINGS = 0;
 export const DEBUG_STARTUP  = 0;
 export const DEBUG_SUTTA    = 0;
 export const DEBUG_TUTORIAL = 0;
-export const DEBUG_WIKI     = 0;
+export const DEBUG_WIKI     = true;

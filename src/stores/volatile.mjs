@@ -5,6 +5,7 @@ import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
+  DEBUG_WIKI,
   DEBUG_HOME,
   DEBUG_FOCUS,
   DEBUG_CLICK,
@@ -16,6 +17,7 @@ import * as Idb from "idb-keyval";
 const suttas = new Map();
 const displayBox = ref();
 const showSettings = ref(false);
+const homeHtml = ref('loading...');
 const SAMPLE_RATE = 48000;
 const ICON_DOWNLOAD = 'mdi-wan';
 const ICON_PROCESSING = 'mdi-factory';
@@ -29,7 +31,7 @@ const INITIAL_STATE = {
   debugText: ref('debugText:'),
   delayedWaiting: 0,
   ebtChips: ref(undefined),
-  homeHtml: ref('loading...'),
+  homeHtml,
   routeCard: undefined,
   updated: false,
   showAlertMsg: ref(false),
@@ -196,13 +198,19 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async fetchText(href) {
       const msg = "volatile.fetchText() ";
-      let res = await fetch(href);
+      const dbg = DEBUG_WIKI;
+      let res;
       let text;
-      if (res.ok) {
-        text = await res.text();
-        //logger.info(msg, `${href} => OK`);
-      } else {
-        logger.warn(msg, `Could not fetch URL`, href);
+      try {
+        res = await fetch(href);
+        if (res.ok) {
+          text = await res.text();
+          dbg && console.log(msg, '[1]OK', {href, text});
+        } else {
+          dbg && console.warn(msg, '[2]FAIL', {href, res});
+        }
+      } catch (e) {
+        dbg && console.warn(msg, '[3]ERROR', {href, e});
       }
       return text;
     },
@@ -214,32 +222,33 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async fetchWikiHtml(location, caller) {
       const msg = 'volatile.fetchWikiHtml() ';
+      const dbg = DEBUG_WIKI || DEBUG_HOME;
       let { config } = this;
       let settings = useSettingsStore();
-      let dbg = DEBUG_HOME;
       let homePath = settings.homePath(config);
       let windowHash = window?.location?.hash;
-      let hashPath = windowHash || homePath;
       let locationPath = location.join('/');
-      dbg && console.log(msg, 
-        {homePath, hashPath, windowHash, locationPath});
+      dbg && console.log(msg, {homePath, windowHash, locationPath});
 
       let html = '';
-      let paths = [
-        hashPath, 
-        locationPath, 
-      ].filter(p=>!!p);
+      let paths = [locationPath];
+      if (windowHash.match(`#/${EbtCard.CONTEXT_WIKI}`)) {
+        let hashPath = windowHash.split('/').slice(2).join('/');
+        if (hashPath !== locationPath) {
+          paths = [hashPath, locationPath];
+        }
+      }
       let hrefs = paths.map(p => this.contentPath(p));
+      dbg && console.log(msg, 'hrefs', hrefs);
       let hrefMap = hrefs.reduce((a,hr,i) => { 
         a[hr] = i; return a; 
       }, {});
       hrefs = Object.keys(hrefMap); // unique hrefs
-      //console.log(msg, hrefs);
+      dbg && console.log(msg, {hrefs});
 
       for (let i=0; !html && i < hrefs.length; i++) {
         let href = hrefs[i];
         html = await this.fetchText(href);
-        //console.trace(msg, caller, href, !!html);
       }
 
       if (!html) {
@@ -254,7 +263,7 @@ export const useVolatileStore = defineStore('volatile', {
         ].join('\n');
       }
 
-      this.homeHtml = html;
+      homeHtml.value = html;
       return html;
     },
     alert(eOrMsg, context, alertHtml="") {
