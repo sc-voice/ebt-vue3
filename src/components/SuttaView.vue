@@ -44,7 +44,9 @@
   import { default as SegmentView } from './SegmentView.vue';
   import { default as SegmentHeader } from './SegmentHeader.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
-  import { DEBUG_KEY, DEBUG_SCROLL, DEBUG_FOCUS } from '../defines.mjs';
+  import { 
+    DEBUG_MOUNTED, DEBUG_KEY, DEBUG_SCROLL, DEBUG_FOCUS,
+  } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
   export default {
@@ -71,6 +73,7 @@
     },
     async mounted() {
       const msg = 'SuttaView.mounted() ';
+      const dbg = DEBUG_MOUNTED;
       let { $route, suttas, settings, volatile, card, config, } = this;
       let { fullPath } = $route;
       let { development, langTrans } = settings;
@@ -82,15 +85,19 @@
       }
       let suttaRef = SuttaRef.create(ref);
       if (suttaRef == null) {
-        volatile.alert(`Invalid SuttaRef ${JSON.stringify(ref)}`);
+        let eMsg = `Invalid SuttaRef ${JSON.stringify(ref)}`;
+        console.log(msg, eMsg);
+        volatile.alert(eMsg);
         settings.removeCard(card, config);
         volatile.setRoute(config.homePath, undefined, msg);
         return;
       }
       let { sutta_uid, lang, author, segnum } = suttaRef;
       let idbKey = IdbSutta.idbKey({sutta_uid, lang, author});
+      dbg && console.log(msg, `[1]suttaRef:${suttaRef}`, {idbKey});
       let idbSuttaRef = await suttas.getIdbSuttaRef({
         sutta_uid, lang, author});
+      dbg && console.log(msg, `[2]loaded`, {idbSuttaRef});
       let { langTrans:defaultLang } = settings;
       this.idbSuttaRef = idbSuttaRef?.value;
 
