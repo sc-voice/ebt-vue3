@@ -88,11 +88,11 @@
     },
     beforeMount() {
       const msg = 'EbtCard.beforeMount() ';
+      const dbg = DEBUG_MOUNTED;
       let { card, $route, volatile, settings } = this;
       let { fullPath:path } = $route;
       let { langTrans:defaultLang } = settings;
       let { id, location, context } = card;
-      let dbg = DEBUG_MOUNTED;
       if (card.matchPath({path, defaultLang})) {
         dbg && console.log(msg, '[1]routeCard',
           `${id}_${context}:${location[0]}`);
@@ -101,6 +101,8 @@
     },
     mounted() {
       const msg = 'EbtCard.mounted() ';
+      const dbg = DEBUG_MOUNTED;
+      dbg && console.log(msg, 'addIntersectionObserver');
       this.addIntersectionObserver();
     },
     updated() {
