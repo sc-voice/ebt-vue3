@@ -255,7 +255,7 @@ export const useVolatileStore = defineStore('volatile', {
       if (!html) {
         let { $t } = this;
         let alertMsg = $t('ebt.cannotLoadWikiHtml');
-        logger.warn(msg, alertMsg, hrefs);
+        console.warn(msg, alertMsg, hrefs);
         html = [
           `<h2>${alertMsg}</h2>`,
           '<pre>',
