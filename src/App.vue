@@ -137,7 +137,7 @@
   import { nextTick, ref } from "vue";
   import { 
     DEBUG_TUTORIAL, DEBUG_HOME, DEBUG_KEY, DEBUG_STARTUP, 
-    DEBUG_FOCUS, DEBUG_SCROLL 
+    DEBUG_CLICK, DEBUG_FOCUS, DEBUG_SCROLL 
   } from './defines.mjs';
 
   export default {
