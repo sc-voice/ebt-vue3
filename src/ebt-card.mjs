@@ -3,8 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DEBUG_ADD_CARD,
-  DEBUG_OPEN_CARD,
   DEBUG_FOCUS,
+  DEBUG_MOUNTED,
+  DEBUG_OPEN_CARD,
   DEBUG_ROUTE, 
   DEBUG_SCROLL,
 } from './defines.mjs';
@@ -225,10 +226,10 @@ export default class EbtCard {
 
   onAfterMounted({settings, volatile}) {
     const msg = "ebt-card.onAfterMounted()";
+    const dbg = DEBUG_ROUTE || DEBUG_MOUNTED;
     let { langTrans, } = settings;
     let { id } = this;
     let route = window.location.hash.split('#')[1] || '';
-    let dbg = DEBUG_ROUTE;
     if (this.matchPath({path:route, defaultLang:langTrans})) {
       let { activeElement } = document;
       if (volatile.routeCard?.id !== id) {
