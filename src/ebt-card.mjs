@@ -199,8 +199,7 @@ export default class EbtCard {
     if (elt) {
       elt.focus(); // focusElementId
       let activeElt = document.activeElement;
-      dbg && console.log(msg, '[1]requested', {eltId, elt, activeElt}, 
-        document.activeElement);
+      dbg && console.log(msg, '[1]ok', eltId, elt);
     } else if ((elt = document.getElementById(tab1Id))) {
       elt.focus(); // focusElementId
       let activeElt = document.activeElement;

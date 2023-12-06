@@ -22,6 +22,7 @@ const homeHtml = ref('loading...');
 const SAMPLE_RATE = 48000;
 const ICON_DOWNLOAD = 'mdi-wan';
 const ICON_PROCESSING = 'mdi-factory';
+const showLegacyDialog = ref(false);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -38,7 +39,7 @@ const INITIAL_STATE = {
   showAlertMsg: ref(false),
   showSettings,
   showWaiting: ref(false),
-  showLegacyDialog: ref(false),
+  showLegacyDialog,
   suttas,
   touchSwipe: ref('waiting...'),
   trilingual: ref(true),
@@ -51,9 +52,7 @@ const INITIAL_STATE = {
 
 export const useVolatileStore = defineStore('volatile', {
   state: () => {
-    let s = Object.assign({}, INITIAL_STATE);
-    //console.log('volatile.state()', s);
-    return s;
+    return INITIAL_STATE;
   },
   getters: {
     iconProcessing() {

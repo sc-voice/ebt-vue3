@@ -85,49 +85,18 @@
     }
   });
   const showTutorial = computed(()=>{
-    const msg = "Tutorial.showTutorial)";
+    const msg = "Tutorial.showTutorial()";
     let dbg = DEBUG_TUTORIAL;
-    let { setting, containerId } = props;
-    let { 
-      tutorClose, tutorPlay, tutorSearch, tutorSettings, tutorWiki,
-      legacyVoice, loaded, cards=[] 
-    } = settings;
-    let { showSettings } = volatile;
-    let show = !isDelayed.value && !showSettings && settings[setting];
-    if (!show) {
+    let { setting, } = props;
+
+    if (isDelayed.value) {
+      return false;
+    }
+    if (!settings[setting]) {
       return false;
     }
 
-    let wikiCard = cards.reduce((a,card)=>{
-      return card.context === EbtCard.CONTEXT_WIKI ? card : a;
-    }, null);
-    let hasSearch = cards.reduce((a,card)=>{
-      return card.context === EbtCard.CONTEXT_SEARCH ? true : a;
-    }, false);
-    let hasSutta = cards.reduce((a,card)=>{
-      return card.context === EbtCard.CONTEXT_SUTTA ? true : a;
-    }, false);
-    switch (setting) {
-      case 'tutorClose': {
-        show = show && wikiCard.isOpen;
-        let elt = document.getElementById(containerId);
-        let rect = elt && elt.getBoundingClientRect();
-        dbg && console.log(msg, `[1]${setting}`, {show, elt, rect});
-        break;
-      }
-      case 'tutorWiki':
-        show = show && !wikiCard.isOpen;
-        dbg && console.log(msg, `[1]${setting}`, {show});
-        break;
-      case 'tutorSettings':
-      case 'tutorSearch':
-      case 'tutorPlay':
-      default:
-        // See App.mjs (showTutorSearch, showTutorPlay, etc.)
-        break;
-    }
-
-    return show;
+    return true;
   });
   function tutorialsAllowed() {
     let dbg = DEBUG_TUTORIAL;

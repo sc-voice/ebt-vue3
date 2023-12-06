@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-if="showLegacyDialog" 
-    v-model="showLegacyDialog"
+  <v-dialog v-if="volatile.showLegacyDialog" 
+    v-model="volatile.showLegacyDialog"
     transition="dialog-top-transition"
     persistent
     @update:modelValue="onClose"
@@ -79,7 +79,6 @@
   // WARNING: Settings is not loaded yet in setup!
   const settings = useSettingsStore();
   const volatile = useVolatileStore();
-  const showLegacyDialog = ref(false);
 
   const legacyVoice = ref();
   const voiceUrl = computed(()=>{
@@ -146,7 +145,7 @@
       i18n.locale = locale;
     }
 
-    showLegacyDialog.value = isSrcSC && settings.legacyVoice !== 'new';
+    volatile.showLegacyDialog = isSrcSC && settings.legacyVoice !== 'new';
   });
 
   function onClose() {
@@ -155,13 +154,13 @@
   }
 
   function onCancel() {
-    showLegacyDialog.value = false;
+    volatile.showLegacyDialog = false;
   }
 
   async function onSave() {
     const msg = 'LegacyVoice.onSave()';
     let dbg = DEBUG_LEGACY;
-    showLegacyDialog.value = false;
+    volatile.showLegacyDialog = false;
     settings.legacyVoice = legacyVoice.value;
     await settings.saveSettings();
     switch (settings.legacyVoice) {

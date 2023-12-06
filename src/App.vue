@@ -24,17 +24,24 @@
               <div :title="titlePopup">
                 {{config.appName}}
               </div>
-              <div v-if="settings.logLevel==='info'" class="app-debug">
-                <span title="activeElt">{{activeElt}}</span>
-                &nbsp;
-                <span title="routeCard">{{volatile.routeCard?.id}}</span>
-                &nbsp;
-                <span title="viewWidth">w{{viewWidth}}</span>
-                &nbsp;
-                <span title="legacyVoice">{{settings.legacyVoice}}</span>
-                <span :title="volatile.waitingMsg">
-                  wait{{volatile.waiting}}
-                </span>
+              <div class="app-debug">
+                <span v-if="DEBUG_FOCUS" title="activeElt">
+                  {{activeElt||'activeElt?'}}
+                </span> &nbsp;
+                <span v-if="DEBUG_ROUTE" title="routeCard">
+                  {{volatile.routeCard?.id}}
+                </span> &nbsp;
+                <span v-if="DEBUG_SCROLL" title="viewWidth">
+                  vw:{{viewWidth}}
+                </span> &nbsp;
+                <span v-if="DEBUG_LEGACY" 
+                  title="legacyVoice:showLegacyDialog">
+                  {{settings.legacyVoice}}:
+                  {{volatile.showLegacyDialog ? 'legacy' : 'nolegacy'}}
+                </span> &nbsp;
+                <span v-if="DEBUG_WAITING" :title="volatile.waitingMsg">
+                  wait:{{volatile.waiting}}
+                </span> &nbsp;
               </div>
             </div>
           </v-app-bar-title>
@@ -93,7 +100,7 @@
         </div>
       </v-snackbar>
       <div v-if="showTutorial">
-        <Tutorial v-if="settings.tutorClose"
+        <Tutorial v-if="showTutorClose"
           setting="tutorClose" :title="$t('ebt.closeCard')" 
           containerId="home-card-id" 
           :text="$t('ebt.closeWiki')" arrow="top"
@@ -124,6 +131,28 @@
   </v-app>
 </template>
 
+<script setup>
+  import { 
+    DEBUG_TUTORIAL, DEBUG_HOME, DEBUG_KEY, DEBUG_STARTUP, 
+    DEBUG_LEGACY, DEBUG_CLICK, DEBUG_FOCUS, DEBUG_SCROLL,
+    DEBUG_ROUTE, DEBUG_WAITING, DEBUG_SETTINGS,
+  } from './defines.mjs';
+
+  const msg = "App.setup"
+  const dbg = DEBUG_FOCUS;
+
+  const activeElt = ref("loading...");
+  setInterval(()=>{
+    let elt = window?.document?.activeElement;
+    let ae = elt?.id || elt;
+    if (ae !== activeElt.value) {
+      activeElt.value = ae;
+      dbg && console.log(msg, "[4]activeElt", ae);
+    } else {
+      //dbg && console.log(msg, "[5]activeElt", ae);
+    }
+  }, 1000);
+</script>
 <script>
   import { default as HomeView } from './components/HomeView.vue';
   import Tutorial from './components/Tutorial.vue';
@@ -138,10 +167,6 @@
   import { useAudioStore } from './stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
-  import { 
-    DEBUG_TUTORIAL, DEBUG_HOME, DEBUG_KEY, DEBUG_STARTUP, 
-    DEBUG_CLICK, DEBUG_FOCUS, DEBUG_SCROLL 
-  } from './defines.mjs';
 
   export default {
     inject: ['config'],
@@ -149,7 +174,6 @@
       return {
         tabs: ref([]),
         clickElt: ref(undefined),
-        activeElt: ref("loading..."),
       }
     },
     data: ()=>({
@@ -228,6 +252,16 @@
             break;
         }
       },
+      async onSettingsChanged(mutation, state) {
+        const msg = "App.onSettingsChanged()";
+        const dbg = DEBUG_SETTINGS;
+        let { settings, $i18n, $vuetify } = this;
+        $vuetify.theme.global.name = settings.theme === 'dark' 
+          ? 'dark' : 'light';
+        dbg && console.log(msg, {mutation, state, settings});
+        await settings.saveSettings();
+        $i18n.locale = settings.locale;
+      },
     },
     updated() {
       let msg = 'App.updated()';
@@ -237,14 +271,12 @@
       dbg && console.log(msg);
     },
     async mounted() {
-      let msg = 'App.mounted()';
+      const msg = 'App.mounted()';
+      const dbg = DEBUG_STARTUP || DEBUG_FOCUS || DEBUG_SCROLL;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route
       } = this;
-      let dbg = settings.development && (
-        DEBUG_STARTUP || DEBUG_FOCUS || DEBUG_SCROLL
-      );
       volatile.$t = $t;
       volatile.config = config;
 
@@ -252,12 +284,12 @@
 
       // wait for Settings to load
       await settings.loadSettings(config);
-      nextTick(()=>{
+      setTimeout(()=>{
         let { clickElt } = this;
         audio.clickElt = clickElt;
         let { audioVolume } = settings;
-        clickElt.volume = audioVolume;
-      });
+        clickElt && (clickElt.volume = audioVolume);
+      }, 2000);
 
       let wikiHash = hash.startsWith("#/wiki") ? hash : null;
       let homePath = settings.homePath(config);
@@ -269,15 +301,9 @@
       $vuetify.theme.global.name = settings.theme === 'dark' 
         ? 'dark' : 'light';;
       $i18n.locale = settings.locale;
-      let onSettingsChanged = async (mutation, state) => {
-        $vuetify.theme.global.name = settings.theme === 'dark' 
-          ? 'dark' : 'light';
-        dbg && console.log(msg, "[2]settings.onSettingsChanged()", 
-          {mutation, state, settings});
-        await settings.saveSettings();
-        $i18n.locale = settings.locale;
-      };
-      this.unsubSettings = settings.$subscribe(onSettingsChanged);
+      this.unsubSettings = settings.$subscribe((mutation,state)=>{
+        this.onSettingsChanged(mutation,state);
+      });
       let that = this;
       window.addEventListener('keydown', (evt)=>this.onKeydown(evt));
       window.addEventListener('focusin', evt=>{
@@ -289,64 +315,79 @@
           audio.playClick();
         }
       });
-      setInterval(()=>{
-        let elt = window?.document?.activeElement;
-        let activeElt = elt?.id || elt;
-        if (activeElt !== that.activeElt) {
-          that.activeElt = activeElt;
-          dbg && console.log(msg, "[4]activeElt", {activeElt, elt});
-        }
-      }, 1000);
     },
     computed: {
       showTutorial(ctx) {
         const msg = "App.showTutorial";
         let { search } = window.location;
-        let { settings } = ctx;
-        let isSrcSC = search.search('src=sc') >= 0;
-        let legacyAsk = settings.legacyVoice==='ask';
+        let { volatile, settings } = ctx;
+        let { loaded:settingsLoaded } = settings;
+        let { showSettings, showLegacyDialog } = volatile;
         let dbg = DEBUG_TUTORIAL;
         
+        if (showSettings) {
+          //dbg && console.log(msg, '[1]hide', {showSettings});
+          return false;
+        }
+        
         if (!settings.loaded) {
-          dbg && console.log(msg, '[1]not loaded');
+          //dbg && console.log(msg, '[2]hide', {settingsLoaded});
           return false;
         }
         if (settings.tutorialState(false)) {
-          dbg && console.log(msg, '[2]completed');
+          //dbg && console.log(msg, '[3]completed');
           return false;
         }
-        if (isSrcSC && settings.legacyVoice === 'new') {
-          dbg && console.log(msg, '[3]legacy');
-          return true;
+        if (showLegacyDialog) {
+          //dbg && console.log(msg, '[4]hide', {showLegacyDialog});
+          return false;
         } 
 
-        dbg && console.log(msg, '[4]standalone');
+        dbg && console.log(msg, '[5]show');
         return true;
       },
       showTutorWiki(ctx) {
         const msg = "App.showTutorWiki()";
+        const dbg = DEBUG_TUTORIAL;
         let { audio, settings, } = this;
-        let { cards, tutorWiki } = settings;
-        let dbg = DEBUG_TUTORIAL;
+        let { cards, tutorWiki, tutorPlay } = settings;
+        if (!tutorWiki) {
+          //dbg && console.log(msg, '[1]hide');
+          return false;
+        }
+
         let nOpen = cards.reduce((a,c,i)=>{
           if (c?.isOpen) {
-            dbg && console.log(msg, '[1]isOpen', 
-              c.id, c.context, c.location.join('/'));
+            //dbg && console.log(msg, '[2]isOpen', c.debugString);
             return a+1;
           }
           return a;
         }, 0);
-        let inTutorial = !settings.tutorialState(false);
-        let show = inTutorial && tutorWiki && nOpen === 0;
-        dbg && console.log(msg, '[2]show',
-          {nOpen, inTutorial, tutorWiki, show});
-        return show;
+        let show = (nOpen===0 || !tutorPlay);
+        if (!show) {
+          dbg && console.log(msg, '[3]hide', {nOpen, tutorPlay});
+          return false;
+        }
+
+        dbg && console.log(msg, '[4]show', {nOpen, tutorPlay});
+        return true;
       },
       showTutorPlay(ctx) {
+        const msg = "App.showTutorPlay()";
+        const dbg = DEBUG_TUTORIAL;
         let { audio, settings, } = this;
-        let { tutorWiki } = settings;
-        let show = audio.audioScid && !tutorWiki;
-        return show;
+        let { tutorPlay, tutorWiki } = settings;
+        let { audioScid } = audio;
+        if (!tutorPlay) {
+          dbg && console.log(msg, '[1]hide', {tutorPlay});
+          return false;
+        }
+        if (!audioScid) {
+          dbg && console.log(msg, '[2]hide', {audioScid});
+          return false;
+        }
+        dbg && console.log(msg, '[3]show');
+        return true;
       },
       showTutorSearch(ctx) {
         let { audio, settings, } = this;
@@ -356,6 +397,26 @@
           !tutorClose && !tutorWiki && 
           nOpen < 1;
         return show;
+      },
+      showTutorClose(ctx) {
+        const msg = "App.showTutorClose()";
+        const dbg = DEBUG_TUTORIAL;
+        let { settings, } = this;
+        let { tutorClose, tutorWiki, cards } = settings;
+        let wikiCard = cards.reduce((a,card)=>{
+          return card.context === EbtCard.CONTEXT_WIKI ? card : a;
+        }, null);
+        if (!tutorClose) {
+          dbg && console.log(msg, '[1]hide', {tutorClose});
+          return false;
+        }
+        if (!wikiCard.isOpen) {
+          dbg && console.log(msg, '[2]hide:wiki card hidden');
+          return false;
+        }
+
+        dbg && console.log(msg, '[3]show');
+        return true;
       },
       viewWidth(ctx) {
         return window?.innerWidth || root?.clientWidth;

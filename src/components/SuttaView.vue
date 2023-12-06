@@ -106,8 +106,8 @@
     methods: {
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
+        const dbg = DEBUG_KEY;
         const { settings } = this;
-        let dbg = DEBUG_KEY || DEBUG_FOCUS;
         let { audio } = this;
         switch (evt.code) {
           case 'Tab': {
