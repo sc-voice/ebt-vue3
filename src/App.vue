@@ -74,7 +74,7 @@
         </div>
       </v-sheet>
 
-      <v-sheet class="gdrp" v-if="settings.showGdpr">
+      <v-sheet class="gdrp" v-if="showGdpr">
         {{$t('ebt.allowSettings')}}
         <a :href="privacyLink">{{$t('ebt.allowSettingsLink')}}</a>
         <v-icon icon="mdi-close-circle" 
@@ -120,7 +120,7 @@
           setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
           :text="$t('ebt.hearSutta')" arrow="bottom" hflip
         ></Tutorial>
-        <Tutorial v-if="!settings.tutorPlay && !settings.tutorSearch"
+        <Tutorial v-if="showTutorSettings"
           setting="tutorSettings" 
           :title="$t('ebt.settingsTitle')" 
           :text="$t('ebt.customizeSettings')" arrow="top"
@@ -317,6 +317,35 @@
       });
     },
     computed: {
+      showGdpr(ctx) {
+        const msg = "App.showGdpr"
+        const dbg = true;
+        let { settings, volatile } = this;
+        let { loaded } = settings;
+        let { showLegacyDialog } = volatile;
+        let { showGdpr } = settings;
+
+        if (!loaded) {
+          dbg && console.log(msg, '[1]wait', {loaded});
+          return false;
+        }
+        if (!showGdpr) {
+          dbg && console.log(msg, '[2]hide', {showGdpr});
+          return false;
+        }
+        if (showLegacyDialog) {
+          dbg && console.log(msg, '[3]wait', {showLegacyDialog});
+          return false;
+        }
+        let inTutorial = !settings.tutorialState(false);
+        if (inTutorial) {
+          dbg && console.log(msg, '[4]wait', {inTutorial});
+          return false;
+        }
+
+        dbg && console.log(msg, '[5]show');
+        return true;
+      },
       showTutorial(ctx) {
         const msg = "App.showTutorial";
         let { search } = window.location;
@@ -325,25 +354,47 @@
         let { showSettings, showLegacyDialog } = volatile;
         let dbg = DEBUG_TUTORIAL;
         
-        if (showSettings) {
-          //dbg && console.log(msg, '[1]hide', {showSettings});
+        if (!settings.loaded) {
+          dbg && console.log(msg, '[1]wait', {settingsLoaded});
           return false;
         }
-        
-        if (!settings.loaded) {
-          //dbg && console.log(msg, '[2]hide', {settingsLoaded});
+        if (showSettings) {
+          //dbg && console.log(msg, '[2]wait', {showSettings});
           return false;
         }
         if (settings.tutorialState(false)) {
-          //dbg && console.log(msg, '[3]completed');
+          dbg && console.log(msg, '[3]completed');
           return false;
         }
         if (showLegacyDialog) {
-          //dbg && console.log(msg, '[4]hide', {showLegacyDialog});
+          dbg && console.log(msg, '[4]wait', {showLegacyDialog});
           return false;
         } 
 
         dbg && console.log(msg, '[5]show');
+        return true;
+      },
+      showTutorSettings(ctx) {
+        const msg = "App.showTutorSettings()";
+        const dbg = DEBUG_TUTORIAL;
+        let { settings } = this;
+        let { tutorSettings, tutorPlay, tutorSearch } = settings;
+
+        if (!tutorSettings) {
+          dbg && console.log(msg, '[1]done', {tutorSettings});
+          return false;
+        }
+        if (tutorPlay) {
+          dbg && console.log(msg, '[2]wait', {tutorPlay});
+          return false;
+        }
+        if (tutorSearch) {
+          dbg && console.log(msg, '[3]wait', {tutorSearch});
+          return false;
+        }
+
+        dbg && console.log(msg, '[4]show');
+
         return true;
       },
       showTutorWiki(ctx) {
@@ -352,7 +403,7 @@
         let { audio, settings, } = this;
         let { cards, tutorWiki, tutorPlay } = settings;
         if (!tutorWiki) {
-          //dbg && console.log(msg, '[1]hide');
+          dbg && console.log(msg, '[1]done');
           return false;
         }
 
@@ -365,7 +416,7 @@
         }, 0);
         let show = (nOpen===0 || !tutorPlay);
         if (!show) {
-          dbg && console.log(msg, '[3]hide', {nOpen, tutorPlay});
+          dbg && console.log(msg, '[3]wait', {nOpen, tutorPlay});
           return false;
         }
 
@@ -379,24 +430,46 @@
         let { tutorPlay, tutorWiki } = settings;
         let { audioScid } = audio;
         if (!tutorPlay) {
-          dbg && console.log(msg, '[1]hide', {tutorPlay});
+          dbg && console.log(msg, '[1]done', {tutorPlay});
           return false;
         }
         if (!audioScid) {
-          dbg && console.log(msg, '[2]hide', {audioScid});
+          dbg && console.log(msg, '[2]wait', {audioScid});
           return false;
         }
         dbg && console.log(msg, '[3]show');
         return true;
       },
       showTutorSearch(ctx) {
+        const msg = "App.showTutorSearch()";
+        const dbg = DEBUG_TUTORIAL;
         let { audio, settings, } = this;
-        let { tutorClose, tutorWiki, cards } = settings;
-        let nOpen = cards.reduce((a,c,i)=> (c.isOpen ? a+1 : a), 0);
-        let show = !audio.audioScid && 
-          !tutorClose && !tutorWiki && 
-          nOpen < 1;
-        return show;
+        let { tutorSearch, tutorClose, tutorWiki, cards } = settings;
+
+        if (!tutorSearch) {
+          dbg && console.log(msg, '[1]done', {tutorSearch});
+          return false;
+        }
+
+        if (tutorClose || tutorWiki) {
+          dbg && console.log(msg, '[2]wait', {tutorClose, tutorWiki});
+          return false;
+        }
+
+        let nOpen = cards.reduce((a,c,i)=> {
+          if (c.isOpen && c.context !== EbtCard.CONTEXT_WIKI) {
+            return a+1 ;
+          }
+          return a;
+        }, 0);
+        let { audioScid } = audio;
+        if (audioScid || nOpen > 0) {
+          dbg && console.log(msg, '[3]wait', {nOpen, audioScid});
+          return false;
+        }
+
+        dbg && console.log(msg, '[4]show');
+        return true;
       },
       showTutorClose(ctx) {
         const msg = "App.showTutorClose()";
@@ -407,11 +480,11 @@
           return card.context === EbtCard.CONTEXT_WIKI ? card : a;
         }, null);
         if (!tutorClose) {
-          dbg && console.log(msg, '[1]hide', {tutorClose});
+          dbg && console.log(msg, '[1]done', {tutorClose});
           return false;
         }
         if (!wikiCard.isOpen) {
-          dbg && console.log(msg, '[2]hide:wiki card hidden');
+          dbg && console.log(msg, '[2]wait:wiki card hidden');
           return false;
         }
 
