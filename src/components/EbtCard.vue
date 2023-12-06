@@ -222,23 +222,28 @@
         let iSelf = cards.findIndex(c=>c === card);
         let nCards = cards.length;
         let iNext = (iSelf+1) % nCards;
-        let routeCard = cards[iNext];
-        let openCards = cards.filter(c=>c.isOpen);
-        if (!routeCard.isOpen && openCards.length) {
-          routeCard = openCards[0];
+        let routeCard = null;
+        for (let i=1; i<nCards; i++) {
+          let c = cards[(iSelf+i)%nCards];
+          if (c.isOpen) {
+            routeCard = c;
+            break;
+          }
         }
-        if (!routeCard.isOpen) {
+        if (routeCard) {
+          setTimeout(()=>{
+            // HACK: Wait until display stabilizes before changing the
+            // route so that the routeCard can be scrolled into view
+            // with the proper selection.  None of the Vue events
+            // (e.g., deactivated, unmounted, updated) are triggered 
+            // when the DOM tree is rendered after being updated
+            dbg && console.log(msg, '[2]routeCard', 
+              routeCard.debugString);
+            volatile.setRoute(routeCard);
+          }, 500);
+        } else {
           ebtChips && ebtChips.focus();
         }
-        setTimeout(()=>{
-          // HACK: Wait until display stabilizes before changing the
-          // route so that the routeCard can be scrolled into view
-          // with the proper selection.  None of the Vue events
-          // (e.g., deactivated, unmounted, updated) are triggered when
-          // the DOM tree is rendered after being updated
-          dbg && console.log(msg, '[2]routeCard', routeCard.debugString);
-          volatile.setRoute(routeCard);
-        }, 500);
       },
       addIntersectionObserver() {
         let { card, observer } = this;
