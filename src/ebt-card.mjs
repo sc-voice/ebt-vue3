@@ -118,8 +118,8 @@ export default class EbtCard {
   }
 
   static pathToCard(args) {
-    let msg = 'ebt-card.pathToCard()';
-    let dbg = DEBUG_ROUTE || DEBUG_ADD_CARD;
+    const msg = 'ebt-card.pathToCard()';
+    const dbg = DEBUG_ROUTE || DEBUG_ADD_CARD;
     let {
       path='/', cards=[], addCard, defaultLang, isOpen,
     } = args;
@@ -283,37 +283,40 @@ export default class EbtCard {
   }
 
   matchPathSutta({opts, context, location, cardLocation, }) {
+    const msg = "ebt-card.matchPathSutta()";
     let { path, defaultLang } = opts;
     let dbg = DEBUG_ROUTE;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
     if (loc === '') {
       let result = cardLoc === loc;
-      dbg && console.log(`[1]matchPathSutta(${path}) => ${result}`, {cardLoc, loc});
+      dbg && console.log(msg, `[1]true ${path} => ${result}`, 
+        {cardLoc, loc});
       return result;
     }
     if (cardLoc === '') {
-      dbg && console.log(`[2]match(${path}) => false`, {cardLoc, loc});
+      dbg && console.log(msg, `[2]false  ${path}`, {cardLoc, loc});
       return false;
     }
     let msStart = Date.now();
     let pathRef = SuttaRef.create(loc, defaultLang);
     if (pathRef == null) {
-      dbg && console.log(`[2.5]match(${path}) => false`, {loc});
+      dbg && console.log(msg, `[2.5]false (${path})`, {loc});
       return false;
     }
     let cardRef = SuttaRef.create(cardLoc, defaultLang);
     if (pathRef.sutta_uid !== cardRef.sutta_uid) {
-      dbg && console.log(`[3]match(${path}) => false`, pathRef.suid, cardRef.suid);
+      dbg && console.log(msg, `[3]false (${path})`, 
+        pathRef.suid, cardRef.suid);
       return false;
     }
     if (pathRef.lang && pathRef.lang !== cardRef.lang) {
-      dbg && console.log(`[4]match(${path}, ${defaultLang}) => false`, 
+      dbg && console.log(msg, `[4]false (${path}, ${defaultLang})`, 
         pathRef.lang, cardRef.lang);
       return false;
     }
     if (pathRef.author && pathRef.author !== cardRef.author) {
-      dbg && console.log(`[5]match(${path}) => false`, 
+      dbg && console.log(msg, `[5]false (${path})`, 
         pathRef.author, cardRef.author);
       return false;
     }

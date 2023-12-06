@@ -44,6 +44,10 @@
         volatile: useVolatileStore(),
       }
     },
+    updated() {
+      const msg = "EbtCards.updated()";
+      console.log(msg);
+    },
     mounted() {
       let msg = 'EbtCards.mounted() ';
       let { settings, volatile, $route, config }  = this;
@@ -180,16 +184,18 @@
         switch (card.context) {
           case EbtCard.CONTEXT_WIKI:
             volatile.fetchWikiHtml(card.location, msg);
-            if (settings.tutorialState(false)) {
+            if (settings.tutorialState(false) && !card.isOpen) {
               card.open(true);
               dbg && console.log(msg, `[4]opened card`, 
                 {$route, to, from, card});
             }
             break;
           default:
-            card.open(true);
-            dbg && console.log(msg, `[5]opened card`, 
-              {$route, to, from, card});
+            if (!card.isOpen) {
+              card.open(true);
+              dbg && console.log(msg, `[5]opened card`, 
+                {$route, to, from, card});
+            }
             break;
         }
         nextTick(() => { 

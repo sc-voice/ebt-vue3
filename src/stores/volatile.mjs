@@ -135,9 +135,9 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
+      const dbg = DEBUG_ROUTE || DEBUG_SCROLL;
       let { config, } = this;
       let settings = useSettingsStore();
-      let dbg = DEBUG_ROUTE || DEBUG_SCROLL;
       if (!cardOrRoute) {
         let homePath = settings.homePath(config);
         dbg && console.log(msg, `[1]`, {homePath});

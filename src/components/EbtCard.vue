@@ -19,13 +19,13 @@
         <template v-slot:append>
           <v-btn icon="mdi-window-minimize" flat 
             :id="card.tab1Id"
-            @click="clickMinimize"
+            @click.stop.prevent="clickMinimize"
             @focus="focusTop"
             @keydown.shift.tab.exact.prevent="onBackTabOut"
           />
           <v-btn icon="mdi-close-thick" flat 
             v-if="isClosable"
-            @click="clickDelete"
+            @click.stop.prevent="clickDelete"
             @focus="focusTop"
           />
         </template>
@@ -63,7 +63,8 @@
   import { logger } from 'log-instance/index.mjs';
   import { nextTick, ref } from "vue";
   import { 
-    DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL 
+    DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL,
+    DEBUG_UPDATED,
   } from '../defines.mjs';
 
   export default {
@@ -101,12 +102,36 @@
     },
     mounted() {
       const msg = 'EbtCard.mounted() ';
-      const dbg = DEBUG_MOUNTED;
-      dbg && console.log(msg, 'addIntersectionObserver');
+      const dbg = DEBUG_MOUNTED || DEBUG_SCROLL;
+      let { card } = this;
+      let { isOpen } = card;
+      dbg && console.log(msg, 'addIntersectionObserver',
+        {isOpen},
+        card.debugString, );
       this.addIntersectionObserver();
     },
+    unmounted() {
+      const msg = 'EbtCard.unmounted() ';
+      const dbg = DEBUG_MOUNTED;
+      dbg && console.log(msg, this.debugString);
+    },
+    deactivated() {
+      const msg = 'EbtCard.deactivated() ';
+      const dbg = DEBUG_MOUNTED;
+      dbg && console.log(msg, this.debugString);
+    },
     updated() {
-      this.addIntersectionObserver();
+      const msg = 'EbtCard.updated() ';
+      const dbg = DEBUG_SCROLL || DEBUG_UPDATED;
+      let { card } = this;
+      let { isOpen } = card;
+      if (isOpen) {
+        dbg && console.log(msg, '[1]open addIntersectionObserver',
+          card.debugString );
+        this.addIntersectionObserver();
+      } else {
+        dbg && console.log(msg, '[2]closed', card.debugString );
+      }     
     },
     methods: {
       onClickLastTab(evt) {
@@ -159,17 +184,17 @@
             break;
         }
       },
-      clickDelete() {
+      clickDelete(evt) {
         const msg = "EbtCard.clickDelete()";
         let { card, settings, config } = this;
         let dbg = DEBUG_CLICK;
-        this.clickMinimize();
+        this.clickMinimize(evt);
         setTimeout(()=>{
           dbg && console.log(msg, card.id);
           settings.removeCard(card, config);
         }, 500);
       },
-      clickMinimize() {
+      clickMinimize(evt) {
         const msg = "EbtCard.clickMinimize()";
         let { audio, card, settings } = this;
         let dbg = DEBUG_CLICK;
@@ -187,13 +212,33 @@
         settings.scrollToElementId(topId);
       },
       closeCard: (card, settings) => {
-        const msg = "EbtCad.closeCard)(";
-        const dbg = DEBUG_FOCUS;
+        const msg = 'EbtCard.closeCard()';
+        const dbg = DEBUG_CLICK || DEBUG_FOCUS;
         card.open(false);
         let volatile = useVolatileStore();
         let { ebtChips } = volatile;
-        dbg && console.log(msg, 'focus', {ebtChips});
-        ebtChips && ebtChips.focus();
+        let { cards } = settings;
+        dbg && console.log(msg, '[1]focus', {ebtChips});
+        let iSelf = cards.findIndex(c=>c === card);
+        let nCards = cards.length;
+        let iNext = (iSelf+1) % nCards;
+        let routeCard = cards[iNext];
+        let openCards = cards.filter(c=>c.isOpen);
+        if (!routeCard.isOpen && openCards.length) {
+          routeCard = openCards[0];
+        }
+        if (!routeCard.isOpen) {
+          ebtChips && ebtChips.focus();
+        }
+        setTimeout(()=>{
+          // HACK: Wait until display stabilizes before changing the
+          // route so that the routeCard can be scrolled into view
+          // with the proper selection.  None of the Vue events
+          // (e.g., deactivated, unmounted, updated) are triggered when
+          // the DOM tree is rendered after being updated
+          dbg && console.log(msg, '[2]routeCard', routeCard.debugString);
+          volatile.setRoute(routeCard);
+        }, 500);
       },
       addIntersectionObserver() {
         let { card, observer } = this;
