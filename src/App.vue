@@ -32,6 +32,9 @@
                 <span title="viewWidth">w{{viewWidth}}</span>
                 &nbsp;
                 <span title="legacyVoice">{{settings.legacyVoice}}</span>
+                <span :title="volatile.waitingMsg">
+                  wait{{volatile.waiting}}
+                </span>
               </div>
             </div>
           </v-app-bar-title>

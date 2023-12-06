@@ -198,11 +198,13 @@ export default class EbtCard {
     let dbg = DEBUG_FOCUS;
     if (elt) {
       elt.focus(); // focusElementId
-      dbg && console.log(msg, '[1]', {eltId, elt}, 
+      let activeElt = document.activeElement;
+      dbg && console.log(msg, '[1]requested', {eltId, elt, activeElt}, 
         document.activeElement);
     } else if ((elt = document.getElementById(tab1Id))) {
       elt.focus(); // focusElementId
-      dbg && console.log(msg, '[2]', {eltId, tab1Id, elt});
+      let activeElt = document.activeElement;
+      dbg && console.log(msg, '[2]alternate', {eltId, tab1Id, elt, activeElt});
     } else {
       console.warn(msg, '[3] element not found', { 
         eltId, tab1Id, volatile, elt});

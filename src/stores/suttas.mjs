@@ -51,7 +51,9 @@ export const useSuttasStore = defineStore('suttas', {
       if (refresh || !idbData || maxAge < age) {
         let volatile = useVolatileStore();
         let url = this.suttaUrl(suttaRef);
+        volatile.waitBegin('ebt.loadingSutta', undefined, msg);
         let json = await volatile.fetchJson(url);
+        volatile.waitEnd('ebt.loadingSutta', undefined, msg);
         this.nFetch++;
         let { mlDocs, results } = json;
         if (mlDocs.length < 1) {

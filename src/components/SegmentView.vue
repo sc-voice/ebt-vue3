@@ -34,11 +34,10 @@
   import { Examples, SuttaRef } from "scv-esm";
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
+  import { DEBUG_MOUNTED } from '../defines.mjs';
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
   const EMPTY_TEXT = '<div class="empty-text">&#8211;&#8709;&#8211;</div>'
-
-  var hello = 0;
 
   export default {
     props: {
@@ -58,7 +57,16 @@
     },
     components: {
     },
-    async mounted() {
+    mounted() {
+      const msg = "SegmentView.mounted()";
+      const dbg = DEBUG_MOUNTED;
+      let { segment, card, audio } = this;
+      if (segment.scid === audio.audioScid) {
+        let { segId, card, settings } = this;
+        dbg && console.log(msg, segment?.scid);
+        settings.scrollToCard(card);
+        card.focusElementId();
+      }
     },
     methods: {
       onClickSegBody(evt) {
