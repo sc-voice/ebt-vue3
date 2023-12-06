@@ -31,7 +31,7 @@
   import { logger } from "log-instance/index.mjs";
   import { 
     DEBUG_HOME, DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_OPEN_CARD,
+    DEBUG_OPEN_CARD, DEBUG_UPDATED
   } from '../defines.mjs';
 
   export default {
@@ -46,7 +46,8 @@
     },
     updated() {
       const msg = "EbtCards.updated()";
-      console.log(msg);
+      const dbg = DEBUG_UPDATED;
+      dbg && console.log(msg);
     },
     mounted() {
       let msg = 'EbtCards.mounted() ';

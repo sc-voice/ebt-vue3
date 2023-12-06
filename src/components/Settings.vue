@@ -273,6 +273,7 @@ import { useVolatileStore } from "../stores/volatile.mjs";
 import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
+import { DEBUG_TUTORIAL } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
 import Confirm from "./Confirm.vue";
@@ -334,12 +335,25 @@ export default {
   },
   methods: {
     showTutorials(show) {
-      let { settings } = this;
+      const msg = "Settings.showTutorials()";
+      const dbg = DEBUG_TUTORIAL;
+      let { config, volatile, settings } = this;
+      let { tutorialPath, homePath } = config;
+
       settings.tutorClose = show;
       settings.tutorPlay = show;
       settings.tutorSearch = show;
       settings.tutorSettings = show;
       settings.tutorWiki = show;
+
+      if (show) {
+        tutorialPath = tutorialPath || homePath;
+        dbg && console.log(msg, "[1]show", tutorialPath);
+        volatile.setRoute(tutorialPath);
+      } else {
+        dbg && console.log(msg, "[2]hide", homePath);
+        volatile.setRoute(homePath);
+      }
     },
     validate() {
       const msg = "Settings.validate() ";
