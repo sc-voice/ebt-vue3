@@ -77,10 +77,10 @@
     if (msDelay) {
       setTimeout(()=>{
         isDelayed.value = false;
-        dbg && console.log(msg, `[1]${setting}`, {msDelay});
+        dbg && console.log(msg, `[1]ok ${setting}`, {msDelay});
       }, msDelay);
     } else {
-      dbg && console.log(msg, `[2]${setting}`, {hflip});
+      dbg && console.log(msg, `[2]ok ${setting}`, {hflip});
       isDelayed.value = false;
     }
   });

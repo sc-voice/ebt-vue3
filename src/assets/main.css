@@ -472,6 +472,7 @@ code {
 }
 .ebt-card-wiki {
   max-width: calc(min(45em,100vw - 10px));
+  min-height: calc(min(100vh - 30px, 600px));
 }
 .ebt-cards1 .ebt-card-wiki {
   max-width: calc(min(50em,100vw - 10px));

@@ -102,11 +102,9 @@
     },
     mounted() {
       const msg = 'EbtCard.mounted() ';
-      const dbg = DEBUG_MOUNTED || DEBUG_SCROLL;
+      const dbg = DEBUG_MOUNTED; 
       let { card } = this;
-      let { isOpen } = card;
-      dbg && console.log(msg, 'addIntersectionObserver',
-        {isOpen},
+      dbg && console.log(msg, '[1]addIntersectionObserver',
         card.debugString, );
       this.addIntersectionObserver();
     },
@@ -122,7 +120,7 @@
     },
     updated() {
       const msg = 'EbtCard.updated() ';
-      const dbg = DEBUG_SCROLL || DEBUG_UPDATED;
+      const dbg = DEBUG_UPDATED;
       let { card } = this;
       let { isOpen } = card;
       if (isOpen) {
@@ -130,7 +128,7 @@
           card.debugString );
         this.addIntersectionObserver();
       } else {
-        dbg && console.log(msg, '[2]closed', card.debugString );
+        //dbg && console.log(msg, '[2]closed', card.debugString );
       }     
     },
     methods: {
@@ -173,14 +171,15 @@
         switch (card.context) {
           case EbtCard.CONTEXT_SUTTA:
           case EbtCard.CONTEXT_SEARCH:
-            dbg && console.log(msg, "[1]scrollToCard", {id, evt});
+            dbg && console.log(msg, "[1]scrollToCard", 
+              card.debugString, evt);
             settings.scrollToCard(card);
             break;
           case EbtCard.CONTEXT_WIKI:
-            dbg && console.log(msg, "[2]wiki", {id, evt});
+            // dbg && console.log(msg, "[2]wiki", card.debugString, evt);
             break;
           default:
-            dbg && console.warn(msg, "[3]", {id, evt});
+            //dbg && console.warn(msg, "[3]", card.debugString, evt);
             break;
         }
       },
@@ -190,7 +189,7 @@
         let dbg = DEBUG_CLICK;
         this.clickMinimize(evt);
         setTimeout(()=>{
-          dbg && console.log(msg, card.id);
+          dbg && console.log(msg, 'removeCard', card.debugString);
           settings.removeCard(card, config);
         }, 500);
       },
@@ -237,7 +236,7 @@
             // with the proper selection.  None of the Vue events
             // (e.g., deactivated, unmounted, updated) are triggered 
             // when the DOM tree is rendered after being updated
-            dbg && console.log(msg, '[2]routeCard', 
+            dbg && console.log(msg, '[2]setRoute', 
               routeCard.debugString);
             volatile.setRoute(routeCard);
           }, 500);
@@ -254,9 +253,11 @@
         }
 
         setTimeout(()=>{ // wait for full-size element
+          const msg = "EbtCard.intersectionObserver()";
+          const dbg = DEBUG_VISIBLE;
           let { scrollHeight } = elt;
           let callback = (entries, observer) => {
-            logger.debug(`IntersectionObserver#${id}`, entries);
+            dbg && console.log(msg, card.debugString, entries);
             card.visible = entries[0].isIntersecting;
           }
           const HEADER_HEIGHT = 104;

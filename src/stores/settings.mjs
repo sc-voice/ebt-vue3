@@ -205,36 +205,40 @@ export const useSettingsStore = defineStore('settings', {
       const msg = 'settings.scrollToElementId() ';
       const dbg = DEBUG_SCROLL;
       let eltShow = document.getElementById(idShow);
+      if (eltShow == null) {
+        //dbg && console.log(msg, `[1]eltShow? ${idShow}`);
+        return false;
+      }
+
       let eltScroll = idScroll 
         ? document.getElementById(idScroll) 
         : eltShow;
-      if (eltShow == null) {
-        dbg && console.log(msg, `[1] (${idShow}) no element`);
-        return false;
-      }
       if (eltScroll == null) {
-        dbg && console.log(msg, `[2] (${idScroll}) no scroll element`);
+        //dbg && console.log(msg, `[2]eltScroll? ${idScroll}`);
         return false;
       }
+
+      // HACK: scroll after Vue is done refreshing
+      await new Promise(resolve => setTimeout(()=>resolve(), 300));
+
       let idShowInView = elementInViewport(eltShow);
       let idScrollInView = eltShow === eltScroll
         ? idShowInView
         : elementInViewport(eltScroll);
       if (idShowInView && idScrollInView) {
-        dbg && console.log(msg, `[3] no scroll`, 
-          {eltShow, idShow, idScroll} );
+        dbg && console.log(msg, `[3]inView`, {idShow, idScroll} );
         return false; // element already visible (no scrolling)
       }
 
-      setTimeout(()=>{ 
-        // HACK: scroll after Vue is done refreshing
-        dbg && console.log(msg, `[4] (${idShow}) scrolling to`, 
-          {eltScroll, idShow, idScroll, idShowInView, idScrollInView});
-        eltScroll.scrollIntoView({
-          block: "start",
-          behavior: "smooth",
-        });
-      }, 300);
+      dbg && console.log(msg, `[4] (${idShow}) scrolling to`, 
+        {eltScroll, idShow, idScroll, idShowInView, idScrollInView});
+      let opts = {
+        block: "start",
+        inline: "nearest",
+        behavior: "smooth",
+      }
+      eltScroll.scrollIntoView(opts);
+
       return true; // element originally not in viewport
     },
     async clear() {
@@ -268,22 +272,26 @@ export const useSettingsStore = defineStore('settings', {
     },
     async scrollToCard(card) {
       const msg = 'settings.scrollToCard()';
+      const dbg = DEBUG_SCROLL;
       if (this.openCard(card)) {
-        await new Promise(resolve => setTimeout(()=>resolve(), 100));
+        await new Promise(resolve => setTimeout(()=>resolve(), 200));
       }
 
       let curId = card.currentElementId;
       let topId = card.topAnchor;
       let scrolled = false;
-      let dbg = DEBUG_SCROLL;
       if (curId === card.titleAnchor) {
         scrolled = await this.scrollToElementId(curId, topId);
-        dbg && console.log(msg, "[1]", {curId, topId, scrolled});
+        if (!scrolled) {
+          dbg && console.log(msg, "[1]n/a", {curId, topId});
+        }
         return scrolled;
       } 
 
-      dbg && console.log(msg, "[2]scrollToElementId", {curId});
       scrolled = await this.scrollToElementId(curId);
+      if (!scrolled) {
+        dbg && console.log(msg, "[2]n/a", curId);
+      }
       return scrolled;
     },
     tutorialState(show) {

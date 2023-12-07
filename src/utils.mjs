@@ -21,4 +21,25 @@ export default class Utils {
     });
     return dst;
   }
+
+  static logLine(...args) {
+    let line = [];
+
+    for (let i = 0; i < args.length; i++) {
+      let arg = args[i];
+      let text = `${arg}`;
+
+      if (text === '[object Object]') {
+        try {
+          text = JSON.stringify(arg);
+        } catch (e) {
+          text = `![${e.message}]`;
+        }
+      }
+      line.push(text);
+    }
+
+    return line.join(' ');
+  }
+
 }

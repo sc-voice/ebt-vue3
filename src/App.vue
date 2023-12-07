@@ -31,8 +31,8 @@
                 <span v-if="DEBUG_ROUTE" title="routeCard">
                   {{volatile.routeCard?.id}}
                 </span> &nbsp;
-                <span v-if="DEBUG_SCROLL" title="viewWidth">
-                  vw:{{viewWidth}}
+                <span v-if="DEBUG_SCROLL" title="viewWidth x viewHeight">
+                  {{viewWidth}}x{{viewHeight}}
                 </span> &nbsp;
                 <span v-if="DEBUG_LEGACY" 
                   title="legacyVoice:showLegacyDialog">
@@ -71,6 +71,14 @@
           <LegacyVoice />
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
+          <div v-if="DEBUG_LOG_HTML" class="app-log">
+            <div v-for="item in volatile.logHtml" class="app-log-item">
+              <div class="app-log-count">
+                {{item.count === 1 ? ' ' : `${item.count}x`}}
+              </div>
+              <div class="app-log-text">{{item.line}}</div>
+            </div>
+          </div>
         </div>
       </v-sheet>
 
@@ -135,7 +143,8 @@
   import { 
     DEBUG_TUTORIAL, DEBUG_HOME, DEBUG_KEY, DEBUG_STARTUP, 
     DEBUG_LEGACY, DEBUG_CLICK, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_ROUTE, DEBUG_WAITING, DEBUG_SETTINGS,
+    DEBUG_ROUTE, DEBUG_WAITING, DEBUG_SETTINGS, DEBUG_LOG_HTML,
+    DEBUG_GDPR, DEBUG_MOUNTED, DEBUG_WIKI, DEBUG_AUDIO
   } from './defines.mjs';
 
   const msg = "App.setup"
@@ -144,10 +153,11 @@
   const activeElt = ref("loading...");
   setInterval(()=>{
     let elt = window?.document?.activeElement;
-    let ae = elt?.id || elt;
-    if (ae !== activeElt.value) {
-      activeElt.value = ae;
-      dbg && console.log(msg, "[4]activeElt", ae);
+    let aeNew = elt?.id || elt;
+    let aeOld = activeElt.value;
+    if (aeNew !== aeOld) {
+      dbg && console.log(msg, "[4]activeElt", {aeNew, aeOld});
+      activeElt.value = aeNew;
     } else {
       //dbg && console.log(msg, "[5]activeElt", ae);
     }
@@ -263,6 +273,16 @@
         $i18n.locale = settings.locale;
       },
     },
+    created() {
+      const msg = "App.created()";
+      const dbg = true || DEBUG_STARTUP;
+      let { volatile } = this;
+
+      if (DEBUG_LOG_HTML) {
+        dbg && console.log(msg, '[1]enableLog');
+        volatile.enableLog(true);
+      }
+    },
     updated() {
       let msg = 'App.updated()';
       let { volatile } = this;
@@ -272,7 +292,7 @@
     },
     async mounted() {
       const msg = 'App.mounted()';
-      const dbg = DEBUG_STARTUP || DEBUG_FOCUS || DEBUG_SCROLL;
+      const dbg = DEBUG_MOUNTED || DEBUG_WIKI;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route
@@ -296,7 +316,7 @@
       let wikiCard = wikiHash
         ? settings.pathToCard(wikiHash)
         : settings.pathToCard(homePath);
-      dbg && console.log(msg, '[1]', {wikiCard, $route});
+      dbg && console.log(msg, '[1]wikiCard', wikiCard.debugString);
 
       $vuetify.theme.global.name = settings.theme === 'dark' 
         ? 'dark' : 'light';;
@@ -307,11 +327,14 @@
       let that = this;
       window.addEventListener('keydown', (evt)=>this.onKeydown(evt));
       window.addEventListener('focusin', evt=>{
-        let msg = 'App.mounted().focusin';
+        const msg = 'App.mounted().focusin';
+        const dbg = DEBUG_AUDIO;
         let { audio } = this;
         if (evt.target.id === 'ebt-chips') {
+          dbg && console.log(msg, '[1]playBlock');
           audio.playBlock();
         } else {
+          dbg && console.log(msg, '[1]playClick');
           audio.playClick();
         }
       });
@@ -319,7 +342,7 @@
     computed: {
       showGdpr(ctx) {
         const msg = "App.showGdpr"
-        const dbg = true;
+        const dbg = DEBUG_GDPR;
         let { settings, volatile } = this;
         let { loaded } = settings;
         let { showLegacyDialog } = volatile;
@@ -494,6 +517,9 @@
       viewWidth(ctx) {
         return window?.innerWidth || root?.clientWidth;
       },
+      viewHeight(ctx) {
+        return window?.innerHeight || root?.clientHeight;
+      },
       collapsed(ctx) {
         let { volatile } = this;
         return volatile.collapseAppBar;
@@ -623,6 +649,25 @@
   height: 4em;
   width: 100%;
   border: 1pt solid red;
+}
+.app-log {
+  display: flex;
+  flex-flow: column;
+  border: 1pt solid aqua;
+  padding: 0.5em;
+  font-family: sans;
+  color: rgba(255,255,255, 0.5);
+}
+.app-log div:hover{
+  color: rgb(255,255,80);
+  background-color: black;
+}
+.app-log-count {
+  display: inline-block;
+  width: 1.5em;
+}
+.app-log-text {
+  display: inline-block;
 }
 </style>
 

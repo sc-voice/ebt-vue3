@@ -11,6 +11,7 @@ import {
   DEBUG_FOCUS,
   DEBUG_CLICK,
   DEBUG_ROUTE,
+  DEBUG_LOG_HTML,
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -23,6 +24,8 @@ const SAMPLE_RATE = 48000;
 const ICON_DOWNLOAD = 'mdi-wan';
 const ICON_PROCESSING = 'mdi-factory';
 const showLegacyDialog = ref(false);
+const logHtml = ref([]);
+const console_log = ref(null);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -34,6 +37,7 @@ const INITIAL_STATE = {
   delayedWaiting: 0,
   ebtChips: ref(undefined),
   homeHtml,
+  logHtml,
   routeCard: undefined,
   updated: false,
   showAlertMsg: ref(false),
@@ -89,6 +93,28 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    enableLog(on) {
+      const msg = "volatile.enableLog()";
+      const dbg = DEBUG_LOG_HTML;
+      if (on) {
+        if (console_log.value == null) {
+          console_log.value = console.log; // save true console.log
+          let conLog = function(...args) {
+            let line = Utils.logLine(...args);
+            console_log.value(line);
+            let lines = logHtml.value;
+            let lastLine = lines[lines.length-1];
+            if (lines.length && lastLine.line === line) {
+              lastLine.count++;
+            } else {
+              logHtml.value.push({count:1, line});
+            }
+          }
+          dbg && conLog(msg, 'enabled');
+          console.log = conLog;
+        }
+      }
+    },
     focusElement(element) {
       const msg = 'volatile.focusElement()';
       const dbg = DEBUG_FOCUS;
@@ -144,8 +170,9 @@ export const useVolatileStore = defineStore('volatile', {
         cardOrRoute = homePath;
       }
       if (!cardOrRoute) {
-        console.trace(msg, '[2]ERROR: cardOrRoute is required');
-        return;
+        let emsg = `${msg} [2]ERROR: cardOrRoute is required`;
+        console.log(emsg);
+        throw new Error(emsg);
       }
       let isCard = !(typeof cardOrRoute === 'string');
       let route = isCard ? cardOrRoute.routeHash() : cardOrRoute;
@@ -154,16 +181,21 @@ export const useVolatileStore = defineStore('volatile', {
 
       const { window } = globalThis;
       if (window == null) {
-        console.trace(msg, '[3]', 'no window');
-      } else if (window.location.hash === route) {
+        let emsg = `${msg} [3]window?`;
+        console.log(emsg);
+        throw new Error(emsg);
+      } 
+
+      if (window.location.hash === route) {
         if (card.isOpen) {
           switch (card.context) {
             case 'wiki':
-              dbg && console.log(msg, "[4]same route", card.id, )
+              // dbg && console.log(msg, "[4]n/a", card.debugString);
               break;
             case 'search':
             case 'sutta':
-              dbg && console.log(msg, "[5]same route", card.id);
+              dbg && console.log(msg, "[5]scrollToCard", 
+                card.debugString);
               settings.scrollToCard(card);
               break;
           }
@@ -172,7 +204,7 @@ export const useVolatileStore = defineStore('volatile', {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
         this.debugText += `${msg}-${caller}-${route}`;
-        dbg && console.log(msg, "[6]different route", {route});
+        dbg && console.log(msg, "[6]route", route);
         window.location.hash = route;
         let expected = activeElement;
         let actual = document?.activeElement;

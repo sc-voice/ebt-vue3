@@ -2,7 +2,14 @@ import Utils from "../src/utils.mjs";
 import should from "should";
 
 typeof describe === "function" && describe("utils", function() {
-  it ("TESTTESTassignTyped()", ()=>{
+  it("TESTTESTlogLine", () => {
+    let args = [ 'hello', 1, true, ['a','b','c'], {color:'red'} ];
+    should(Utils.logLine(...args))
+      .equal('hello 1 true a,b,c {"color":"red"}');
+    should(Utils.logLine.apply(null, args))
+      .equal('hello 1 true a,b,c {"color":"red"}');
+  });
+  it ("assignTyped()", ()=>{
     let initial = {
       aString: 'init-string',
       aDate: new Date(2020,2,1),

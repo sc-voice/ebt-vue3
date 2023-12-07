@@ -66,8 +66,8 @@
       if (segment.scid === audio.audioScid) {
         let { segId, card, settings } = this;
         dbg && console.log(msg, segment?.scid);
-        settings.scrollToCard(card);
         card.focusElementId();
+        /* await */ settings.scrollToCard(card);
       }
     },
     methods: {

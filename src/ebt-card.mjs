@@ -195,17 +195,27 @@ export default class EbtCard {
     const msg = 'ebt-card.focusElementId()';
     let { tab1Id, volatile } = this;
     let elt = document.getElementById(eltId);
+    let ae = document.activeElement;
+    let aeid = ae?.id;
     let dbg = DEBUG_FOCUS;
     if (elt) {
-      elt.focus(); // focusElementId
-      let activeElt = document.activeElement;
-      dbg && console.log(msg, '[1]ok', eltId, elt);
+      if (ae !== elt) {
+        dbg && console.log(msg, '[1]ok', {eltId, aeid, elt});
+        elt.focus(); // focusElementId
+        let activeElt = document.activeElement;
+      } else {
+        dbg && console.log(msg, '[2]nochange', {eltId, aeid, elt});
+      }
     } else if ((elt = document.getElementById(tab1Id))) {
-      elt.focus(); // focusElementId
-      let activeElt = document.activeElement;
-      dbg && console.log(msg, '[2]alternate', {eltId, tab1Id, elt, activeElt});
+      if (ae !== elt) {
+        dbg && console.log(msg, '[3]alternate', 
+          {tab1Id, eltId, aeid, elt});
+        elt.focus(); // focusElementId
+      } else {
+        dbg && console.log(msg, '[4]nochange', {aeid,elt}); 
+      }
     } else {
-      console.warn(msg, '[3] element not found', { 
+      dbg && console.log(msg, '[5] element not found', { 
         eltId, tab1Id, volatile, elt});
     }
     return elt;
@@ -547,12 +557,13 @@ export default class EbtCard {
     // NOTE: routeHash() and segmentElementId() must differ
     // to prevent the browser from auto-navigating
     // to segmentElementId's when the route changes
-    return `suttaref-${scid}/${lang}/${author}`;
+    return `seg-${scid}/${lang}/${author}`;
   }
 
   get debugString() {
-    let { id, context, location} = this;
-    return `${id} ${[context, ...location].join('/')}`;
+    let { isOpen, id, context, location} = this;
+    let separator = isOpen ? '+' : '-';
+    return `${id}${separator}${context}`;
   }
 
 }

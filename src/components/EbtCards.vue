@@ -31,7 +31,7 @@
   import { logger } from "log-instance/index.mjs";
   import { 
     DEBUG_HOME, DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_OPEN_CARD, DEBUG_UPDATED
+    DEBUG_MOUNTED, DEBUG_OPEN_CARD, DEBUG_UPDATED, DEBUG_VISIBLE
   } from '../defines.mjs';
 
   export default {
@@ -50,12 +50,11 @@
       dbg && console.log(msg);
     },
     mounted() {
-      let msg = 'EbtCards.mounted() ';
+      const msg = 'EbtCards.mounted() ';
+      const dbg = DEBUG_MOUNTED;
       let { settings, volatile, $route, config }  = this;
-
       let { params, path }  = $route;
       let { cards, debugScroll } = settings;
-      let dbg = DEBUG_HOME || DEBUG_STARTUP || DEBUG_SCROLL;
       if (!path || path === "/" ) {
         let homePath = settings.homePath(config);
         let newPath = `${config.basePath}${homePath}`;
@@ -64,12 +63,12 @@
       }
       let card = settings.pathToCard(path);
 
-      dbg && console.log(msg, `[2]${card.id} ${path}`);
+      //dbg && console.log(msg, `[2]${card.id} ${path}`);
 
       if (card == null) {
         dbg && console.warn(msg, "[3]UNEXPECTED", {$route, path});
       } else {
-        dbg && console.log(msg, '[4]setRoute', card.context, card.id);
+        dbg && console.log(msg, '[4]setRoute', card.debugString, path);
         volatile.setRoute(card, true, msg);
         let { activeElement } = document;
         let scroll = true;
@@ -84,10 +83,9 @@
             settings.scrollToCard(card);
             break;
         }
-        //nextTick(() => {
-          this.bindAudioSutta(window.location.hash);
-          dbg && console.log(msg, '[5]bindAudioSutta', {activeElement});
-        //});
+
+        this.bindAudioSutta(window.location.hash);
+        dbg && console.log(msg, '[5]bindAudioSutta', {activeElement});
       }
     },
     methods: {
@@ -124,9 +122,9 @@
           defaultLang: settings.langTrans,
         });
         if (routeCard === card) {
-          dbg && console.log(msg, `[1]card`, card.debugString)
+          //dbg && console.log(msg, `[1]card`, card.debugString)
         } else {
-          dbg && console.log(msg, `[2]routeCard`, card.debugString)
+          dbg && console.log(msg, `[2]setRoute`, card.debugString)
           volatile.setRoute(card.routeHash(), true, msg);
         }
       },
