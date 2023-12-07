@@ -226,9 +226,10 @@ export const useSettingsStore = defineStore('settings', {
         return false; // element already visible (no scrolling)
       }
 
-      dbg && console.log(msg, `[4] (${idShow}) scrolling to`, 
-        {eltScroll, idShow, idScroll, idShowInView, idScrollInView});
-      setTimeout(()=>{ // scroll after Vue is done refreshing
+      setTimeout(()=>{ 
+        // HACK: scroll after Vue is done refreshing
+        dbg && console.log(msg, `[4] (${idShow}) scrolling to`, 
+          {eltScroll, idShow, idScroll, idShowInView, idScrollInView});
         eltScroll.scrollIntoView({
           block: "start",
           behavior: "smooth",
