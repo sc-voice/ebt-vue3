@@ -7,7 +7,7 @@ import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DEBUG_OPEN_CARD, DEBUG_ADD_CARD, DEBUG_HOME, DEBUG_SETTINGS, 
-  DEBUG_SCROLL, DEBUG_FOCUS 
+  DEBUG_ROUTE, DEBUG_SCROLL, DEBUG_FOCUS 
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -146,6 +146,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     removeCard(card, config) {
       const msg = "settings.removeCard() ";
+      const dbg = DEBUG_ROUTE;
       const { window } = globalThis;
       if (window == null) {
         //console.trace(msg, "no window");
@@ -160,9 +161,15 @@ export const useSettingsStore = defineStore('settings', {
       cards = this.cards = cards.filter(c => c !== card);
       if (card.matchPath({path, defaultLang})) {
         let openCard = cards.filter(c => c.isOpen)[0];
-        window.location.hash = openCard 
-          ? openCard.routeHash() 
-          : config.homePath;
+        let hash;
+        if (openCard) {
+          hash = openCard.routeHash();
+          dbg && console.log(msg, '[1]route=>openCard', hash);
+        } else {
+          hash = this.homePath(config);
+          dbg && console.log(msg, '[2]route=>homePath', hash);
+        }
+        window.location.hash = hash;
       }
     },
     addCard(opts) {

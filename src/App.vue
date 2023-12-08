@@ -401,7 +401,7 @@
         const msg = "App.showTutorSettings()";
         const dbg = DEBUG_TUTORIAL;
         let { settings } = this;
-        let { tutorSettings, tutorPlay, tutorSearch } = settings;
+        let { cards, tutorSettings, tutorPlay, tutorSearch } = settings;
 
         if (!tutorSettings) {
           dbg && console.log(msg, '[1]done', {tutorSettings});
@@ -416,7 +416,15 @@
           return false;
         }
 
-        dbg && console.log(msg, '[4]show');
+        let openCards = cards.filter(c=>{
+          return c.isOpen && c.context !== EbtCard.CONTEXT_WIKI;
+        });
+        if (openCards.length) {
+          dbg && console.log(msg, '[4]wait openCards:', openCards.length);
+          return false;
+        }
+
+        dbg && console.log(msg, '[5]show');
 
         return true;
       },
@@ -430,20 +438,25 @@
           return false;
         }
 
+        if (audio.segmentPlaying) {
+          dbg && console.log(msg, '[2]wait');
+          return false;
+        }
+
         let nOpen = cards.reduce((a,c,i)=>{
           if (c?.isOpen) {
-            //dbg && console.log(msg, '[2]isOpen', c.debugString);
+            //dbg && console.log(msg, '[3]isOpen', c.debugString);
             return a+1;
           }
           return a;
         }, 0);
         let show = (nOpen===0 || !tutorPlay);
         if (!show) {
-          dbg && console.log(msg, '[3]wait', {nOpen, tutorPlay});
+          dbg && console.log(msg, '[4]wait', {nOpen, tutorPlay});
           return false;
         }
 
-        dbg && console.log(msg, '[4]show', {nOpen, tutorPlay});
+        dbg && console.log(msg, '[5]show', {nOpen, tutorPlay});
         return true;
       },
       showTutorPlay(ctx) {

@@ -1,7 +1,6 @@
 <template>
 <Transition>
   <v-sheet v-if="card.isOpen " :class="cardSheetClass"
-    @focusin="onFocusIn"
     @click="onClickCard"
     :id="`${card.id}-sheet`"
   >
@@ -64,7 +63,7 @@
   import { nextTick, ref } from "vue";
   import { 
     DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_UPDATED,
+    DEBUG_UPDATED, DEBUG_VISIBLE,
   } from '../defines.mjs';
 
   export default {
@@ -148,11 +147,10 @@
       },
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
+        const dbg = DEBUG_CLICK;
         let { volatile, settings, card } = this;
+        dbg && console.log(msg, 'onClickCard', card.debugString);
         volatile.onClickCard(evt, card);
-        //let dbg = DEBUG_FOCUS||DEBUG_CLICK;
-        //dbg && console.log(msg, 'setRoute', card.id, evt);
-        //volatile.setRoute(card, undefined, msg);
       },
       onBackTabOut(evt) {
         const msg = 'EbtCard.onBackTabOut()';
@@ -161,27 +159,6 @@
         let { ebtChips } = volatile;
         dbg && console.log(msg, 'focus', {ebtChips});
         ebtChips && ebtChips.focus();
-      },
-      onFocusIn(evt) {
-        const msg = "EbtCard.onFocusIn() ";
-        const dbg = DEBUG_FOCUS;
-        let { settings, volatile, card } = this;
-        let { location, id, context } = card;
-        let chipTitle = card.chipTitle();
-        switch (card.context) {
-          case EbtCard.CONTEXT_SUTTA:
-          case EbtCard.CONTEXT_SEARCH:
-            dbg && console.log(msg, "[1]scrollToCard", 
-              card.debugString, evt);
-            settings.scrollToCard(card);
-            break;
-          case EbtCard.CONTEXT_WIKI:
-            // dbg && console.log(msg, "[2]wiki", card.debugString, evt);
-            break;
-          default:
-            //dbg && console.warn(msg, "[3]", card.debugString, evt);
-            break;
-        }
       },
       clickDelete(evt) {
         const msg = "EbtCard.clickDelete()";

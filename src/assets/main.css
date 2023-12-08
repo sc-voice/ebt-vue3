@@ -301,6 +301,7 @@ code {
 }
 .ebt-card-search {
   max-width: 600px;
+  min-height: calc(min(100vh - 50px, 500px));
 }
 .v-card-text {
   min-width: 20em;

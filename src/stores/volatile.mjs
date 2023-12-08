@@ -124,7 +124,7 @@ export const useVolatileStore = defineStore('volatile', {
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';
       const dbg = DEBUG_ROUTE;
-      dbg && console.log(msg, `${card.id} ${card.context}`);
+      dbg && console.log(msg, card.debugString);
       this.routeCard = card;
     },
     trilingualPattern(search) {
@@ -376,7 +376,7 @@ export const useVolatileStore = defineStore('volatile', {
       let { target } = evt || {};
       let { localName, href, hash } = target;
       let dbg = DEBUG_CLICK;
-      dbg && console.log(msg, 'setRoute', card.id, evt);
+      dbg && console.log(msg, 'setRoute', card.debugString, evt);
       this.setRoute(card, undefined, msg);
     },
   },

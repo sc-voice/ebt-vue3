@@ -51,7 +51,9 @@ logger.logLevel = 'warn';
     let data = "test-data";
     let langTrans = "test-lang";
     let card = new EbtCard({id, context, location, data, langTrans});
-    should(card.debugString).equal(`${id} ${context}/a/b`);
+    should(card.debugString).equal(`${id}+${context}`);
+    card.isOpen = false;
+    should(card.debugString).equal(`${id}-${context}`);
   });
   it("custom ctor sutta/thig1.1/pt", ()=>{
     let id = 'test-id';
@@ -603,7 +605,7 @@ logger.logLevel = 'warn';
       location: [scid, lang, author],
     });
     should(card1.segmentElementId(scid))
-      .equal(`suttaref-${scid}/${lang}/${author}`);
+      .equal(`seg-${scid}/${lang}/${author}`);
   });
   it("routeSuttaRef()", ()=>{
     const scid = 'mn44:1.2';
