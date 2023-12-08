@@ -132,7 +132,7 @@
           setting="tutorSettings" 
           :title="$t('ebt.settingsTitle')" 
           :text="$t('ebt.customizeSettings')" arrow="top"
-          :msDelay="10000"
+          :msDelay="5000"
         ></Tutorial>
       </div>
     </v-main>
@@ -237,11 +237,14 @@
       onClickSettings(evt) {
         const msg = "App.onClickSettings()";
         const dbg = DEBUG_FOCUS || DEBUG_CLICK;
-        let { settings, volatile, audio } = this;
+        let { settings, volatile, audio, config } = this;
         let btn = document.getElementById('btn-settings');
         btn && btn.blur();
         volatile.showSettings = true;
-        settings.tutorSettings = false;
+        if (settings.tutorSettings) { // tutorial is all done
+          settings.tutorSettings = false;
+          volatile.setRoute(config.homePath);
+        }
         nextTick(()=>{
           let autofocus = document.getElementById('settings-autofocus');
           dbg && console.log(msg, {autofocus});
@@ -401,7 +404,10 @@
         const msg = "App.showTutorSettings()";
         const dbg = DEBUG_TUTORIAL;
         let { settings } = this;
-        let { cards, tutorSettings, tutorPlay, tutorSearch } = settings;
+        let { 
+          cards, tutorSettings, tutorPlay, tutorSearch, 
+          tutorWiki, tutorClose
+        } = settings;
 
         if (!tutorSettings) {
           dbg && console.log(msg, '[1]done', {tutorSettings});
@@ -415,17 +421,33 @@
           dbg && console.log(msg, '[3]wait', {tutorSearch});
           return false;
         }
-
-        let openCards = cards.filter(c=>{
-          return c.isOpen && c.context !== EbtCard.CONTEXT_WIKI;
-        });
-        if (openCards.length) {
-          dbg && console.log(msg, '[4]wait openCards:', openCards.length);
+        if (tutorWiki) {
+          dbg && console.log(msg, '[4]wait', {tutorWiki});
+          return false;
+        }
+        if (tutorClose) {
+          dbg && console.log(msg, '[5]wait', {tutorClose});
           return false;
         }
 
-        dbg && console.log(msg, '[5]show');
+        // Tutorial popups interfere with links, so don't
+        // allow other open cards
+        let nOpen = cards.reduce((a,c,i)=>{
+          switch (c.context) {
+            case EbtCard.CONTEXT_WIKI:
+              break;
+            default:
+              c.isOpen && a++;
+              break;
+          }
+          return a;
+        }, 0);
+        if (nOpen) {
+          dbg && console.log(msg, '[6]wait', {nOpen});
+          return false;
+        }
 
+        dbg && console.log(msg, '[7]show');
         return true;
       },
       showTutorWiki(ctx) {
@@ -443,6 +465,8 @@
           return false;
         }
 
+        // Tutorial popups interfere with links, so don't
+        // allow other open cards
         let nOpen = cards.reduce((a,c,i)=>{
           if (c?.isOpen) {
             //dbg && console.log(msg, '[3]isOpen', c.debugString);
@@ -492,6 +516,8 @@
           return false;
         }
 
+        // Tutorial popups interfere with links, so don't
+        // allow other open cards
         let nOpen = cards.reduce((a,c,i)=> {
           if (c.isOpen && c.context !== EbtCard.CONTEXT_WIKI) {
             return a+1 ;
