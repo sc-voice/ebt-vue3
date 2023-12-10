@@ -224,13 +224,14 @@ export default class EbtCard {
   open(value=true) {
     const msg = 'ebt-card.open()';
     const dbg = DEBUG_OPEN_CARD;
-    let { isOpen, id, context, location } = this;
-    let contextLoc = [context, ...location].join('/');
+    let { isOpen, debugString, } = this;
+
     if (isOpen === value) {
+      dbg && console.log(msg, `[1]isOpen`, debugString);
       return false;
     }
 
-    dbg && console.log(msg, '[1]isOpen<=${value}', id, contextLoc);
+    dbg && console.log(msg, `[2]isOpen<=${value}`, debugString);
     this.isOpen = value;
     return true;
   }

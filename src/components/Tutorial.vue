@@ -4,17 +4,15 @@
     v-model="showTutorial"
     :absolute="!!props.containerId"
     :attach="containerElt()"
-    xcolor="tutorial"
     timeout="-1"
     color="tutorial"
     :content-class="contentClass"
     :location="location"
     :transition="transition()"
     min-width="200px"
-    max-width="200px"
+    max-width="250px"
     min-height="100px"
     max-height="100px"
-    @click="onClick"
     :id="`${props.setting}-id`"
   >
     <div class="tutorial-container"
@@ -42,6 +40,12 @@
           <div>{{text}}</div>
         </div>
       </div><!--tutorial-->
+      <div class="tutorial-close">
+        <v-icon  icon="mdi-close" 
+          :title="$t('ebt.closeCard')"
+          @click="onClick" 
+        ></v-icon>
+      </div>
     </div><!--tutorial-container-->
   </v-snackbar> 
 </template>
@@ -109,7 +113,7 @@
   }
   const contentClass = computed(()=>{
     let { setting } = props;
-    return `tutorial-content-${setting}`;
+    return `tutorial-content tutorial-content-${setting}`;
   });
   const location = computed(()=>{
     const msg = 'Tutorial.location';
@@ -176,13 +180,17 @@
   margin-bottom: 7px;
   opacity: 0.5;
 }
+.tutorial-content>.v-snackbar__content {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 .tutorial-content-tutorSearch {
   top: 45px !important;
   right: 45px !important;
 }
 .tutorial-content-tutorSettings {
   top: 45px !important;
-  right: -5px !important;
+  right: 1px !important;
 }
 .tutorial-content-tutorPlay {
   bottom: 40px !important;
@@ -190,6 +198,7 @@
 }
 .tutorial-content-tutorClose {
   top: 50px !important;
+  right: 5px !important;
 }
 .tutorial-content-tutorWiki {
   left: -5px !important;
@@ -197,6 +206,17 @@
 }
 .tutorial-arrow {
   color: yellow;
+}
+.tutorial-close {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  margin-left: 5px;
+  margin-right: 5px;
+  color: rgb(var(--v-theme-on-surface)) !important;
+}
+.tutorial-close:hover {
+  color: rgb(var(--v-theme-link)) !important;
 }
 
 @keyframes shake {

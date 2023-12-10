@@ -26,6 +26,7 @@ const ICON_PROCESSING = 'mdi-factory';
 const showLegacyDialog = ref(false);
 const logHtml = ref([]);
 const console_log = ref(null);
+const routeCard = ref(null);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -38,7 +39,7 @@ const INITIAL_STATE = {
   ebtChips: ref(undefined),
   homeHtml,
   logHtml,
-  routeCard: undefined,
+  routeCard,
   updated: false,
   showAlertMsg: ref(false),
   showSettings,
@@ -66,9 +67,9 @@ export const useVolatileStore = defineStore('volatile', {
       return ICON_LOADING;
     },
     audioCard() {
-      let { routeCard } = this;
-      return routeCard?.context === EbtCard.CONTEXT_SUTTA 
-        ? routeCard : null;
+      return routeCard.value?.context === EbtCard.CONTEXT_SUTTA 
+        ? routeCard.value 
+        : null;
     },
     displayBox() {
       let root = document?.documentElement;
@@ -125,7 +126,7 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.setRouteCard()';
       const dbg = DEBUG_ROUTE;
       dbg && console.log(msg, card.debugString);
-      this.routeCard = card;
+      routeCard.value = card;
     },
     trilingualPattern(search) {
       const msg = 'volatile.trilingualPattern() ';
@@ -218,8 +219,8 @@ export const useVolatileStore = defineStore('volatile', {
         }
       }
 
-      if (this.routeCard !== card) {
-        this.routeCard = card;
+      if (routeCard.value !== card) {
+        routeCard.value = card;
         dbg && console.log(msg, '[8]routeCard <=', card.debugString,
           {visible});
         if (!visible) {

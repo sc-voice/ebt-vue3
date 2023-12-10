@@ -4,8 +4,8 @@
     @keydown.tab.exact.prevent="onTab"
     @keydown.right.exact.prevent="onNextChip(1)"
     @keydown.left.exact.prevent="onNextChip(-1)"
-    @keydown.space.exact.prevent="onSpace"
-    @keydown.enter.exact.prevent="onEnter"
+    @keydown.space.exact.stop.prevent="onSpace"
+    @keydown.enter.exact.stop.prevent="onEnter"
   >
     <v-chip-group v-model="filteredChips" column>
       <div v-for="card in settings.cards" :key="card.id">
@@ -36,7 +36,7 @@
   import { ref, nextTick } from "vue";
   import { logger } from "log-instance/index.mjs";
   import {
-    DEBUG_FOCUS, DEBUG_CLICK, DEBUG_OPEN_CARD,
+    DEBUG_FOCUS, DEBUG_CLICK, DEBUG_OPEN_CARD, DEBUG_KEY,
   } from "../defines.mjs";
 
   export default {
@@ -57,11 +57,23 @@
     methods: {
       onSpace(evt) {
         const msg = 'EbtChips.onSpace() ';
-        //console.log(msg, {evt});
+        const dbg = DEBUG_KEY;
+        let { volatile, settings } = this;
+        let { routeCard } = volatile;
+        if (routeCard) {
+          dbg && console.log(msg, '[1]~open', routeCard.debugString);
+          routeCard.open(!routeCard.isOpen);
+        }
       },
-      onEnter(evt) {
+      onEnter(evt, card) {
         const msg = 'EbtChips.onEnter() ';
-        //console.log(msg);
+        let { volatile, settings } = this;
+        let { routeCard } = volatile;
+        const dbg = DEBUG_KEY;
+        if (routeCard) {
+          dbg && console.log(msg, '[1]~open', routeCard.debugString);
+          routeCard.open(!routeCard.isOpen);
+        }
       },
       onNextChip(delta) {
         let msg = `EbtChips.onNextChip(${delta})`;
@@ -79,11 +91,12 @@
       },
       async onTab(evt) {
         let msg = "EbtChips.onTab()";
+        let dbg = DEBUG_KEY;
         let { volatile, settings } = this;
         let { routeCard } = volatile;
         if (routeCard) {
+          dbg && console.log(msg, routeCard.debugString);
           settings.openCard(routeCard);
-          //console.log(msg, {routeCard});
           nextTick(()=> routeCard.focusElementId());
         }
       },

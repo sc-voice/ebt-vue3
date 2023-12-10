@@ -68,7 +68,7 @@
       <v-sheet>
         <div>
           <ebt-processing />
-          <LegacyVoice />
+          <LegacyVoice v-if="settings.loaded"/>
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
           <div v-if="DEBUG_LOG_HTML" class="app-log">
@@ -545,7 +545,7 @@
           dbg && console.log(msg, '[1]done', {tutorClose});
           return false;
         }
-        if (!wikiCard.isOpen) {
+        if (!wikiCard || !wikiCard.isOpen) {
           dbg && console.log(msg, '[2]wait:wiki card hidden');
           return false;
         }
