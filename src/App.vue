@@ -28,8 +28,8 @@
                 <span v-if="DEBUG_FOCUS" title="activeElt">
                   {{activeElt||'activeElt?'}}
                 </span> &nbsp;
-                <span v-if="DEBUG_ROUTE" title="routeCard">
-                  {{volatile.routeCard?.id}}
+                <span v-if="DEBUG_ROUTE" title="routeCardId">
+                  {{settings.routeCardId}}
                 </span> &nbsp;
                 <span v-if="DEBUG_SCROLL" title="viewWidth x viewHeight">
                   {{viewWidth}}x{{viewHeight}}

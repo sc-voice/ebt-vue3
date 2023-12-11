@@ -245,7 +245,7 @@ export default class EbtCard {
     if (this.matchPath({path:route, defaultLang:langTrans})) {
       let { activeElement } = document;
       if (volatile.routeCard?.id !== id) {
-        volatile.routeCard = this;
+        volatile.setRouteCard(this);
         dbg && console.log(msg, `[1]routeCard ${id}`, 
           {route, activeElement});
         this.focusElementId(route);

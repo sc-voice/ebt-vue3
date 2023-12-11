@@ -125,8 +125,10 @@ export const useVolatileStore = defineStore('volatile', {
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';
       const dbg = DEBUG_ROUTE;
+      let settings = useSettingsStore();
       dbg && console.log(msg, card.debugString);
       routeCard.value = card;
+      settings.routeCardId = card.id;
     },
     trilingualPattern(search) {
       const msg = 'volatile.trilingualPattern() ';
@@ -220,9 +222,9 @@ export const useVolatileStore = defineStore('volatile', {
       }
 
       if (routeCard.value !== card) {
-        routeCard.value = card;
-        dbg && console.log(msg, '[8]routeCard <=', card.debugString,
-          {visible});
+        dbg && console.log(msg, '[8]setRouteCard', card.debugString,
+            {visible});
+        this.setRouteCard(card);
         if (!visible) {
           settings.scrollToCard(card);
         }

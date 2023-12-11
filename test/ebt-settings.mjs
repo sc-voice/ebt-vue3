@@ -19,6 +19,7 @@ import should from "should";
       maxResults: 5,
       refAuthor: 'sujato',
       refLang: 'en',
+      routeCardId: null,
       showId: true,
       showPali: true,
       showReference: false,
@@ -48,6 +49,7 @@ import should from "should";
         maxResults: 5,
         refLang: 'en',
         refAuthor: 'sujato',
+        routeCardId: null,
         showId: true,
         showPali: true,
         showReference: false,
@@ -81,6 +83,7 @@ import should from "should";
       maxResults: 5,
       refLang: 'en',
       refAuthor: 'sujato',
+      routeCardId: null,
       scid: undefined,
       serverUrl: 'https://www.api.sc-voice.net/scv',
       showGdpr: true,
@@ -109,11 +112,13 @@ import should from "should";
     let clickVolume = 4;
     let blockVolume = 3;
     let swooshVolume = 1;
+    let routeCardId = '/test/route';
     let showId = true;
     let showPali = false;
     var ebt = new EbtSettings({
       clickVolume,
       blockVolume,
+      routeCardId,
       swooshVolume,
       showId,
       showPali,
@@ -122,6 +127,7 @@ import should from "should";
     should(ebt).properties({
       clickVolume,
       blockVolume,
+      routeCardId,
       swooshVolume,
       showId,
       showPali,
