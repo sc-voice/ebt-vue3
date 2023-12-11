@@ -263,7 +263,8 @@ export const useVolatileStore = defineStore('volatile', {
       let homePath = settings.homePath(config);
       let windowHash = window?.location?.hash;
       let locationPath = location.join('/');
-      dbg && console.log(msg, {homePath, windowHash, locationPath});
+      dbg && console.log(msg, '[1]', {
+        homePath, windowHash, locationPath});
 
       let html = '';
       let paths = [locationPath];
@@ -274,12 +275,12 @@ export const useVolatileStore = defineStore('volatile', {
         }
       }
       let hrefs = paths.map(p => this.contentPath(p));
-      dbg && console.log(msg, 'hrefs', hrefs);
+      dbg && console.log(msg, '[2]hrefs', hrefs);
       let hrefMap = hrefs.reduce((a,hr,i) => { 
         a[hr] = i; return a; 
       }, {});
       hrefs = Object.keys(hrefMap); // unique hrefs
-      dbg && console.log(msg, {hrefs});
+      dbg && console.log(msg, '[3]', {hrefs});
 
       for (let i=0; !html && i < hrefs.length; i++) {
         let href = hrefs[i];
@@ -289,7 +290,7 @@ export const useVolatileStore = defineStore('volatile', {
       if (!html) {
         let { $t } = this;
         let alertMsg = $t('ebt.cannotLoadWikiHtml');
-        console.warn(msg, alertMsg, hrefs);
+        console.warn(msg, '[4]', alertMsg, hrefs);
         html = [
           `<h2>${alertMsg}</h2>`,
           '<pre>',
