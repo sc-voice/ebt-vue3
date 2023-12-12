@@ -133,23 +133,28 @@ export default class EbtCard {
         throw new Error(msg+"addCard is required");
       } 
       if (addCard) {
-        dbg && console.log(msg, '[2]addCard', {isOpen},
-          [context,...location].join('/'));
+        dbg && console.log(msg, '[2]addCard', 
+          {context,location,isOpen});
         card = addCard ? addCard({context, location, isOpen}) : null;
       }
-      //card && logger.info(`${msg} ${args}`, {card, context, location});
     } else {
-      dbg && console.log(msg, '[3]existing', card.id, card.context);
+      dbg && console.log(msg, '[3]existing', card.debugString);
     } 
 
     if (card) {
       switch (card.context) {
         case CONTEXT_WIKI: {
           let newLocation = path.split('/').slice(2);
-          card.location = newLocation;
+          if (newLocation.length) {
+            card.location = newLocation;
+            dbg && console.log(msg, '[4]newLocation', card.debugString, 
+              newLocation);
+          }
         } break;
         case CONTEXT_SUTTA: {
           if (location[0].indexOf(':') >= 0) { // different scid
+            dbg && console.log(msg, '[5]location', card.debugString, 
+              location[0]);
             card.location[0] = location[0];
           }
         } break;

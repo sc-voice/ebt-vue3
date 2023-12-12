@@ -1,4 +1,4 @@
-export const DEBUG_ADD_CARD = 0;
+export const DEBUG_ADD_CARD = true;
 export const DEBUG_AUDIO    = 0;
 export const DEBUG_CLICK    = 0;
 export const DEBUG_FOCUS    = 0;
@@ -8,8 +8,9 @@ export const DEBUG_KEY      = 0;
 export const DEBUG_LEGACY   = 0;
 export const DEBUG_LOAD     = 0;
 export const DEBUG_LOG_HTML = 0; // when debug console doesn't work
-export const DEBUG_MOUNTED  = 0;
+export const DEBUG_MOUNTED  = true;
 export const DEBUG_OPEN_CARD= true;
+export const DEBUG_PATH_TO_CARD = true;
 export const DEBUG_ROUTE    = true;
 export const DEBUG_SCROLL   = 0;
 export const DEBUG_SEARCH   = 0;

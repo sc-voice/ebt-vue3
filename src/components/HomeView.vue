@@ -40,8 +40,8 @@
       let { fullPath } = $route;
       let { id, location } = card;
       dbg && console.log(msg, '[1]fetchWikiHtml', {location});
-      await volatile.fetchWikiHtml(location, msg);
-      dbg && console.log(msg, '[2]fetchWikiHtml', {location});
+      await volatile.fetchWikiHtml(card);
+      dbg && console.log(msg, '[2]fetchWikiHtml', card.location);
 
       card.onAfterMounted({settings, volatile});
     },

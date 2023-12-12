@@ -1,4 +1,4 @@
-import { nextTick } from "vue";
+import { ref, nextTick } from "vue";
 import { defineStore } from 'pinia';
 import { logger } from 'log-instance/index.mjs';
 import Utils from "../utils.mjs";
@@ -7,12 +7,11 @@ import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DEBUG_OPEN_CARD, DEBUG_ADD_CARD, DEBUG_HOME, DEBUG_SETTINGS, 
-  DEBUG_ROUTE, DEBUG_SCROLL, DEBUG_FOCUS 
+  DEBUG_ROUTE, DEBUG_SCROLL, DEBUG_FOCUS, DEBUG_PATH_TO_CARD,
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
 const SETTINGS_KEY = "settings";
-
 var id = 1;
 
 function elementInViewport(elt, root = document.documentElement) {
@@ -43,6 +42,8 @@ function elementInViewport(elt, root = document.documentElement) {
   return true;
 }
 
+const refConfig = ref(null);
+
 export const useSettingsStore = defineStore('settings', {
   state: () => {
     const msg = 'settings.useSettingsStore() ';
@@ -69,6 +70,7 @@ export const useSettingsStore = defineStore('settings', {
       if (this.loaded) {
         return this;
       }
+      refConfig.value = config;
       let state = Utils.assignTyped({}, EbtSettings.INITIAL_STATE);
       let savedState = await Idb.get(SETTINGS_KEY);
       if (savedState) {
@@ -109,7 +111,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     pathToCard(fullPath) {
       const msg = `settings.pathToCard(${fullPath}) `;
-      //console.log(msg);
+      const dbg = DEBUG_PATH_TO_CARD;
       let { cards } = this;
       let card = EbtCard.pathToCard({
         path:fullPath, 
@@ -118,9 +120,9 @@ export const useSettingsStore = defineStore('settings', {
         addCard: (opts) => this.addCard(opts),
       });
       if (card) {
-        logger.debug(msg, card.context, card.id, );
+        dbg && console.log(msg, '[1]', card.debugString);
       } else { // should never happen
-        logger.warn(msg+"=> null", {card, fullPath, cards});
+        dbg && console.logwarn(msg, "[2]no card", {fullPath, cards});
       }
       return card;
     },
@@ -166,8 +168,8 @@ export const useSettingsStore = defineStore('settings', {
           hash = openCard.routeHash();
           dbg && console.log(msg, '[1]route=>openCard', hash);
         } else {
-          hash = this.homePath(config);
-          dbg && console.log(msg, '[2]route=>homePath', hash);
+          hash = ''; // this.homePath(config);
+          dbg && console.log(msg, '[2]no open card', hash);
         }
         window.location.hash = hash;
       }
@@ -180,14 +182,15 @@ export const useSettingsStore = defineStore('settings', {
       let card = null;
       let loc = location ? location.join('/') : loc;
       switch (context) {
-        case EbtCard.CONTEXT_WIKI:
+        case EbtCard.CONTEXT_WIKI: {
+          let homePath = this.homePath();
           dbg && console.log(msg, `[1]${context}`, {isOpen, loc});
           card = new EbtCard(Object.assign({
             isOpen:false, // let user open card in tutorial
-            langTrans
+            langTrans,
           }, opts));
           this.cards.push(card);
-          break;
+        } break;
         case EbtCard.CONTEXT_DEBUG:
         case EbtCard.CONTEXT_SEARCH:
         case EbtCard.CONTEXT_SUTTA:
@@ -308,7 +311,7 @@ export const useSettingsStore = defineStore('settings', {
         show === this.tutorSettings &&
         show === this.tutorWiki;
     },
-    homePath(config) {
+    homePath(config=refConfig.value) {
       const msg = 'settings.homePath()';
       let dbg = DEBUG_HOME;
       let { homePath, tutorialPath } = config;

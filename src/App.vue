@@ -204,14 +204,21 @@
     },
     methods: {
       onHome(evt) {
-        let msg = 'App.onHome() ';
+        let msg = 'App.onHome()';
         let { settings, volatile, audio, config } = this;
         let dbg = DEBUG_HOME;
         audio.playBlock();
-
+        let { cards } = settings;
+        let [homeCard, ...ignored] = cards.filter(card=>
+          card.context === EbtCard.CONTEXT_WIKI);
+        if (!homeCard.isOpen) {
+          dbg && console.log(msg, `[1]open`, homeCard.debugString);
+          homeCard.open(true);
+        }
         let homePath = settings.homePath(config);
         let location = `${config.basePath}${homePath}`;
-        dbg && console.log(msg, `[1]`, {location});
+
+        dbg && console.log(msg, `[2]`, {location});
         window.location = location;
         volatile.ebtChips && nextTick(()=>{
           dbg && console.log(msg, `[2]ebtChips.focus()`);
@@ -319,7 +326,7 @@
       let wikiCard = wikiHash
         ? settings.pathToCard(wikiHash)
         : settings.pathToCard(homePath);
-      dbg && console.log(msg, '[1]wikiCard', wikiCard.debugString);
+      dbg && console.log(msg, '[1]wikiCard', wikiCard?.debugString);
 
       $vuetify.theme.global.name = settings.theme === 'dark' 
         ? 'dark' : 'light';;

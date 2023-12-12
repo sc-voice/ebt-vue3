@@ -110,7 +110,8 @@
     unmounted() {
       const msg = 'EbtCard.unmounted() ';
       const dbg = DEBUG_MOUNTED;
-      dbg && console.log(msg, this.debugString);
+      let { card } = this;
+      //dbg && console.log(msg, card.debugString);
     },
     deactivated() {
       const msg = 'EbtCard.deactivated() ';

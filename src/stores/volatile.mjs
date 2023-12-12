@@ -180,6 +180,10 @@ export const useVolatileStore = defineStore('volatile', {
       let isCard = !(typeof cardOrRoute === 'string');
       let route = isCard ? cardOrRoute.routeHash() : cardOrRoute;
       let card = isCard ? cardOrRoute : settings.pathToCard(route);
+      if (card == null) {
+        dbg && console.log(msg, '[1]no card', {route});
+        return;
+      }
       let { visible } = card;
 
       const { window } = globalThis;
@@ -255,26 +259,44 @@ export const useVolatileStore = defineStore('volatile', {
       wikiPath = wikiPath.replace(/\/-.*/, '');
       return `${config.basePath}content/${wikiPath}.html`;
     },
-    async fetchWikiHtml(location, caller) {
+    async updateWikiRoute(opts={}) {
+      const msg = 'volatile.updateWikiRoute()';
+      const dbg = DEBUG_ROUTE;
+      let { card, path } = opts;
+      let settings = useSettingsStore();
+      try {
+        let html = await this.fetchWikiHtml(card);
+        if (html && settings.tutorialState(false) && !card.isOpen) {
+          card.open(true);
+          dbg && console.log(msg, `[1]opened card`, card.debugString);
+        }
+      } catch(e) {
+        dbg && console.log(msg, `[5]invalid`, 
+          card.location.join('/'), e);
+        card.location = settings.homePath();
+      }
+    },
+    async fetchWikiHtml(card) {
       const msg = 'volatile.fetchWikiHtml() ';
       const dbg = DEBUG_WIKI || DEBUG_HOME;
+      let { location } = card;
       let { config } = this;
       let settings = useSettingsStore();
       let homePath = settings.homePath(config);
-      let windowHash = window?.location?.hash;
-      let locationPath = location.join('/');
+      let windowPath = window?.location?.hash;
+      let loc = location.join('/');
       dbg && console.log(msg, '[1]', {
-        homePath, windowHash, locationPath});
+        homePath, windowPath, loc});
 
       let html = '';
-      let paths = [locationPath];
-      if (windowHash.match(`#/${EbtCard.CONTEXT_WIKI}`)) {
-        let hashPath = windowHash.split('/').slice(2).join('/');
-        if (hashPath !== locationPath) {
-          paths = [hashPath, locationPath];
+      let locs = [loc];
+      if (windowPath.match(`#/${EbtCard.CONTEXT_WIKI}`)) {
+        let winLoc = windowPath.split('/').slice(2).join('/');
+        if (winLoc !== loc) {
+          locs = [winLoc, loc];
         }
       }
-      let hrefs = paths.map(p => this.contentPath(p));
+      let hrefs = locs.map(p => this.contentPath(p));
       dbg && console.log(msg, '[2]hrefs', hrefs);
       let hrefMap = hrefs.reduce((a,hr,i) => { 
         a[hr] = i; return a; 
@@ -287,7 +309,16 @@ export const useVolatileStore = defineStore('volatile', {
         html = await this.fetchText(href);
       }
 
-      if (!html) {
+      if (!html) { // Can't load wiki html
+        let homeLocation = homePath.split('/').slice(2);
+        let homeLoc = homeLocation.join('/');
+        if (homeLoc !== loc) { // Retry with a known location
+          card.location = homeLocation;
+          dbg && console.log(msg, '[4]retry', homeLoc);
+          return this.fetchWikiHtml(card);
+        } 
+
+        // Give up
         let { $t } = this;
         let alertMsg = $t('ebt.cannotLoadWikiHtml');
         console.warn(msg, '[4]', alertMsg, hrefs);

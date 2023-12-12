@@ -53,40 +53,47 @@
       const msg = 'EbtCards.mounted() ';
       const dbg = DEBUG_MOUNTED;
       let { settings, volatile, $route, config }  = this;
-      let { params, path }  = $route;
+      let { params, path='/' }  = $route;
       let { cards, debugScroll } = settings;
-      if (!path || path === "/" ) {
-        let homePath = settings.homePath(config);
-        let newPath = `${config.basePath}${homePath}`;
-        dbg && console.log(msg, `[1]`, {homePath, newPath});
-        path = newPath;
-      }
       let card = settings.pathToCard(path);
 
-      //dbg && console.log(msg, `[2]${card.id} ${path}`);
-
       if (card == null) {
-        dbg && console.warn(msg, "[3]UNEXPECTED", {$route, path});
-      } else {
-        dbg && console.log(msg, '[4]setRoute', card.debugString, path);
-        volatile.setRoute(card, true, msg);
-        let { activeElement } = document;
-        let scroll = true;
-        volatile.setRoute(card, true);
-        switch (card.context) {
-          case EbtCard.CONTEXT_WIKI:
-            if (settings.tutorialState(false)) {
-              settings.scrollToCard(card);
-            }
-            break;
-          default:
-            settings.scrollToCard(card);
-            break;
-        }
-
-        this.bindAudioSutta(window.location.hash);
-        dbg && console.log(msg, '[5]bindAudioSutta', {activeElement});
+        dbg && console.warn(msg, "[3]no card", {$route, path});
+        return;
       }
+
+      if (card.location.length === 0) {
+        if (card.context === EbtCard.CONTEXT_WIKI) {
+          throw new Error(`${msg} missing wiki location`);
+          //let homePath = settings.homePath(config);
+          //let newLoc = homePath.split('/').slice(1);
+          //newLoc.forEach(part=>card.location.push(part));
+          //dbg && console.log(msg, `[1]homePath`, newLoc.join('/'));
+        }
+      }
+
+      //volatile.setRoute(card, true, msg);
+      let { activeElement } = document;
+      let scroll = true;
+      if (path === '/') {
+        dbg && console.log(msg, '[4]empty path', card.debugString);
+      } else {
+        dbg && console.log(msg, '[5]setRoute', card.debugString, path);
+        volatile.setRoute(card, true);
+      }
+      switch (card.context) {
+        case EbtCard.CONTEXT_WIKI:
+          if (settings.tutorialState(false)) {
+            settings.scrollToCard(card);
+          }
+          break;
+        default:
+          settings.scrollToCard(card);
+          break;
+      }
+
+      this.bindAudioSutta(window.location.hash);
+      dbg && console.log(msg, '[6]bindAudioSutta', {activeElement});
     },
     methods: {
       onSwipe(dir) {
@@ -169,30 +176,37 @@
           addCard: (opts) => settings.addCard(opts),
           defaultLang: settings.langTrans,
         });
+        if (!card) {
+          dbg && console.log(msg, '[1]no card', {to, from});
+        }
         let { activeElement } = document;
-        dbg && console.log(msg, '[1]setRoute', {activeElement, to, from});
-        volatile.setRoute(card, undefined, msg);
-        dbg && console.log(msg, '[2]setRoute', document.activeElement);
+        if (card.isOpen) {
+          dbg && console.log(msg, '[2]setRoute open', 
+            {activeElement, to, from});
+          volatile.setRoute(card, undefined, msg);
+        } else if (to.hash) {
+          dbg && console.log(msg, '[3]setRoute closed', 
+            {activeElement, to, from});
+          volatile.setRoute(card, undefined, msg);
+        } else {
+          dbg && console.log(msg, '[4]n/a', 
+            {activeElement, to, from});
+        }
         this.bindAudioSutta(to.href);
         if (card == null) {
           volatile.setRoute('', undefined, msg);
-          console.warn(msg, `[3]non-card route`, {$route, to, from});
+          console.warn(msg, `[5]non-card route`, {$route, to, from});
           return;
         }
 
         switch (card.context) {
           case EbtCard.CONTEXT_WIKI:
-            volatile.fetchWikiHtml(card.location, msg);
-            if (settings.tutorialState(false) && !card.isOpen) {
-              card.open(true);
-              dbg && console.log(msg, `[4]opened card`, 
-                {$route, to, from, card});
-            }
+            volatile.updateWikiRoute({card, path:to});
             break;
           default:
             if (!card.isOpen) {
               card.open(true);
-              dbg && console.log(msg, `[5]opened card`, 
+              dbg && console.log(msg, `[6]opened card`, 
                 {$route, to, from, card});
             }
             break;
@@ -205,7 +219,7 @@
             switch(context) {
               case EbtCard.CONTEXT_WIKI:
                 if (card.isOpen) {
-                  dbg && console.log(msg, '[6]focus', `${id} ${context}`, 
+                  dbg && console.log(msg, '[7]focus', `${id} ${context}`, 
                     fullPath);
                   card.focusElementId(fullPath);
                 }
@@ -213,7 +227,7 @@
               default:
               case EbtCard.CONTEXT_SEARCH:
               case EbtCard.CONTEXT_SUTTA:
-                dbg && console.log(msg, '[7]focus', `${id} ${context}`);
+                dbg && console.log(msg, '[8]focus', `${id} ${context}`);
                 card.focusElementId();
                 break;
             }
