@@ -107,12 +107,18 @@
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
         const dbg = DEBUG_KEY;
-        const { settings } = this;
+        const { card, settings } = this;
         let { audio } = this;
         switch (evt.code) {
           case 'Tab': {
-            let elt = document.getElementById('ebt-chips');
-            dbg && console.log(msg, '[1]focus', {elt,evt});
+            let elt;
+            if (evt.shiftKey) {
+              elt = document.getElementById(card.tab1Id);
+              dbg && console.log(msg, '[1]focus', {elt,evt});
+            } else {
+              elt = document.getElementById('ebt-chips');
+              dbg && console.log(msg, '[2]focus', {elt,evt});
+            }
             elt && elt.focus();
             evt.preventDefault();
             break;

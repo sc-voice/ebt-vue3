@@ -159,7 +159,7 @@
     computed: {
       cardsClass(ctx) {
         let { settings } = ctx;
-        return settings.cardsOpen === 1 
+        return settings.openCards.length === 1 
           ? "ebt-cards ebt-cards1" 
           : "ebt-cards";
       },

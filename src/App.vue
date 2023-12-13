@@ -1,5 +1,5 @@
 <template>
-  <v-app >
+  <v-app @click.prevent.stop="onClickApp">
     <v-main >
       <v-app-bar flat 
         :extension-height="collapsed ? 0 : 40"
@@ -127,6 +127,7 @@
         <Tutorial v-if="showTutorPlay"
           setting="tutorPlay" :title="$t('ebt.ariaPlay')" 
           :text="$t('ebt.hearSutta')" arrow="bottom" hflip
+          :msDelay="2000"
         ></Tutorial>
         <Tutorial v-if="showTutorSettings"
           setting="tutorSettings" 
@@ -203,18 +204,29 @@
       Tutorial,
     },
     methods: {
+      onClickApp(evt) {
+        const msg = 'App.onClickApp()';
+        const dbg = DEBUG_CLICK;
+        let { volatile } = this;
+        let id = 'ebt-chips';
+        let elt = document.getElementById(id);
+        if (elt) {
+          dbg && console.log(msg, '[1]focus', id, evt);
+          volatile.focusElement(elt)
+        }
+      },
       onHome(evt) {
         let msg = 'App.onHome()';
         let { settings, volatile, audio, config } = this;
         let dbg = DEBUG_HOME;
         audio.playBlock();
         let { cards } = settings;
-        let [homeCard, ...ignored] = cards.filter(card=>
-          card.context === EbtCard.CONTEXT_WIKI);
-        if (!homeCard.isOpen) {
+        let homeCard = settings.wikiCard;
+        if (!homeCard?.isOpen) {
           dbg && console.log(msg, `[1]open`, homeCard.debugString);
           homeCard.open(true);
         }
+        volatile.setRouteCard(homeCard);
         let homePath = settings.homePath(config);
         let location = `${config.basePath}${homePath}`;
 
@@ -412,8 +424,8 @@
         const dbg = DEBUG_TUTORIAL;
         let { settings } = this;
         let { 
-          cards, tutorSettings, tutorPlay, tutorSearch, 
-          tutorWiki, tutorClose
+          tutorSettings, tutorPlay, tutorSearch, 
+          tutorWiki, tutorClose, openCards, wikiCard,
         } = settings;
 
         if (!tutorSettings) {
@@ -439,18 +451,9 @@
 
         // Tutorial popups interfere with links, so don't
         // allow other open cards
-        let nOpen = cards.reduce((a,c,i)=>{
-          switch (c.context) {
-            case EbtCard.CONTEXT_WIKI:
-              break;
-            default:
-              c.isOpen && a++;
-              break;
-          }
-          return a;
-        }, 0);
-        if (nOpen) {
-          dbg && console.log(msg, '[6]wait', {nOpen});
+        let nonWikiOpen = openCards.filter(c=>c !== wikiCard).length; 
+        if (nonWikiOpen) {
+          dbg && console.log(msg, '[6]wait', {nonWikiOpen});
           return false;
         }
 
@@ -461,33 +464,31 @@
         const msg = "App.showTutorWiki()";
         const dbg = DEBUG_TUTORIAL;
         let { audio, settings, } = this;
-        let { cards, tutorWiki, tutorPlay } = settings;
+        let { 
+          wikiCard, openCards, tutorWiki, tutorPlay 
+        } = settings;
         if (!tutorWiki) {
           dbg && console.log(msg, '[1]done');
           return false;
         }
 
-        if (audio.segmentPlaying) {
-          dbg && console.log(msg, '[2]wait');
+        let { segmentPlaying } = audio;
+        if (segmentPlaying) {
+          dbg && console.log(msg, '[2]wait', 
+            segmentPlaying && "segmentPlaying",
+            tutorPlay && "tutorPlay");
           return false;
         }
 
         // Tutorial popups interfere with links, so don't
         // allow other open cards
-        let nOpen = cards.reduce((a,c,i)=>{
-          if (c?.isOpen) {
-            //dbg && console.log(msg, '[3]isOpen', c.debugString);
-            return a+1;
-          }
-          return a;
-        }, 0);
-        let show = (nOpen===0 || !tutorPlay);
-        if (!show) {
-          dbg && console.log(msg, '[4]wait', {nOpen, tutorPlay});
+        let nonWikiOpen = openCards.filter(c=>c !== wikiCard).length;
+        if (nonWikiOpen) {
+          dbg && console.log(msg, '[4]wait', {nonWikiOpen});
           return false;
         }
 
-        dbg && console.log(msg, '[5]show', {nOpen, tutorPlay});
+        dbg && console.log(msg, '[5]show');
         return true;
       },
       showTutorPlay(ctx) {

@@ -323,6 +323,16 @@ export const useSettingsStore = defineStore('settings', {
     },
   },
   getters: {
+    openCards(state) {
+      let { cards } = state;
+      return cards.filter(c=>c.isOpen);
+    },
+    wikiCard(state) {
+      let { cards } = state;
+      return cards.reduce((a,c)=>{
+        return a || (c.context === EbtCard.CONTEXT_WIKI ? c : a)
+      }, null);
+    },
     development(state) {
       let { logLevel } = state;
       return logLevel === 'debug' || logLevel === 'info';
@@ -330,10 +340,6 @@ export const useSettingsStore = defineStore('settings', {
     audioVolume(state) {
       let { clickVolume } = state;
       return Number(clickVolume) / 4;
-    },
-    cardsOpen: (state)=>{
-      let { cards } = state;
-      return cards.reduce((a,v)=> (v.isOpen ? a+1: a), 0);
     },
     servers: (state)=>{ 
       let { window } = globalThis;
