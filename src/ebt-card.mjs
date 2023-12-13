@@ -168,6 +168,10 @@ export default class EbtCard {
     return `${this.id}-tab1`;
   }
 
+  get containerId() {
+    return `${this.id}-container`;
+  }
+
   get autofocusId() {
     return `${this.id}-autofocus`;
   }
@@ -194,6 +198,28 @@ export default class EbtCard {
       default:
         return this.titleAnchor;
     }
+  }
+
+  get debugString() {
+    let { isOpen, id, context, location} = this;
+    let separator = isOpen ? '+' : '-';
+    return `${id}${separator}${context}`;
+  }
+
+  get hasFocus() {
+    const msg = "ebt-card.hasFocus()";
+    const dbg = DBG_FOCUS;
+    let { activeElement } = document;
+    let { containerId } = this;
+    let hasFocus = false;
+    for (let elt=activeElement; elt; elt=elt.parentElement) {
+      if (elt.id === containerId) {
+        hasFocus = true;
+        break;
+      }
+    }
+    dbg && console.log(msg, '[1] =>', hasFocus);
+    return hasFocus;
   }
 
   focusElementId(eltId=this.autofocusId) {
@@ -564,12 +590,6 @@ export default class EbtCard {
     // to prevent the browser from auto-navigating
     // to segmentElementId's when the route changes
     return `seg-${scid}/${lang}/${author}`;
-  }
-
-  get debugString() {
-    let { isOpen, id, context, location} = this;
-    let separator = isOpen ? '+' : '-';
-    return `${id}${separator}${context}`;
   }
 
 }

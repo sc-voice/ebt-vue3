@@ -407,12 +407,17 @@ export const useVolatileStore = defineStore('volatile', {
     },
     onClickCard(evt, card) {
       const msg = "volatile.onClickCard() ";
+      const dbg = DBG_CLICK || DBG_FOCUS;
       let { settings, } = this;
       let { target } = evt || {};
       let { localName, href, hash } = target;
-      let dbg = DBG_CLICK;
-      dbg && console.log(msg, 'setRoute', card.debugString, evt);
+      dbg && console.log(msg, '[1]setRoute', card.debugString, evt);
       this.setRoute(card, undefined, msg);
+      if (!card.hasFocus) {
+         let elt = document.getElementById(card.tab1Id);
+         dbg && console.log(msg, '[2]focusElement', elt);
+         this.focusElement(elt);
+      }
     },
   },
 })

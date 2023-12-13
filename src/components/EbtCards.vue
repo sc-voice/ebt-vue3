@@ -131,7 +131,7 @@
       },
       onFocusIn(card) {
         const msg = "EbtCards.onFocusIn() ";
-        const dbg = DBG_FOCUS;
+        const dbg = DBG_FOCUS || DBG_SCROLL;
         let { volatile, settings } = this;
         let { cards } = settings;
         let { context, location } = card;
@@ -143,7 +143,8 @@
           defaultLang: settings.langTrans,
         });
         if (routeCard === card) {
-          dbg && console.log(msg, `[1]card`, card.debugString)
+          dbg && console.log(msg, `[1]scrollToCard`, card.debugString)
+          settings.scrollToCard(card);
         } else {
           dbg && console.log(msg, `[2]setRoute`, card.debugString)
           volatile.setRoute(card.routeHash(), true, msg);

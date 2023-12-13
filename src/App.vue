@@ -17,7 +17,7 @@
         </template> <!-- collapsed -->
         <template v-if="!collapsed">
           <v-app-bar-title>
-            <div class="ebt-title">
+            <div class="ebt-title" @click="onClickAppBar">
               <v-icon icon="mdi-home" class="home-icon" size="24px"
                 @click.stop="onHome"
               />
@@ -26,6 +26,7 @@
               </div>
               <div class="app-debug">
                 <span v-if="DBG_FOCUS" title="activeElt">
+                  {{docHasFocus}}
                   {{activeElt||'activeElt?'}}
                 </span> &nbsp;
                 <span v-if="DBG_ROUTE" title="routeCardId">
@@ -54,7 +55,7 @@
             </v-btn>
           </div>
         </template>
-        <template v-if="!collapsed" v-slot:extension>
+        <template v-if="!collapsed" v-slot:extension >
           <ebt-chips />
         </template> <!-- !collapsed -->
         <template v-if="settings.loaded">
@@ -152,8 +153,10 @@
   const dbg = DBG_FOCUS;
 
   const activeElt = ref("loading...");
+  const docHasFocus = ref("?");
   setInterval(()=>{
-    let elt = window?.document?.activeElement;
+    let document = window?.document;
+    let elt = document?.activeElement;
     let aeNew = elt?.id || elt;
     let aeOld = activeElt.value;
     if (aeNew !== aeOld) {
@@ -162,7 +165,11 @@
     } else {
       //dbg && console.log(msg, "[5]activeElt", ae);
     }
+    docHasFocus.value = document && document.hasFocus() 
+      ? "+" : "-";
+
   }, 1000);
+
 </script>
 <script>
   import { default as HomeView } from './components/HomeView.vue';
@@ -204,6 +211,30 @@
       Tutorial,
     },
     methods: {
+      onClickAppBar(evt) {
+        const msg = "App.onClickAppBar";
+        const dbg = DBG_CLICK || DBG_FOCUS;
+        let { volatile } = this;
+        let { ebtChips } = volatile;
+        if (ebtChips) {
+          dbg && console.log(msg, '[1]focus', {evt});
+          volatile.focusElement(ebtChips);
+        } else {
+          console.warn(msg, '[1]ebtChips?', {evt});
+        }
+      },
+      onClickExtension(evt) {
+        const msg = "App.onClickExtension";
+        const dbg = DBG_CLICK || DBG_FOCUS;
+        let { volatile } = this;
+        let { ebtChips } = volatile;
+        if (ebtChips) {
+          dbg && console.log(msg, '[1]focus', {evt});
+          volatile.focusElement(ebtChips);
+        } else {
+          console.warn(msg, '[1]ebtChips?', {evt});
+        }
+      },
       onHome(evt) {
         let msg = 'App.onHome()';
         let { settings, volatile, audio, config } = this;
@@ -704,6 +735,9 @@
 }
 .app-log-text {
   display: inline-block;
+}
+.app-extension {
+  width: 100%;
 }
 </style>
 

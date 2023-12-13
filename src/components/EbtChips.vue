@@ -186,6 +186,7 @@
     flex-direction: column;
     min-height: 32px;
     margin-left: 1.0rem;
+    width: calc(100% - 1.5rem);
   }
   .chip-container .v-chip-group {
     padding: 0px !important;
