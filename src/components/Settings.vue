@@ -273,7 +273,7 @@ import { useVolatileStore } from "../stores/volatile.mjs";
 import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
-import { DEBUG_TUTORIAL } from "../defines.mjs";
+import { DBG_TUTORIAL } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
 import Confirm from "./Confirm.vue";
@@ -336,7 +336,7 @@ export default {
   methods: {
     showTutorials(show) {
       const msg = "Settings.showTutorials()";
-      const dbg = DEBUG_TUTORIAL;
+      const dbg = DBG_TUTORIAL;
       let { config, volatile, settings } = this;
       let { tutorialPath, homePath } = config;
 

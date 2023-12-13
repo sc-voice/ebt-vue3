@@ -25,21 +25,21 @@
                 {{config.appName}}
               </div>
               <div class="app-debug">
-                <span v-if="DEBUG_FOCUS" title="activeElt">
+                <span v-if="DBG_FOCUS" title="activeElt">
                   {{activeElt||'activeElt?'}}
                 </span> &nbsp;
-                <span v-if="DEBUG_ROUTE" title="routeCardId">
+                <span v-if="DBG_ROUTE" title="routeCardId">
                   {{settings.routeCardId}}
                 </span> &nbsp;
-                <span v-if="DEBUG_SCROLL" title="viewWidth x viewHeight">
+                <span v-if="DBG_SCROLL" title="viewWidth x viewHeight">
                   {{viewWidth}}x{{viewHeight}}
                 </span> &nbsp;
-                <span v-if="DEBUG_LEGACY" 
+                <span v-if="DBG_LEGACY" 
                   title="legacyVoice:showLegacyDialog">
                   {{settings.legacyVoice}}:
                   {{volatile.showLegacyDialog ? 'legacy' : 'nolegacy'}}
                 </span> &nbsp;
-                <span v-if="DEBUG_WAITING" :title="volatile.waitingMsg">
+                <span v-if="DBG_WAITING" :title="volatile.waitingMsg">
                   wait:{{volatile.waiting}}
                 </span> &nbsp;
               </div>
@@ -71,7 +71,7 @@
           <LegacyVoice v-if="settings.loaded"/>
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
-          <div v-if="DEBUG_LOG_HTML" class="app-log">
+          <div v-if="DBG_LOG_HTML" class="app-log">
             <div v-for="item in volatile.logHtml" class="app-log-item">
               <div class="app-log-count">
                 {{item.count === 1 ? ' ' : `${item.count}x`}}
@@ -142,14 +142,14 @@
 
 <script setup>
   import { 
-    DEBUG_TUTORIAL, DEBUG_HOME, DEBUG_KEY, DEBUG_STARTUP, 
-    DEBUG_LEGACY, DEBUG_CLICK, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_ROUTE, DEBUG_WAITING, DEBUG_SETTINGS, DEBUG_LOG_HTML,
-    DEBUG_GDPR, DEBUG_MOUNTED, DEBUG_WIKI, DEBUG_AUDIO
+    DBG_TUTORIAL, DBG_HOME, DBG_KEY, DBG_STARTUP, 
+    DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
+    DBG_ROUTE, DBG_WAITING, DBG_SETTINGS, DBG_LOG_HTML,
+    DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO
   } from './defines.mjs';
 
   const msg = "App.setup"
-  const dbg = DEBUG_FOCUS;
+  const dbg = DBG_FOCUS;
 
   const activeElt = ref("loading...");
   setInterval(()=>{
@@ -207,7 +207,7 @@
       onHome(evt) {
         let msg = 'App.onHome()';
         let { settings, volatile, audio, config } = this;
-        let dbg = DEBUG_HOME;
+        let dbg = DBG_HOME;
         audio.playBlock();
         let { cards } = settings;
         let homeCard = settings.wikiCard;
@@ -244,7 +244,7 @@
       },
       onClickSettings(evt) {
         const msg = "App.onClickSettings()";
-        const dbg = DEBUG_FOCUS || DEBUG_CLICK;
+        const dbg = DBG_FOCUS || DBG_CLICK;
         let { settings, volatile, audio, config } = this;
         let btn = document.getElementById('btn-settings');
         btn && btn.blur();
@@ -261,7 +261,7 @@
       },
       onKeydown(evt) {
         let msg = `App.onKeydown:${evt.code}`;
-        let dbg = DEBUG_KEY;
+        let dbg = DBG_KEY;
         let { audio } = this;
         switch (evt.code) {
           case 'Home': 
@@ -275,7 +275,7 @@
       },
       async onSettingsChanged(mutation, state) {
         const msg = "App.onSettingsChanged()";
-        const dbg = DEBUG_SETTINGS;
+        const dbg = DBG_SETTINGS;
         let { settings, $i18n, $vuetify } = this;
         $vuetify.theme.global.name = settings.theme === 'dark' 
           ? 'dark' : 'light';
@@ -286,10 +286,10 @@
     },
     created() {
       const msg = "App.created()";
-      const dbg = true || DEBUG_STARTUP;
+      const dbg = true || DBG_STARTUP;
       let { volatile } = this;
 
-      if (DEBUG_LOG_HTML) {
+      if (DBG_LOG_HTML) {
         dbg && console.log(msg, '[1]enableLog');
         volatile.enableLog(true);
       }
@@ -297,13 +297,13 @@
     updated() {
       let msg = 'App.updated()';
       let { volatile } = this;
-      let dbg = DEBUG_STARTUP;
+      let dbg = DBG_STARTUP;
       volatile.updated = true;
       dbg && console.log(msg);
     },
     async mounted() {
       const msg = 'App.mounted()';
-      const dbg = DEBUG_MOUNTED || DEBUG_WIKI;
+      const dbg = DBG_MOUNTED || DBG_WIKI;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route
@@ -339,7 +339,7 @@
       window.addEventListener('keydown', (evt)=>this.onKeydown(evt));
       window.addEventListener('focusin', evt=>{
         const msg = 'App.mounted().focusin';
-        const dbg = DEBUG_AUDIO;
+        const dbg = DBG_AUDIO;
         let { audio } = this;
         if (evt.target.id === 'ebt-chips') {
           dbg && console.log(msg, '[1]playBlock');
@@ -353,7 +353,7 @@
     computed: {
       showGdpr(ctx) {
         const msg = "App.showGdpr"
-        const dbg = DEBUG_GDPR;
+        const dbg = DBG_GDPR;
         let { settings, volatile } = this;
         let { loaded } = settings;
         let { showLegacyDialog } = volatile;
@@ -386,7 +386,7 @@
         let { volatile, settings } = ctx;
         let { loaded:settingsLoaded } = settings;
         let { showSettings, showLegacyDialog } = volatile;
-        let dbg = DEBUG_TUTORIAL;
+        let dbg = DBG_TUTORIAL;
         
         if (!settings.loaded) {
           dbg && console.log(msg, '[1]wait', {settingsLoaded});
@@ -410,7 +410,7 @@
       },
       showTutorSettings(ctx) {
         const msg = "App.showTutorSettings()";
-        const dbg = DEBUG_TUTORIAL;
+        const dbg = DBG_TUTORIAL;
         let { settings } = this;
         let { 
           tutorSettings, tutorPlay, tutorSearch, 
@@ -451,7 +451,7 @@
       },
       showTutorWiki(ctx) {
         const msg = "App.showTutorWiki()";
-        const dbg = DEBUG_TUTORIAL;
+        const dbg = DBG_TUTORIAL;
         let { audio, settings, } = this;
         let { 
           wikiCard, openCards, tutorWiki, tutorPlay 
@@ -482,7 +482,7 @@
       },
       showTutorPlay(ctx) {
         const msg = "App.showTutorPlay()";
-        const dbg = DEBUG_TUTORIAL;
+        const dbg = DBG_TUTORIAL;
         let { audio, settings, } = this;
         let { tutorPlay, tutorWiki } = settings;
         let { audioScid } = audio;
@@ -499,7 +499,7 @@
       },
       showTutorSearch(ctx) {
         const msg = "App.showTutorSearch()";
-        const dbg = DEBUG_TUTORIAL;
+        const dbg = DBG_TUTORIAL;
         let { audio, settings, } = this;
         let { tutorSearch, tutorClose, tutorWiki, cards } = settings;
 
@@ -532,7 +532,7 @@
       },
       showTutorClose(ctx) {
         const msg = "App.showTutorClose()";
-        const dbg = DEBUG_TUTORIAL;
+        const dbg = DBG_TUTORIAL;
         let { settings, } = this;
         let { tutorClose, tutorWiki, cards } = settings;
         let wikiCard = cards.reduce((a,card)=>{

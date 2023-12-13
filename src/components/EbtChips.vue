@@ -36,7 +36,7 @@
   import { ref, nextTick } from "vue";
   import { logger } from "log-instance/index.mjs";
   import {
-    DEBUG_FOCUS, DEBUG_CLICK, DEBUG_OPEN_CARD, DEBUG_KEY,
+    DBG_FOCUS, DBG_CLICK, DBG_OPEN_CARD, DBG_KEY,
   } from "../defines.mjs";
 
   export default {
@@ -57,7 +57,7 @@
     methods: {
       onSpace(evt) {
         const msg = 'EbtChips.onSpace() ';
-        const dbg = DEBUG_KEY;
+        const dbg = DBG_KEY;
         let { volatile, settings } = this;
         let { routeCard } = volatile;
         if (routeCard) {
@@ -69,7 +69,7 @@
         const msg = 'EbtChips.onEnter() ';
         let { volatile, settings } = this;
         let { routeCard } = volatile;
-        const dbg = DEBUG_KEY;
+        const dbg = DBG_KEY;
         if (routeCard) {
           dbg && console.log(msg, '[1]~open', routeCard.debugString);
           routeCard.open(!routeCard.isOpen);
@@ -91,7 +91,7 @@
       },
       async onTab(evt) {
         let msg = "EbtChips.onTab()";
-        let dbg = DEBUG_KEY;
+        let dbg = DBG_KEY;
         let { volatile, settings } = this;
         let { routeCard } = volatile;
         if (routeCard) {
@@ -117,7 +117,7 @@
       },
       async onClickChip(card, cards) {
         const msg = `EbtChips.onClickChip() ${card?.id} `;
-        const dbg = DEBUG_CLICK || DEBUG_FOCUS;
+        const dbg = DBG_CLICK || DBG_FOCUS;
         const settings = await useSettingsStore();
         const volatile = await useVolatileStore();
         let { ebtChips } = volatile;

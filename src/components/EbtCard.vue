@@ -62,8 +62,8 @@
   import { logger } from 'log-instance/index.mjs';
   import { nextTick, ref } from "vue";
   import { 
-    DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_UPDATED, DEBUG_VISIBLE,
+    DBG_CLICK, DBG_MOUNTED, DBG_FOCUS, DBG_SCROLL,
+    DBG_UPDATED, DBG_VISIBLE,
   } from '../defines.mjs';
 
   export default {
@@ -88,7 +88,7 @@
     },
     beforeMount() {
       const msg = 'EbtCard.beforeMount() ';
-      const dbg = DEBUG_MOUNTED;
+      const dbg = DBG_MOUNTED;
       let { card, $route, volatile, settings } = this;
       let { fullPath:path } = $route;
       let { langTrans:defaultLang } = settings;
@@ -101,7 +101,7 @@
     },
     mounted() {
       const msg = 'EbtCard.mounted() ';
-      const dbg = DEBUG_MOUNTED; 
+      const dbg = DBG_MOUNTED; 
       let { card } = this;
       dbg && console.log(msg, '[1]addIntersectionObserver',
         card.debugString, );
@@ -109,18 +109,18 @@
     },
     unmounted() {
       const msg = 'EbtCard.unmounted() ';
-      const dbg = DEBUG_MOUNTED;
+      const dbg = DBG_MOUNTED;
       let { card } = this;
       //dbg && console.log(msg, card.debugString);
     },
     deactivated() {
       const msg = 'EbtCard.deactivated() ';
-      const dbg = DEBUG_MOUNTED;
+      const dbg = DBG_MOUNTED;
       dbg && console.log(msg, this.debugString);
     },
     updated() {
       const msg = 'EbtCard.updated() ';
-      const dbg = DEBUG_UPDATED;
+      const dbg = DBG_UPDATED;
       let { card } = this;
       let { isOpen } = card;
       if (isOpen) {
@@ -134,12 +134,12 @@
     methods: {
       onClickLastTab(evt) {
         const msg = 'EbtCard.onClickLastTab() ';
-        let dbg = DEBUG_CLICK;
+        let dbg = DBG_CLICK;
         dbg && console.log(msg);
       },
       onFocusLastTab(evt) {
         const msg = 'EbtCard.onFocusLastTab() ';
-        const dbg = DEBUG_FOCUS;
+        const dbg = DBG_FOCUS;
         let { volatile, audio } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, {ebtChips});
@@ -148,14 +148,14 @@
       },
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
-        const dbg = DEBUG_CLICK;
+        const dbg = DBG_CLICK;
         let { volatile, settings, card } = this;
         dbg && console.log(msg, 'onClickCard', card.debugString);
         volatile.onClickCard(evt, card);
       },
       onBackTabOut(evt) {
         const msg = 'EbtCard.onBackTabOut()';
-        const dbg = DEBUG_FOCUS;
+        const dbg = DBG_FOCUS;
         let { volatile } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, 'focus', {ebtChips});
@@ -164,7 +164,7 @@
       clickDelete(evt) {
         const msg = "EbtCard.clickDelete()";
         let { card, settings, config } = this;
-        let dbg = DEBUG_CLICK;
+        let dbg = DBG_CLICK;
         this.clickMinimize(evt);
         setTimeout(()=>{
           dbg && console.log(msg, 'removeCard', card.debugString);
@@ -174,7 +174,7 @@
       clickMinimize(evt) {
         const msg = "EbtCard.clickMinimize()";
         let { audio, card, settings } = this;
-        let dbg = DEBUG_CLICK;
+        let dbg = DBG_CLICK;
         settings.tutorClose = false;
         dbg && console.log(msg, card.id);
         audio.playClick();
@@ -184,13 +184,13 @@
         const msg = "EbtCard.focusTop()";
         let { settings, card } = this;
         let topId = card.topAnchor;
-        let dbg = DEBUG_FOCUS;
+        let dbg = DBG_FOCUS;
         dbg && console.log(msg, 'scrollToElementId', {evt,topId});
         settings.scrollToElementId(topId);
       },
       closeCard: (card, settings) => {
         const msg = 'EbtCard.closeCard()';
-        const dbg = DEBUG_CLICK || DEBUG_FOCUS;
+        const dbg = DBG_CLICK || DBG_FOCUS;
         card.open(false);
         let volatile = useVolatileStore();
         let { ebtChips } = volatile;
@@ -232,7 +232,7 @@
 
         setTimeout(()=>{ // wait for full-size element
           const msg = "EbtCard.intersectionObserver()";
-          const dbg = DEBUG_VISIBLE;
+          const dbg = DBG_VISIBLE;
           let { scrollHeight } = elt;
           let callback = (entries, observer) => {
             dbg && console.log(msg, card.debugString, entries);
@@ -275,7 +275,7 @@
       cardClass(ctx) {
         const msg = 'EbtCard.cardClass';
         let { settings, volatile, card } = ctx;
-        let dbg = settings.development && DEBUG_FOCUS;
+        let dbg = settings.development && DBG_FOCUS;
         let cardClass = `ebt-card ebt-card-${card.context}`;
         let { routeCard } = volatile;
 

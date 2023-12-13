@@ -45,7 +45,7 @@
   import { default as SegmentHeader } from './SegmentHeader.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
-    DEBUG_MOUNTED, DEBUG_KEY, DEBUG_SCROLL, DEBUG_FOCUS,
+    DBG_MOUNTED, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
@@ -73,7 +73,7 @@
     },
     async mounted() {
       const msg = 'SuttaView.mounted() ';
-      const dbg = DEBUG_MOUNTED;
+      const dbg = DBG_MOUNTED;
       let { $route, suttas, settings, volatile, card, config, } = this;
       let { fullPath } = $route;
       let { development, langTrans } = settings;
@@ -106,7 +106,7 @@
     methods: {
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
-        const dbg = DEBUG_KEY;
+        const dbg = DBG_KEY;
         const { card, settings } = this;
         let { audio } = this;
         switch (evt.code) {

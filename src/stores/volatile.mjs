@@ -5,13 +5,13 @@ import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
-  DEBUG_WIKI,
-  DEBUG_SCROLL,
-  DEBUG_HOME,
-  DEBUG_FOCUS,
-  DEBUG_CLICK,
-  DEBUG_ROUTE,
-  DEBUG_LOG_HTML,
+  DBG_WIKI,
+  DBG_SCROLL,
+  DBG_HOME,
+  DBG_FOCUS,
+  DBG_CLICK,
+  DBG_ROUTE,
+  DBG_LOG_HTML,
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -96,7 +96,7 @@ export const useVolatileStore = defineStore('volatile', {
   actions: {
     enableLog(on) {
       const msg = "volatile.enableLog()";
-      const dbg = DEBUG_LOG_HTML;
+      const dbg = DBG_LOG_HTML;
       if (on) {
         if (console_log.value == null) {
           console_log.value = console.log; // save true console.log
@@ -118,13 +118,13 @@ export const useVolatileStore = defineStore('volatile', {
     },
     focusElement(element) {
       const msg = 'volatile.focusElement()';
-      const dbg = DEBUG_FOCUS;
+      const dbg = DBG_FOCUS;
       dbg && console.log(msg, {element});
       element.focus();
     },
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';
-      const dbg = DEBUG_ROUTE;
+      const dbg = DBG_ROUTE;
       let settings = useSettingsStore();
       dbg && console.log(msg, card.debugString);
       routeCard.value = card;
@@ -164,7 +164,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      const dbg = DEBUG_ROUTE || DEBUG_SCROLL;
+      const dbg = DBG_ROUTE || DBG_SCROLL;
       let { config, } = this;
       let settings = useSettingsStore();
       if (!cardOrRoute) {
@@ -237,7 +237,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async fetchText(href) {
       const msg = "volatile.fetchText() ";
-      const dbg = DEBUG_WIKI;
+      const dbg = DBG_WIKI;
       let res;
       let text;
       try {
@@ -261,7 +261,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async updateWikiRoute(opts={}) {
       const msg = 'volatile.updateWikiRoute()';
-      const dbg = DEBUG_ROUTE;
+      const dbg = DBG_ROUTE;
       let { card, path } = opts;
       let settings = useSettingsStore();
       try {
@@ -278,7 +278,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async fetchWikiHtml(card) {
       const msg = 'volatile.fetchWikiHtml() ';
-      const dbg = DEBUG_WIKI || DEBUG_HOME;
+      const dbg = DBG_WIKI || DBG_HOME;
       let { location } = card;
       let { config } = this;
       let settings = useSettingsStore();
@@ -410,7 +410,7 @@ export const useVolatileStore = defineStore('volatile', {
       let { settings, } = this;
       let { target } = evt || {};
       let { localName, href, hash } = target;
-      let dbg = DEBUG_CLICK;
+      let dbg = DBG_CLICK;
       dbg && console.log(msg, 'setRoute', card.debugString, evt);
       this.setRoute(card, undefined, msg);
     },

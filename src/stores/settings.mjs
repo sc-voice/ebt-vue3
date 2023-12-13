@@ -6,8 +6,8 @@ import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
-  DEBUG_OPEN_CARD, DEBUG_ADD_CARD, DEBUG_HOME, DEBUG_SETTINGS, 
-  DEBUG_ROUTE, DEBUG_SCROLL, DEBUG_FOCUS, DEBUG_PATH_TO_CARD,
+  DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, DBG_SETTINGS, 
+  DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, DBG_PATH_TO_CARD,
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -66,7 +66,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async loadSettings(config) {
       let msg = 'settings.loadSettings() ';
-      let dbg = DEBUG_ADD_CARD;
+      let dbg = DBG_ADD_CARD;
       if (this.loaded) {
         return this;
       }
@@ -111,7 +111,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     pathToCard(fullPath) {
       const msg = `settings.pathToCard(${fullPath}) `;
-      const dbg = DEBUG_PATH_TO_CARD;
+      const dbg = DBG_PATH_TO_CARD;
       let { cards } = this;
       let card = EbtCard.pathToCard({
         path:fullPath, 
@@ -128,7 +128,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async saveSettings() {
       const msg = "settings.saveSettings() ";
-      let dbg = DEBUG_SETTINGS;
+      let dbg = DBG_SETTINGS;
       let saved = Utils.assignTyped({}, EbtSettings.INITIAL_STATE, this);
       logger.logLevel = saved.logLevel;
       let validRes = EbtSettings.validate(saved);
@@ -148,7 +148,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     removeCard(card, config) {
       const msg = "settings.removeCard() ";
-      const dbg = DEBUG_ROUTE;
+      const dbg = DBG_ROUTE;
       const { window } = globalThis;
       if (window == null) {
         //console.trace(msg, "no window");
@@ -178,7 +178,7 @@ export const useSettingsStore = defineStore('settings', {
       const msg = "settings.addCard()";
       let { cards, langTrans } = this;
       let { isOpen, context, location } = opts;
-      let dbg = DEBUG_ADD_CARD, DEBUG_OPEN_CARD;
+      let dbg = DBG_ADD_CARD, DBG_OPEN_CARD;
       let card = null;
       let loc = location ? location.join('/') : loc;
       switch (context) {
@@ -213,7 +213,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async scrollToElementId(idShow, idScroll) {
       const msg = 'settings.scrollToElementId() ';
-      const dbg = DEBUG_SCROLL;
+      const dbg = DBG_SCROLL;
       let eltShow = document.getElementById(idShow);
       if (eltShow == null) {
         //dbg && console.log(msg, `[1]eltShow? ${idShow}`);
@@ -266,7 +266,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     openCard(card) {
       const msg = "settings.openCard()";
-      const dbg = DEBUG_OPEN_CARD;
+      const dbg = DBG_OPEN_CARD;
       if (card.isOpen) {
         dbg && console.log(msg, `[1]already open`, card.id);
         return false;
@@ -282,7 +282,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async scrollToCard(card) {
       const msg = 'settings.scrollToCard()';
-      const dbg = DEBUG_SCROLL;
+      const dbg = DBG_SCROLL;
       if (this.openCard(card)) {
         await new Promise(resolve => setTimeout(()=>resolve(), 200));
       }
@@ -313,7 +313,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     homePath(config=refConfig.value) {
       const msg = 'settings.homePath()';
-      let dbg = DEBUG_HOME;
+      let dbg = DBG_HOME;
       let { homePath, tutorialPath } = config;
       let hp = this.tutorialState(false)
         ? homePath

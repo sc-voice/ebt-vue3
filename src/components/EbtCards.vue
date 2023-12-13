@@ -31,8 +31,8 @@
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { 
-    DEBUG_HOME, DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_OPEN_CARD, DEBUG_UPDATED, DEBUG_VISIBLE
+    DBG_HOME, DBG_ROUTE, DBG_STARTUP, DBG_FOCUS, DBG_SCROLL,
+    DBG_CLICK, DBG_MOUNTED, DBG_OPEN_CARD, DBG_UPDATED, DBG_VISIBLE
   } from '../defines.mjs';
 
   export default {
@@ -47,12 +47,12 @@
     },
     updated() {
       const msg = "EbtCards.updated()";
-      const dbg = DEBUG_UPDATED;
+      const dbg = DBG_UPDATED;
       dbg && console.log(msg);
     },
     mounted() {
       const msg = 'EbtCards.mounted() ';
-      const dbg = DEBUG_MOUNTED;
+      const dbg = DBG_MOUNTED;
       let { settings, volatile, $route, config }  = this;
       let { params, path='/' }  = $route;
       let { cards, debugScroll } = settings;
@@ -99,7 +99,7 @@
     methods: {
       onBgClick(evt) {
         const msg = 'EbtCards.onBgClick()';
-        const dbg = DEBUG_CLICK;
+        const dbg = DBG_CLICK;
         let { volatile } = this;
         let id = 'ebt-chips';
         let elt = document.getElementById(id);
@@ -131,7 +131,7 @@
       },
       onFocusIn(card) {
         const msg = "EbtCards.onFocusIn() ";
-        const dbg = DEBUG_FOCUS;
+        const dbg = DBG_FOCUS;
         let { volatile, settings } = this;
         let { cards } = settings;
         let { context, location } = card;
@@ -183,7 +183,7 @@
         const msg = 'EbtCards.watch.$route';
         let { volatile, settings, $route }  = this;
         let { cards, } = settings;
-        let dbg = DEBUG_ROUTE || DEBUG_SCROLL || DEBUG_OPEN_CARD;
+        let dbg = DBG_ROUTE || DBG_SCROLL || DBG_OPEN_CARD;
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 

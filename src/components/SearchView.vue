@@ -38,7 +38,7 @@
   import { logger } from "log-instance/index.mjs";
   import { Examples } from "scv-esm";
   import { ref, nextTick } from "vue";
-  import { DEBUG_SEARCH } from '../defines.mjs';
+  import { DBG_SEARCH } from '../defines.mjs';
   const msg = "SearchView.";
 
   export default {
@@ -170,7 +170,7 @@
       let { card, $route, settings, volatile} = this;
       let { langTrans, development } = settings;
       let { fullPath } = $route;
-      let dbg = development && DEBUG_SEARCH;
+      let dbg = development && DBG_SEARCH;
       this.search = card.location[0];
       if (card.data == null) {
         dbg && console.log(msg, '[1] onSearch', {card, });

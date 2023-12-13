@@ -10,7 +10,7 @@ import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DEBUG_AUDIO, DEBUG_STARTUP 
+  DBG_AUDIO, DBG_STARTUP 
 } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
@@ -375,7 +375,7 @@ export const useAudioStore = defineStore('audio', {
     async playElt(elt) {
       const msg = 'audio.playElt()';
       let volatile = useVolatileStore();
-      let dbg = DEBUG_STARTUP;
+      let dbg = DBG_STARTUP;
       if (volatile.updated) {
         try {
           dbg && console.log(msg, '[1]play', elt);
@@ -677,7 +677,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async bindSegmentAudio(args={}) {
       const msg = 'sutta.bindSegmentAudio() ';
-      let dbg = DEBUG_AUDIO;
+      let dbg = DBG_AUDIO;
       let { 
         $t=(t=>t),
         volatile=useVolatileStore(),

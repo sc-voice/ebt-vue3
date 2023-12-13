@@ -9,7 +9,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { logger } from 'log-instance/index.mjs';
   import { 
-    DEBUG_MOUNTED, DEBUG_HOME, DEBUG_WIKI 
+    DBG_MOUNTED, DBG_HOME, DBG_WIKI 
   } from '../defines.mjs';
   import { ref } from "vue";
 
@@ -30,11 +30,11 @@
     },
     async mounted() {
       const msg = "HomeView.unmounted() ";
-      const dbg = DEBUG_MOUNTED || DEBUG_WIKI;
+      const dbg = DBG_MOUNTED || DBG_WIKI;
     },
     async mounted() {
       const msg = "HomeView.mounted() ";
-      const dbg = DEBUG_HOME || DEBUG_MOUNTED || DEBUG_WIKI;
+      const dbg = DBG_HOME || DBG_MOUNTED || DBG_WIKI;
       let { card, $route, volatile, settings } = this;
       let { langTrans } = settings;
       let { fullPath } = $route;

@@ -2,12 +2,12 @@ import { logger } from 'log-instance/index.mjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
-  DEBUG_ADD_CARD,
-  DEBUG_FOCUS,
-  DEBUG_MOUNTED,
-  DEBUG_OPEN_CARD,
-  DEBUG_ROUTE, 
-  DEBUG_SCROLL,
+  DBG_ADD_CARD,
+  DBG_FOCUS,
+  DBG_MOUNTED,
+  DBG_OPEN_CARD,
+  DBG_ROUTE, 
+  DBG_SCROLL,
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
@@ -32,7 +32,7 @@ const CONTEXTS = {
 export default class EbtCard {
   constructor(opts = {}) {
     let msg = 'ebt-card.ctor() ';
-    let dbg = DEBUG_ADD_CARD;
+    let dbg = DBG_ADD_CARD;
     let {
       id,
       context,
@@ -119,7 +119,7 @@ export default class EbtCard {
 
   static pathToCard(args) {
     const msg = 'ebt-card.pathToCard()';
-    const dbg = DEBUG_ROUTE || DEBUG_ADD_CARD;
+    const dbg = DBG_ROUTE || DBG_ADD_CARD;
     let {
       path='/', cards=[], addCard, defaultLang, isOpen,
     } = args;
@@ -202,7 +202,7 @@ export default class EbtCard {
     let elt = document.getElementById(eltId);
     let ae = document.activeElement;
     let aeid = ae?.id;
-    let dbg = DEBUG_FOCUS;
+    let dbg = DBG_FOCUS;
     if (elt) {
       if (ae !== elt) {
         dbg && console.log(msg, '[1]ok', {eltId, aeid, elt});
@@ -228,7 +228,7 @@ export default class EbtCard {
 
   open(value=true) {
     const msg = 'ebt-card.open()';
-    const dbg = DEBUG_OPEN_CARD;
+    const dbg = DBG_OPEN_CARD;
     let { isOpen, debugString, } = this;
 
     if (isOpen === value) {
@@ -243,7 +243,7 @@ export default class EbtCard {
 
   onAfterMounted({settings, volatile}) {
     const msg = "ebt-card.onAfterMounted()";
-    const dbg = DEBUG_ROUTE || DEBUG_MOUNTED;
+    const dbg = DBG_ROUTE || DBG_MOUNTED;
     let { langTrans, } = settings;
     let { id } = this;
     let route = window.location.hash.split('#')[1] || '';
@@ -301,7 +301,7 @@ export default class EbtCard {
   matchPathSutta({opts, context, location, cardLocation, }) {
     const msg = "ebt-card.matchPathSutta()";
     let { path, defaultLang } = opts;
-    let dbg = DEBUG_ROUTE;
+    let dbg = DBG_ROUTE;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
     if (loc === '') {

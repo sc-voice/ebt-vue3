@@ -71,7 +71,7 @@
   } from "vue";
   import { useSettingsStore } from "../stores/settings.mjs";
   import { useVolatileStore } from "../stores/volatile.mjs";
-  import { DEBUG_LEGACY, DEBUG_STARTUP } from '../defines.mjs';
+  import { DBG_LEGACY, DBG_STARTUP } from '../defines.mjs';
   const msg = "LegacyVoice.setup()"
   const config = inject('config');
   const i18n = inject('i18n');
@@ -103,7 +103,7 @@
 
   function onChangedChoice(evt) {
     const msg = 'LegacyVoice.onChangedChoice()';
-    let dbg = DEBUG_STARTUP || DEBUG_FOCUS;
+    let dbg = DBG_STARTUP || DBG_FOCUS;
     switch (legacyVoice.value) {
       case 'old': {
         nextTick(()=>{
@@ -159,7 +159,7 @@
 
   async function onSave() {
     const msg = 'LegacyVoice.onSave()';
-    let dbg = DEBUG_LEGACY;
+    let dbg = DBG_LEGACY;
     volatile.showLegacyDialog = false;
     settings.legacyVoice = legacyVoice.value;
     await settings.saveSettings();
@@ -187,7 +187,7 @@
 
   /*
   onUpdated(()=>{
-    let dbg = DEBUG_STARTUP || DEBUG_FOCUS;
+    let dbg = DBG_STARTUP || DBG_FOCUS;
     nextTick(()=>{
       let msg = 'LegacyVoice.onUpdated()';
       let id = `r${legacyVoice.value}`;

@@ -35,7 +35,7 @@
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
   import { 
-    DEBUG_FOCUS, DEBUG_MOUNTED 
+    DBG_FOCUS, DBG_MOUNTED 
   } from '../defines.mjs';
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
@@ -61,7 +61,7 @@
     },
     mounted() {
       const msg = "SegmentView.mounted()";
-      const dbg = DEBUG_MOUNTED || DEBUG_FOCUS;
+      const dbg = DBG_MOUNTED || DBG_FOCUS;
       let { segment, card, audio } = this;
       if (segment.scid === audio.audioScid) {
         let { segId, card, settings } = this;
