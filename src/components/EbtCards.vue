@@ -5,6 +5,7 @@
       left: ()=>onSwipe('left'),
       right: ()=>onSwipe('right'),
     }"
+    @click.self.prevent.stop="onBgClick"
   >
     <div v-for="card in settings.cards">
       <ebt-card-vue 
@@ -31,7 +32,7 @@
   import { logger } from "log-instance/index.mjs";
   import { 
     DEBUG_HOME, DEBUG_ROUTE, DEBUG_STARTUP, DEBUG_FOCUS, DEBUG_SCROLL,
-    DEBUG_MOUNTED, DEBUG_OPEN_CARD, DEBUG_UPDATED, DEBUG_VISIBLE
+    DEBUG_CLICK, DEBUG_MOUNTED, DEBUG_OPEN_CARD, DEBUG_UPDATED, DEBUG_VISIBLE
   } from '../defines.mjs';
 
   export default {
@@ -96,6 +97,19 @@
       dbg && console.log(msg, '[6]bindAudioSutta', {activeElement});
     },
     methods: {
+      onBgClick(evt) {
+        const msg = 'EbtCards.onBgClick()';
+        const dbg = DEBUG_CLICK;
+        let { volatile } = this;
+        let id = 'ebt-chips';
+        let elt = document.getElementById(id);
+        if (elt) {
+          dbg && console.log(msg, '[1]focus', id, evt);
+          volatile.focusElement(elt)
+        } else {
+          dbg && console.log(msg, '[2]elt?', evt);
+        }
+      },
       onSwipe(dir) {
         const msg = "EbtCards.onSwipe()";
         let { audio, volatile } = this;
@@ -129,7 +143,7 @@
           defaultLang: settings.langTrans,
         });
         if (routeCard === card) {
-          //dbg && console.log(msg, `[1]card`, card.debugString)
+          dbg && console.log(msg, `[1]card`, card.debugString)
         } else {
           dbg && console.log(msg, `[2]setRoute`, card.debugString)
           volatile.setRoute(card.routeHash(), true, msg);

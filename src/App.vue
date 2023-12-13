@@ -1,5 +1,5 @@
 <template>
-  <v-app @click.prevent.stop="onClickApp">
+  <v-app >
     <v-main >
       <v-app-bar flat 
         :extension-height="collapsed ? 0 : 40"
@@ -204,17 +204,6 @@
       Tutorial,
     },
     methods: {
-      onClickApp(evt) {
-        const msg = 'App.onClickApp()';
-        const dbg = DEBUG_CLICK;
-        let { volatile } = this;
-        let id = 'ebt-chips';
-        let elt = document.getElementById(id);
-        if (elt) {
-          dbg && console.log(msg, '[1]focus', id, evt);
-          volatile.focusElement(elt)
-        }
-      },
       onHome(evt) {
         let msg = 'App.onHome()';
         let { settings, volatile, audio, config } = this;
