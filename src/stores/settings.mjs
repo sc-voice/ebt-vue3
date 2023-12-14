@@ -236,7 +236,7 @@ export const useSettingsStore = defineStore('settings', {
         ? idShowInView
         : elementInViewport(eltScroll);
       if (idShowInView && idScrollInView) {
-        dbg && console.log(msg, `[3]inView`, {idShow, idScroll} );
+        //dbg && console.log(msg, `[3]inView`, {idShow, idScroll} );
         return false; // element already visible (no scrolling)
       }
 

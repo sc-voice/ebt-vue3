@@ -2,12 +2,8 @@ import { logger } from 'log-instance/index.mjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
-  DBG_ADD_CARD,
-  DBG_FOCUS,
-  DBG_MOUNTED,
-  DBG_OPEN_CARD,
-  DBG_ROUTE, 
-  DBG_SCROLL,
+  DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
+  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL,
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
@@ -172,6 +168,10 @@ export default class EbtCard {
     return `${this.id}-container`;
   }
 
+  get deleteId() {
+    return `${this.id}-delete`;
+  }
+
   get autofocusId() {
     return `${this.id}-autofocus`;
   }
@@ -189,12 +189,20 @@ export default class EbtCard {
   }
 
   get currentElementId() {
-    let { context, location } = this;
+    const msg = "ebt-data.currentElementId()";
+    const dbg = DBG_CLICK;
+    let { titleAnchor, tab1Id, deleteId, context, location } = this;
+    let aeId = document?.activeElement?.id;
     switch (context) {
       case CONTEXT_SUTTA:
+        //if (aeId === tab1Id || aeId === deleteId) {
+          //dbg && console.log(msg, aeId);
+          //return titleAnchor;
+        //}
+
         return location.length>0 && location[0].includes(':')
           ? this.segmentElementId()
-          : this.titleAnchor;
+          : titleAnchor;
       default:
         return this.titleAnchor;
     }

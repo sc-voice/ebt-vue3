@@ -1,7 +1,7 @@
 <template>
 <Transition>
   <v-sheet v-if="card.isOpen " :class="cardSheetClass"
-    @click="onClickCard"
+    @click.stop.prevent="onClickCard"
     :id="card.containerId"
   >
     <div :id="`${card.topAnchor}`" class="card-top-anchor debug">
@@ -20,10 +20,12 @@
             :id="card.tab1Id"
             @click.stop.prevent="clickMinimize"
             @focus="focusTop"
+            @blur="blurTop"
             @keydown.shift.tab.exact.prevent="onBackTabOut"
           />
           <v-btn icon="mdi-close-thick" flat 
             v-if="isClosable"
+            :id="card.deleteId"
             @click.stop.prevent="clickDelete"
             @focus="focusTop"
           />
@@ -150,8 +152,17 @@
         const msg = "EbtCard.onClickCard() ";
         const dbg = DBG_CLICK;
         let { volatile, settings, card } = this;
-        dbg && console.log(msg, 'onClickCard', card.debugString);
-        volatile.onClickCard(evt, card);
+        //dbg && console.log(msg, 'onClickCard', card.debugString);
+        //volatile.onClickCard(evt, card);
+        let { target } = evt || {};
+        let { localName, href, hash } = target;
+        dbg && console.log(msg, '[1]setRoute', card.debugString, evt);
+        if (!card.hasFocus) {
+           volatile.setRoute(card, undefined, msg);
+           let elt = document.getElementById(card.tab1Id);
+           dbg && console.log(msg, '[2]focusElement', elt);
+           volatile.focusElement(elt);
+        }
       },
       onBackTabOut(evt) {
         const msg = 'EbtCard.onBackTabOut()';
@@ -179,6 +190,11 @@
         dbg && console.log(msg, card.id);
         audio.playClick();
         this.closeCard(card, settings);
+      },
+      blurTop(evt) {
+        const msg = "EbtCard.blurTop()";
+        const dbg = DBG_FOCUS;
+        dbg && console.log(msg, evt);
       },
       focusTop(evt) {
         const msg = "EbtCard.focusTop()";

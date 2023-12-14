@@ -73,6 +73,7 @@
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
           <div v-if="DBG_LOG_HTML" class="app-log">
+            <v-icon icon="mdi-close" @click="volatile.clearLog" />
             <div v-for="item in volatile.logHtml" class="app-log-item">
               <div class="app-log-count">
                 {{item.count === 1 ? ' ' : `${item.count}x`}}

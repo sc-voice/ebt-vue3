@@ -419,5 +419,11 @@ export const useVolatileStore = defineStore('volatile', {
          this.focusElement(elt);
       }
     },
+    clearLog() {
+      const msg = "volatile.clearLog()";
+      const dbg = DBG_LOG_HTML;
+      logHtml.value = [];
+      dbg && console.log(msg, logHtml.value.length);
+    },
   },
 })
