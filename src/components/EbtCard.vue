@@ -65,7 +65,7 @@
   import { nextTick, ref } from "vue";
   import { 
     DBG_CLICK, DBG_MOUNTED, DBG_FOCUS, DBG_SCROLL,
-    DBG_UPDATED, DBG_VISIBLE,
+    DBG_UPDATED, DBG_VISIBLE, DBG_BLUR, DBG_VERBOSE,
   } from '../defines.mjs';
 
   export default {
@@ -151,16 +151,17 @@
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
         const dbg = DBG_CLICK;
+        const dbgv = dbg && DBG_VERBOSE;
         let { volatile, settings, card } = this;
         //dbg && console.log(msg, 'onClickCard', card.debugString);
         //volatile.onClickCard(evt, card);
         let { target } = evt || {};
         let { localName, href, hash } = target;
-        dbg && console.log(msg, '[1]setRoute', card.debugString, evt);
+        dbgv && console.log(msg, '[1]setRoute', card.debugString, evt);
         if (!card.hasFocus) {
            volatile.setRoute(card, undefined, msg);
            let elt = document.getElementById(card.tab1Id);
-           dbg && console.log(msg, '[2]focusElement', elt);
+           dbg && console.log(msg, '[2]focusElement', elt.id);
            volatile.focusElement(elt);
         }
       },
@@ -193,15 +194,15 @@
       },
       blurTop(evt) {
         const msg = "EbtCard.blurTop()";
-        const dbg = DBG_FOCUS;
+        const dbg = DBG_BLUR && DBG_VERBOSE;
         dbg && console.log(msg, evt);
       },
       focusTop(evt) {
         const msg = "EbtCard.focusTop()";
+        const dbg = DBG_FOCUS;
         let { settings, card } = this;
         let topId = card.topAnchor;
-        let dbg = DBG_FOCUS;
-        dbg && console.log(msg, 'scrollToElementId', {evt,topId});
+        dbg && console.log(msg, 'scrollToElementId', topId, evt);
         settings.scrollToElementId(topId);
       },
       closeCard: (card, settings) => {

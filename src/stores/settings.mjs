@@ -211,13 +211,13 @@ export const useSettingsStore = defineStore('settings', {
       cards.splice(srcIndex, 1);
       cards.splice(dstIndex, 0, srcCard);
     },
-    async scrollToElementId(idShow, idScroll) {
-      const msg = 'settings.scrollToElementId() ';
+    scrollableElement(idShow, idScroll) {
+      const msg = 'settings.scrollableElement() ';
       const dbg = DBG_SCROLL;
       let eltShow = document.getElementById(idShow);
       if (eltShow == null) {
         //dbg && console.log(msg, `[1]eltShow? ${idShow}`);
-        return false;
+        return null;
       }
 
       let eltScroll = idScroll 
@@ -225,11 +225,8 @@ export const useSettingsStore = defineStore('settings', {
         : eltShow;
       if (eltScroll == null) {
         //dbg && console.log(msg, `[2]eltScroll? ${idScroll}`);
-        return false;
+        return null;
       }
-
-      // HACK: scroll after Vue is done refreshing
-      await new Promise(resolve => setTimeout(()=>resolve(), 300));
 
       let idShowInView = elementInViewport(eltShow);
       let idScrollInView = eltShow === eltScroll
@@ -237,16 +234,30 @@ export const useSettingsStore = defineStore('settings', {
         : elementInViewport(eltScroll);
       if (idShowInView && idScrollInView) {
         //dbg && console.log(msg, `[3]inView`, {idShow, idScroll} );
-        return false; // element already visible (no scrolling)
+        return null; // element already visible (no scrolling)
       }
 
-      dbg && console.log(msg, `[4] (${idShow}) scrolling to`, 
-        {eltScroll, idShow, idScroll, idShowInView, idScrollInView});
+      //dbg && console.log(msg, `[4]scrollable`, eltScroll.id);
+      return eltScroll;
+    },
+    async scrollToElementId(idShow, idScroll) {
+      const msg = 'settings.scrollToElementId()';
+      const dbg = DBG_SCROLL;
+
+      // HACK: scroll after Vue is done refreshing
+      await new Promise(resolve => setTimeout(()=>resolve(), 300));
+
+      let eltScroll = this.scrollableElement(idShow, idScroll);
+      if (!eltScroll) {
+        return false;
+      }
+
       let opts = {
         block: "start",
         inline: "nearest",
         behavior: "smooth",
       }
+      dbg && console.log(msg, `[4]scrollIntoView`, eltScroll.id);
       eltScroll.scrollIntoView(opts);
 
       return true; // element originally not in viewport

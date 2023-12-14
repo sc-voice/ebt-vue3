@@ -147,11 +147,13 @@
     DBG_TUTORIAL, DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
     DBG_ROUTE, DBG_WAITING, DBG_SETTINGS, DBG_LOG_HTML,
-    DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO
+    DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO,
+    DBG_VERBOSE
   } from './defines.mjs';
 
   const msg = "App.setup"
   const dbg = DBG_FOCUS;
+  const dbgv = DBG_VERBOSE && dbg;
 
   const activeElt = ref("loading...");
   const docHasFocus = ref("?");
@@ -161,10 +163,10 @@
     let aeNew = elt?.id || elt;
     let aeOld = activeElt.value;
     if (aeNew !== aeOld) {
-      dbg && console.log(msg, "[4]activeElt", {aeNew, aeOld});
+      dbg && console.log(msg, `[4]activeElt`, {aeOld, aeNew});
       activeElt.value = aeNew;
     } else {
-      //dbg && console.log(msg, "[5]activeElt", ae);
+      dbgv && console.log(msg, "[5]activeElt", ae);
     }
     docHasFocus.value = document && document.hasFocus() 
       ? "+" : "-";

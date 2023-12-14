@@ -116,11 +116,11 @@ export const useVolatileStore = defineStore('volatile', {
         }
       }
     },
-    focusElement(element) {
+    focusElement(elt) {
       const msg = 'volatile.focusElement()';
       const dbg = DBG_FOCUS;
-      dbg && console.log(msg, {element});
-      element.focus();
+      dbg && console.log(msg, elt.id || elt);
+      elt.focus();
     },
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';

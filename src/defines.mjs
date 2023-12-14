@@ -1,5 +1,6 @@
 export const DBG_ADD_CARD = 0;
 export const DBG_AUDIO    = 0;
+export const DBG_BLUR     = 0;
 export const DBG_CLICK    = true;
 export const DBG_FOCUS    = true;
 export const DBG_GDPR     = 0;
@@ -19,6 +20,7 @@ export const DBG_STARTUP  = 0;
 export const DBG_SUTTA    = 0;
 export const DBG_TUTORIAL = 0;
 export const DBG_UPDATED  = 0;
+export const DBG_VERBOSE  = 0;  // trace non-mutative logic
 export const DBG_VISIBLE  = 0;  // card.isVisible scrolling
 export const DBG_WAITING  = 0;
 export const DBG_WIKI     = 0;

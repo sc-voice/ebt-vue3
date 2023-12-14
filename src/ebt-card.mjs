@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
-  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL,
+  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, DBG_PATH_TO_CARD,
+  DBG_VERBOSE,
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
@@ -115,7 +116,7 @@ export default class EbtCard {
 
   static pathToCard(args) {
     const msg = 'ebt-card.pathToCard()';
-    const dbg = DBG_ROUTE || DBG_ADD_CARD;
+    const dbg = DBG_PATH_TO_CARD;
     let {
       path='/', cards=[], addCard, defaultLang, isOpen,
     } = args;
@@ -216,7 +217,7 @@ export default class EbtCard {
 
   get hasFocus() {
     const msg = "ebt-card.hasFocus()";
-    const dbg = DBG_FOCUS;
+    const dbg = DBG_FOCUS && DBG_VERBOSE;
     let { activeElement } = document;
     let { containerId } = this;
     let hasFocus = false;
@@ -232,29 +233,28 @@ export default class EbtCard {
 
   focusElementId(eltId=this.autofocusId) {
     const msg = 'ebt-card.focusElementId()';
+    const dbg = DBG_FOCUS;
+    const dbgv = DBG_VERBOSE && dbg;
     let { tab1Id, volatile } = this;
     let elt = document.getElementById(eltId);
     let ae = document.activeElement;
-    let aeid = ae?.id;
-    let dbg = DBG_FOCUS;
+    let aeId = ae?.id;
     if (elt) {
       if (ae !== elt) {
-        dbg && console.log(msg, '[1]ok', {eltId, aeid, elt});
+        dbg && console.log(msg, `[1]focus ${aeId}=>${eltId}`);
         elt.focus(); // focusElementId
-        let activeElt = document.activeElement;
       } else {
-        dbg && console.log(msg, '[2]nochange', {eltId, aeid, elt});
+        dbgv && console.log(msg, '[2]nochange', aeId);
       }
     } else if ((elt = document.getElementById(tab1Id))) {
       if (ae !== elt) {
-        dbg && console.log(msg, '[3]alternate', 
-          {tab1Id, eltId, aeid, elt});
+        dbg && console.log(msg, '[3]focus alt', eltId);
         elt.focus(); // focusElementId
       } else {
-        dbg && console.log(msg, '[4]nochange', {aeid,elt}); 
+        dbgv && console.log(msg, '[4]nochange', aeId); 
       }
     } else {
-      dbg && console.log(msg, '[5] element not found', { 
+      dbgv && console.log(msg, '[5] element not found', { 
         eltId, tab1Id, volatile, elt});
     }
     return elt;
@@ -282,17 +282,13 @@ export default class EbtCard {
     let { id } = this;
     let route = window.location.hash.split('#')[1] || '';
     if (this.matchPath({path:route, defaultLang:langTrans})) {
-      let { activeElement } = document;
+      let aeId = document?.activeElement?.id;
       if (volatile.routeCard?.id !== id) {
+        dbg && console.log(msg, `[1]setRouteCard`, this.debugString);
         volatile.setRouteCard(this);
-        dbg && console.log(msg, `[1]routeCard ${id}`, 
-          {route, activeElement});
-        this.focusElementId(route);
-      } else {
-        this.focusElementId(route);
-        dbg && console.log(msg, `[2]focus ${id} activeElement:`, 
-          document.activeElement);
       }
+      dbg && console.log(msg, `[2]focusElementId ${id}`, {route, aeId});
+      this.focusElementId(route);
     }
   }
 
@@ -334,8 +330,8 @@ export default class EbtCard {
 
   matchPathSutta({opts, context, location, cardLocation, }) {
     const msg = "ebt-card.matchPathSutta()";
+    const dbg = DBG_ROUTE && DBG_VERBOSE;
     let { path, defaultLang } = opts;
-    let dbg = DBG_ROUTE;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
     if (loc === '') {
