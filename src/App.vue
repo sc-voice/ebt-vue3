@@ -25,9 +25,13 @@
                 {{config.appName}}
               </div>
               <div class="app-debug">
-                <span v-if="DBG_FOCUS" title="activeElt">
+                <span v-if="DBG_FOCUS" title="activeElt / appFocus">
                   {{docHasFocus}}
-                  {{activeElt||'activeElt?'}}
+                  {{
+                    activeElt||'activeElt?'
+                  }}/{{
+                    volatile?.appFocus?.id||volatile?.appFocus
+                  }}
                 </span> &nbsp;
                 <span v-if="DBG_ROUTE" title="routeCardId">
                   {{settings.routeCardId}}
@@ -256,8 +260,8 @@
         dbg && console.log(msg, `[2]`, {location});
         window.location = location;
         volatile.ebtChips && nextTick(()=>{
-          dbg && console.log(msg, `[2]ebtChips.focus()`);
-          volatile.ebtChips.focus();
+          dbg && console.log(msg, `[2]focusElement ebt-chips`);
+          volatile.focusElement(volatile.ebtChips);
         });
       },
       async allowLocalStorage() {
@@ -290,7 +294,7 @@
         nextTick(()=>{
           let autofocus = document.getElementById('settings-autofocus');
           dbg && console.log(msg, {autofocus});
-          autofocus && autofocus.focus();
+          autofocus && volatile.focusElement(autofocus);
         });
       },
       onKeydown(evt) {

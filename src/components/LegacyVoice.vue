@@ -110,7 +110,7 @@
           let eltSave = document.getElementById('legacy-commit');
           dbg && console.log(msg, `[1]focus${legacyVoice.value}`, 
             {evt, eltSave});
-          eltSave && eltSave.focus();
+          eltSave && volatile.focusElement(eltSave);
         });
         break;
       }
@@ -199,7 +199,7 @@
       }
       if (eltId && document.activeElement !== eltId) {
         dbg && console.log(msg, '[2]focus', {eltId});
-        eltId.focus();
+        volatile.focusElement(eltId);
       }
     });
   });

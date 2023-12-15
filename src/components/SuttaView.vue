@@ -107,7 +107,7 @@
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
         const dbg = DBG_KEY;
-        const { card, settings } = this;
+        const { card, settings, volatile } = this;
         let { audio } = this;
         switch (evt.code) {
           case 'Tab': {
@@ -119,7 +119,7 @@
               elt = document.getElementById('ebt-chips');
               dbg && console.log(msg, '[2]focus', {elt,evt});
             }
-            elt && elt.focus();
+            elt && volatile.focusElement(elt);
             evt.preventDefault();
             break;
           }
@@ -145,10 +145,12 @@
         return `https://suttacentral.net/${sutta_uid}`;
       },
       onClickSutta(evt) {
-        let { $refs, card } = this;
         const msg = 'SuttaView.onClickSutta()';
-        //console.log(msg, "DEBUG", {evt, card});
-        let elt = card.focusElementId();
+        const dbg = DBG_CLICK;
+        let { $refs, card, volatile } = this;
+        dbg && console.log(msg, '[1]focusCardElementId', 
+          card.debugString);
+        let elt = volatile.focusCardElementId(card);
       },
     },
     computed: {

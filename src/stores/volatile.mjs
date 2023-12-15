@@ -5,13 +5,8 @@ import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import {
-  DBG_WIKI,
-  DBG_SCROLL,
-  DBG_HOME,
-  DBG_FOCUS,
-  DBG_CLICK,
-  DBG_ROUTE,
-  DBG_LOG_HTML,
+  DBG_CLICK, DBG_FOCUS, DBG_HOME, DBG_LOG_HTML,
+  DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -27,10 +22,12 @@ const showLegacyDialog = ref(false);
 const logHtml = ref([]);
 const console_log = ref(null);
 const routeCard = ref(null);
+const appFocus = ref(null); // because document.activeElement is flaky
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
   alertMsg: ref(null),
+  appFocus,
   btnSettings: ref(undefined),
   collapseAppBar: ref(false),
   config: ref(undefined),
@@ -94,6 +91,34 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    focusCardElementId(card, eltId=card.autofocusId) {
+      const msg = 'volatile.focusCardElementId()';
+      const dbg = DBG_FOCUS;
+      const dbgv = DBG_VERBOSE && dbg;
+      let { tab1Id, } = card;
+      let elt = document.getElementById(eltId);
+      let ae = document.activeElement;
+      let aeId = ae?.id;
+      if (elt) {
+        if (ae !== elt) {
+          dbg && console.log(msg, `[1]focus ${aeId}=>${eltId}`);
+          this.focusElement(elt);
+        } else {
+          dbgv && console.log(msg, '[2]nochange', aeId);
+        }
+      } else if ((elt = document.getElementById(tab1Id))) {
+        if (ae !== elt) {
+          dbg && console.log(msg, '[3]focus alt', eltId);
+          this.focusElement(elt);
+        } else {
+          dbgv && console.log(msg, '[4]nochange', aeId); 
+        }
+      } else {
+        dbgv && console.log(msg, '[5] element not found', { 
+          eltId, tab1Id, elt});
+      }
+      return elt;
+    },
     enableLog(on) {
       const msg = "volatile.enableLog()";
       const dbg = DBG_LOG_HTML;
@@ -119,8 +144,28 @@ export const useVolatileStore = defineStore('volatile', {
     focusElement(elt) {
       const msg = 'volatile.focusElement()';
       const dbg = DBG_FOCUS;
-      dbg && console.log(msg, elt.id || elt);
-      elt.focus();
+      const dbgv = DBG_VERBOSE && dbg;
+      let ae = document?.activeElement;
+      let af = appFocus.value;
+      if (af === elt && ae === elt) {
+        dbgv && console.log(msg, "[1]n/a", elt.id || elt);
+        return false;
+      }
+
+      if (ae !== elt) {
+        if (af !== elt) {
+          dbg && console.log(msg, "[1]focus", elt.id || elt);
+          appFocus.value = elt;
+        } else {
+          dbg && console.log(msg, "[2]focus", elt.id || elt);
+        }
+        elt.focus();
+      } else { // ae === elt && af !== elt (UNEXPECTED)
+        console.warn(msg, "[3]focus", ae.id || ae, elt.id || elt);
+        appFocus.value = elt;
+      }
+
+      return true;
     },
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';

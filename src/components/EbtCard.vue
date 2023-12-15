@@ -145,7 +145,7 @@
         let { volatile, audio } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, {ebtChips});
-        ebtChips && ebtChips.focus();
+        ebtChips && volatile.focusElement(ebtChips);
         audio.playBlock();
       },
       onClickCard(evt) {
@@ -171,7 +171,7 @@
         let { volatile } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, 'focus', {ebtChips});
-        ebtChips && ebtChips.focus();
+        ebtChips && volatile.focusElement(ebtChips);
       },
       clickDelete(evt) {
         const msg = "EbtCard.clickDelete()";
@@ -236,7 +236,7 @@
             volatile.setRoute(routeCard);
           }, 500);
         } else {
-          ebtChips && ebtChips.focus();
+          ebtChips && volatile.focusElement(ebtChips);
         }
       },
       addIntersectionObserver() {

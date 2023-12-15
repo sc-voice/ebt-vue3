@@ -97,7 +97,9 @@
         if (routeCard) {
           dbg && console.log(msg, routeCard.debugString);
           settings.openCard(routeCard);
-          nextTick(()=> routeCard.focusElementId());
+          nextTick(
+            ()=>volatile.focusCardElementId(routeCard)
+          );
         }
       },
       startDrag(evt, card) {
@@ -122,7 +124,7 @@
         const volatile = await useVolatileStore();
         let { ebtChips } = volatile;
         dbg && console.log(msg, "[1]focus", {card, });
-        ebtChips && ebtChips.focus();
+        ebtChips && volatile.focusElement(ebtChips);
         volatile.setRoute(card, true);
         if (card.isOpen) {
           dbg && console.log(msg, "[2]open", {card, });

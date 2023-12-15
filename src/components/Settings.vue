@@ -364,7 +364,7 @@ export default {
       let { volatile } = this;
       let btn = document.getElementById('btn-settings');
       btn && nextTick(()=>{
-        btn.focus();
+        volatile.focusElement(btn);
       });
     },
     onClickVolume() {

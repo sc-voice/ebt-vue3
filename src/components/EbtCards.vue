@@ -236,14 +236,14 @@
                 if (card.isOpen) {
                   dbg && console.log(msg, '[7]focus', `${id} ${context}`, 
                     fullPath);
-                  card.focusElementId(fullPath);
+                  volatile.focusCardElementId(card, fullPath);
                 }
                 break;
               default:
               case EbtCard.CONTEXT_SEARCH:
               case EbtCard.CONTEXT_SUTTA:
                 dbg && console.log(msg, '[8]focus', `${id} ${context}`);
-                card.focusElementId();
+                volatile.focusCardElementId(card);
                 break;
             }
           }

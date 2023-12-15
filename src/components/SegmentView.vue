@@ -62,11 +62,11 @@
     mounted() {
       const msg = "SegmentView.mounted()";
       const dbg = DBG_MOUNTED;
-      let { segment, card, audio } = this;
+      let { volatile, segment, card, audio } = this;
       if (segment.scid === audio.audioScid) {
         let { segId, card, settings } = this;
         dbg && console.log(msg, segment?.scid);
-        card.focusElementId();
+        volatile.focusCardElementId(card);
         /* await */ settings.scrollToCard(card);
       }
     },

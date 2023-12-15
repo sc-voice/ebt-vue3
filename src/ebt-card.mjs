@@ -242,14 +242,14 @@ export default class EbtCard {
     if (elt) {
       if (ae !== elt) {
         dbg && console.log(msg, `[1]focus ${aeId}=>${eltId}`);
-        elt.focus(); // focusElementId
+        volatile.focusElement(elt);
       } else {
         dbgv && console.log(msg, '[2]nochange', aeId);
       }
     } else if ((elt = document.getElementById(tab1Id))) {
       if (ae !== elt) {
         dbg && console.log(msg, '[3]focus alt', eltId);
-        elt.focus(); // focusElementId
+        volatile.focusElement(elt);
       } else {
         dbgv && console.log(msg, '[4]nochange', aeId); 
       }
@@ -288,7 +288,7 @@ export default class EbtCard {
         volatile.setRouteCard(this);
       }
       dbg && console.log(msg, `[2]focusElementId ${id}`, {route, aeId});
-      this.focusElementId(route);
+      volatile.focusCardElementId(this, route);
     }
   }
 
