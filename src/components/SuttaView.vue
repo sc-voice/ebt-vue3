@@ -45,7 +45,7 @@
   import { default as SegmentHeader } from './SegmentHeader.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
-    DBG_MOUNTED, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
+    DBG_CLICK, DBG_MOUNTED, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 

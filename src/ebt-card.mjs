@@ -215,13 +215,12 @@ export default class EbtCard {
     return `${id}${separator}${context}`;
   }
 
-  get hasFocus() {
+  hasFocus(appFocus) {
     const msg = "ebt-card.hasFocus()";
     const dbg = DBG_FOCUS && DBG_VERBOSE;
-    let { activeElement } = document;
     let { containerId } = this;
     let hasFocus = false;
-    for (let elt=activeElement; elt; elt=elt.parentElement) {
+    for (let elt=appFocus; elt; elt=elt.parentElement) {
       if (elt.id === containerId) {
         hasFocus = true;
         break;

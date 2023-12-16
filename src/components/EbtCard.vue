@@ -153,12 +153,15 @@
         const dbg = DBG_CLICK;
         const dbgv = dbg && DBG_VERBOSE;
         let { volatile, settings, card } = this;
+        let { appFocus } = volatile;
         //dbg && console.log(msg, 'onClickCard', card.debugString);
         //volatile.onClickCard(evt, card);
         let { target } = evt || {};
         let { localName, href, hash } = target;
-        dbgv && console.log(msg, '[1]setRoute', card.debugString, evt);
-        if (!card.hasFocus) {
+        if (card.hasFocus(appFocus)) {
+          dbg && console.log(msg, '[1]focusElement', appFocus.id, evt);
+          volatile.focusElement(appFocus);
+        } else {
            volatile.setRoute(card, undefined, msg);
            let elt = document.getElementById(card.tab1Id);
            dbg && console.log(msg, '[2]focusElement', elt.id);

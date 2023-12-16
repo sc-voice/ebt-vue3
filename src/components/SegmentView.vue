@@ -67,7 +67,7 @@
         let { segId, card, settings } = this;
         dbg && console.log(msg, segment?.scid);
         volatile.focusCardElementId(card);
-        /* await */ settings.scrollToCard(card);
+        /* await */ volatile.scrollToCard(card);
       }
     },
     methods: {

@@ -131,7 +131,7 @@
         } else {
           dbg && console.log(msg, "[3]opening", {card, });
           card.open(true);
-          let scrolled = await settings.scrollToCard(card);
+          let scrolled = await volatile.scrollToCard(card);
           if (!scrolled) {
             let { topAnchor, currentElementId } = card;
             if (currentElementId !== topAnchor) {

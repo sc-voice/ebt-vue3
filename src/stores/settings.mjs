@@ -14,33 +14,6 @@ import * as Idb from "idb-keyval";
 const SETTINGS_KEY = "settings";
 var id = 1;
 
-function elementInViewport(elt, root = document.documentElement) {
-  const rect = elt?.getBoundingClientRect();
-  const { window } = globalThis;
-  if (window == null) {
-    return false;
-  }
-  const viewBottom = (window.innerHeight || root.clientHeight);
-  const viewRight = (window.innerWidth || root.clientWidth);
-
-  if (!rect) {
-    return false;
-  }
-  if (rect.bottom < 0) {
-    return false;
-  }
-  if (rect.right < 0) {
-    return false;
-  }
-  if (rect.top > viewBottom/2) { // show in top half of viewport
-    return false;
-  }
-  if (rect.left > viewRight) {
-    return false;
-  }
-
-  return true;
-}
 
 const refConfig = ref(null);
 
@@ -228,10 +201,10 @@ export const useSettingsStore = defineStore('settings', {
         return null;
       }
 
-      let idShowInView = elementInViewport(eltShow);
+      let idShowInView = Utils.elementInViewport(eltShow);
       let idScrollInView = eltShow === eltScroll
         ? idShowInView
-        : elementInViewport(eltScroll);
+        : Utils.elementInViewport(eltScroll);
       if (idShowInView && idScrollInView) {
         //dbg && console.log(msg, `[3]inView`, {idShow, idScroll} );
         return null; // element already visible (no scrolling)
@@ -290,30 +263,6 @@ export const useSettingsStore = defineStore('settings', {
       let { clickVolume } = this;
       let volume = clickVolume || 0;
       return `audio/click${volume}.mp3`;
-    },
-    async scrollToCard(card) {
-      const msg = 'settings.scrollToCard()';
-      const dbg = DBG_SCROLL;
-      if (this.openCard(card)) {
-        await new Promise(resolve => setTimeout(()=>resolve(), 200));
-      }
-
-      let curId = card.currentElementId;
-      let topId = card.topAnchor;
-      let scrolled = false;
-      if (curId === card.titleAnchor) {
-        scrolled = await this.scrollToElementId(curId, topId);
-        if (!scrolled) {
-          dbg && console.log(msg, "[1]n/a", {curId, topId});
-        }
-        return scrolled;
-      } 
-
-      scrolled = await this.scrollToElementId(curId);
-      if (!scrolled) {
-        dbg && console.log(msg, "[2]n/a", curId);
-      }
-      return scrolled;
     },
     tutorialState(show) {
       return show === this.tutorClose &&

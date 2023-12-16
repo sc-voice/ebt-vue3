@@ -11,7 +11,7 @@
       <ebt-card-vue 
         :card="card" 
         :routeCard="volatile.routeCard"
-        @focusin="onFocusIn(card)"
+        @focusin="onFocusIn($event, card)"
       />
     </div><!-- v-for card -->
     <sutta-player :routeCard="volatile.routeCard" />
@@ -66,10 +66,6 @@
       if (card.location.length === 0) {
         if (card.context === EbtCard.CONTEXT_WIKI) {
           throw new Error(`${msg} missing wiki location`);
-          //let homePath = settings.homePath(config);
-          //let newLoc = homePath.split('/').slice(1);
-          //newLoc.forEach(part=>card.location.push(part));
-          //dbg && console.log(msg, `[1]homePath`, newLoc.join('/'));
         }
       }
 
@@ -85,11 +81,11 @@
       switch (card.context) {
         case EbtCard.CONTEXT_WIKI:
           if (settings.tutorialState(false)) {
-            settings.scrollToCard(card);
+            volatile.scrollToCard(card);
           }
           break;
         default:
-          settings.scrollToCard(card);
+          volatile.scrollToCard(card);
           break;
       }
 
@@ -101,11 +97,11 @@
         const msg = 'EbtCards.onBgClick()';
         const dbg = DBG_CLICK;
         let { volatile } = this;
-        let id = 'ebt-chips';
-        let elt = document.getElementById(id);
-        if (elt) {
-          dbg && console.log(msg, '[1]focus', id, evt);
-          volatile.focusElement(elt)
+        let { routeCard } = volatile;
+        if (routeCard) {
+          dbg && console.log(msg, '[1]scrollToCard', 
+            routeCard.debugString, evt);
+          volatile.scrollToCard(routeCard);
         } else {
           dbg && console.log(msg, '[2]elt?', evt);
         }
@@ -129,11 +125,12 @@
           volatile.collapseAppBar = collapseAppBar;
         }
       },
-      onFocusIn(card) {
+      onFocusIn(evt, card) {
         const msg = "EbtCards.onFocusIn() ";
         const dbg = DBG_FOCUS || DBG_SCROLL;
         let { volatile, settings } = this;
         let { cards } = settings;
+        let { appFocus } = volatile;
         let { context, location } = card;
         let routeHash = window.location.hash;
         let routeCard = EbtCard.pathToCard({
@@ -143,10 +140,12 @@
           defaultLang: settings.langTrans,
         });
         if (routeCard === card) {
-          dbg && console.log(msg, `[1]scrollToCard`, card.debugString)
-          settings.scrollToCard(card);
+          dbg && console.log(msg, `[1]scrollToCard`, 
+            card.debugString, {evt})
+          volatile.scrollToCard(card, appFocus);
         } else {
-          dbg && console.log(msg, `[2]setRoute`, card.debugString)
+          dbg && console.log(msg, `[2]setRoute`, 
+            card.debugString, {evt})
           volatile.setRoute(card.routeHash(), true, msg);
         }
       },

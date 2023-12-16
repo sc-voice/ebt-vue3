@@ -248,7 +248,7 @@ export const useVolatileStore = defineStore('volatile', {
             case 'sutta':
               dbg && console.log(msg, "[5]scrollToCard", 
                 card.debugString);
-              settings.scrollToCard(card);
+              this.scrollToCard(card);
               break;
           }
         }
@@ -275,7 +275,7 @@ export const useVolatileStore = defineStore('volatile', {
             {visible});
         this.setRouteCard(card);
         if (!visible) {
-          settings.scrollToCard(card);
+          this.scrollToCard(card);
         }
       }
       return card;
@@ -453,12 +453,12 @@ export const useVolatileStore = defineStore('volatile', {
     onClickCard(evt, card) {
       const msg = "volatile.onClickCard() ";
       const dbg = DBG_CLICK || DBG_FOCUS;
-      let { settings, } = this;
+      let { appFocus} = this;
       let { target } = evt || {};
       let { localName, href, hash } = target;
       dbg && console.log(msg, '[1]setRoute', card.debugString, evt);
       this.setRoute(card, undefined, msg);
-      if (!card.hasFocus) {
+      if (!card.hasFocus(appFocus)) {
          let elt = document.getElementById(card.tab1Id);
          dbg && console.log(msg, '[2]focusElement', elt);
          this.focusElement(elt);
@@ -469,6 +469,42 @@ export const useVolatileStore = defineStore('volatile', {
       const dbg = DBG_LOG_HTML;
       logHtml.value = [];
       dbg && console.log(msg, logHtml.value.length);
+    },
+    async scrollToCard(card) {
+      const msg = 'volatile.scrollToCard()';
+      const dbg = DBG_SCROLL;
+      const dbgv = DBG_VERBOSE; 
+      let { appFocus } = this;
+      let settings = useSettingsStore();
+      let { tab1Id, deleteId } = card;
+      let afId = appFocus?.id;
+      let appFocusVisible = appFocus && Utils.elementInViewport(appFocus);
+
+      if (appFocusVisible && card.hasFocus(appFocus)) {
+        appFocus.focus();
+        return; 
+      }
+
+      if (settings.openCard(card)) {
+        await new Promise(resolve => setTimeout(()=>resolve(), 200));
+      }
+
+      let curId = card.currentElementId;
+      let topId = card.topAnchor;
+      let scrolled = false;
+      if (curId === card.titleAnchor) {
+        scrolled = await settings.scrollToElementId(curId, topId);
+        if (!scrolled) {
+          dbg && console.log(msg, "[1]n/a", {curId, topId});
+        }
+        return scrolled;
+      } 
+
+      scrolled = await settings.scrollToElementId(curId);
+      if (!scrolled) {
+        dbg && console.log(msg, "[2]n/a", curId);
+      }
+      return scrolled;
     },
   },
 })

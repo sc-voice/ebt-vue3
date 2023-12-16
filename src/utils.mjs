@@ -42,4 +42,32 @@ export default class Utils {
     return line.join(' ');
   }
 
+  static elementInViewport(elt, root = document.documentElement) {
+    const rect = elt?.getBoundingClientRect();
+    const { window } = globalThis;
+    if (window == null) {
+      return false;
+    }
+    const viewBottom = (window.innerHeight || root.clientHeight);
+    const viewRight = (window.innerWidth || root.clientWidth);
+
+    if (!rect) {
+      return false;
+    }
+    if (rect.bottom < 0) {
+      return false;
+    }
+    if (rect.right < 0) {
+      return false;
+    }
+    if (rect.top > viewBottom/2) { // show in top half of viewport
+      return false;
+    }
+    if (rect.left > viewRight) {
+      return false;
+    }
+
+    return true;
+  }
+
 }
