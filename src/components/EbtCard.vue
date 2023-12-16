@@ -1,7 +1,7 @@
 <template>
 <Transition>
   <v-sheet v-if="card.isOpen " :class="cardSheetClass"
-    @click.stop.prevent="onClickCard"
+    @click="onClickCard"
     :id="card.containerId"
   >
     <div :id="`${card.topAnchor}`" class="card-top-anchor debug">
@@ -200,10 +200,11 @@
       focusTop(evt) {
         const msg = "EbtCard.focusTop()";
         const dbg = DBG_FOCUS;
-        let { settings, card } = this;
+        let { volatile, settings, card } = this;
         let topId = card.topAnchor;
         dbg && console.log(msg, 'scrollToElementId', topId, evt);
         settings.scrollToElementId(topId);
+        volatile.appFocus = evt.target;
       },
       closeCard: (card, settings) => {
         const msg = 'EbtCard.closeCard()';

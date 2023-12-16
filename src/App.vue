@@ -24,37 +24,51 @@
               <div :title="titlePopup">
                 {{config.appName}}
               </div>
-              <div class="app-debug">
-                <span v-if="DBG_FOCUS" title="activeElt / appFocus">
+              <div class="app-dbg-container">
+                <div v-if="DBG_FOCUS">
                   {{docHasFocus}}
-                  {{
-                    activeElt||'activeElt?'
-                  }}/{{
-                    volatile?.appFocus?.id||volatile?.appFocus
-                  }}
-                </span> &nbsp;
-                <span v-if="DBG_ROUTE" title="routeCardId">
+                  <div class="app-dbg" :title="'activeElt '+activeElt">
+                    {{ activeElt||'activeElt?'}}
+                  </div>
+                  <div class="app-dbg" 
+                    :title="'appFocus '+volatile.appFocus?.id">
+                    {{volatile?.appFocus?.id||volatile?.appFocus}}
+                  </div>
+                </div> 
+                <div  v-if="DBG_ROUTE" 
+                  class="app-dbg" title="routeCardId">
                   {{settings.routeCardId}}
-                </span> &nbsp;
-                <span v-if="DBG_SCROLL" title="viewWidth x viewHeight">
+                </div >
+                <div v-if="DBG_SCROLL" 
+                  class="app-dbg" 
+                  title="viewWidth x viewHeight">
                   {{viewWidth}}x{{viewHeight}}
-                </span> &nbsp;
-                <span v-if="DBG_LEGACY" 
+                </div>
+                <div v-if="DBG_LEGACY" 
+                  class="app-dbg"
                   title="legacyVoice:showLegacyDialog">
                   {{settings.legacyVoice}}:
                   {{volatile.showLegacyDialog ? 'legacy' : 'nolegacy'}}
-                </span> &nbsp;
-                <span v-if="DBG_WAITING" :title="volatile.waitingMsg">
+                </div> 
+                <div v-if="DBG_WAITING" 
+                  class="app-dbg"
+                  :title="volatile.waitingMsg">
                   wait:{{volatile.waiting}}
-                </span> &nbsp;
+                </div>
               </div>
             </div>
           </v-app-bar-title>
           <div class="pr-3">
-            <v-btn id='btn-search' icon @click="onClickSearch" >
+            <v-btn id='btn-search' icon 
+              @click="onClickSearch" 
+              @focus="onFocusBtn"
+            >
               <v-icon icon="mdi-magnify"/>
             </v-btn>
-            <v-btn id='btn-settings' icon @click="onClickSettings">
+            <v-btn id='btn-settings' icon 
+              @click="onClickSettings"
+              @focus="onFocusBtn"
+            >
               <v-icon icon="mdi-cog"/>
             </v-btn>
           </div>
@@ -218,6 +232,14 @@
       Tutorial,
     },
     methods: {
+      onFocusBtn(evt) {
+        const msg = 'App.onFocusBtn()';
+        const dbg = DBG_FOCUS;
+        let { volatile } = this;
+        let appFocus = evt.target;
+        dbg && console.log(msg, '[1]appFocus', appFocus.id);
+        volatile.appFocus = appFocus;
+      },
       onClickAppBar(evt) {
         const msg = "App.onClickAppBar";
         const dbg = DBG_CLICK || DBG_FOCUS;
@@ -715,10 +737,6 @@
   margin-bottom: 0.2em;
   margin-right: 0.2em;
 }
-.app-debug{
-  margin-left: 0.5em;
-  font-size: 12px;
-}
 .debug-swipe{
   height: 4em;
   width: 100%;
@@ -745,6 +763,23 @@
 }
 .app-extension {
   width: 100%;
+}
+.app-dbg-container{
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 500px;
+  font-size: 12px;
+}
+.app-dbg {
+  display: inline-block;
+  max-width: 105px;
+  text-overflow: clip;
+  overflow: hidden;
+  margin-left: 0.5em;
+}
+.app-dbg:hover {
+  color: rgb(var(--v-theme-debug));
+  border: 1pt solid rgb(var(--v-theme-debug));
 }
 </style>
 

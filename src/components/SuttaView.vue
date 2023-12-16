@@ -131,9 +131,13 @@
       },
       onFocusSutta(evt) {
         const msg = "SuttaView.onFocusSutta()";
-        let { settings, audio, card } = this;
+        const dbg = DBG_FOCUS;
+        let { volatile, settings, audio, card } = this;
         audio.audioFocused = true;
         let segmentElementId = card.segmentElementId();
+        let appFocus = evt.target;
+        dbg && console.log(msg, '[1]appFocus', appFocus.id);
+        volatile.appFocus = appFocus;
         //console.log(msg, segmentElementId);
         //settings.scrollToElementId(segmentElementId);
       },

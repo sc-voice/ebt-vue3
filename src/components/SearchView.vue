@@ -3,6 +3,7 @@
     <div class="inspire" v-if="hasExamples" >
       <v-btn variant=tonal @click="onInspireMe"
         :id='card.autofocusId'
+        @focus="onFocus"
       >
         {{$t('ebt.inspireMe')}}
       </v-btn>
@@ -11,6 +12,8 @@
       v-model="search" 
       :append-icon="search ? 'mdi-magnify' : ''"
 
+      :id="`${card.id}-search`"
+      @focus="onFocus"
       @click:append="onSearch"
       @click:clear="onSearchCleared($event, card)"
       :hint="$t('auth.required')"
@@ -38,7 +41,9 @@
   import { logger } from "log-instance/index.mjs";
   import { Examples } from "scv-esm";
   import { ref, nextTick } from "vue";
-  import { DBG_SEARCH } from '../defines.mjs';
+  import { 
+    DBG_FOCUS, DBG_SEARCH 
+  } from '../defines.mjs';
   const msg = "SearchView.";
 
   export default {
@@ -68,6 +73,14 @@
       SearchResults,
     },
     methods: {
+      onFocus(evt) {
+        const msg = "SearchView.onFocus()";
+        const dbg = DBG_FOCUS;
+        let { volatile } = this;
+        let appFocus = evt.target;
+        dbg && console.log(msg, '[1]appFocus', appFocus.id);
+        volatile.appFocus = appFocus;
+      },
       onInspireMe() {
         let { langTrans, settings } = this;
         let that = this;
