@@ -183,18 +183,28 @@
   }
 </script>
 <style >
+  .v-chip {
+    margin-top: 1px !important;
+    margin-bottom: 1px !important;
+  }
   .chip-container {
     display: flex;
     flex-direction: column;
     min-height: 32px;
     margin-left: 1.0rem;
+    margin-bottom: 4px;
     width: calc(100% - 1.5rem);
+    border: 1.5px dashed rgba(var(--v-theme-focus), 0) !important;
+    outline: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
   .chip-container .v-chip-group {
     padding: 0px !important;
   }
   .chip-container:focus {
-    outline: 2px dashed #ce8400;
+    border: 1.5px dashed rgba(var(--v-theme-focus), 1) !important;
+    outline: none;
   }
   .chip-title {
     display: inline-block;

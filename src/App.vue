@@ -512,6 +512,7 @@
       showTutorWiki(ctx) {
         const msg = "App.showTutorWiki()";
         const dbg = DBG_TUTORIAL;
+        const dbgv = DBG_VERBOSE;
         let { audio, settings, } = this;
         let { 
           wikiCard, openCards, tutorWiki, tutorPlay 
@@ -526,6 +527,11 @@
           dbg && console.log(msg, '[2]wait', 
             segmentPlaying && "segmentPlaying",
             tutorPlay && "tutorPlay");
+          return false;
+        }
+
+        if (wikiCard.isOpen) {
+          dbg && console.log(msg, '[3]wikiCard');
           return false;
         }
 
