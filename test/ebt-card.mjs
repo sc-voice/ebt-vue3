@@ -475,34 +475,6 @@ logger.logLevel = 'warn';
     should.deepEqual(card.incrementLocation({segments, delta:-1}), null);
     should.deepEqual(card.location, [ scids[0], langTrans, author, ]);
   });
-  it("focusElementId()", ()=>{
-    let card = new EbtCard();
-    let { tab1Id, autofocusId } = card;
-    let elts = [];
-    let document = {
-      activeElement: undefined,
-      getElementById: (id)=>{ return elts.find(elt=>elt.id === id); },
-    };
-    let testElt1 = { id:tab1Id, focus:()=>{document.activeElement = testElt1;}};
-    let testElt2 = { id:autofocusId, focus:()=>{document.activeElement = testElt2;}};
-    global.document = document;
-
-    // No element
-    console.warn("EXPECTED WARNING BEGIN");
-    should(card.focusElementId()).equal(undefined);
-    console.warn("EXPECTED WARNING END");
-    should(document.activeElement).equal(undefined);
-
-    // tab1 element but no autofocus element
-    elts.push(testElt1);
-    should(card.focusElementId()).equal(testElt1);
-    should(document.activeElement).equal(testElt1);
-
-    // both autofocus and tab1 elements
-    elts.push(testElt2);
-    should(card.focusElementId()).equal(testElt2);
-    should(document.activeElement).equal(testElt2);
-  });
   it("setLocation()", ()=>{
     let segments = [
       {scid:"test:1"},

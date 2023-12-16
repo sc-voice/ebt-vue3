@@ -230,35 +230,6 @@ export default class EbtCard {
     return hasFocus;
   }
 
-  focusElementId(eltId=this.autofocusId) {
-    const msg = 'ebt-card.focusElementId()';
-    const dbg = DBG_FOCUS;
-    const dbgv = DBG_VERBOSE && dbg;
-    let { tab1Id, volatile } = this;
-    let elt = document.getElementById(eltId);
-    let ae = document.activeElement;
-    let aeId = ae?.id;
-    if (elt) {
-      if (ae !== elt) {
-        dbg && console.log(msg, `[1]focus ${aeId}=>${eltId}`);
-        volatile.focusElement(elt);
-      } else {
-        dbgv && console.log(msg, '[2]nochange', aeId);
-      }
-    } else if ((elt = document.getElementById(tab1Id))) {
-      if (ae !== elt) {
-        dbg && console.log(msg, '[3]focus alt', eltId);
-        volatile.focusElement(elt);
-      } else {
-        dbgv && console.log(msg, '[4]nochange', aeId); 
-      }
-    } else {
-      dbgv && console.log(msg, '[5] element not found', { 
-        eltId, tab1Id, volatile, elt});
-    }
-    return elt;
-  }
-
   open(value=true) {
     const msg = 'ebt-card.open()';
     const dbg = DBG_OPEN_CARD;
@@ -286,7 +257,8 @@ export default class EbtCard {
         dbg && console.log(msg, `[1]setRouteCard`, this.debugString);
         volatile.setRouteCard(this);
       }
-      dbg && console.log(msg, `[2]focusElementId ${id}`, {route, aeId});
+      dbg && console.log(msg, `[2]focusCardElementId ${id}`, 
+        {route, aeId});
       volatile.focusCardElementId(this, route);
     }
   }
