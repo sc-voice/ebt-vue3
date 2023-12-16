@@ -84,7 +84,7 @@
           </audio>
         </template>
       </v-app-bar>
-      <v-sheet>
+      <v-sheet id="app-body">
         <div>
           <ebt-processing />
           <LegacyVoice v-if="settings.loaded"/>

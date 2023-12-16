@@ -42,7 +42,11 @@ export default class Utils {
     return line.join(' ');
   }
 
-  static elementInViewport(elt, root = document.documentElement) {
+  static elementInViewport(elt, opts={}) {
+    const { 
+      root = document.documentElement,
+      zone = "top-half",
+    } = opts;
     const rect = elt?.getBoundingClientRect();
     const { window } = globalThis;
     if (window == null) {
@@ -60,8 +64,18 @@ export default class Utils {
     if (rect.right < 0) {
       return false;
     }
-    if (rect.top > viewBottom/2) { // show in top half of viewport
-      return false;
+    switch (zone) {
+      case "top100": 
+        if (rect.top > viewBottom) {
+          return false;
+        }
+        break;
+      default:
+      case "top50":
+        if (rect.top > viewBottom/2) { 
+          return false;
+        }
+        break;
     }
     if (rect.left > viewRight) {
       return false;

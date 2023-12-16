@@ -478,7 +478,8 @@ export const useVolatileStore = defineStore('volatile', {
       let settings = useSettingsStore();
       let { tab1Id, deleteId } = card;
       let afId = appFocus?.id;
-      let appFocusVisible = appFocus && Utils.elementInViewport(appFocus);
+      let appFocusVisible = appFocus && 
+        Utils.elementInViewport(appFocus, {zone:'top100'});
 
       if (appFocusVisible && card.hasFocus(appFocus)) {
         appFocus.focus();
