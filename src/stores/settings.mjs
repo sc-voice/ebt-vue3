@@ -214,6 +214,19 @@ export const useSettingsStore = defineStore('settings', {
       //dbg && console.log(msg, `[4]scrollable`, eltScroll.id);
       return eltScroll;
     },
+    scrollToElement(eltScroll) {
+      const msg = 'settings.scrollToElement()';
+      const dbg = DBG_SCROLL;
+
+      let opts = {
+        block: "center",
+        inline: "nearest",
+        behavior: "smooth",
+      }
+      dbg && console.log(msg, `[4]scrollToElement`, 
+        eltScroll.id || eltScroll);
+      eltScroll.scrollIntoView(opts);
+    },
     async scrollToElementId(idShow, idScroll) {
       const msg = 'settings.scrollToElementId()';
       const dbg = DBG_SCROLL;
@@ -228,13 +241,7 @@ export const useSettingsStore = defineStore('settings', {
         return false;
       }
 
-      let opts = {
-        block: "start",
-        inline: "nearest",
-        behavior: "smooth",
-      }
-      dbg && console.log(msg, `[4]scrollIntoView`, eltScroll.id);
-      eltScroll.scrollIntoView(opts);
+      this.scrollToElement(eltScroll);
 
       return true; // element originally not in viewport
     },

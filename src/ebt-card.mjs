@@ -574,10 +574,10 @@ export default class EbtCard {
    * viewport element is within the top half of the viewport.
    * The focus element may or may not be the viewed element
    */
-  viewportElement(focusElement) {
+  viewportElement(focusElt) {
     const msg = 'ebt-card.viewportElement';
     const dbg = DBG_VIEWPORT;
-    let focusId = focusElement?.id;
+    let focusId = focusElt?.id;
     let viewportId = focusId;
     let { 
       autofocusId, context, topAnchor, tab1Id, deleteId, location
@@ -586,7 +586,7 @@ export default class EbtCard {
     if (focusId === tab1Id) {
       viewportId = topAnchor;
     } else if (focusId === deleteId) {
-      viewportId =  deleteId;
+      viewportId = deleteId;
     } else if (focusId === autofocusId) {
       switch (context) {
         case EbtCard.CONTEXT_SUTTA: {
@@ -596,7 +596,7 @@ export default class EbtCard {
       }
     }
 
-    let viewportElt = document.getElementById(viewportId);
+    let viewportElt = document.getElementById(viewportId) || focusElt;
     dbg && console.log(msg, '[1]', viewportElt?.id);
     return viewportElt;
   }

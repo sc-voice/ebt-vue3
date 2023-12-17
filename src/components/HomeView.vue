@@ -1,6 +1,8 @@
 <template>
   <v-sheet class="ebt-wiki-sheet">
-    <div v-html="volatile.homeHtml" />
+    <div v-html="volatile.homeHtml" id="ebt-wiki-html" 
+      @focusin.stop.prevent="onFocusIn"
+    ></div>
   </v-sheet>
 </template>
 
@@ -9,7 +11,8 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { logger } from 'log-instance/index.mjs';
   import { 
-    DBG_MOUNTED, DBG_HOME, DBG_WIKI 
+    DBG_MOUNTED, DBG_HOME, DBG_WIKI, 
+    DBG_FOCUS, DBG_CLICK, DBG_VERBOSE,
   } from '../defines.mjs';
   import { ref } from "vue";
 
@@ -27,10 +30,19 @@
     components: {
     },
     methods: {
-    },
-    async mounted() {
-      const msg = "HomeView.unmounted() ";
-      const dbg = DBG_MOUNTED || DBG_WIKI;
+      onFocusIn(evt) {
+        const msg = "HomeView.onFocusIn()";
+        const dbg = DBG_FOCUS;
+        let { settings, volatile, card } = this;
+        let { target } = evt;
+        let viewportElt = card.viewportElement(target);
+        if (target.nodeName === "A") {
+          dbg && console.log(msg, '[1]appFocus', {evt});
+          volatile.appFocus = target;
+          dbg && console.log(msg, '[1]scrollToElement', viewportElt);
+          settings.scrollToElement(viewportElt);
+        }
+      },
     },
     async mounted() {
       const msg = "HomeView.mounted() ";

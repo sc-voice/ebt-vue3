@@ -495,11 +495,12 @@ export const useVolatileStore = defineStore('volatile', {
       let topId = card.topAnchor;
       let scrolled = false;
       if (curId === card.titleAnchor) {
-        scrolled = await settings.scrollToElementId(curId, topId);
-        if (!scrolled) {
-          dbg && console.log(msg, "[1]n/a", {curId, topId});
+        let eltScroll = settings.scrollableElement(curId, topId);
+        if (eltScroll) {
+          dbg && console.log(msg, "[1]scrollToElement", eltScroll.id);
+          await settings.scrollToElementId(curId, topId);
         }
-        return scrolled;
+        return !!eltScroll;
       } 
 
       scrolled = await settings.scrollToElementId(curId);
