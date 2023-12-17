@@ -8,6 +8,7 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, DBG_SETTINGS, 
   DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, DBG_PATH_TO_CARD,
+  DBG_VERBOSE,
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -216,12 +217,14 @@ export const useSettingsStore = defineStore('settings', {
     async scrollToElementId(idShow, idScroll) {
       const msg = 'settings.scrollToElementId()';
       const dbg = DBG_SCROLL;
+      const dbgv = dbg && DBG_VERBOSE;
 
       // HACK: scroll after Vue is done refreshing
       await new Promise(resolve => setTimeout(()=>resolve(), 300));
 
       let eltScroll = this.scrollableElement(idShow, idScroll);
       if (!eltScroll) {
+        dbgv && console.log(msg, '[1]eltScroll?');
         return false;
       }
 

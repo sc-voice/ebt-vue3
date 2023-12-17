@@ -4,7 +4,7 @@
     @click="onClickCard"
     :id="card.containerId"
   >
-    <div :id="`${card.topAnchor}`" class="card-top-anchor debug">
+    <div :id="`${card.topAnchor}`" :class="topAnchorClass">
       {{card.topAnchor}}
     </div>
     <div :class="cardClass">
@@ -66,6 +66,7 @@
   import { 
     DBG_CLICK, DBG_MOUNTED, DBG_FOCUS, DBG_SCROLL,
     DBG_UPDATED, DBG_VISIBLE, DBG_BLUR, DBG_VERBOSE,
+    DBG_VIEWPORT,
   } from '../defines.mjs';
 
   export default {
@@ -141,8 +142,7 @@
       },
       onFocusLastTab(evt) {
         const msg = 'EbtCard.onFocusLastTab() ';
-        const dbg = DBG_FOCUS;
-        let { volatile, audio } = this;
+        const dbg = DBG_FOCUS; let { volatile, audio } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, {ebtChips});
         ebtChips && volatile.focusElement(ebtChips);
@@ -277,6 +277,11 @@
       },
     },
     computed: {
+      topAnchorClass(ctx) {
+        return DBG_VIEWPORT
+          ? "card-top-anchor card-top-anchor-debug"
+          : "card-top-anchor";
+      },
       cardSheetClass(ctx) {
         let { card } = ctx;
         return card.isOpen

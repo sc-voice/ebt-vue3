@@ -1,3 +1,9 @@
+import {
+  DBG_VIEWPORT,
+  DBG_VERBOSE,
+
+  APP_BAR_H,
+} from './defines.mjs';
 
 export default class Utils {
   static assignTyped(dst, initial, src=initial) {
@@ -43,44 +49,44 @@ export default class Utils {
   }
 
   static elementInViewport(elt, opts={}) {
+    const msg = "Utils.elementInViewport()";
+    const dbg = DBG_VIEWPORT;
+    const dbgv = dbg && DBG_VERBOSE;
     const { 
       root = document.documentElement,
-      zone = "top-half",
+      zone = 80,
     } = opts;
     const rect = elt?.getBoundingClientRect();
     const { window } = globalThis;
     if (window == null) {
+      dbgv && console.log(msg, '[1]!window');
       return false;
     }
     const viewBottom = (window.innerHeight || root.clientHeight);
     const viewRight = (window.innerWidth || root.clientWidth);
 
     if (!rect) {
+      dbg && console.log(msg, '[2]!rect');
       return false;
     }
     if (rect.bottom < 0) {
+      dbg && console.log(msg, '[3]!bottom');
       return false;
     }
     if (rect.right < 0) {
+      dbg && console.log(msg, '[4]!right');
       return false;
     }
-    switch (zone) {
-      case "top100": 
-        if (rect.top > viewBottom) {
-          return false;
-        }
-        break;
-      default:
-      case "top50":
-        if (rect.top > viewBottom/2) { 
-          return false;
-        }
-        break;
+    if (rect.top > viewBottom*zone/100 - APP_BAR_H) {
+      dbg && console.log(msg, `[5]!top${zone}`);
+      return false;
     }
     if (rect.left > viewRight) {
+      dbg && console.log(msg, '[6]!left');
       return false;
     }
 
+    dbgv && console.log(msg, '[7]in view');
     return true;
   }
 

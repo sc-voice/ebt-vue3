@@ -2,7 +2,7 @@
   <v-app >
     <v-main >
       <v-app-bar flat 
-        :extension-height="collapsed ? 0 : 40"
+        :extension-height="collapsed ? 0 : APP_BAR_H"
         :collapse="collapsed"
         density="compact"
         class="ebt-app-bar"
@@ -166,7 +166,9 @@
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
     DBG_ROUTE, DBG_WAITING, DBG_SETTINGS, DBG_LOG_HTML,
     DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO,
-    DBG_VERBOSE
+    DBG_VERBOSE,
+
+    APP_BAR_H,
   } from './defines.mjs';
 
   const msg = "App.setup"
@@ -184,7 +186,7 @@
       dbg && console.log(msg, `[4]activeElt`, {aeOld, aeNew});
       activeElt.value = aeNew;
     } else {
-      dbgv && console.log(msg, "[5]activeElt", ae);
+      dbgv && console.log(msg, "[5]activeElt", aeNew);
     }
     docHasFocus.value = document && document.hasFocus() 
       ? "+" : "-";

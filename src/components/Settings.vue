@@ -249,11 +249,13 @@
               :label="$t('ebt.server')"
               :hint='serverHint'
             />
+            <!--
             <v-select v-model="settings.logLevel" :items="logLevels" 
               :menu-icon="selectIcon"
               :label="$t('ebt.logLevel')"
               :hint="settings.logLevel || 'info'"
             />
+            -->
             <v-sheet class="settings-link">
               <a :href="githubUrl" target="_blank">
                 {{$t('ebt.showGithub')}}

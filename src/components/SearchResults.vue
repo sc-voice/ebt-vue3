@@ -73,7 +73,7 @@
         const msg = 'SearchResults.onFocusIn()';
         const dbg = DBG_FOCUS;
         const { volatile } = this;
-        console.log(msg, '[1]appFocus', {evt});
+        dbg && console.log(msg, '[1]appFocus', {evt});
         volatile.appFocus = evt.target;
       },
       clickResult(result, i) {

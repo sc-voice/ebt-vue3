@@ -248,7 +248,7 @@ export const useVolatileStore = defineStore('volatile', {
             case 'sutta':
               dbg && console.log(msg, "[5]scrollToCard", 
                 card.debugString);
-              this.scrollToCard(card);
+              /* await */ this.scrollToCard(card);
               break;
           }
         }
@@ -275,7 +275,7 @@ export const useVolatileStore = defineStore('volatile', {
             {visible});
         this.setRouteCard(card);
         if (!visible) {
-          this.scrollToCard(card);
+          /* await */ this.scrollToCard(card);
         }
       }
       return card;
@@ -478,10 +478,11 @@ export const useVolatileStore = defineStore('volatile', {
       let settings = useSettingsStore();
       let { tab1Id, deleteId } = card;
       let afId = appFocus?.id;
-      let appFocusVisible = appFocus && 
-        Utils.elementInViewport(appFocus, {zone:'top100'});
+      let viewportElt = card.viewportElement(appFocus);
+      let eltInViewport = viewportElt &&
+        Utils.elementInViewport(viewportElt, {zone:80});
 
-      if (appFocusVisible && card.hasFocus(appFocus)) {
+      if (eltInViewport && card.hasFocus(appFocus)) {
         appFocus.focus();
         return; 
       }

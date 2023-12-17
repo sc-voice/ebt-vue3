@@ -10,7 +10,7 @@ import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DBG_AUDIO, DBG_STARTUP 
+  DBG_KEY, DBG_AUDIO, DBG_STARTUP 
 } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
@@ -77,35 +77,45 @@ export const useAudioStore = defineStore('audio', {
   actions: {
     keydown(evt) {
       const msg = `audio.keydown(${evt.code}) `;
+      const dbg = DBG_KEY;
       switch (evt.code) {
         case 'ArrowUp':
           if (evt.ctrlKey) {
+            dbg && console.log(msg, '[1]setLocation');
             this.setLocation(0);
           } else if (evt.shiftKey) {
+            dbg && console.log(msg, '[2]incrementGroup(-1)');
             this.incrementGroup(-1);
           } else {
+            dbg && console.log(msg, '[3]back');
             this.back();
           }
           break;
         case 'ArrowDown':
           if (evt.ctrlKey) {
+            dbg && console.log(msg, '[4]setLocation');
             this.setLocation(-1);
           } else if (evt.shiftKey) {
+            dbg && console.log(msg, '[5]incrementGroup(1)');
             this.incrementGroup(1);
           } else {
+            dbg && console.log(msg, '[6]next');
             this.next();
           }
           break;
         case 'Space':
           if (!evt.altKey && !evt.metaKey) {
             if (evt.shiftKey || evt.ctrlKey) {
+              dbg && console.log(msg, '[7]clickPlayToEnd');
               this.clickPlayToEnd();
             } else {
+              dbg && console.log(msg, '[8]clickPlayOne');
               this.clickPlayOne();
             }
           }
           break;
         case 'Enter':
+          dbg && console.log(msg, '[9]clickPlayToEnd');
           this.clickPlayToEnd();
           break;
         default: 

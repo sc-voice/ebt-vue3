@@ -1,21 +1,19 @@
 <template>
   <div class="tipitaka-nav">
     <div>
-      <v-icon icon="mdi-menu-left" />
       <a :href="`#/sutta/${prevSuid}`" v-if="prevSuid" tabindex=-1>
-        {{prevSuid}}
+        <v-icon icon="mdi-menu-left" />{{prevSuid}}
       </a>
     </div>
     <div>
       <a :href="hrefSuttaCentral(sutta_uid)" target="_blank" tabindex=-1>
-        suttacentral/{{sutta_uid}}
+        {{scLabel}}
       </a>
     </div>
     <div>
       <a :href="`#/sutta/${nextSuid}`" v-if="nextSuid" tabindex=-1>
-        {{nextSuid}}
+        {{nextSuid}}<v-icon icon="mdi-menu-right" />
       </a>
-      <v-icon icon="mdi-menu-right" />
     </div>
   </div><!-- tipitaka-nav -->
 </template>
@@ -64,6 +62,17 @@
       },
     },
     computed: {
+      isNarrow(ctx) {
+        let root = document.documentElement;
+        const viewRight = (window.innerWidth || root.clientWidth);
+        return viewRight < 600;
+      },
+      scLabel(ctx) {
+        let { sutta_uid, isNarrow } = ctx;
+        return isNarrow
+          ? `suttacentral`
+          : `suttacentral/${sutta_uid}`;
+      },
       nextSuid(ctx) {
         let { sutta_uid, taka } = ctx;
         return taka.nextSuid(sutta_uid);

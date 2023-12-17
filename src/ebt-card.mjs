@@ -4,7 +4,7 @@ import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
   DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, DBG_PATH_TO_CARD,
-  DBG_VERBOSE,
+  DBG_VERBOSE, DBG_VIEWPORT
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
@@ -565,6 +565,40 @@ export default class EbtCard {
     // to prevent the browser from auto-navigating
     // to segmentElementId's when the route changes
     return `seg-${scid}/${lang}/${author}`;
+  }
+
+  /* HACK:
+   * The viewport element is obscurable by the app bar
+   * and is above the viewed element by the height of the app bar.
+   * Therefore the viewed element will always be viewable if the
+   * viewport element is within the top half of the viewport.
+   * The focus element may or may not be the viewed element
+   */
+  viewportElement(focusElement) {
+    const msg = 'ebt-card.viewportElement';
+    const dbg = DBG_VIEWPORT;
+    let focusId = focusElement?.id;
+    let viewportId = focusId;
+    let { 
+      autofocusId, context, topAnchor, tab1Id, deleteId, location
+    } = this;
+
+    if (focusId === tab1Id) {
+      viewportId = topAnchor;
+    } else if (focusId === deleteId) {
+      viewportId =  deleteId;
+    } else if (focusId === autofocusId) {
+      switch (context) {
+        case EbtCard.CONTEXT_SUTTA: {
+          let [ scid, lang, author ] = location;
+          viewportId = this.segmentElementId(scid);
+        } break;
+      }
+    }
+
+    let viewportElt = document.getElementById(viewportId);
+    dbg && console.log(msg, '[1]', viewportElt?.id);
+    return viewportElt;
   }
 
 }

@@ -269,6 +269,10 @@ code {
   height: 118px;
   top: 0em;
 }
+.card-top-anchor-debug {
+  color: rgba(var(--v-theme-debug), 1);
+  width: 100%;
+}
 .card-title-anchor {
   position: relative;
 }

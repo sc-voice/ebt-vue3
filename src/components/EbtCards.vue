@@ -181,9 +181,9 @@
     watch:{
       $route (to, from) {
         const msg = 'EbtCards.watch.$route';
+        const dbg = DBG_ROUTE || DBG_OPEN_CARD;
         let { volatile, settings, $route }  = this;
         let { cards, } = settings;
-        let dbg = DBG_ROUTE || DBG_SCROLL || DBG_OPEN_CARD;
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 
