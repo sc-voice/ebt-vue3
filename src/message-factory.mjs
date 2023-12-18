@@ -2,7 +2,7 @@ import { default as Languages } from "./languages.mjs"
 
 var MESSAGES;
 
-export default class Messages {
+export default class MessageFactory {
   static get MESSAGES() { 
     return (async () => {
       if (MESSAGES == null) {
