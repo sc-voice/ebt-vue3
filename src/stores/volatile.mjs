@@ -4,9 +4,11 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
+import { useAudioStore } from "./audio.mjs";
 import {
   DBG_CLICK, DBG_FOCUS, DBG_HOME, DBG_LOG_HTML,
   DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
+  DBG_COPY,
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -24,7 +26,7 @@ const console_log = ref(null);
 const routeCard = ref(null);
 const appFocus = ref(null); // because document.activeElement is flaky
 const transientMsg = ref(null);
-const showTransientMsg = ref(true);
+const showTransientMsg = ref(false);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -516,6 +518,36 @@ export const useVolatileStore = defineStore('volatile', {
         dbg && console.log(msg, "[2]n/a", curId);
       }
       return scrolled;
+    },
+    copySegment(segment) {
+      const msg = "volatile.copySegment()";
+      const dbg = DBG_COPY;
+      let audio = useAudioStore();
+      let settings = useSettingsStore();
+      let { docLang, showTrans, showReference } = settings;
+      let { $t, } = this;
+      if (segment == null) {
+        let { audioSutta, audioIndex } = audio;
+        let segments = audioSutta?.segments || [];
+        segment = segments[audioIndex] || {};
+      }
+      let { scid } = segment;
+      let langText = segment[docLang];
+      let refText = showReference && segment.ref;
+      let { href } = window.location;
+      let mdList = [];
+
+      showReference && refText && 
+        mdList.push(`> [${scid}](${href}) ${refText}`);
+      showTrans && langText &&
+        mdList.push(`> [${scid}](${href}) ${langText}`);
+      let clip = mdList.join('\n  ');
+      dbg && console.log(msg, '[1]clip', clip);
+      Utils.updateClipboard(clip);
+      let tm = `${scid} => ${$t('ebt.copiedToClipboard')}`;
+      this.setTransientMessage(tm);
+
+      return segment;
     },
   },
 })

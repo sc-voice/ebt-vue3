@@ -35,7 +35,7 @@
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
   import { 
-    DBG_KEY, DBG_FOCUS, DBG_MOUNTED 
+    DBG_COPY, DBG_KEY, DBG_FOCUS, DBG_MOUNTED 
   } from '../defines.mjs';
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
@@ -72,11 +72,12 @@
     },
     methods: {
       onClickSegBody(evt) {
+        const msg = 'SegmentView.onClickSegBody()';
+        const dbg = DBG_COPY || DBG_CLICK;
         let { 
           segment, currentScid, routeCard, card, settings, 
           idbSuttaRef, volatile,
         } = this;
-        const msg = `SegmentView.onClickSegBody(${segment.scid}) `;
         let { srcElement } = evt;
         let { className, innerText } = srcElement;
         let { scid } = segment;
@@ -85,10 +86,11 @@
           if (className === 'ebt-example') {
             let pattern = encodeURIComponent(innerText);
             let hash = `#/search/${pattern}`;
-            //console.log(msg, 'example', scid, pattern);
+            dbg && console.log(msg, 'example', scid, pattern);
             volatile.setRoute(hash, undefined, msg);
           } else {
-            //console.log(msg, 'same card', scid);
+            dbg && console.log(msg, 'copied', scid);
+            volatile.copySegment();
           }
         } else {
           let [ locationScid, lang, author ] = card.location;

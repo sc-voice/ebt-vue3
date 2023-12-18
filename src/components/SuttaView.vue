@@ -47,7 +47,7 @@
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
     DBG_CLICK, DBG_MOUNTED, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
-    DBG_VERBOSE,
+    DBG_VERBOSE, 
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
@@ -136,15 +136,11 @@
         switch (code) {
           case 'KeyC': {
             if (ctrlKey) {
-              let { idbSuttaSegments } = this;
-              let { audioSutta, audioIndex } = audio;
-              let segments = audioSutta?.segments || [];
-              let segment = segments[audioIndex] || {};
+              let segment = volatile.copySegment();
               let { scid } = segment;
               dbg && console.log(msg, `[1]copy${scid}`, {evt});
               evt.preventDefault();
               evt.stopPropagation();
-              this.copySegment(segment);
             }
           } break;
           case 'Tab': {

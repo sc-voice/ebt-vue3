@@ -2,6 +2,7 @@ export const DBG_ADD_CARD = 0;
 export const DBG_AUDIO    = 0;
 export const DBG_BLUR     = 0;
 export const DBG_CLICK    = 0;
+export const DBG_COPY     = 0;
 export const DBG_FOCUS    = 0;
 export const DBG_GDPR     = 0;
 export const DBG_HOME     = 0;
