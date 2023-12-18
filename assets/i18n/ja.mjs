@@ -221,6 +221,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "context-sutta": "Sutta",
+    "copiedToClipboard": "Copied to clipboard",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "暗闇から光へ向かう人達に",

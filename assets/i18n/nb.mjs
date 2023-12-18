@@ -219,6 +219,7 @@ export default {
     "confirm": "Confirm",
     "context-home": "Home",
     "context-search": "Search",
+    "copiedToClipboard": "Copied to clipboard",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Dedikert til mørket på vei mot lyset",

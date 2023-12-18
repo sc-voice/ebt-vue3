@@ -219,6 +219,7 @@ export default {
     "contentWiki": "Wiki",
     "context-home": "Home",
     "context-search": "Search",
+    "copiedToClipboard": "Copied to clipboard",
     "days": "A_DAYS days",
     "dedicated": "Pentru cei din întuneric, ce se îndreaptă spre lumină",
     "dedicatedSearch": "the dark bound for light",

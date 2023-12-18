@@ -217,6 +217,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "context-sutta": "Sutta",
+    "copiedToClipboard": "Copié",
     "customizeSettings": "Personnaliser les paramètres",
     "days": "A_DAYS days",
     "dedicated": "A ceux dans l’obscurité destinés à la lumière",
