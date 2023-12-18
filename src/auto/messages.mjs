@@ -859,7 +859,7 @@ const messages =  {
       "confirm": "Bestätigen",
       "context-home": "",
       "context-search": "Suche",
-      "copiedToClipboard": "Kopiert",
+      "copiedToClipboard": "in Zwischenablage kopiert",
       "customizeSettings": "Einstellungen anpassen",
       "days": "A_DAYS Tage",
       "dedicated": "Den Dunklen auf dem Weg zum Licht",
