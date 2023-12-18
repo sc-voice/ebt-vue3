@@ -110,6 +110,11 @@
           @click="onClickGdrp"/>
       </v-sheet>
 
+      <v-snackbar 
+        color="tutorial"
+        v-model="volatile.showTransientMsg">
+        {{volatile.transientMsg}}
+      </v-snackbar>
       <v-snackbar v-model="volatile.showAlertMsg" 
         color="alert" 
         height="300px"

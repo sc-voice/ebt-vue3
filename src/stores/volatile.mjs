@@ -23,6 +23,8 @@ const logHtml = ref([]);
 const console_log = ref(null);
 const routeCard = ref(null);
 const appFocus = ref(null); // because document.activeElement is flaky
+const transientMsg = ref(null);
+const showTransientMsg = ref(true);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -44,6 +46,8 @@ const INITIAL_STATE = {
   showLegacyDialog,
   suttas,
   touchSwipe: ref('waiting...'),
+  showTransientMsg,
+  transientMsg,
   trilingual: ref(true),
   waiting: 0,
   waitingDelay: ref(500),
@@ -91,6 +95,10 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    setTransientMessage(msg) {
+      transientMsg.value = msg;
+      showTransientMsg.value = true;
+    },
     focusCardElementId(card, eltId=card.autofocusId) {
       const msg = 'volatile.focusCardElementId()';
       const dbg = DBG_FOCUS;

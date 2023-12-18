@@ -109,7 +109,7 @@
       copySegment(segment) {
         const msg = "SuttaView.copySegment()";
         const dbg = DBG_KEY;
-        let { settings } = this;
+        let { $t, settings, volatile } = this;
         let { docLang, showTrans, showReference } = settings;
         let { ref } = settings;
         let { scid } = segment;
@@ -124,6 +124,8 @@
         let clip = mdList.join('\n  ');
         dbg && console.log(msg, '[1]clip', clip);
         Utils.updateClipboard(clip);
+        let tm = `${scid} => ${$t('ebt.copiedToClipboard')}`;
+        volatile.setTransientMessage(tm);
       },
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
