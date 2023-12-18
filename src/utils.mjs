@@ -1,7 +1,5 @@
 import {
-  DBG_VIEWPORT,
-  DBG_VERBOSE,
-
+  DBG_VIEWPORT, DBG_VERBOSE, DBG_KEY,
   APP_BAR_H,
 } from './defines.mjs';
 
@@ -89,5 +87,17 @@ export default class Utils {
     dbgv && console.log(msg, '[7]in view');
     return true;
   }
+
+  static async updateClipboard(newClip) {
+    let msg = 'Utils.updateClipboard()';
+    let dbg = DBG_KEY;
+    try {
+      await navigator.clipboard.writeText(newClip);
+      dbg && console.log(msg, '[1]copied', newClip);
+    } catch (e) {
+      console.warn(msg, '[2]failed', e);
+    }
+  }
+                                  
 
 }

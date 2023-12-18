@@ -36,6 +36,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { useSuttasStore } from '../stores/suttas.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
+  import Utils from '../utils.mjs';
   import { logger } from "log-instance/index.mjs";
   import { AuthorsV2, Examples, Tipitaka, SuttaRef } from "scv-esm";
   import { nextTick, ref } from "vue";
@@ -46,6 +47,7 @@
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
     DBG_CLICK, DBG_MOUNTED, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
+    DBG_VERBOSE,
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
@@ -104,12 +106,45 @@
       card.onAfterMounted({settings, volatile});
     },
     methods: {
+      copySegment(segment) {
+        const msg = "SuttaView.copySegment()";
+        const dbg = DBG_KEY;
+        let { settings } = this;
+        let { docLang, showTrans, showReference } = settings;
+        let { ref } = settings;
+        let { scid } = segment;
+        let langText = segment[docLang];
+        let refText = showReference && segment.ref;
+        let { href } = window.location;
+        let mdList = [];
+        showReference && refText && 
+          mdList.push(`[${scid}](${href}) ${refText}`);
+        showTrans && langText &&
+          mdList.push(`[${scid}](${href}) ${langText}`);
+        let clip = mdList.join('\n  ');
+        dbg && console.log(msg, '[1]clip', clip);
+        Utils.updateClipboard(clip);
+      },
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
         const dbg = DBG_KEY;
-        const { card, settings, volatile } = this;
-        let { audio } = this;
-        switch (evt.code) {
+        const dbgv = DBG_VERBOSE && dbg;
+        const { audio, card, settings, volatile } = this;
+        let { shiftKey, ctrlKey, code } = evt;
+        switch (code) {
+          case 'KeyC': {
+            if (ctrlKey) {
+              let { idbSuttaSegments } = this;
+              let { audioSutta, audioIndex } = audio;
+              let segments = audioSutta?.segments || [];
+              let segment = segments[audioIndex] || {};
+              let { scid } = segment;
+              dbg && console.log(msg, `[1]copy${scid}`, {evt});
+              evt.preventDefault();
+              evt.stopPropagation();
+              this.copySegment(segment);
+            }
+          } break;
           case 'Tab': {
             let elt;
             if (evt.shiftKey) {
@@ -121,8 +156,7 @@
             }
             elt && volatile.focusElement(elt);
             evt.preventDefault();
-            break;
-          }
+          } break;
           default:
             dbg && console.log(msg, '[2]audio.keydown', {evt});
             audio.keydown(evt);
