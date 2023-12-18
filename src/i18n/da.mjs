@@ -219,6 +219,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "context-sutta": "Sutta",
+    "copiedToClipboard": "Copied to clipboard",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Til dem som lever i mørket, men er på vej mod lyset",

@@ -222,6 +222,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "context-sutta": "Sutta",
+    "copiedToClipboard": "Copied to clipboard",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Aan hen in donkerte op weg naar licht",

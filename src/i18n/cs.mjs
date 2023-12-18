@@ -219,6 +219,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "context-sutta": "Sutta",
+    "copiedToClipboard": "Copied to clipboard",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Temné náklonnosti k světlu",
