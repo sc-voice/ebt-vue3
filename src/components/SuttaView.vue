@@ -118,9 +118,9 @@
         let { href } = window.location;
         let mdList = [];
         showReference && refText && 
-          mdList.push(`[${scid}](${href}) ${refText}`);
+          mdList.push(`> [${scid}](${href}) ${refText}`);
         showTrans && langText &&
-          mdList.push(`[${scid}](${href}) ${langText}`);
+          mdList.push(`> [${scid}](${href}) ${langText}`);
         let clip = mdList.join('\n  ');
         dbg && console.log(msg, '[1]clip', clip);
         Utils.updateClipboard(clip);
