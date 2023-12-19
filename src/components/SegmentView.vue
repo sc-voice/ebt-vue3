@@ -35,7 +35,7 @@
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
   import { 
-    DBG_COPY, DBG_KEY, DBG_FOCUS, DBG_MOUNTED 
+    DBG_CLICK, DBG_COPY, DBG_KEY, DBG_FOCUS, DBG_MOUNTED 
   } from '../defines.mjs';
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
