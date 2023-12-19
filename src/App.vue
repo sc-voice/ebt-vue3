@@ -112,7 +112,11 @@
 
       <v-snackbar 
         color="tutorial"
-        v-model="volatile.showTransientMsg">
+        v-model="volatile.showTransientMsg"
+        close-on-content-click
+        content-class="transient-msg"
+        timeout="700"
+      >
         {{volatile.transientMsg}}
       </v-snackbar>
       <v-snackbar v-model="volatile.showAlertMsg" 
@@ -793,6 +797,13 @@
 .app-dbg:hover {
   color: rgb(var(--v-theme-debug));
   border: 1pt solid rgb(var(--v-theme-debug));
+}
+.transient-msg {
+  max-width: calc(min(100vw, 400px)) !important;
+  min-width: calc(min(100vw, 310px)) !important;
+}
+.transient-msg .v-snackbar__content {
+  text-align: center;
 }
 </style>
 

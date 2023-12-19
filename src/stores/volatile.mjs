@@ -524,7 +524,7 @@ export const useVolatileStore = defineStore('volatile', {
       const dbg = DBG_COPY;
       let audio = useAudioStore();
       let settings = useSettingsStore();
-      let { docLang, showTrans, showReference } = settings;
+      let { docLang, showTrans, showPali } = settings;
       let { $t, } = this;
       if (segment == null) {
         let { audioSutta, audioIndex } = audio;
@@ -533,18 +533,18 @@ export const useVolatileStore = defineStore('volatile', {
       }
       let { scid } = segment;
       let langText = segment[docLang];
-      let refText = showReference && segment.ref;
+      let paliText = showPali && segment.pli;
       let { href } = window.location;
       let mdList = [];
 
-      showReference && refText && 
-        mdList.push(`> [${scid}](${href}) ${refText}`);
+      showPali && paliText && 
+        mdList.push(`> [${scid}](${href}) <i>${paliText}</i>`);
       showTrans && langText &&
         mdList.push(`> [${scid}](${href}) ${langText}`);
       let clip = mdList.join('\n  ');
       dbg && console.log(msg, '[1]clip', clip);
       Utils.updateClipboard(clip);
-      let tm = `${scid} => ${$t('ebt.copiedToClipboard')}`;
+      let tm = `${scid}: ${$t('ebt.copiedToClipboard')}`;
       this.setTransientMessage(tm);
 
       return segment;
