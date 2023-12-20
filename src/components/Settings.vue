@@ -217,7 +217,8 @@
 
         <v-expansion-panel><!--Advanced-->
           <v-expansion-panel-title 
-            expand-icon="mdi-dots-vertical" collapse-icon="mdi-dots-horizontal"
+            expand-icon="mdi-dots-vertical" 
+            collapse-icon="mdi-dots-horizontal"
             >
             {{$t('ebt.advanced')}}
             <v-spacer/>
@@ -261,6 +262,11 @@
                 {{$t('ebt.showGithub')}}
               </a>
             </v-sheet>
+            <v-checkbox v-if="DBG_LOG_HTML"
+              v-model="volatile.showHtmlLog" 
+              density="compact"
+              label="Show HTML log"
+            />
           </v-expansion-panel-text>
         </v-expansion-panel><!--Advanced-->
       </v-expansion-panels>
@@ -275,7 +281,7 @@ import { useVolatileStore } from "../stores/volatile.mjs";
 import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
-import { DBG_TUTORIAL } from "../defines.mjs";
+import { DBG_TUTORIAL, DBG_LOG_HTML } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
 import Confirm from "./Confirm.vue";
@@ -323,6 +329,7 @@ export default {
       settings: useSettingsStore(),
       volatile: useVolatileStore(),
       btnSettings: ref(undefined),
+      DBG_LOG_HTML,
     }
     logger.debug("Settings.setup()", data.settings);
     return data;

@@ -10,7 +10,8 @@ import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DBG_KEY, DBG_AUDIO, DBG_STARTUP 
+  DBG_KEY, DBG_AUDIO, DBG_STARTUP, DBG_VERBOSE,
+  DBG_LOG_HTML,
 } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
@@ -19,6 +20,7 @@ const URL_NOAUDIO = "audio/383542__alixgaus__turn-page.mp3";
 const HEADERS_JSON = { ["Accept"]: "application/json", };
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
 const SAMPLE_RATE = 48000;
+const V = ' ';
 var segAudioDb;
 var soundDb;
 
@@ -53,6 +55,16 @@ function deleteDatabase(name) {
 
 const PLAY_ONE = 'one';
 const PLAY_END = 'end';
+const clickElt = ref(undefined);
+const audioIndex = ref(0);
+const audioSutta = ref(null);
+const audioScid = ref('');
+const audioFocused = ref(false);
+const mainContext = ref(null);
+const segmentPlaying = ref(false);
+const audioElapsed = ref(0);
+const idbAudio = ref(undefined);
+const playMode = ref(PLAY_ONE);
 
 export const useAudioStore = defineStore('audio', {
   state: () => {
@@ -60,16 +72,16 @@ export const useAudioStore = defineStore('audio', {
       nFetch: 0,
       nGet: 0,
       nSet: 0,
-      audioIndex: ref(0),
-      audioSutta: ref(null),
-      audioScid: ref(''),
-      audioFocused: ref(false),
-      mainContext: ref(null),
-      segmentPlaying: ref(false),
-      audioElapsed: ref(0),
-      idbAudio: ref(undefined),
-      playMode: ref(PLAY_ONE),
-      clickElt: ref(undefined),
+      audioIndex,
+      audioSutta,
+      audioScid,
+      audioFocused,
+      mainContext,
+      segmentPlaying,
+      audioElapsed,
+      idbAudio,
+      playMode,
+      clickElt,
     }
   },
   getters: {
@@ -77,7 +89,7 @@ export const useAudioStore = defineStore('audio', {
   actions: {
     keydown(evt) {
       const msg = `audio.keydown(${evt.code}) `;
-      const dbg = DBG_KEY;
+      const dbg = DBG_KEY || DBG_AUDIO;
       switch (evt.code) {
         case 'ArrowUp':
           if (evt.ctrlKey) {
@@ -145,6 +157,29 @@ export const useAudioStore = defineStore('audio', {
       //this.createIdbAudio();
       this.playMode = playMode;
       return false;
+    },
+    registerClickElt(elt) {
+      const msg = 'audio.registerClickElt()';
+      const dbg = DBG_AUDIO;
+      const dbgv = dbg && DBG_VERBOSE && !DBG_LOG_HTML;
+      if (clickElt.value === elt) { // no change
+        dbgv && console.log(V+msg, '[1]n/a');
+        return elt;
+      }
+      if (elt == null) {
+        console.warn(msg, '[2]elt?');
+        return elt;
+      }
+
+      dbg && console.log(msg, '[3]', {elt});
+      clickElt.value = elt;
+
+      let settings = useSettingsStore();
+      let { audioVolume } = settings;
+      dbg && console.log(msg, '[4]volume', audioVolume);
+      elt.volume = audioVolume;
+
+      return elt;
     },
     async playOne() {
       const msg = 'audio.playOne() ';
@@ -382,25 +417,17 @@ export const useAudioStore = defineStore('audio', {
       let url =  volume ? `audio/block${volume}.mp3` : null;
       return this.playUrl(url, {audioContext});
     },
-    async playElt(elt) {
-      const msg = 'audio.playElt()';
-      let volatile = useVolatileStore();
-      let dbg = DBG_STARTUP;
-      if (volatile.updated) {
-        try {
-          dbg && console.log(msg, '[1]play', elt);
-          await elt.play();
-        } catch (e) {
-          dbg && console.trace(msg, `[2]${e.message}`, {elt});
-        }
-      } else {
-        //dbg && console.trace(msg, `[3]ignored`);
-      }
-    },
     playClick(audioContext) {
       const msg = 'audio.playClick() ';
+      const dbg = DBG_AUDIO;
+      const dbgv = dbg && DBG_VERBOSE;
       let { clickElt } = this;
-      this.playElt(clickElt);
+      if (clickElt) {
+        dbg && console.log(msg, '[1]play', clickElt?.id);
+        /* await */ clickElt.play();
+      } else {
+        dbg && console.warn(msg, '[1]clickElt?');
+      }
     },
     playBell(audioContext) {
       const msg = 'audio.playBell() ';
@@ -492,27 +519,32 @@ export const useAudioStore = defineStore('audio', {
     },
     async getSegmentAudio(idOrRef, settings=useSettingsStore()) {
       const msg = 'audio.getSegmentAudio() ';
+      const dbg = DBG_AUDIO;
       let segAudioKey = this.segAudioKey(idOrRef, settings);
       let segAudio = await Idb.get(segAudioKey, SEG_AUDIO_STORE());
       if (segAudio) {
-        //console.log("DBG0123 segAudio elapsed", Date.now() - segAudio.created);
+        let age = ((Date.now()-segAudio.created)/1000).toFixed(1);
+        dbg && console.log(msg, "[1]segAudio", segAudioKey);
       } else {
+        dbg && console.log(msg, "[2]fetchSegmentAudio", idOrRef);
         segAudio = await this.fetchSegmentAudio(idOrRef, settings);
         segAudio.created = Date.now();
+        dbg && console.log(msg, '[3]Idb.set', segAudioKey);
         await Idb.set(segAudioKey, segAudio, SEG_AUDIO_STORE());
       }
-      logger.debug(msg, segAudioKey);
       return segAudio;
     },
     segmentAudioUrl(idOrRef, settings=useSettingsStore()) {
+      const msg = 'audio.segmentAudioUrl()';
+      const dbg = DBG_AUDIO;
       let { langTrans, serverUrl, vnameTrans, vnameRoot } = settings;
       let suttaRef = SuttaRef.create(idOrRef, langTrans);
       let { sutta_uid, lang, author, segnum, scid } = suttaRef;
       author = author || AuthorsV2.langAuthor(lang);
       let vTrans = this.transVoiceName(suttaRef, settings);
       if (author == null) {
-        let msg = `segmentAudioUrl() author is required ${JSON.stringify(idOrRef)}`;
-        throw new Error(msg);
+        let emsg = `${msg} author is required ${JSON.stringify(idOrRef)}`;
+        throw new Error(emsg);
       }
       let url =  [ 
         serverUrl, 
@@ -529,6 +561,7 @@ export const useAudioStore = defineStore('audio', {
     },
     playUrl(url, opts={}) {
       const msg = "audio.playUrl() ";
+      const dbg = DBG_AUDIO;
       let { audioContext } = opts;
       let tempContext = audioContext == null 
         ? this.getAudioContext() : null;
@@ -544,6 +577,8 @@ export const useAudioStore = defineStore('audio', {
     },
     async playUrlAsync(url, opts) {
       const msg = 'audio.playUrlAsync() ';
+      const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       if (url == null) {
         return null;
       }
@@ -553,11 +588,16 @@ export const useAudioStore = defineStore('audio', {
         throw new Error(`${msg} audioContext is required`);
       }
 
+      dbg && console.log(msg, '[1]fetchArrayBuffer', url);
       let arrayBuffer = await this.fetchArrayBuffer(url, opts);
+      let { byteLength } = arrayBuffer;
+      dbgv && console.log(V+msg, `[2]playArrayBuffer[${byteLength}]`);
       return this.playArrayBuffer({arrayBuffer, audioContext, });
     },
     async fetchArrayBuffer(url, opts={}) {
-      const msg = `audio.fetchArrayBuffer() ${url}`;
+      const msg = `audio.fetchArrayBuffer()`;
+      const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       const volatile = useVolatileStore();
       let { headers=HEADERS_MPEG } = opts;
       try {
@@ -566,15 +606,24 @@ export const useAudioStore = defineStore('audio', {
         let idbSegKey = urlParts.slice(iKey).join('/');
         let abuf = await Idb.get(idbSegKey, SOUND_STORE());
         if (abuf) {
-          logger.debug(msg, `=> cached`);
+          dbgv && console.log(V+msg, '[1]cached');
         } else {
           this.nFetch++;
+          dbgv && console.log(V+msg, '[2]fetch', url);
           let res = await fetch(url, { headers });
-          logger.info(msg, `=> HTTP${res.status}`);
+          switch (res.status) {
+            case 200:
+              dbg && console.log(V+msg, `[3]fetch ok`);
+              break;
+            default:
+              dbg && console.log(msg, `[4]fetch => HTTP${res.status}`);
+              break;
+          }
           abuf = await res.arrayBuffer();
+          dbg && console.log(msg, `[4]Idb.set`, idbSegKey, 
+            abuf.byteLength);
           await Idb.set(idbSegKey, abuf, SOUND_STORE());
         }
-        logger.debug(`audio.fetchArrayBuffer() ${url}=> ${abuf.byteLength}B`);
         return abuf;
       } catch(e) {
         let eNew = new Error(`${msg} => ${e.message}`);
@@ -687,7 +736,8 @@ export const useAudioStore = defineStore('audio', {
     },
     async bindSegmentAudio(args={}) {
       const msg = 'sutta.bindSegmentAudio() ';
-      let dbg = DBG_AUDIO;
+      const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       let { 
         $t=(t=>t),
         volatile=useVolatileStore(),
@@ -701,13 +751,12 @@ export const useAudioStore = defineStore('audio', {
       let { langTrans, vnameRoot, serverUrl } = settings;
       let [ scid, lang=langTrans, author ] = routeCard?.location || {};
       let srefStr = routeCard.location.join('/');
-      dbg && console.log(msg, {lang, routeCard});
       let suttaRef = SuttaRef.create(srefStr, langTrans);
       let { sutta_uid, segnum, } = suttaRef;
-      dbg && console.log(msg, {sutta_uid, scid});
       try {
         volatile.waitBegin('ebt.loadingAudio');
 
+        dbgv && console.log(V+msg, '[1]getSegmentAudio', suttaRef);
         let segAudio = await this.getSegmentAudio(suttaRef);
         let { segment } = segAudio;
 
@@ -725,8 +774,8 @@ export const useAudioStore = defineStore('audio', {
           } else {
             this.pliAudioUrl = URL_NOAUDIO;
           }
+          dbg && console.log(msg, '[2]pliAudioUrl', this.pliAudioUrl);
         }
-        dbg && console.log(msg, {segAudio, lang, segment});
         if (segment && settings.speakTranslation) {
           let langText = segment[lang];
           if (langText) {
@@ -743,8 +792,9 @@ export const useAudioStore = defineStore('audio', {
           } else {
             this.transAudioUrl = URL_NOAUDIO;
           }
+          dbg && console.log(msg, '[3]transAudioUrl', this.transAudioUrl);
+        } else {
         }
-        dbg && console.log(msg + segment.scid);
         result = segAudio;
       } finally {
         volatile.waitEnd();

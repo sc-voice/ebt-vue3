@@ -27,6 +27,7 @@ const routeCard = ref(null);
 const appFocus = ref(null); // because document.activeElement is flaky
 const transientMsg = ref(null);
 const showTransientMsg = ref(false);
+const showHtmlLog = ref(false);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -41,14 +42,14 @@ const INITIAL_STATE = {
   homeHtml,
   logHtml,
   routeCard,
-  updated: false,
   showAlertMsg: ref(false),
-  showSettings,
-  showWaiting: ref(false),
+  showHtmlLog,
   showLegacyDialog,
+  showSettings,
+  showTransientMsg,
+  showWaiting: ref(false),
   suttas,
   touchSwipe: ref('waiting...'),
-  showTransientMsg,
   transientMsg,
   trilingual: ref(true),
   waiting: 0,

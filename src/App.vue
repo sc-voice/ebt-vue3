@@ -77,8 +77,8 @@
           <ebt-chips />
         </template> <!-- !collapsed -->
         <template v-if="settings.loaded">
-          <audio 
-            :ref="el => {clickElt = el}" preload=auto>
+          <audio id="audio-click"
+            :ref="el => audio.registerClickElt(el)" preload=auto>
             <source type="audio/mp3" :src="settings.clickUrl()" />
             <p>{{$t('ebt.noHTML5')}}</p>
           </audio>
@@ -90,13 +90,13 @@
           <LegacyVoice v-if="settings.loaded"/>
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
-          <div v-if="DBG_LOG_HTML" class="app-log">
-            <v-icon icon="mdi-close" @click="volatile.clearLog" />
+          <div v-if="volatile.showHtmlLog" class="app-log">
+            <v-icon icon="mdi-trash-can" @click="volatile.clearLog" />
             <div v-for="item in volatile.logHtml" class="app-log-item">
               <div class="app-log-count">
-                {{item.count === 1 ? ' ' : `${item.count}x`}}
+                {{item.count === 1 ? '&nbsp;' : `${item.count}x`}}
               </div>
-              <div class="app-log-text">{{item.line}}</div>
+              {{item.line}}
             </div>
           </div>
         </div>
@@ -170,6 +170,8 @@
 </template>
 
 <script setup>
+  import { onUpdated } from "vue";
+  import { useVolatileStore } from './stores/volatile.mjs';
   import { 
     DBG_TUTORIAL, DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
@@ -201,7 +203,6 @@
       ? "+" : "-";
 
   }, 1000);
-
 </script>
 <script>
   import { default as HomeView } from './components/HomeView.vue';
@@ -213,17 +214,17 @@
   import EbtProcessing from './components/EbtProcessing.vue';
   import LegacyVoice from './components/LegacyVoice.vue';
   import { useSettingsStore } from './stores/settings.mjs';
-  import { useVolatileStore } from './stores/volatile.mjs';
   import { useAudioStore } from './stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
+
+  const tabs = ref([]);
 
   export default {
     inject: ['config'],
     setup() {
       return {
-        tabs: ref([]),
-        clickElt: ref(undefined),
+        tabs,
       }
     },
     data: ()=>({
@@ -243,6 +244,18 @@
       Tutorial,
     },
     methods: {
+      onFocusIn(evt) {
+        const msg = 'App.onFocusIn()';
+        const dbg = DBG_FOCUS || DBG_AUDIO;
+        let { audio } = this;
+        if (evt.target.id === 'ebt-chips') {
+          dbg && console.log(msg, '[1]playBlock');
+          audio.playBlock();
+        } else {
+          //dbg && console.log(msg, '[2]playClick');
+          //audio.playClick();
+        }
+      },
       onFocusBtn(evt) {
         const msg = 'App.onFocusBtn()';
         const dbg = DBG_FOCUS;
@@ -357,7 +370,7 @@
     },
     created() {
       const msg = "App.created()";
-      const dbg = true || DBG_STARTUP;
+      const dbg = DBG_STARTUP;
       let { volatile } = this;
 
       if (DBG_LOG_HTML) {
@@ -365,16 +378,9 @@
         volatile.enableLog(true);
       }
     },
-    updated() {
-      let msg = 'App.updated()';
-      let { volatile } = this;
-      let dbg = DBG_STARTUP;
-      volatile.updated = true;
-      dbg && console.log(msg);
-    },
     async mounted() {
       const msg = 'App.mounted()';
-      const dbg = DBG_MOUNTED || DBG_WIKI;
+      const dbg = DBG_MOUNTED || DBG_WIKI || DBG_AUDIO;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route
@@ -387,10 +393,14 @@
       // wait for Settings to load
       await settings.loadSettings(config);
       setTimeout(()=>{
-        let { clickElt } = this;
-        audio.clickElt = clickElt;
-        let { audioVolume } = settings;
-        clickElt && (clickElt.volume = audioVolume);
+        let { clickElt } = audio;
+        if (clickElt) {
+          let { audioVolume } = settings;
+          dbg && console.log(msg, '[1]volume', audioVolume);
+          clickElt.volume = audioVolume;
+        } else {
+          console.warn(msg, '[2]clickElt?', clickElt);
+        }
       }, 2000);
 
       let wikiHash = hash.startsWith("#/wiki") ? hash : null;
@@ -398,7 +408,7 @@
       let wikiCard = wikiHash
         ? settings.pathToCard(wikiHash)
         : settings.pathToCard(homePath);
-      dbg && console.log(msg, '[1]wikiCard', wikiCard?.debugString);
+      dbg && console.log(msg, '[3]wikiCard', wikiCard?.debugString);
 
       $vuetify.theme.global.name = settings.theme === 'dark' 
         ? 'dark' : 'light';;
@@ -407,19 +417,8 @@
         this.onSettingsChanged(mutation,state);
       });
       let that = this;
-      window.addEventListener('keydown', (evt)=>this.onKeydown(evt));
-      window.addEventListener('focusin', evt=>{
-        const msg = 'App.mounted().focusin';
-        const dbg = DBG_AUDIO;
-        let { audio } = this;
-        if (evt.target.id === 'ebt-chips') {
-          dbg && console.log(msg, '[1]playBlock');
-          audio.playBlock();
-        } else {
-          dbg && console.log(msg, '[1]playClick');
-          audio.playClick();
-        }
-      });
+      window.addEventListener('keydown', evt=>this.onKeydown(evt));
+      window.addEventListener('focusin', evt=>this.onFocusIn(evt));
     },
     computed: {
       showGdpr(ctx) {
@@ -767,16 +766,23 @@
   font-family: sans;
   color: rgba(255,255,255, 0.5);
 }
-.app-log div:hover{
+.app-log-item {
+  text-indent: -3em;
+  padding-left: 3em;
+  margin-bottom: 0.2em;
+  line-height: 1.2em;
+}
+.app-log-item:hover{
   color: rgb(255,255,80);
   background-color: black;
 }
 .app-log-count {
   display: inline-block;
   width: 1.5em;
+  border-right: 1pt solid rgba(255,255,80, 0.2);
 }
-.app-log-text {
-  display: inline-block;
+.app-log-item:hover .app-log-count {
+  border-right: 1pt solid rgba(255,255,80, 1);
 }
 .app-extension {
   width: 100%;
