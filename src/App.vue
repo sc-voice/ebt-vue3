@@ -665,8 +665,7 @@
 <style>
 .ebt-app-bar {
   background: 
-    linear-gradient(130deg, #000, rgb(var(--v-theme-toolbar)))
-    !important;
+    linear-gradient(130deg, rgb(var(--v-theme-currentbg)), rgb(var(--v-theme-surface))) !important;
 }
 .gdrp {
   position: fixed;

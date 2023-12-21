@@ -27,7 +27,7 @@ export default class VuetifyOpts {
         surface:"#f0f0f0",
         currentbg: "#ffffff",
         chip: colors.brown.darken2,
-        link: colors.brown.darken2,
+        link: colors.brown.lighten1,
         toolbar: colors.brown.darken2,
         matched: "#bf235d",
         placeholder: "#600060",
