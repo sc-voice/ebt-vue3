@@ -41,6 +41,6 @@ git push
 # Uncomment the following line only when you need to update
 # all EBT-sites.
 #
-# npm publish
+npm publish
 
 echo -e "${SCRIPT}: END `date`"
