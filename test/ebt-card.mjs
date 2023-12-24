@@ -7,7 +7,7 @@ import should from "should";
 logger.logLevel = 'warn';
 
 (typeof describe === 'function') && describe("ebt-card.mjs", function () {
-  it("TESTTESTdefault ctor", async () => {
+  it("default ctor", async () => {
     let card1 = new EbtCard();
     let card2 = new EbtCard();
     let defaultProps = {
@@ -44,7 +44,7 @@ logger.logLevel = 'warn';
     let card2 = new EbtCard(Object.assign({}, card1));
     should(card2).properties(card1);
   });
-  it("TESTTESTdebugString", ()=>{
+  it("debugString", ()=>{
     let id = 'test-id';
     let context = 'search';
     let location = ['a','b'];
@@ -86,6 +86,7 @@ logger.logLevel = 'warn';
     let card2 = new EbtCard({ context, location:["a","b c"], });
 
     let noPaths = [
+      "/",
       "/search/a",
       "#/search/a",
     ];
@@ -96,7 +97,6 @@ logger.logLevel = 'warn';
     });
 
     let cardPaths = [
-      "/",
       "/wiki/a",
       "#/wiki/a",
       "/wiki/a/b c",
@@ -112,13 +112,14 @@ logger.logLevel = 'warn';
       should(card2.matchPath(path)).equal(true);
     });
   });
-  it("matchPath() search context", async() => {
+  it("TESTTESTmatchPath() search context", async() => {
     let langTrans = 'test-lang';
-    let card0 = new EbtCard({ context: "" , langTrans});
     let card1 = new EbtCard({ context: "search", langTrans});
     let card2 = new EbtCard({ context: "SEARCH", location: ["a b"], langTrans});
 
     let noPaths = [
+      "/",
+      "#/",
       "/search/nothing",
       "#/search/nothing",
       "/asdf",
@@ -127,17 +128,6 @@ logger.logLevel = 'warn';
       `search/x/${langTrans}`,
     ];
     noPaths.forEach(path=>{
-      should(card0.matchPath(path)).equal(false);
-      should(card1.matchPath(path)).equal(false);
-      should(card2.matchPath(path)).equal(false);
-    });
-
-    let card0Paths = [
-      "/",
-      "#/",
-    ];
-    card0Paths.forEach(path => {
-      should(card0.matchPath(path)).equal(true);
       should(card1.matchPath(path)).equal(false);
       should(card2.matchPath(path)).equal(false);
     });
@@ -149,7 +139,6 @@ logger.logLevel = 'warn';
       `#/search//${langTrans}`,
     ];
     card1Paths.forEach(path=>{
-      should(card0.matchPath(path)).equal(false);
       should(card1.matchPath(path)).equal(true);
       should(card2.matchPath(path)).equal(false);
     });
@@ -161,7 +150,6 @@ logger.logLevel = 'warn';
       `#/SEARCH/A%20B/${langTrans.toUpperCase()}/`,
     ];
     card2Paths.forEach(path=>{
-      should(card0.matchPath(path)).equal(false);
       should(card1.matchPath(path)).equal(false);
       should(card2.matchPath(path)).equal(true);
     });
@@ -287,27 +275,42 @@ logger.logLevel = 'warn';
       nAdd++
       return card;
     }
-    let cardHome = EbtCard.pathToCard({path:'/', cards, addCard});
+    let cardEmpty = EbtCard.pathToCard({path:'/', cards, addCard});
+    should.deepEqual(cards, []);
+    let cardEmpty2 = EbtCard.pathToCard({path:'/', cards, addCard});
+    should.deepEqual(cards, []);
+
+    let cardHome = EbtCard.pathToCard({path:'/wiki', cards, addCard});
     should.deepEqual(cards, [cardHome]);
-    let cardHome2 = EbtCard.pathToCard({path:'/', cards, addCard});
+    let cardHome2 = EbtCard.pathToCard({path:'/wiki', cards, addCard});
     should.deepEqual(cards, [cardHome]);
 
-    let cardSearch = EbtCard.pathToCard({path:'/search', cards, addCard});
+    let cardSearch = EbtCard.pathToCard(
+      {path:'/search', cards, addCard});
     should.deepEqual(cards, [cardHome, cardSearch]);
-    let cardSearch2 = EbtCard.pathToCard({path:'/search', cards, addCard});
+    let cardSearch2 = EbtCard.pathToCard({
+      path:'/search', cards, addCard});
     should.deepEqual(cards, [cardHome, cardSearch]);
 
-    let cardSearchAB = EbtCard.pathToCard({path:'/search/a%20b', cards, addCard});
+    let cardSearchAB = EbtCard.pathToCard(
+      {path:'/search/a%20b', cards, addCard});
     should.deepEqual(cards, [cardHome, cardSearch, cardSearchAB]);
-    let cardSearchAB2 = EbtCard.pathToCard({path:'/search/a%20b', cards, addCard});
+    let cardSearchAB2 = EbtCard.pathToCard(
+      {path:'/search/a%20b', cards, addCard});
     should.deepEqual(cards, [cardHome, cardSearch, cardSearchAB]);
 
-    let cardSearchABC = EbtCard.pathToCard({path:'/search/a%20b/c', cards, addCard});
-    should.deepEqual(cards, [cardHome, cardSearch, cardSearchAB, cardSearchABC]);
-    let cardSearchAB3 = EbtCard.pathToCard({path:'/search/a%20b/c', cards, addCard});
-    should.deepEqual(cards, [cardHome, cardSearch, cardSearchAB, cardSearchABC]);
-    let cardSearchABC2 = EbtCard.pathToCard({path:'/search/a%20b/c', cards, addCard});
-    should.deepEqual(cards, [cardHome, cardSearch, cardSearchAB, cardSearchABC]);
+    let cardSearchABC = EbtCard.pathToCard(
+      {path:'/search/a%20b/c', cards, addCard});
+    should.deepEqual(cards, 
+      [cardHome, cardSearch, cardSearchAB, cardSearchABC]);
+    let cardSearchAB3 = EbtCard.pathToCard(
+      {path:'/search/a%20b/c', cards, addCard});
+    should.deepEqual(cards, 
+      [cardHome, cardSearch, cardSearchAB, cardSearchABC]);
+    let cardSearchABC2 = EbtCard.pathToCard(
+      {path:'/search/a%20b/c', cards, addCard});
+    should.deepEqual(cards, 
+      [cardHome, cardSearch, cardSearchAB, cardSearchABC]);
 
     should(nAdd).equal(4);
   });

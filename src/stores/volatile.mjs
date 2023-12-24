@@ -182,8 +182,11 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.setRouteCard()';
       const dbg = DBG_ROUTE;
       let settings = useSettingsStore();
-      dbg && console.log(msg, card.debugString);
+      dbg && console.log(msg, card?.debugString);
       routeCard.value = card;
+      if (card) {
+        card.open();
+      }
     },
     trilingualPattern(search) {
       const msg = 'volatile.trilingualPattern() ';

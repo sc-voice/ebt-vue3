@@ -7,6 +7,7 @@
 </template>
 
 <script>
+  import { default as Utils } from '../utils.mjs';
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { logger } from 'log-instance/index.mjs';
@@ -39,8 +40,10 @@
         if (target.nodeName === "A") {
           dbg && console.log(msg, '[1]appFocus', {evt});
           volatile.appFocus = target;
-          dbg && console.log(msg, '[1]scrollToElement', viewportElt);
-          settings.scrollToElement(viewportElt);
+          if (!Utils.elementInViewport(viewportElt)) {
+            dbg && console.log(msg, '[1]scrollToElement', viewportElt);
+            settings.scrollToElement(viewportElt);
+          }
         }
       },
     },

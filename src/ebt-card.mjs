@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
-  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, DBG_PATH_TO_CARD,
-  DBG_VERBOSE, DBG_VIEWPORT
+  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, DBG_CARD_PATH,
+  DBG_VERBOSE, DBG_VIEWPORT, 
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
@@ -116,7 +116,7 @@ export default class EbtCard {
 
   static pathToCard(args) {
     const msg = 'ebt-card.pathToCard()';
-    const dbg = DBG_PATH_TO_CARD;
+    const dbg = DBG_CARD_PATH;
     let {
       path='/', cards=[], addCard, defaultLang, isOpen,
     } = args;
@@ -129,7 +129,7 @@ export default class EbtCard {
       if (addCard === undefined) {
         throw new Error(msg+"addCard is required");
       } 
-      if (addCard) {
+      if (context) {
         dbg && console.log(msg, '[2]addCard', 
           {context,location,isOpen});
         card = addCard ? addCard({context, location, isOpen}) : null;
@@ -318,51 +318,52 @@ export default class EbtCard {
     let msStart = Date.now();
     let pathRef = SuttaRef.create(loc, defaultLang);
     if (pathRef == null) {
-      dbg && console.log(msg, `[2.5]false (${path})`, {loc});
+      dbg && console.log(msg, `[3]false (${path})`, {loc});
       return false;
     }
     let cardRef = SuttaRef.create(cardLoc, defaultLang);
     if (pathRef.sutta_uid !== cardRef.sutta_uid) {
-      dbg && console.log(msg, `[3]false (${path})`, 
+      dbg && console.log(msg, `[4]false (${path})`, 
         pathRef.suid, cardRef.suid);
       return false;
     }
     if (pathRef.lang && pathRef.lang !== cardRef.lang) {
-      dbg && console.log(msg, `[4]false (${path}, ${defaultLang})`, 
+      dbg && console.log(msg, `[5]false (${path}, ${defaultLang})`, 
         pathRef.lang, cardRef.lang);
       return false;
     }
     if (pathRef.author && pathRef.author !== cardRef.author) {
-      dbg && console.log(msg, `[5]false (${path})`, 
+      dbg && console.log(msg, `[6]false (${path})`, 
         pathRef.author, cardRef.author);
       return false;
     }
 
-    dbg && console.log(`[6]match(${path})`, 
+    dbg && console.log(`[7]match(${path})`, 
       pathRef.toString(), '~=', cardRef.toString());
     return true;
   }
 
   matchPath(strOrObj) {
     const msg = 'ebt-card.matchPath() ';
+    const dbg = DBG_CARD_PATH;
     let opts = typeof strOrObj === 'string'
       ? { path: strOrObj }
       : strOrObj;
     let { path } = opts;
-    let dbg = 0;
     path = path.toLowerCase().replace(/^#/, '');
     let [ blank, context="", ...location ] = path.split('/');
     if (blank !== '') {
-      dbg && console.log(msg, `(${path}) expected initial "/"`, {blank});
+      dbg && console.log(msg, `[1] (${path}) expected initial "/"`, 
+        {blank});
       return false;
     }
     while (location.length && location[location.length-1] === '') {
       location.pop();
     }
-    context = context && context.toLowerCase() || CONTEXT_WIKI;
+    context = context && context.toLowerCase();
     if (context === this.context && context===CONTEXT_WIKI) {
       // all wiki locations are owned by home card singleton
-      dbg && console.log(msg, 'CONTEXT_WIKI', strOrObj, this);
+      dbg && console.log(msg, '[2]CONTEXT_WIKI', strOrObj, this);
       return true;
     }
     location = location 
@@ -373,7 +374,8 @@ export default class EbtCard {
       ? this.location
       : (this.location == null ? [] : [this.location]);
     if (context !== this.context) {
-      dbg && console.log(`matchPath(${path}) context ${context} != ${this.context}`);
+      dbg && console.log(msg, 
+        `[3](${path}) context ${context} != ${this.context}`);
       return false;
     }
     if (context === CONTEXT_SUTTA) {
@@ -388,8 +390,9 @@ export default class EbtCard {
           return true; // empty search path without langTrans
         }
       }
-      dbg && console.log([
-        `matchPath(${path})`,
+      dbg && console.log(msg, [
+        '[4]',
+        path,
         `location:${JSON.stringify(location)}`,
         `!=`,
         `cardLocation:${JSON.stringify(cardLocation)}`].join(' '));
@@ -399,13 +402,14 @@ export default class EbtCard {
       let vDecoded = decodeURIComponent(v.toLowerCase());
       let match = a && (vDecoded === cardLocation[i].toLowerCase());
       if (dbg && !match) {
-        console.log(`matchPath(${path}) location[${i}]`,
+        dbg && console.log(msg, `[5](${path}) location[${i}]`,
           `${location[i]} != ${cardLocation[i]}`);
       }
       return match;
     }, true);
 
-    dbg && console.log(`matchPath(${path}) => ${match}`, {context, location});
+    dbg && console.log(msg, `[6](${path}) => ${match}`, 
+      {context, location});
     return match;
   }
 

@@ -241,6 +241,7 @@
           }, 500);
         } else {
           ebtChips && volatile.focusElement(ebtChips);
+          volatile.setRouteCard(null)
         }
       },
       addIntersectionObserver() {

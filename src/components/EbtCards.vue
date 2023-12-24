@@ -190,26 +190,22 @@
           addCard: (opts) => settings.addCard(opts),
           defaultLang: settings.langTrans,
         });
-        if (!card) {
-          dbg && console.log(msg, '[1]no card', {to, from});
-        }
         let { activeElement } = document;
-        if (card.isOpen) {
-          dbg && console.log(msg, '[2]setRoute open', 
+
+        if (card?.isOpen) {
+          dbg && console.log(msg, '[1]setRoute open', 
             {activeElement, to, from});
           volatile.setRoute(card, undefined, msg);
-        } else if (to.hash) {
-          dbg && console.log(msg, '[3]setRoute closed', 
+        } else if (card) {
+          dbg && console.log(msg, '[2]setRoute closed', 
             {activeElement, to, from});
+          card.open();
           volatile.setRoute(card, undefined, msg);
-        } else {
-          dbg && console.log(msg, '[4]n/a', 
-            {activeElement, to, from});
         }
         this.bindAudioSutta(to.href);
         if (card == null) {
           volatile.setRoute('', undefined, msg);
-          console.warn(msg, `[5]non-card route`, {$route, to, from});
+          dbg && console.log(msg, `[3]no-card`, {$route, to, from});
           return;
         }
 
@@ -220,7 +216,7 @@
           default:
             if (!card.isOpen) {
               card.open(true);
-              dbg && console.log(msg, `[6]opened card`, 
+              dbg && console.log(msg, `[4]opened card`, 
                 {$route, to, from, card});
             }
             break;
@@ -233,7 +229,7 @@
             switch(context) {
               case EbtCard.CONTEXT_WIKI:
                 if (card.isOpen) {
-                  dbg && console.log(msg, '[7]focus', `${id} ${context}`, 
+                  dbg && console.log(msg, '[5]focus', `${id} ${context}`, 
                     fullPath);
                   volatile.focusCardElementId(card, fullPath);
                 }
@@ -241,7 +237,7 @@
               default:
               case EbtCard.CONTEXT_SEARCH:
               case EbtCard.CONTEXT_SUTTA:
-                dbg && console.log(msg, '[8]focus', `${id} ${context}`);
+                dbg && console.log(msg, '[6]focus', `${id} ${context}`);
                 volatile.focusCardElementId(card);
                 break;
             }

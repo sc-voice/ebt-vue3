@@ -7,7 +7,7 @@ import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, DBG_SETTINGS, 
-  DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, DBG_PATH_TO_CARD,
+  DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, DBG_CARD_PATH,
   DBG_VERBOSE,
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
@@ -89,7 +89,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     pathToCard(fullPath) {
       const msg = `settings.pathToCard(${fullPath}) `;
-      const dbg = DBG_PATH_TO_CARD;
+      const dbg = DBG_CARD_PATH;
       let { cards } = this;
       let card = EbtCard.pathToCard({
         path:fullPath, 
@@ -99,8 +99,8 @@ export const useSettingsStore = defineStore('settings', {
       });
       if (card) {
         dbg && console.log(msg, '[1]', card.debugString);
-      } else { // should never happen
-        dbg && console.logwarn(msg, "[2]no card", {fullPath, cards});
+      } else { 
+        dbg && console.log(msg, "[2]no card", {fullPath, cards});
       }
       return card;
     },
