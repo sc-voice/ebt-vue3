@@ -53,7 +53,7 @@
           </v-expansion-panel-text>
         </v-expansion-panel><!--General-->
 
-        <v-expansion-panel v-if="!config.monolingual"><!--Languages-->
+        <v-expansion-panel ><!--Languages-->
           <v-expansion-panel-title 
             expand-icon="mdi-dots-vertical" collapse-icon="mdi-dots-horizontal"
             >
@@ -65,11 +65,14 @@
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-select v-model="settings.locale" :items="languages.UI_LANGS" 
+            <v-select v-model="settings.locale" 
+              v-if="!config.monolingual"
+              :items="languages.UI_LANGS" 
               :menu-icon="selectIcon"
               :label="$t('ebt.uiLanguage')"
             />
             <v-select v-model="settings.langTrans" 
+              v-if="!config.monolingual"
               :items="languages.VOICE_LANGS" 
               :menu-icon="selectIcon"
               :label="$t('ebt.transLanguage')"
