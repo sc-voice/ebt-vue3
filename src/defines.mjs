@@ -10,6 +10,7 @@ export const DBG_KEY      = 0;
 export const DBG_LEGACY   = 0;
 export const DBG_LOAD     = 0;
 export const DBG_LOG_HTML = 0; // when debug console doesn't work
+export const DBG_TBD      = 0; // experimental feature
 export const DBG_MOUNTED  = 0;
 export const DBG_OPEN_CARD= 0;
 export const DBG_PATH_TO_CARD = 0;

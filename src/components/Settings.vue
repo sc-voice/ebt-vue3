@@ -35,7 +35,9 @@
               :items="maxResultsItems"
               :label="$t('ebt.searchResults')"
             />
-            <v-checkbox v-model="settings.alwaysShowLatestText" density="compact"
+            <v-checkbox v-if="tbd" 
+              v-model="settings.alwaysShowLatestText" 
+              density="compact"
               :label="$t('ebt.alwaysShowLatestText')">
             </v-checkbox>
             <v-checkbox v-if="askGdpr" v-model="settings.showGdpr" 
@@ -282,7 +284,9 @@ import { useVolatileStore } from "../stores/volatile.mjs";
 import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
-import { DBG_GDPR, DBG_TUTORIAL, DBG_LOG_HTML } from "../defines.mjs";
+import { 
+  DBG_TBD, DBG_GDPR, DBG_TUTORIAL, DBG_LOG_HTML 
+} from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
 import Confirm from "./Confirm.vue";
@@ -446,6 +450,9 @@ export default {
 
   },
   computed: {
+    tbd(ctx) {
+      return DBG_TBD;
+    },
     askGdpr(ctx) {
       return DBG_GDPR;
     },
