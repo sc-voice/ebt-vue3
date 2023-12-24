@@ -14,15 +14,15 @@ const SERVERS = [{
   value: 'https://staging.api.sc-voice.net/scv',
   hint: 'Voice API server (Linode pre-production)',
 },{
-  title: 's1.sc-voice.net',
+  title: 's1.sc-voice.net (DEPRECATED)',
   value: 'https://s1.sc-voice.net/scv',
   hint: 'Voice API server (Linode legacy)',
 },{
-  title: 'voice.suttacentral.net',
+  title: 'voice.suttacentral.net (DEPRECATED)',
   value: 'https://voice.suttacentral.net/scv',
   hint: 'Voice server (AWS production)',
 },{
-  title: 'localhost:8080',
+  title: 'localhost:8080 (DEVELOPMENT)',
   value: 'http://localhost:8080/scv',
   hint: 'ScvServer (localhost development)',
   dev: true,

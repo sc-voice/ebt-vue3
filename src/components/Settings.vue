@@ -38,7 +38,8 @@
             <v-checkbox v-model="settings.alwaysShowLatestText" density="compact"
               :label="$t('ebt.alwaysShowLatestText')">
             </v-checkbox>
-            <v-checkbox v-model="settings.showGdpr" density="compact"
+            <v-checkbox v-if="askGdpr" v-model="settings.showGdpr" 
+              density="compact"
               :label="$t('ebt.showGdpr')">
             </v-checkbox>
             <v-btn @click="showTutorials(true)" 
@@ -281,7 +282,7 @@ import { useVolatileStore } from "../stores/volatile.mjs";
 import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
-import { DBG_TUTORIAL, DBG_LOG_HTML } from "../defines.mjs";
+import { DBG_GDPR, DBG_TUTORIAL, DBG_LOG_HTML } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
 import Confirm from "./Confirm.vue";
@@ -445,6 +446,9 @@ export default {
 
   },
   computed: {
+    askGdpr(ctx) {
+      return DBG_GDPR;
+    },
     githubUrl: ctx=>{
       let { repository, account } = ctx.config.github;
       return `https://github.com/${account}/${repository}`;

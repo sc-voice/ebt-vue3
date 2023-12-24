@@ -40,7 +40,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async loadSettings(config) {
       let msg = 'settings.loadSettings() ';
-      let dbg = DBG_ADD_CARD;
+      let dbg = DBG_SETTINGS || DBG_ADD_CARD;
       if (this.loaded) {
         return this;
       }
@@ -49,7 +49,7 @@ export const useSettingsStore = defineStore('settings', {
       let savedState = await Idb.get(SETTINGS_KEY);
       if (savedState) {
         try {
-          let { cards, logLevel } = savedState;
+          let { serverUrl, cards, logLevel } = savedState;
           logger.logLevel = logLevel;
           if (cards == null) {
             cards = savedState.cards = [{context:'home'}];
@@ -65,9 +65,13 @@ export const useSettingsStore = defineStore('settings', {
             addCard: null,
             defaultLang: this.langTrans,
           });
+          if (serverUrl === "https://s1.sc-voice.net/scv") {
+            savedState.serverUrl = EbtSettings.SERVERS[0].value;
+            dbg && console.log(msg, "[2]serverUrl", savedState.serverUrl);
+          }
           //console.log(msg, {pathCard});
         } catch(e) {
-          logger.warn(msg,  savedState, e.message);
+          console.warn(msg, savedState, e);
           savedState = null;
         }
       }

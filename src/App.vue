@@ -540,7 +540,7 @@
           return false;
         }
 
-        if (wikiCard.isOpen) {
+        if (wikiCard?.isOpen) {
           dbg && console.log(msg, '[3]wikiCard');
           return false;
         }
