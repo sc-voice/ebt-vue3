@@ -47,7 +47,6 @@ export default class Settings {
       maxResults,
       refAuthor,
       refLang,
-      routeCardId,
       serverUrl,
       showId,
       showPali,
@@ -87,7 +86,6 @@ export default class Settings {
     this.refLang = refLang;
     this.refAuthor = refAuthor;
     this.docLang = docLang;
-    this.routeCardId = routeCardId;
     this.serverUrl = serverUrl;
     this.showId = showId;
     this.alwaysShowLatestText = alwaysShowLatestText;
@@ -140,7 +138,6 @@ export default class Settings {
       maxResults: 5,
       refAuthor: AuthorsV2.langAuthor(REF_LANG),
       refLang: REF_LANG,
-      routeCardId: null,
       scid: undefined,
       serverUrl: SERVERS[0].value,
       showGdpr: true,

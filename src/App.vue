@@ -36,8 +36,8 @@
                   </div>
                 </div> 
                 <div  v-if="DBG_ROUTE" 
-                  class="app-dbg" title="routeCardId">
-                  {{settings.routeCardId}}
+                  class="app-dbg" title="routeCard.id">
+                  {{volatile.routeCard?.id}}
                 </div >
                 <div v-if="DBG_SCROLL" 
                   class="app-dbg" 
@@ -439,11 +439,6 @@
         }
         if (showLegacyDialog) {
           dbg && console.log(msg, '[3]wait', {showLegacyDialog});
-          return false;
-        }
-        let inTutorial = !settings.tutorialState(false);
-        if (inTutorial) {
-          dbg && console.log(msg, '[4]wait', {inTutorial});
           return false;
         }
 
