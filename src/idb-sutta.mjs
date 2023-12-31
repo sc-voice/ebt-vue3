@@ -1,6 +1,9 @@
 import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { Examples, SuttaRef, SuttaCentralId } from 'scv-esm/main.mjs';
+import {
+  DBG_SUTTA,
+} from './defines.mjs';
 import * as Idb from "idb-keyval";
 
 const OPTIONAL_PROPS = ['saved', 'refAuthor', 'refLang'];
@@ -34,6 +37,8 @@ export default class IdbSutta {
   }
 
   static create(opts = {}) {
+    const msg = 'IdbSutta.create()';
+    const dbg = DBG_SUTTA;
     let { 
       sutta_uid, 
       lang, 
@@ -46,6 +51,7 @@ export default class IdbSutta {
       trilingual,
       segments,
     } = opts;
+    dbg && console.log(msg, opts);
 
     try {
       IdbSutta.#privateCtor = true;
@@ -99,9 +105,13 @@ export default class IdbSutta {
   }
 
   merge(opts={}) {
+    const msg = 'IdbSutta.merge()';
+    const dbg = DBG_SUTTA;
     let { mlDoc, refLang:refLangOpts, highlightExamples=false } = opts;
     if (mlDoc == null) {
-      throw new Error(`IdbSutta.merge({mlDoc?}) mlDoc is required`);
+      let emsg = `${msg} [1]mlDoc?`;
+      console.warn(emsg);
+      throw new Error(emsg);
     }
     let { segments:dstSegs } = this;
     let dstSegMap = dstSegs.reduce((a,seg) => {
@@ -113,10 +123,13 @@ export default class IdbSutta {
       refLang, refAuthor, docLang, docAuthor, trilingual,
     } = mlDoc;
     if (srcSegMap == null) {
-      throw new Error(`IdbSutta.merge({mlDoc.segMap?}) invalid mlDoc`);
+      let emsg = `${msg} [2]srcSegMap?`;
+      console.warn(emsg, {mlDoc});
+      throw new Error(emsg);
     }
     this.trilingual = trilingual;
     if (trilingual) {
+      dbg && console.log(msg, '[3]trilingual', opts);
       this.author = docAuthor;
       this.lang = docLang;
       this.docAuthor = docAuthor;
@@ -125,9 +138,11 @@ export default class IdbSutta {
       this.refAuthor = refAuthor;
     } else {
       if (refLangOpts) {
+        dbg && console.warn(msg, '[4]legacy', opts);
         this.refAuthor = author_uid;
         this.refLang = refLangOpts;
       } else {
+        dbg && console.warn(msg, '[5]legacy', opts);
         this.author = author_uid;
         this.lang = lang;
         this.title = title;
@@ -156,6 +171,7 @@ export default class IdbSutta {
         return a;
       }, []);
     if (highlightExamples) {
+      dbg && console.log(msg, '[6]highlightExamples');
       this.highlightExamples(opts);
     }
   }

@@ -7,7 +7,8 @@
         <div class="result-sutta">
           <div class="result-title-main">
             <div class="result-title-number">{{i+1}}</div>
-            <a :href="`#/sutta/${href(card.data[i])}`" class="scv-matched">
+            <a :href="`#/sutta/${href(card.data[i])}`" 
+              class="scv-matched">
               <div class="result-title-body" 
                 :title="resultAria(result, i)"
                 v-html="resultTitle(result, i)"

@@ -39,6 +39,7 @@ export const useSuttasStore = defineStore('suttas', {
     },
     async loadIdbSutta(suttaRef, opts={}) { // low-level API
       const msg = `suttas.loadIdbSutta(${suttaRef})`;
+      const dbg = DBG_LOAD;
       let { maxAge } = this;
       let { refresh=false } = opts;
       let idbKey = IdbSutta.idbKey(suttaRef);
@@ -46,11 +47,11 @@ export const useSuttasStore = defineStore('suttas', {
       this.nGet++;
       let age = idbData?.saved ? Date.now()-idbData.saved : maxAge+1;
       let idbSutta;
-      let dbg = DBG_LOAD;
 
       if (refresh || !idbData || maxAge < age) {
         let volatile = useVolatileStore();
         let url = this.suttaUrl(suttaRef);
+        dbg && console.log(msg, '[1]fetchJson', url);
         volatile.waitBegin('ebt.loadingSutta', undefined, msg);
         let json = await volatile.fetchJson(url);
         volatile.waitEnd('ebt.loadingSutta', undefined, msg);
@@ -66,7 +67,7 @@ export const useSuttasStore = defineStore('suttas', {
           `segments:${idbSutta.segments.length}`);
         await this.saveIdbSutta(idbSutta);
       } else {
-        dbg && console.log(msg, `cached idb(${idbKey})`);
+        dbg && console.log(msg, `[2]cached idb(${idbKey})`);
         idbSutta = IdbSutta.create(idbData);
       } 
 

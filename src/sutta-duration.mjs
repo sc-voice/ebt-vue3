@@ -23,7 +23,9 @@ export default class SuttaDuration {
 
       let url = SUID_DURATION_URL;
       let fetch = this.fetch;
-      let res = await fetch(url, { headers: { Accept: 'text/plain' } });
+      let res = await fetch(url, { 
+        headers: { Accept: 'text/plain' } 
+      });
       this.suidDuration = await res.json();
       this.initialized = true;
       return this;

@@ -8,7 +8,7 @@ import { useAudioStore } from "./audio.mjs";
 import {
   DBG_CLICK, DBG_FOCUS, DBG_HOME, DBG_LOG_HTML,
   DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
-  DBG_COPY,
+  DBG_COPY, DBG_FETCH
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -295,11 +295,11 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async fetchText(href) {
       const msg = "volatile.fetchText() ";
-      const dbg = DBG_WIKI;
+      const dbg = DBG_FETCH;
       let res;
       let text;
       try {
-        res = await fetch(href);
+        res = await this.fetch(href);
         if (res.ok) {
           text = await res.text();
           dbg && console.log(msg, '[1]OK', {href, text});
@@ -435,19 +435,19 @@ export const useVolatileStore = defineStore('volatile', {
       return suttas[key];
     },
     async fetch(url, options={}) {
-      const msg = `volatile.fetch() ${url} `;
+      const msg = `volatile.fetch()`;
+      const dbg = DBG_FETCH;
       let res;
       try {
         this.waitBegin();
-        logger.debug(msg);
         let fetchOpts = Object.assign({
     //      mode: 'no-cors',
         }, options);
+        dbg && console.log(msg, '[1]', decodeURI(url), fetchOpts);
         res = await fetch(url, fetchOpts);
-        logger.debug(msg,  res);
       } catch(e) {
-        logger.error(msg + "ERROR:", res, e);
-        res = { error: `ERROR: ${url.value} ${e.message}` };
+        console.warn(msg, '[2]error', decodeURI(url), res, e);
+        res = { error: `ERROR: ${url} ${e.message}` };
       } finally {
         this.waitEnd();
       }

@@ -221,7 +221,8 @@
         let nCards = cards.length;
         let iNext = (iSelf+1) % nCards;
         let routeCard = null;
-        for (let i=1; i<nCards; i++) {
+        for (let i=nCards; --i >= 0; ) { 
+          // Show most recently opened card
           let c = cards[(iSelf+i)%nCards];
           if (c.isOpen) {
             routeCard = c;
