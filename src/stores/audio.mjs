@@ -291,7 +291,6 @@ export const useAudioStore = defineStore('audio', {
       let volatile = useVolatileStore();
       let settings = useSettingsStore();
       let audio = this;
-      let { routCard } = volatile;
       let { idbAudio, audioScid } = audio;
       let segAudio = await audio.bindSegmentAudio();
       let { segment:seg, langTrans } = segAudio;
@@ -490,9 +489,9 @@ export const useAudioStore = defineStore('audio', {
       let { sutta_uid, lang, author, segnum, scid } = suttaRef;
       author = author || AuthorsV2.langAuthor(lang);
       if (author == null) {
-        let msg = `audio.segmentAudioUrl() author is required: ` +
+        let emsg = `${msg} author is required: ` +
           JSON.stringify(idOrRef);
-        throw new Error(msg);
+        throw new Error(emsg);
       }
       let vTrans = this.transVoiceName(suttaRef, settings);
       let key = `${scid}/${lang}/${author}/${vTrans}/${vnameRoot}`;
@@ -500,15 +499,17 @@ export const useAudioStore = defineStore('audio', {
       return key;
     },
     async fetchSegmentAudio(idOrRef, settings=useSettingsStore()) {
+      const msg = "audio.fetchSegmentAudio()";
+      const dbg = DBG_AUDIO;
       const volatile = useVolatileStore();
       let segAudio;
       try {
         volatile.waitBegin("ebt.loadingAudio");
         let audioUrl = this.segmentAudioUrl(idOrRef, settings);
         this.nFetch++;
+        dbg && console.log(msg, '[1]fetch', audioUrl);
         let resAudio = await fetch(audioUrl, { headers: HEADERS_JSON });
         segAudio = await resAudio.json();
-        logger.info("fetchSegmentAudio()", audioUrl);
       } catch(e) {
         volatile.alert(e);
         throw e;
@@ -633,6 +634,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async langAudioUrl(opts={}) {
       const msg = 'audio.langAudioUrl() ';
+      const dbg = DBG_AUDIO;
       let {idOrRef, lang, settings=useSettingsStore(), segAudio} = opts;
       let { serverUrl, langTrans } = settings;
       if (typeof lang !== 'string') {
@@ -648,6 +650,7 @@ export const useAudioStore = defineStore('audio', {
       let { author } = suttaRef;
       author = author || AuthorsV2.langAuthor(lang);
       segAudio = segAudio || await this.getSegmentAudio(segRef, settings);
+      dbg && console.log(msg, '[1]segAudio', segAudio);
       let { 
         sutta_uid, translator, segment, vnameRoot, vnameTrans 
       } = segAudio;
@@ -669,6 +672,8 @@ export const useAudioStore = defineStore('audio', {
       return url;
     },
     async createAudioBuffer({audioContext, arrayBuffer}) {
+      const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       const msgPrefix = 'audio.createAudioBuffer()';
       const volatile = useVolatileStore();
       try {
@@ -683,20 +688,21 @@ export const useAudioStore = defineStore('audio', {
         let numberOfChannels = Math.min(2, audioData.numberOfChannels);
         let length = audioData.length;
         let sampleRate = Math.max(SAMPLE_RATE, audioData.sampleRate);
-        logger.debug(`${msgPrefix}`, {sampleRate, length, numberOfChannels});
+        logger.debug(`${msgPrefix}`, {
+          sampleRate, length, numberOfChannels});
         let audioBuffer = audioContext.createBuffer(
           numberOfChannels, length, sampleRate);
-        for (let channelNumber = 0; channelNumber < numberOfChannels; channelNumber++) {
+        for (let iChan = 0; iChan < numberOfChannels; iChan++) {
           let rawData = new Float32Array(length);
-          rawData.set(audioData.getChannelData(channelNumber), 0);
-          audioBuffer.getChannelData(channelNumber).set(rawData);
+          rawData.set(audioData.getChannelData(iChan), 0);
+          audioBuffer.getChannelData(iChan).set(rawData);
         }
 
         return audioBuffer;
       } catch(e) {
         let msg = `${msgPrefix} ERROR`;
         logger.warn(msg);
-        console.trace(msg, e);
+        dbgv && console.trace(msg, e);
         throw e;
       }
     },
@@ -756,9 +762,9 @@ export const useAudioStore = defineStore('audio', {
       try {
         volatile.waitBegin('ebt.loadingAudio');
 
-        dbgv && console.log(V+msg, '[1]getSegmentAudio', suttaRef);
         let segAudio = await this.getSegmentAudio(suttaRef);
-        let { segment } = segAudio;
+        dbg && console.log(V+msg, '[1]segAudio', segAudio);
+        let { segment, vnameTrans, vnameRoot } = segAudio;
 
         if (settings.speakPali) {
           if (segment.pli) {
@@ -779,7 +785,6 @@ export const useAudioStore = defineStore('audio', {
         if (segment && settings.speakTranslation) {
           let langText = segment[lang];
           if (langText) {
-            let vnameTrans = this.transVoiceName(suttaRef, settings);
             this.transAudioUrl = [
               serverUrl,
               'audio',

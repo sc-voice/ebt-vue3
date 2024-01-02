@@ -1,6 +1,9 @@
 import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
+import {
+  DBG_AUDIO, DBG_VERBOSE,
+} from './defines.mjs'
 
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
 const URL_NO_AUDIO = "https://github.com/ebt-site/ebt-vue3/blob/04a335368ebd751d1caf56312d6599f367eaa21f/public/audio/no_audio.mp3";
@@ -41,7 +44,10 @@ export default class IdbAudio {
   }
 
   set src(value) {
-    var msg = `IdbAudio.src.set() ${value} `;
+    const msg = `IdbAudio.src.set() ${value} `;
+    const dbg = DBG_AUDIO;
+    const dbgv = DBG_VERBOSE && dbg;
+
     let { preload } = this;
 
     if (this.currentSrc !== value) {
@@ -55,7 +61,7 @@ export default class IdbAudio {
         }).catch(e=>{
           msg += e.message;
           logger.warn(msg);
-          console.trace(e);
+          dbgv && console.trace(e);
         });
       }
     }
@@ -78,10 +84,13 @@ export default class IdbAudio {
   }
 
   set currentTime(value) {
+    const msg = 'IdbAudio.set.currentTime()';
+    const dbg = DBG_AUDIO;
+    const dbgv = DBG_VERBOSE && dbg;
     if (value !== 0) {
       let msg = `IdbAudio.currentTime(${value}) expected zero`;
       logger.warn(msg);
-      console.trace(msg);
+      dbgv && console.trace(msg);
       throw new Error(msg);
     }
     this.msPlay = 0;
@@ -131,6 +140,8 @@ export default class IdbAudio {
 
   async fetchAudioBuffer() {
     const msgPfx = 'IdbAudio.fetchAudioBuffer()';
+    const dbg = DBG_AUDIO;
+    const dbgv = DBG_VERBOSE && dbg;
     try {
       let { audioContext, audio, src } = this;
       this.msStart = Date.now(); // temporarily use fetch time as playing time
@@ -142,12 +153,14 @@ export default class IdbAudio {
     } catch(e) {
       let msg = `${msgPfx} ERROR ${e.message}`;
       logger.warn(msg);
-      console.trace(msg,e);
+      dbgv && console.trace(msg,e);
     }
   }
 
   async play() {
     const msgPfx = 'IdbAudio.play()';
+    const dbg = DBG_AUDIO;
+    const dbgv = DBG_VERBOSE && dbg;
     try {
       let { audioContext, src, msStart, audio } = this;
 
@@ -167,7 +180,8 @@ export default class IdbAudio {
           if (msStart == null) { // paused
             this.msStart = Date.now(); // actual playing time
           }
-          let audioSource = await audio.createAudioSource({audioContext, audioBuffer});
+          let audioSource = await audio.createAudioSource({
+            audioContext, audioBuffer});
           this.audioSource = audioSource;
           await audio.playAudioSource({audioContext, audioSource});
           this.audioSource = null;
@@ -177,7 +191,7 @@ export default class IdbAudio {
         case 'closed': {
           let msg = `${msgPfx} audioContext is closed`;
           logger.warn(msg);
-          console.trace(msg);
+          dbgv && console.trace(msg);
           throw new DOMException(msg, INVALID_STATE_ERROR);
         }
         default: {
