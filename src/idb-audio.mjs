@@ -44,7 +44,7 @@ export default class IdbAudio {
   }
 
   set src(value) {
-    const msg = `IdbAudio.src.set() ${value} `;
+    const msg = `IdbAudio.src.set()`;
     const dbg = DBG_AUDIO;
     const dbgv = DBG_VERBOSE && dbg;
 
@@ -56,12 +56,10 @@ export default class IdbAudio {
       if (preload) {
         let promise = this.fetchAudioBuffer();
         promise.then(()=>{
-          msg += `fetchAudioBuffer() OK`;
-          logger.info(msg);
+          dbg && console.log(msg, '[1] ok <=', value)
         }).catch(e=>{
-          msg += e.message;
-          logger.warn(msg);
-          dbgv && console.trace(e);
+          let emsg = `${msg} ${value} ${e.message}`;
+          console.warn(emsg);
         });
       }
     }

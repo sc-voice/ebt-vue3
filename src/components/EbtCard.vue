@@ -157,14 +157,18 @@
         //dbg && console.log(msg, 'onClickCard', card.debugString);
         //volatile.onClickCard(evt, card);
         let { target } = evt || {};
-        let { localName, href, hash } = target;
+        let { nodeName, localName, href, hash } = target;
         if (card.hasFocus(appFocus)) {
-          dbg && console.log(msg, '[1]focusElement', appFocus.id, evt);
-          volatile.focusElement(appFocus);
+          if (nodeName === 'A') {
+            dbg && console.log(msg, '[1]n/a', target);
+          } else {
+            dbg && console.log(msg, '[2]focusElement', appFocus.id, evt);
+            volatile.focusElement(appFocus);
+          }
         } else {
            volatile.setRoute(card, undefined, msg);
            let elt = document.getElementById(card.tab1Id);
-           dbg && console.log(msg, '[2]focusElement', elt.id);
+           dbg && console.log(msg, '[3]focusElement', elt.id);
            volatile.focusElement(elt);
         }
       },

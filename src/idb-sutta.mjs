@@ -2,7 +2,7 @@ import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { Examples, SuttaRef, SuttaCentralId } from 'scv-esm/main.mjs';
 import {
-  DBG_SUTTA,
+  DBG_IDB_SUTTA, DBG_VERBOSE,
 } from './defines.mjs';
 import * as Idb from "idb-keyval";
 
@@ -38,7 +38,7 @@ export default class IdbSutta {
 
   static create(opts = {}) {
     const msg = 'IdbSutta.create()';
-    const dbg = DBG_SUTTA;
+    const dbg = DBG_IDB_SUTTA;
     let { 
       sutta_uid, 
       lang, 
@@ -89,14 +89,26 @@ export default class IdbSutta {
   }
 
   static idbKey(suttaRef) {
+    const msg = 'IdbSutta.idbKey()';
+    const dbg = DBG_IDB_SUTTA;
+    const dbgv = DBG_VERBOSE && dbg;
+
     let sref = SuttaRef.create(suttaRef);
     if (sref == null) {
-      let msg = `IdbSutta.idbKey() invalid suttaRef:${JSON.stringify(suttaRef)}`;
-      let e = new Error(msg);
+      let emsg = `${msg} invalid suttaRef:${JSON.stringify(suttaRef)}`;
+      let e = new Error(emsg);
       throw e;
     }
     let { sutta_uid, lang, author } = sref;
-    return `/sutta/${sutta_uid}/${lang}/${author}`;
+    let idbKey = `/sutta/${sutta_uid}/${lang}/${author}`;
+
+    if (author == null) {
+      dbg && console.warn(msg, '[1]author?', suttaRef, idbKey);
+    } else {
+      dbgv && console.log(msg, '[2]ok', suttaRef, idbKey);
+    }
+
+    return idbKey;
   }
 
   get idbKey() {
@@ -106,7 +118,7 @@ export default class IdbSutta {
 
   merge(opts={}) {
     const msg = 'IdbSutta.merge()';
-    const dbg = DBG_SUTTA;
+    const dbg = DBG_IDB_SUTTA;
     let { mlDoc, refLang:refLangOpts, highlightExamples=false } = opts;
     if (mlDoc == null) {
       let emsg = `${msg} [1]mlDoc?`;

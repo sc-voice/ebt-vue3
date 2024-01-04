@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia';
 import { logger } from 'log-instance/index.mjs';
-import Utils from "../utils.mjs";
 import { SuttaRef } from 'scv-esm/main.mjs';
 import { useSettingsStore } from './settings.mjs';
 import { useVolatileStore } from './volatile.mjs';
 import { default as IdbSutta } from '../idb-sutta.mjs';
 import { ref, shallowRef } from 'vue';
 import * as Idb from 'idb-keyval';
-import { DBG_LOAD } from '../defines.mjs';
+import { 
+  DBG_LOAD, DBG_IDB_SUTTA,
+} from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
 const VUEREFS = new Map();
-
-const msg = 'stores.suttas.';
 
 export const useSuttasStore = defineStore('suttas', {
   state: () => {
@@ -25,16 +24,17 @@ export const useSuttasStore = defineStore('suttas', {
   },
   actions: {
     suttaUrl(idOrRef) {
+      const msg = 'suttas.suttaUrl()';
+      const dbg = DBG_IDB_SUTTA
       let settings = useSettingsStore();
-      let { 
-        langTrans, serverUrl, docLang, docAuthor, 
-      } = settings;
+      let { langTrans, } = settings;
       let volatile = useVolatileStore();
       let suttaRef = SuttaRef.create(idOrRef, langTrans);
-      let { sutta_uid, lang, author, segnum } = suttaRef;
+      let { sutta_uid, lang, author, } = suttaRef;
       let search = `${sutta_uid}/${lang}`;
       author && (search += `/${author}`);
       let url = volatile.searchUrl(search);
+      dbg && console.log(msg, '[1]', {sutta_uid, lang, author, url});
       return url;
     },
     async loadIdbSutta(suttaRef, opts={}) { // low-level API
@@ -56,7 +56,7 @@ export const useSuttasStore = defineStore('suttas', {
         let json = await volatile.fetchJson(url);
         volatile.waitEnd('ebt.loadingSutta', undefined, msg);
         this.nFetch++;
-        let { mlDocs, results } = json;
+        let { mlDocs, } = json;
         if (mlDocs.length < 1) {
           let msg = `sutta not found: ${url}`;
           volatile.alert(msg);
@@ -75,18 +75,20 @@ export const useSuttasStore = defineStore('suttas', {
     },
     async saveIdbSutta(idbSutta) { // low-level API
       const msg = 'suttas.saveIdbSutta()';
+      const dbg = DBG_LOAD || DBG_IDB_SUTTA;
       let { idbKey } = idbSutta;
       let vueRef = VUEREFS.get(idbKey);
-      let dbg = DBG_LOAD;
       if (vueRef == null) {
         vueRef = ref(idbSutta);
+        dbg && console.log(msg, '[1]VUEREFS.set', {idbKey, vueRef});
         VUEREFS.set(idbKey, vueRef);
         idbSutta.saved = Date.now();
-        dbg && console.log(msg, 'ADD', idbKey, idbSutta.saved);
       } else if (vueRef.value !== idbSutta) {
+        dbg && console.log(msg, '[2]vueRef <=', {
+          idbKey, vueRef, idbSutta});
         vueRef.value = idbSutta;
         idbSutta.saved = Date.now();
-        dbg && console.log(msg, 'UPDATE', idbKey, idbSutta.saved);
+        dbg && console.log(msg, '[3]saved', idbKey, idbSutta.saved);
       }
       let settings = useSettingsStore();
       let { highlightExamples } = settings;
@@ -98,12 +100,12 @@ export const useSuttasStore = defineStore('suttas', {
       return vueRef;
     },
     async getIdbSuttaRef(suttaRef, opts={refresh:true}) { // get/post API
-      const msg = `suttas.getIdbSuttaRef(${suttaRef})`;
+      const msg = `suttas.getIdbSuttaRef()`;
+      const dbg = DBG_LOAD || DBG_IDB_SUTTA;
       try {
         let idbKey = IdbSutta.idbKey(suttaRef);
         let vueRef = VUEREFS.get(idbKey);
         let idbSutta = vueRef?.value;
-        let dbg = DBG_LOAD;
 
         if (idbSutta == null) {
           if (!opts.refresh) {
@@ -111,17 +113,21 @@ export const useSuttasStore = defineStore('suttas', {
           }
           let promise = this.loadIdbSutta(suttaRef);
           vueRef = ref(promise);
+          dbg && console.log(msg, '[1]VUEREFS.set', {idbKey, vueRef});
           VUEREFS.set(idbKey, vueRef);
 
           idbSutta = await promise;
-          dbg && console.log(msg, {idbKey}, idbSutta);
+          dbg && console.log(msg, '[2]vueRef.value', {idbSutta, idbKey});
           vueRef.value = idbSutta;
           VUEREFS.set(idbKey, vueRef);
         } else {
-          if (vueRef.value instanceof Promise) {
-            vueRef.value = await vueRef.value;
+          let vueRefValue = vueRef.value;
+          if (vueRefValue instanceof Promise) {
+            vueRef.value = await vueRefValue;
+            dbg && console.log(msg, '[3]vueRef.value', vueRef.value);
           }
-          dbg && console.log(msg, 'found', {idbKey, idbSutta});
+          dbg && console.log(msg, '[4]found', 
+            idbKey, idbSutta, vueRefValue);
         }
 
         return vueRef;

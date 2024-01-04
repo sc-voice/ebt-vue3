@@ -112,7 +112,7 @@ logger.logLevel = 'warn';
       should(card2.matchPath(path)).equal(true);
     });
   });
-  it("TESTTESTmatchPath() search context", async() => {
+  it("matchPath() search context", async() => {
     let langTrans = 'test-lang';
     let card1 = new EbtCard({ context: "search", langTrans});
     let card2 = new EbtCard({ context: "SEARCH", location: ["a b"], langTrans});

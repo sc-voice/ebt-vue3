@@ -2,7 +2,7 @@ import Utils from "../src/utils.mjs";
 import should from "should";
 
 typeof describe === "function" && describe("utils", function() {
-  it("TESTTESTlogLine", () => {
+  it("logLine", () => {
     let args = [ 'hello', 1, true, ['a','b','c'], {color:'red'} ];
     should(Utils.logLine(...args))
       .equal('hello 1 true a,b,c {"color":"red"}');

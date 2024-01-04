@@ -7,6 +7,9 @@
     @blur='onBlurSutta'
     tabindex=0
   >
+    DEBUG
+    {{card.id}}
+    {{idbSuttaRef?.sutta_uid}}
     <tipitaka-nav :card="card"/>
     <div class="sutta-title">
       <div v-for="t in title"> {{t}} </div>
@@ -19,8 +22,10 @@
         :routeCard="routeCard"
       />
     </template>
-    <template v-for="seg in idbSuttaSegments">
+    <template v-for="seg in idbSuttaSegments" 
+      :key="segKey(card,seg)">
       <segment-view 
+        :id="segKey(card, seg)"
         :segment="seg"
         :idbSuttaRef="idbSuttaRef"
         :card="card"
@@ -96,16 +101,19 @@
       }
       let { sutta_uid, lang, author, segnum } = suttaRef;
       let idbKey = IdbSutta.idbKey({sutta_uid, lang, author});
-      dbg && console.log(msg, `[1]suttaRef:${suttaRef}`, {idbKey});
+      dbg && console.log(msg, `[1]suttaRef:${suttaRef}`, {id, idbKey});
       let idbSuttaRef = await suttas.getIdbSuttaRef({
         sutta_uid, lang, author});
-      dbg && console.log(msg, `[2]loaded`, {idbSuttaRef});
+      dbg && console.log(msg, `[2]loaded`, {id, idbSuttaRef, sutta_uid});
       let { langTrans:defaultLang } = settings;
       this.idbSuttaRef = idbSuttaRef?.value;
 
       card.onAfterMounted({settings, volatile});
     },
     methods: {
+      segKey(card, seg) {
+        return `${card.id}_${seg.scid}`
+      },
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
         const dbg = DBG_KEY;

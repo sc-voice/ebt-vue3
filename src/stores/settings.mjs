@@ -8,7 +8,7 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, DBG_SETTINGS, 
   DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, DBG_CARD_PATH,
-  DBG_VERBOSE,
+  DBG_VERBOSE, DBG_REMOVE_CARD,
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -126,7 +126,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     removeCard(card, config) {
       const msg = "settings.removeCard() ";
-      const dbg = DBG_ROUTE;
+      const dbg = DBG_REMOVE_CARD;
       const { window } = globalThis;
       if (window == null) {
         //console.trace(msg, "no window");
@@ -138,16 +138,18 @@ export const useSettingsStore = defineStore('settings', {
       }
       let { cards, langTrans:defaultLang } = this;
       let path = window.location.hash;
-      cards = this.cards = cards.filter(c => c !== card);
+      let iCard = this.cards.indexOf(card);
+      dbg && console.log(msg, '[1]splice', iCard, this.cards);
+      this.cards.splice(iCard,1);
       if (card.matchPath({path, defaultLang})) {
         let openCard = cards.filter(c => c.isOpen)[0];
         let hash;
         if (openCard) {
           hash = openCard.routeHash();
-          dbg && console.log(msg, '[1]route=>openCard', hash);
+          dbg && console.log(msg, '[2]route=>openCard', hash);
         } else {
           hash = ''; // this.homePath(config);
-          dbg && console.log(msg, '[2]no open card', hash);
+          dbg && console.log(msg, '[3]no open card', hash);
         }
         window.location.hash = hash;
       }

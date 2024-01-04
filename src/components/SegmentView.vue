@@ -5,6 +5,7 @@
     </span>
   </div>
   <div :class="segMatchedClass(segment)"
+    :id="id"
     @click='onClickSegBody'
     :title="segment.scid"
   >
@@ -43,6 +44,7 @@
 
   export default {
     props: {
+      id: { type: String, rquired:true },
       segment: { type: Object, required:true },
       idbSuttaRef: { type: Object, required:true },
       card: { type: Object, required:true },
