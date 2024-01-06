@@ -194,7 +194,7 @@ const SERVER_ROOT = 'https://www.api.sc-voice.net/scv';
     let abuf = await audio.fetchArrayBuffer(url);
     should(abuf.byteLength).above(11640).below(11650);
   });
-  it("TESTTESTbindSegmentAudio()", async()=>{
+  it("bindSegmentAudio()", async()=>{
     let audio = useAudioStore();
     let volatile = useVolatileStore();
     let sutta_uid = 'thig1.1';

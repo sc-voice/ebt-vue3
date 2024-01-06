@@ -47,6 +47,7 @@
   "scripts": {
     "version": "scripts/version.sh",
     "dev": "vite",
+    "eslint": "eslint",
     "serve": "vite preview",
     "build:dist": "scripts/build-dist.sh",
     "build:html": "scripts/app-html.sh",

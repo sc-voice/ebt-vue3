@@ -17,7 +17,8 @@
         </template> <!-- collapsed -->
         <template v-if="!collapsed">
           <v-app-bar-title>
-            <div class="ebt-title" @click="onClickAppBar">
+            <div :class="startupClass('ebt-title')" 
+              @click="onClickAppBar">
               <v-icon icon="mdi-home" class="home-icon" size="24px"
                 @click.stop="onHome"
               />
@@ -56,9 +57,13 @@
                   wait:{{volatile.waiting}}
                 </div>
               </div>
+            </div><!-- ebt-title -->
+            <div :class="startupClass('sc-voice')">
+              SUTTACENTRAL
+              VOICE/{{docLang}}
             </div>
           </v-app-bar-title>
-          <div class="pr-3">
+          <div :class="startupClass('app-btns')">
             <v-btn id='btn-search' icon 
               @click="onClickSearch" 
               @focus="onFocusBtn"
@@ -68,6 +73,7 @@
             <v-btn id='btn-settings' icon 
               @click="onClickSettings"
               @focus="onFocusBtn"
+              class="pr-1"
             >
               <v-icon icon="mdi-cog"/>
             </v-btn>
@@ -244,6 +250,12 @@
       Tutorial,
     },
     methods: {
+      startupClass(className) {
+        let { settings, } = this;
+        return settings.loaded
+          ? `${className} ${className}-end`
+          : `${className} ${className}-start`;
+      },
       onFocusIn(evt) {
         const msg = 'App.onFocusIn()';
         const dbg = DBG_FOCUS || DBG_AUDIO;
@@ -403,6 +415,7 @@
         }
       }, 2000);
 
+
       let wikiHash = hash.startsWith("#/wiki") ? hash : null;
       let homePath = settings.homePath(config);
       let wikiCard = wikiHash
@@ -421,10 +434,14 @@
       window.addEventListener('focusin', evt=>this.onFocusIn(evt));
     },
     computed: {
+      docLang(ctx) {
+        let { settings, } = ctx;
+        return settings.docLang.toUpperCase();
+      },
       showGdpr(ctx) {
         const msg = "App.showGdpr"
         const dbg = DBG_GDPR;
-        let { settings, volatile } = this;
+        let { settings, volatile } = ctx;
         let { loaded } = settings;
         let { showLegacyDialog } = volatile;
         let { showGdpr } = settings;
@@ -698,6 +715,13 @@
   align-items: center;
   font-size: min(20px, 4vw);
 }
+.ebt-title-start {
+  opacity: 0;
+}
+.ebt-title-end {
+  opacity: 1;
+  transition: opacity 5s ease-in-out;
+}
 .ebt-title:focus-within a {
   border: none !important;
   outline: none;
@@ -804,6 +828,46 @@
 }
 .transient-msg .v-snackbar__content {
   text-align: center;
+}
+.sc-voice {
+  font-size: 8pt;
+  letter-spacing: 0.5em;
+  position: absolute;
+  text-align: center;
+  line-height: 1em;
+  width: 300px;
+  left: calc(50vw - 150px);
+  top: 1px;
+}
+.sc-voice-start {
+  color: rgb(var(--v-theme-progress1));
+  opacity: 1;
+}
+.sc-voice-end {
+  color: rgb(var(--v-theme-on-surface));
+  opacity: 0;
+  transition: 
+    color 5s ease-in-out,
+    opacity 10s ease-in-out;
+}
+.app-name {
+}
+.app-name-start {
+  opacity: 0.2;
+}
+.app-name-end {
+  opacity: 1;
+  transition:
+    opacity 5s ease-in-out;
+}
+.app-btns {
+}
+.app-btns-start {
+  opacity: 0;
+}
+.app-btns-end {
+  opacity: 1;
+  transition: opacity 5s ease-in-out;
 }
 </style>
 

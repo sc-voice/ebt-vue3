@@ -161,23 +161,58 @@ const TESTMLDOC_EN = {
     let sutta2 = IdbSutta.create(JSON.parse(json));
     should.deepEqual(sutta2, sutta);
   });
-  it("idbKey", ()=>{
-    let sutta = IdbSutta.create({
-      sutta_uid: 'thig1.1',
-      lang: 'en',
-      author: 'soma',
-      segments: [],
-    });
-    should(sutta.idbKey).equal('/sutta/thig1.1/en/soma');
+  it("suttaRefToIdbKey", ()=>{
+    let sref = 'thig1.1/en/soma';
+    should(IdbSutta.suttaRefToIdbKey(sref))
+    .equal('thig1.1/en/soma/en/sujato');
   });
-  it("idbKey an1.2:1.1", ()=>{
-    let scid = 'an1.2:1.1'; // part of a ranged sutta document
-    let lang = 'en';
-    let author = 'sujato';
-    let sref = SuttaRef.create(`${scid}/${lang}/${author}`);
-    sref.segments = [];
-    let sutta = IdbSutta.create(sref);
-    should(sutta.idbKey).equal('/sutta/an1.1-10/en/sujato');
+  it("suttaRefToIdbKey settings", ()=>{
+    let sref = 'thig1.1/de';
+    let settings = {
+      refLang: 'en',
+      refAuthor: 'soma',
+    }
+    should(IdbSutta.suttaRefToIdbKey(sref, settings))
+    .equal('thig1.1/de/sabbamitta/en/soma');
+  });
+  it("suttaRefToIdbKey an1.1-10", ()=>{
+    let sref = 'an1.1-10:1.2'; 
+    let settings = {
+      docLang: 'de',
+      refLang: 'en',
+      refAuthor: 'soma',
+    }
+    should(IdbSutta.suttaRefToIdbKey(sref, settings))
+    .equal('an1.1-10/de/sabbamitta/en/soma');
+  });
+  it("idbKey", ()=>{
+    let args = {
+      sutta_uid: 'thig1.1',
+      docLang: 'en',
+      docAuthor: 'soma',
+    }
+    should(IdbSutta.idbKey(args))
+    .equal('thig1.1/en/soma/en/sujato');
+  });
+  it("idbKey settings", ()=>{
+    let args = {
+      sutta_uid: 'thig1.1',
+      docLang: 'de',
+      refLang: 'en',
+      refAuthor: 'soma',
+    }
+    should(IdbSutta.idbKey(args))
+    .equal('thig1.1/de/sabbamitta/en/soma');
+  });
+  it("idbKey an1.1-10", ()=>{
+    let args = {
+      sutta_uid: 'an1.1-10', 
+      docLang: 'de',
+      refLang: 'en',
+      refAuthor: 'soma',
+    }
+    should(IdbSutta.idbKey(args))
+    .equal('an1.1-10/de/sabbamitta/en/soma');
   });
   it("merge mlDoc lang", ()=>{
     let sutta = IdbSutta.create(TESTMLDOC);

@@ -42,7 +42,8 @@ export const useSuttasStore = defineStore('suttas', {
       const dbg = DBG_LOAD;
       let { maxAge } = this;
       let { refresh=false } = opts;
-      let idbKey = IdbSutta.idbKey(suttaRef);
+      let settings = useSettingsStore();
+      let idbKey = IdbSutta.suttaRefToIdbKey(suttaRef, settings);
       let idbData = await Idb.get(idbKey);
       this.nGet++;
       let age = idbData?.saved ? Date.now()-idbData.saved : maxAge+1;
@@ -102,8 +103,9 @@ export const useSuttasStore = defineStore('suttas', {
     async getIdbSuttaRef(suttaRef, opts={refresh:true}) { // get/post API
       const msg = `suttas.getIdbSuttaRef()`;
       const dbg = DBG_LOAD || DBG_IDB_SUTTA;
+      let settings = useSettingsStore();
       try {
-        let idbKey = IdbSutta.idbKey(suttaRef);
+        let idbKey = IdbSutta.suttaRefToIdbKey(suttaRef, settings);
         let vueRef = VUEREFS.get(idbKey);
         let idbSutta = vueRef?.value;
 
@@ -132,7 +134,8 @@ export const useSuttasStore = defineStore('suttas', {
 
         return vueRef;
       } catch(e) {
-        logger.warn(e);
+        const emsg = `${e.message}\n\tin ${msg}`;
+        dbg && console.warn(emsg);
         throw e;
       }
     },

@@ -133,10 +133,20 @@
       segMatchedClass(seg) {
         let { displayBox, card, currentScid, audio, routeCard } = this;
         let { audioFocused } = audio;
-        let idClass = displayBox.w < 1200 ? "seg-id-col" : "seg-id-row";
-        let matchedClass = seg.matched ? "seg-match seg-matched" : "seg-match";
-        let currentClass = seg.scid === currentScid ? "seg-current" : '';
-        let audioClass = seg.scid === audio.audioScid && audioFocused ? "seg-audio" : '';
+        let idClass = displayBox.w < 1200 
+          ? "seg-id-col" 
+          : "seg-id-row";
+        let matchedClass = seg.matched 
+          ? "seg-match seg-matched" 
+          : "seg-match";
+        let currentClass = seg.scid === currentScid 
+          ? "seg-current" 
+          : '';
+        let audioClass = seg.scid === audio.audioScid && 
+          routeCard === card &&
+          audioFocused 
+          ? "seg-audio" 
+          : '';
         return [
           'seg-body',
           matchedClass,

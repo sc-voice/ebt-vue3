@@ -89,7 +89,8 @@ const MSDAY = 24*3600*MSSEC;
 
     // Don't refresh almost stale data
     let freshSaved = Date.now() - MSDAY + MSSEC;
-    Idb.set(idbSutta.idbKey, Object.assign({}, idbSutta, {saved:freshSaved}));
+    Idb.set(idbSutta.idbKey, 
+      Object.assign({}, idbSutta, {saved:freshSaved}));
     let idbSutta3 = await suttas.loadIdbSutta(suttaRef);
     should(idbSutta3.saved).equal(freshSaved);
     should(suttas.nGet).equal(nGet+3);
@@ -98,21 +99,29 @@ const MSDAY = 24*3600*MSSEC;
 
     // Re-fetch stale sutta
     let staleSaved = Date.now() - MSDAY - 1;
-    Idb.set(idbSutta.idbKey, Object.assign({}, idbSutta, {saved:staleSaved}));
+    Idb.set(idbSutta.idbKey, 
+      Object.assign({}, idbSutta, {saved:staleSaved}));
     let idbSutta4 = await suttas.loadIdbSutta(suttaRef);
     let age = Date.now() - idbSutta4.saved;
     should(age).below(MSSEC);
   });
-  it("saveIdbSutta()", async () => {
+  it("TESTTESTsaveIdbSutta()", async () => {
     let suttas = useSuttasStore();
     let { nFetch, nGet, nSet } = suttas;
     let author = 'test-author';
     let lang = 'test-lang';
+    let docLang = lang;
+    let docAuthor = author;
+    let refLang = 'en';
+    let refAuthor = 'sujato';
     let sutta_uid = "thig1.1";
     let segments = [{
       "testsuid:0.1": "TEST-SEGMENT",
     }];
-    let idbSutta = IdbSutta.create({ author, lang, sutta_uid, segments, });
+    let idbSutta = IdbSutta.create({ 
+      author, lang, sutta_uid, segments, 
+      docLang, docAuthor, refLang, refAuthor,
+    });
 
     let idbSuttaSaved = await suttas.saveIdbSutta(idbSutta);
     should(idbSuttaSaved.value).properties(idbSutta);
@@ -238,7 +247,7 @@ const MSDAY = 24*3600*MSSEC;
     let noRefresh = await suttas.getIdbSuttaRef("thig1.2/en/soma", {refresh:false});
     should(noRefresh).equal(null);
   });
-  it("getIdbSuttaRef() fails", async () => {
+  it("TESTTESTgetIdbSuttaRef() fails", async () => {
     let suttas = useSuttasStore();
     let eCaught;
     let oldLogLevel = logger.logLevel;
@@ -249,7 +258,7 @@ const MSDAY = 24*3600*MSSEC;
     } catch(e) {eCaught=e;}
     finally { 
       logger.logLevel = oldLogLevel;
-      should(eCaught?.message).match(/invalid suttaRef.*xyz/);
+      should(eCaught?.message).match(/invalid sutta.*xyz/i);
     }
   });
 })

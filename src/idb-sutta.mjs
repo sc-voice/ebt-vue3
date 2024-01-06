@@ -1,6 +1,8 @@
 import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
-import { Examples, SuttaRef, SuttaCentralId } from 'scv-esm/main.mjs';
+import { 
+  Examples, AuthorsV2, SuttaRef, SuttaCentralId 
+} from 'scv-esm/main.mjs';
 import {
   DBG_IDB_SUTTA, DBG_VERBOSE,
 } from './defines.mjs';
@@ -88,32 +90,54 @@ export default class IdbSutta {
     }
   }
 
-  static idbKey(suttaRef) {
+  static idbKey({
+    sutta_uid, docLang='en', docAuthor, refLang='en', refAuthor,
+  }) {
     const msg = 'IdbSutta.idbKey()';
     const dbg = DBG_IDB_SUTTA;
     const dbgv = DBG_VERBOSE && dbg;
 
-    let sref = SuttaRef.create(suttaRef);
-    if (sref == null) {
-      let emsg = `${msg} invalid suttaRef:${JSON.stringify(suttaRef)}`;
-      let e = new Error(emsg);
-      throw e;
-    }
-    let { sutta_uid, lang, author } = sref;
-    let idbKey = `/sutta/${sutta_uid}/${lang}/${author}`;
-
-    if (author == null) {
-      dbg && console.warn(msg, '[1]author?', suttaRef, idbKey);
-    } else {
-      dbgv && console.log(msg, '[2]ok', suttaRef, idbKey);
-    }
+    let idbKey = [
+      sutta_uid,
+      docLang,
+      docAuthor || AuthorsV2.langAuthor(docLang),
+      refLang,
+      refAuthor || AuthorsV2.langAuthor(refLang),
+    ].join('/');
 
     return idbKey;
   }
 
+  static suttaRefToIdbKey(suttaRef, settings={}) {
+    const msg = 'IdbSutta.suttaRefToIdbKey()';
+    let { docLang = 'en', refLang = 'en', } = settings;
+    let {
+      docAuthor = AuthorsV2.langAuthor(docLang),
+      refAuthor = AuthorsV2.langAuthor(refLang),
+    } = settings;
+    
+    try {
+      let { 
+        sutta_uid, 
+        lang=docLang, 
+        author,
+      } = SuttaRef.create(suttaRef, docLang);
+      return IdbSutta.idbKey({
+        sutta_uid,
+        docLang: lang,
+        docAuthor: author || AuthorsV2.langAuthor(lang),
+        refLang,
+        refAuthor,
+      });
+    } catch(e) {
+      let emsg = `Invalid sutta reference "${suttaRef}"\n\tin ${msg}`;
+      throw new Error(emsg);
+    }
+
+  }
+
   get idbKey() {
-    let { sutta_uid, lang, author } = this;
-    return IdbSutta.idbKey({ sutta_uid, lang, author });
+    return IdbSutta.idbKey(this);
   }
 
   merge(opts={}) {
