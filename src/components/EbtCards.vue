@@ -7,7 +7,7 @@
     }"
     @click.self.prevent.stop="onBgClick"
   >
-    <div v-for="card in settings.cards">
+    <div v-for="card in settings.cards" :key="card.id">
       <ebt-card-vue 
         :card="card" 
         :routeCard="volatile.routeCard"

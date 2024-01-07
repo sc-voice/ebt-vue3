@@ -677,7 +677,10 @@
 <style>
 .ebt-app-bar {
   background: 
-    linear-gradient(130deg, rgb(var(--v-theme-currentbg)), rgb(var(--v-theme-surface))) !important;
+    linear-gradient(160deg, 
+      rgb(var(--v-theme-currentbg)), 
+      rgb(var(--v-theme-toolbar))
+      ) !important;
 }
 .gdrp {
   position: fixed;
@@ -830,25 +833,31 @@
   text-align: center;
 }
 .sc-voice {
-  font-size: 8pt;
-  letter-spacing: 0.5em;
   position: absolute;
   text-align: center;
   line-height: 1em;
   width: 300px;
   left: calc(50vw - 150px);
-  top: 1px;
 }
 .sc-voice-start {
   color: rgb(var(--v-theme-progress1));
+  letter-spacing: 0.1em;
+  font-size: 12pt;
+  top: 20px;
   opacity: 1;
 }
 .sc-voice-end {
   color: rgb(var(--v-theme-on-surface));
+  letter-spacing: 0.4em;
+  font-size: 8pt;
   opacity: 0;
+  top: 1px;
   transition: 
+    top 5s,
+    letter-spacing 5s,
+    font-size 5s ease-in-out,
     color 5s ease-in-out,
-    opacity 10s ease-in-out;
+    opacity 5s ease-in-out;
 }
 .app-name {
 }

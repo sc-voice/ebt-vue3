@@ -7,9 +7,6 @@
     @blur='onBlurSutta'
     tabindex=0
   >
-    DEBUG
-    {{card.id}}
-    {{idbSuttaRef?.sutta_uid}}
     <tipitaka-nav :card="card"/>
     <div class="sutta-title">
       <div v-for="t in title"> {{t}} </div>
@@ -83,7 +80,9 @@
       const dbg = DBG_MOUNTED;
       let { $route, suttas, settings, volatile, card, config, } = this;
       let { fullPath } = $route;
-      let { development, langTrans } = settings;
+      let { 
+        development, langTrans, docLang, docAuthor, refLang, refAuthor 
+      } = settings;
       let { id, location, data } = card;
       let ref = {
         sutta_uid:location[0], 
@@ -100,7 +99,6 @@
         return;
       }
       let { sutta_uid, lang, author, segnum } = suttaRef;
-      let idbKey = IdbSutta.idbKey({sutta_uid, lang, author});
       dbg && console.log(msg, `[1]suttaRef:${suttaRef}`, {id, idbKey});
       let idbSuttaRef = await suttas.getIdbSuttaRef({
         sutta_uid, lang, author});

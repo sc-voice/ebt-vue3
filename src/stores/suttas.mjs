@@ -7,7 +7,7 @@ import { default as IdbSutta } from '../idb-sutta.mjs';
 import { ref, shallowRef } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DBG_LOAD, DBG_IDB_SUTTA,
+  DBG_LOAD, DBG_IDB_SUTTA, DBG_VERBOSE,
 } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
@@ -103,6 +103,7 @@ export const useSuttasStore = defineStore('suttas', {
     async getIdbSuttaRef(suttaRef, opts={refresh:true}) { // get/post API
       const msg = `suttas.getIdbSuttaRef()`;
       const dbg = DBG_LOAD || DBG_IDB_SUTTA;
+      const dbgv = DBG_VERBOSE && dbg;
       let settings = useSettingsStore();
       try {
         let idbKey = IdbSutta.suttaRefToIdbKey(suttaRef, settings);
@@ -128,8 +129,7 @@ export const useSuttasStore = defineStore('suttas', {
             vueRef.value = await vueRefValue;
             dbg && console.log(msg, '[3]vueRef.value', vueRef.value);
           }
-          dbg && console.log(msg, '[4]found', 
-            idbKey, idbSutta, vueRefValue);
+          dbgv && console.log(msg, '[4]found', idbKey, idbSutta);
         }
 
         return vueRef;
