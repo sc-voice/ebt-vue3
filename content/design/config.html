@@ -25,9 +25,12 @@ Just open your browser and login to Github.</p>
 file in your repository.
 Once you configure your website properly, you'll be able to view
 it and add your own wiki content.</p>
-<p>##E ebt-config.mjs</p>
-<p>The file '''ebt-config.mjs''' has several properties you will need to change.
+<h3>ebt-config.mjs</h3>
+<p>The file <code>ebt-config.mjs</code> has several properties you will need to change.
 Be sure to use <a href="https://www.json.org/json-en.html" target="_blank">JSON syntax</a> properly!</p>
+<h4>Required properties:</h4>
+<p>You must chnage the following properties to get your
+new EBT-Site working.</p>
 <table>
 <thead>
 <tr>
@@ -38,35 +41,95 @@ Be sure to use <a href="https://www.json.org/json-en.html" target="_blank">JSON 
 <tbody>
 <tr>
 <td style="text-align:left">appName</td>
-<td style="text-align:left">The site name (e.g., <code>EBT-Site</code>).</td>
+<td style="text-align:left">The site name (e.g., <code>SC-Voice</code>). for the page header</td>
 </tr>
 <tr>
 <td style="text-align:left">basePath</td>
-<td style="text-align:left">The URL base path for your site. Initially, this should be the Github repository name (e.g., &quot;/ebt-site3/&quot;). If you choose a custom Internet domain, change this to simply &quot;/&quot;.</td>
+<td style="text-align:left">This is The URL base path for your site. Change it to <code>/REPOSITORY/</code>, where REPOSITORY is the Github repository name (e.g., &quot;/my_github_repo/&quot;).</td>
 </tr>
+<tr>
+<td style="text-align:left">github.account</td>
+<td style="text-align:left">The Github account name (e.g., &quot;my_github_account&quot;)</td>
+</tr>
+<tr>
+<td style="text-align:left">github.repository</td>
+<td style="text-align:left">The Github repository name (e.g., &quot;my_github_repo&quot;)</td>
+</tr>
+</tbody>
+</table>
+<h4>Custom domain names:</h4>
+<p>Once you get your EBT-Site running, you'll notice that the URL
+is rather large and cumbersome. Indeed, it feels more like a
+Github website rather than &quot;MyEbtSite&quot;.</p>
+<p>With a custom domain name such as &quot;dhammaregent.net&quot;, your
+URL simplifes to something like
+<a href="https://dhammaregen.net/" target="_blank">https://dhamaregen.net</a>.</p>
+<p>First read the Github documentation on
+<a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site" target="_blank">Custom Domains</a></p>
+<p>After you've configured your Github repository for a custom domain name,
+you also need to change the <code>basePath</code> property.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Property</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">basePath</td>
+<td style="text-align:left">For a custom domain, change basePath to &quot;/&quot;.</td>
+</tr>
+</tbody>
+</table>
+<h4>Optional properties:</h4>
+<p>Once you've gotten your EBT-Site working, you might be interested
+in customizing it further.
+EBT-Sites are multi-lingual by default.
+If you have a lot of wiki content, you might want to
+make your site monolingual.
+The <a href="https://dhammaregen.net" target="_blank">Dhammaregen</a> maintained by Ayya Sabbamitta
+is monolingual, and all the wiki pages are in German.</p>
+<p>To create a monolingual website, just edit your <code>ebt-config.json</code>
+file and change the<code>monolingual</code> property to a specific language.
+Be sure to use the two-letter language ISO code (e.g., 'de').</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Property</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">monolingual</td>
+<td style="text-align:left">(Optional) The default is <code>false</code>, which allows language selection. If a two-letter language ISO code is specified (e.g., &quot;de&quot;), the users to your site will not have settings to change the web application language or the EBT translation language. The website will be rendered in the language specified.</td>
+</tr>
+</tbody>
+</table>
+<p>Monolinqual websites have simpler options in Settings.</p>
+<p>As a refinement, you may be interested in changing the
+default names for things like the names of &quot;toc&quot; wiki links
+or your languages name for &quot;footnotes&quot;, etc.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Property</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td style="text-align:left">content.index</td>
 <td style="text-align:left">(Optional) The file name for customizing the file name used for category table of contents. The default is &quot;toc&quot;.</td>
 </tr>
 <tr>
-<td style="text-align:left">} footnotes</td>
+<td style="text-align:left">footnotes</td>
 <td style="text-align:left">Title of footnote block or blank</td>
 </tr>
 <tr>
-<td style="text-align:left">github.account</td>
-<td style="text-align:left">The Github account name (e.g., &quot;sc-voice&quot;)</td>
-</tr>
-<tr>
-<td style="text-align:left">github.repository</td>
-<td style="text-align:left">The Github repository name (e.g., &quot;ebt-site3&quot;)</td>
-</tr>
-<tr>
-<td style="text-align:left">multilingual</td>
-<td style="text-align:left">(Optional) The default is <code>false</code>, which allows language selection. If a two-letter language ISO code is specified (e.g., &quot;de&quot;), the users to your site will not have settings to change the web application language or the EBT translation language. The website will be rendered in the language specified.</td>
-</tr>
-<tr>
 <td style="text-align:left">privacyPath</td>
-<td style="text-align:left">URL for privacy page (default is &quot;#/wiki/privacy&quot;)</td>
+<td style="text-align:left">URL for privacy page (default is <code>#/wiki/privacy</code>)</td>
 </tr>
 </tbody>
 </table>
