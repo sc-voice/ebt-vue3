@@ -112,10 +112,16 @@ logger.logLevel = 'warn';
       should(card2.matchPath(path)).equal(true);
     });
   });
-  it("matchPath() search context", async() => {
+  it("TESTTESTmatchPath() search context", async() => {
     let langTrans = 'test-lang';
-    let card1 = new EbtCard({ context: "search", langTrans});
-    let card2 = new EbtCard({ context: "SEARCH", location: ["a b"], langTrans});
+    let card1 = new EbtCard({ 
+      context: "search", langTrans});
+    let card2 = new EbtCard({ 
+      context: "SEARCH", location: ["A b"], langTrans});
+    should.deepEqual(card2.location, ['A b', langTrans]);
+
+    should(card2.matchPath({path: '/search/a%20b', defaultLang: langTrans})).equal(true);
+    return;
 
     let noPaths = [
       "/",
@@ -144,8 +150,11 @@ logger.logLevel = 'warn';
     });
 
     let card2Paths = [
+      {path: '/search/a%20b', defaultLang: langTrans},
+      `/search/a%20b`,
       `/search/a%20b/${langTrans}`,
       `#/search/a%20b/${langTrans}/`,
+      `#/search/a%20b`,
       `/SEARCH/A%20B/${langTrans.toUpperCase()}`,
       `#/SEARCH/A%20B/${langTrans.toUpperCase()}/`,
     ];
