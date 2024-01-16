@@ -3,6 +3,7 @@
   "version": "1.407.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "main": "src/index.mjs",
+  "module": "index.mjs",
   "private": false,
   "directories": {
     "test": "test"
