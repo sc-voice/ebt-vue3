@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<style>
+body {
+  font-family: arial;
+  background-color: black;
+  color: white;
+}
+.chart {
+  border: 1pt solid brown;
+  border-radius: 10px;
+}
+</style>
+<h3> MN44 English Examples/Suttas (depth:2) </h3>
+MN44 is the green dot in the middle.
+The 10 blue dots are the examples.
+Hover over a dot and drag it.
+
+<div id="container" class="chart"><!--chart goes here--></div>
+
+<script type="module" async>
+  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+  import D3Chart from './d3-chart.mjs'
+  import { EbtD3 }  from './index.mjs';
+  let ed3 = await EbtD3.create({lang:'en'});
+  let graph = ed3.slice({nodePat:'mn44', depth:2});
+  let chart = D3Chart.disjointForceChart(graph);
+  console.log(graph);
+  container.append(chart);
+</script>
+
