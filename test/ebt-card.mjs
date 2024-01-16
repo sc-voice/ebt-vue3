@@ -112,16 +112,13 @@ logger.logLevel = 'warn';
       should(card2.matchPath(path)).equal(true);
     });
   });
-  it("TESTTESTmatchPath() search context", async() => {
+  it("matchPath() search context", async() => {
     let langTrans = 'test-lang';
     let card1 = new EbtCard({ 
       context: "search", langTrans});
     let card2 = new EbtCard({ 
       context: "SEARCH", location: ["A b"], langTrans});
     should.deepEqual(card2.location, ['A b', langTrans]);
-
-    should(card2.matchPath({path: '/search/a%20b', defaultLang: langTrans})).equal(true);
-    return;
 
     let noPaths = [
       "/",

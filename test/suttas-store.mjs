@@ -105,7 +105,7 @@ const MSDAY = 24*3600*MSSEC;
     let age = Date.now() - idbSutta4.saved;
     should(age).below(MSSEC);
   });
-  it("TESTTESTsaveIdbSutta()", async () => {
+  it("saveIdbSutta()", async () => {
     let suttas = useSuttasStore();
     let { nFetch, nGet, nSet } = suttas;
     let author = 'test-author';
@@ -244,10 +244,11 @@ const MSDAY = 24*3600*MSSEC;
     should(idbSuttaRef2).equal(idbSuttaRef);
 
     // refresh is true by default
-    let noRefresh = await suttas.getIdbSuttaRef("thig1.2/en/soma", {refresh:false});
+    let noRefresh = await suttas
+      .getIdbSuttaRef("thig1.2/en/soma", {refresh:false});
     should(noRefresh).equal(null);
   });
-  it("TESTTESTgetIdbSuttaRef() fails", async () => {
+  it("getIdbSuttaRef() fails", async () => {
     let suttas = useSuttasStore();
     let eCaught;
     let oldLogLevel = logger.logLevel;

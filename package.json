@@ -27,6 +27,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "axios": "^1.6.1",
+    "eslint": "^8.56.0",
     "esm": "^3.2.25",
     "execa": "^6.1.0",
     "fake-indexeddb": "^4.0.0",

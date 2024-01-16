@@ -9,7 +9,7 @@ import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DBG_KEY, DBG_AUDIO, DBG_VERBOSE,
+  DBG_KEY, DBG_AUDIO, DBG_VERBOSE, DBG_HIGHLIGHT_EG,
   DBG_LOG_HTML,
 } from '../defines.mjs';
 
@@ -453,18 +453,19 @@ export const useAudioStore = defineStore('audio', {
       }
     },
     updateAudioExamples() {
+      const msg = "audio.updateAudioExamples()";
+      const dbg = DBG_HIGHLIGHT_EG;
       let { audioSutta, audioIndex } = this;
       let segments = audioSutta?.segments;
       if (segments) {
         let segment = segments[audioIndex];
+        dbg && console.log('msg', '[1]highlightEamples', segment.scid);
         let updated = audioSutta.highlightExamples({segment});
         if (updated) {
           segment.examples = updated;
         }
-        logger.debug("audio.updateAudioExamples()", {updated, segment, audioIndex});
       } else {
-        logger.debug("audio.updateAudioExamples() SKIP", 
-          {audioSutta, audioIndex, segments});
+        dbg && console.log('msg', '[2]F highlightEamples');
       }
     },
     getAudioContext() {
