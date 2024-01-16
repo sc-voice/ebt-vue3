@@ -1,4 +1,4 @@
-import { default as EbtD3 } from "../src/ebt-d3.mjs";
+import { EbtD3 } from "../index.mjs";
 import should from "should";
 
 (typeof describe ==='function') && 

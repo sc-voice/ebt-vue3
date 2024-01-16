@@ -1,2 +1,1 @@
-export { default as ScvServer } from './src/scv-server.mjs';
-export { default as EbtMain } from './src/ebt-main.mjs';
+export { default as EbtD3 } from './src/ebt-d3.mjs';
