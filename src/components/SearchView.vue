@@ -26,7 +26,7 @@
       :placeholder="$t('ebt.searchPrompt')"
       variant="underlined"
     />
-    <SearchResults :card="card" :results="results" 
+    <SearchResults :card="card" :results="searchResults" 
       :class="resultsClass"/>
   </v-sheet>
 </template>
@@ -65,7 +65,7 @@
     },
     data: () => {
       return {
-        results: undefined,
+        searchResults: undefined,
         search: '',
       }
     },
@@ -102,7 +102,11 @@
         search && this.onSearch();
       },
       async onSearch() {
-        let { settings, $t, volatile, url, search, card, suttas, } = this;
+        const msg = "SearchView.onSearch()";
+        const dbg = DBG_SEARCH;
+        let { 
+          settings, $t, volatile, url, search, card, suttas, 
+        } = this;
         let res;
         if (!search) {
           return;
@@ -110,16 +114,18 @@
         try {
           volatile.waitBegin('ebt.searching');
           //logger.info(msg, 'onSearch()', url);
-          this.results = undefined;
+          this.searchResults = undefined;
           card.location[0] = search;
           res = await volatile.fetchJson(url);
-          this.results = res.ok
+          this.searchResults = res.ok
             ? await res.json()
             : res;
 
-          volatile.setRoute(card.routeHash(), undefined, msg);
-          let { mlDocs=[] } = this.results;
-          card.data = this.results.results;
+          let routeHash = card.routeHash();
+          dbg && console.log(msg, '[1]setRoute', routeHash);
+          volatile.setRoute(routeHash, undefined, msg);
+          let { results, mlDocs=[] } = this.searchResults;
+          card.data = this.searchResults.results;
           mlDocs.forEach(mlDoc=>volatile.addMlDoc(mlDoc));
           for (let i = 0; i < mlDocs.length; i++) {
             try {
@@ -154,7 +160,7 @@
           }
         } catch(e) {
           logger.warn("onSearch() ERROR:", res, e);
-          this.results = `ERROR: ${url} ${e.message}`;
+          this.searchResults = `ERROR: ${url} ${e.message}`;
         } finally {
           volatile.waitEnd();
         }
@@ -174,7 +180,7 @@
         }
       },
       onSearchCleared(evt) {
-        this.results = undefined;
+        this.searchResults = undefined;
         this.search = '';
       },
     },
