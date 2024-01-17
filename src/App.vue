@@ -320,7 +320,7 @@
         } else {
           let cardLoc = 
             [homeCard.context, ...homeCard.location].join('/');
-          let location = `${config.basePath}/#/${cardLoc}`;
+          let location = `${config.basePath}#/${cardLoc}`;
           dbg && console.log(msg, `[3]home`, location, evt);
           window.location = location;
         }
