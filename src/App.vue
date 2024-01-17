@@ -313,12 +313,19 @@
         }
         volatile.setRouteCard(homeCard);
         let homePath = settings.homePath(config);
-        let location = `${config.basePath}${homePath}`;
-
-        dbg && console.log(msg, `[2]`, {location});
-        window.location = location;
+        if (evt.ctrlKey) {
+          let location = `${config.basePath}${homePath}`;
+          dbg && console.log(msg, `[2]ctrl-Home`, location, evt);
+          window.location = location;
+        } else {
+          let cardLoc = 
+            [homeCard.context, ...homeCard.location].join('/');
+          let location = `${config.basePath}/#/${cardLoc}`;
+          dbg && console.log(msg, `[3]home`, location, evt);
+          window.location = location;
+        }
         volatile.ebtChips && nextTick(()=>{
-          dbg && console.log(msg, `[2]focusElement ebt-chips`);
+          dbg && console.log(msg, `[4]focusElement ebt-chips`);
           volatile.focusElement(volatile.ebtChips);
         });
       },
