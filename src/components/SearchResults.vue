@@ -49,9 +49,6 @@
         type: Object,
         required: true,
       },
-      results: {
-        type: Object,
-      },
     },
     setup() {
       return {

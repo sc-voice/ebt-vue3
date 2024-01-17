@@ -26,8 +26,7 @@
       :placeholder="$t('ebt.searchPrompt')"
       variant="underlined"
     />
-    <SearchResults :card="card" :results="searchResults" 
-      :class="resultsClass"/>
+    <SearchResults :card="card" :class="resultsClass"/>
   </v-sheet>
 </template>
 
@@ -65,7 +64,6 @@
     },
     data: () => {
       return {
-        searchResults: undefined,
         search: '',
       }
     },
@@ -113,19 +111,40 @@
         }
         try {
           volatile.waitBegin('ebt.searching');
-          //logger.info(msg, 'onSearch()', url);
-          this.searchResults = undefined;
           card.location[0] = search;
           res = await volatile.fetchJson(url);
-          this.searchResults = res.ok
+          let searchResults = res.ok
             ? await res.json()
             : res;
 
           let routeHash = card.routeHash();
           dbg && console.log(msg, '[1]setRoute', routeHash);
           volatile.setRoute(routeHash, undefined, msg);
-          let { results, mlDocs=[] } = this.searchResults;
-          card.data = this.searchResults.results;
+          let { results, mlDocs=[] } = searchResults;
+          let cardData = results.map((r,i)=>{
+            let mld = mlDocs[i];
+            let scids = Object.keys(mld.segMap);
+            let segments = [];
+            for (let i=0; i<scids.length; i++) {
+              let scid = scids[i];
+              let seg = mld.segMap[scid];
+              if (seg?.matched) {
+                segments.push(seg);
+                break;
+              }
+            }
+            let title = mld.title.split('\n').slice(1).join('\n');
+            return {
+              uid: r.uid,
+              lang: mld.docLang,
+              author_uid: mld.docAuthor,
+              title,
+              segments,
+              stats: r.stats,
+              suttaplex: r.suttaplex,
+            }
+          });
+          card.data = cardData;
           mlDocs.forEach(mlDoc=>volatile.addMlDoc(mlDoc));
           for (let i = 0; i < mlDocs.length; i++) {
             try {
@@ -160,7 +179,6 @@
           }
         } catch(e) {
           logger.warn("onSearch() ERROR:", res, e);
-          this.searchResults = `ERROR: ${url} ${e.message}`;
         } finally {
           volatile.waitEnd();
         }
@@ -180,7 +198,6 @@
         }
       },
       onSearchCleared(evt) {
-        this.searchResults = undefined;
         this.search = '';
       },
     },
