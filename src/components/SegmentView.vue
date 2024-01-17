@@ -21,7 +21,7 @@
         v-html="langText" />
       <div :class="langClass('ref')" 
         v-if="settings.showReference"
-        v-html="segment.ref || segment[settings.refLang]" />
+        v-html="refText" />
     </div>
   </div>
 </template>
@@ -207,6 +207,11 @@
       langText(ctx) {
         let { segment, langTrans, volatile } = ctx;
         let text = segment[langTrans] || EMPTY_TEXT;
+        return text;
+      },
+      refText(ctx) {
+        let { segment, } = ctx;
+        let text = segment.ref || EMPTY_TEXT;
         return text;
       },
       displayBox(ctx) {
