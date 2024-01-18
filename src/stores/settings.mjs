@@ -174,6 +174,7 @@ export const useSettingsStore = defineStore('settings', {
         case EbtCard.CONTEXT_DEBUG:
         case EbtCard.CONTEXT_SEARCH:
         case EbtCard.CONTEXT_SUTTA:
+        case EbtCard.CONTEXT_GRAPH:
           dbg && console.log(msg, `[2]${context}`, {isOpen, loc});
           card = new EbtCard(Object.assign({langTrans}, opts));
           this.cards.push(card);

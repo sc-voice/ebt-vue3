@@ -40,6 +40,10 @@
             :card="card" 
             :routeCard="routeCard"
           ></sutta-view>
+          <graph-view v-if="card.context===CONTEXT_GRAPH"
+            :card="card"
+          >
+          </graph-view>
         </v-card-text>
         <div class="last-tab" tabindex=0 
           @click='onClickLastTab'
@@ -54,6 +58,7 @@
 
 <script>
   import { default as DebugView } from './DebugView.vue';
+  import { default as GraphView } from './GraphView.vue';
   import { default as HomeView } from './HomeView.vue';
   import { default as SearchView } from './SearchView.vue';
   import { default as SuttaView } from './SuttaView.vue';
@@ -85,6 +90,7 @@
     },
     components: {
       DebugView,
+      GraphView,
       HomeView,
       SearchView,
       SuttaView,
@@ -332,6 +338,7 @@
       CONTEXT_WIKI: (ctx)=>EbtCard.CONTEXT_WIKI,
       CONTEXT_SEARCH: (ctx)=>EbtCard.CONTEXT_SEARCH,
       CONTEXT_SUTTA: (ctx)=>EbtCard.CONTEXT_SUTTA,
+      CONTEXT_GRAPH: (ctx)=>EbtCard.CONTEXT_GRAPH,
       contexts: (ctx) => {
         let { $t } = ctx;
         return [{

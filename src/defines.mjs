@@ -11,6 +11,7 @@ export const DBG_HIGHLIGHT_EG = 0;
 export const DBG_FETCH        = 0;
 export const DBG_FOCUS        = 0;
 export const DBG_GDPR         = 0;
+export const DBG_GRAPH        = 0;
 export const DBG_HOME         = 0;
 export const DBG_IDB_SUTTA    = 0;
 export const DBG_KEY          = 0;

@@ -4,13 +4,14 @@ import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
   DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, DBG_CARD_PATH,
-  DBG_VERBOSE, DBG_VIEWPORT, 
+  DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
 
 const CONTEXT_WIKI = "wiki";
 const CONTEXT_SEARCH = "search";
 const CONTEXT_SUTTA = "sutta";
 const CONTEXT_DEBUG = "debug";
+const CONTEXT_GRAPH = "graph";
 const CONTEXTS = {
   [CONTEXT_WIKI]: {
     icon: "mdi-wikipedia",
@@ -23,6 +24,9 @@ const CONTEXTS = {
   },
   [CONTEXT_DEBUG]: {
     icon: "mdi-tools",
+  },
+  [CONTEXT_GRAPH]: {
+    icon: "mdi-graph-outline",
   },
 }
 
@@ -81,7 +85,12 @@ export default class EbtCard {
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
-        dbg && console.log(msg, `[4]${context} after`, location);
+        dbg && console.log(msg, `[5]${context} after`, location);
+        break;
+      case CONTEXT_GRAPH:
+        location[0] = location[0] || 'mn44';
+        location[1] = location[1] || langTrans;
+        dbg && console.log(msg, `[6]${context} after`, location);
         break;
     }
 
@@ -102,6 +111,7 @@ export default class EbtCard {
   static get CONTEXT_SEARCH() { return CONTEXT_SEARCH; }
   static get CONTEXT_SUTTA() { return CONTEXT_SUTTA; }
   static get CONTEXT_DEBUG() { return CONTEXT_DEBUG; }
+  static get CONTEXT_GRAPH() { return CONTEXT_GRAPH; }
 
   static routeSuttaRef(route, langTrans='en') {
     const msg = 'ebt-card.routeSuttaRef() ';
