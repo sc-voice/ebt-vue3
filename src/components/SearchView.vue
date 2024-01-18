@@ -138,6 +138,7 @@
               uid: r.uid,
               lang: mld.docLang,
               author_uid: mld.docAuthor,
+              blurb: r.blurb,
               title,
               segments,
               stats: r.stats,
