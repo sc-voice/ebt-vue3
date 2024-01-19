@@ -1,7 +1,10 @@
 <template>
   <v-sheet>
     <div class="d3-graph">
-      <div :id="svgId" class="chart">
+      <div v-if="selectedNode" class="d3-selection">
+        <a :href="selectedHref()">{{selectedText()}}</a>
+      </div>
+      <div :id="svgId" @click.stop.prevent="clickGraph">
         <!--chart goes here-->
       </div>
     </div>
@@ -19,6 +22,8 @@
   import { DBG_GRAPH } from '../defines.mjs';
   import { ref, computed, onMounted } from "vue";
 
+  const selectedNode = ref(null);
+
   const svgId = computed(()=>{
     let { card } = props;
     return `svg-${card.id}`;
@@ -29,10 +34,8 @@
   });
 
   class D3Graph {
-    static createSvg(data) {
+    static createSvg(data, sutta_uid, selId) {
       // Specify the dimensions of the chart.
-      const width = 550;
-      const height = 550;
 
       // Specify the color scale.
       const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -41,6 +44,10 @@
       // so that re-evaluating this cell produces the same result.
       const links = data.links.map(d => ({...d}));
       const nodes = data.nodes.map(d => ({...d}));
+
+      const large = nodes.length > 200;
+      const width = large ? 800 : 550;
+      const height = width;
 
       // Create a simulation with several forces.
       const simulation = d3.forceSimulation(nodes)
@@ -71,7 +78,7 @@
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-          .attr("r", 5)
+          .attr("r", d => d.id===sutta_uid ? 10 : 5)
           .attr("fill", d => color(d.group));
 
       node.append("title")
@@ -140,16 +147,52 @@
     let ed3 = await EbtD3.create({lang});
     let graph = ed3.slice({nodePat:sutta_uid, depth:2});
     let svgContainer = document.getElementById(svgId.value);
-    let svg = D3Graph.createSvg(graph);
+    let svg = D3Graph.createSvg(graph, sutta_uid, selectedNode);
+    selectedNode.value = { id: sutta_uid };
     dbg && console.log(msg, '[1]append', {lang,sutta_uid}, graph, svg);
     svgContainer.append(svg);
   });
 
+  function clickGraph(evt) {
+    const msg = "GraphView.clickGraph()";
+    const dbg = DBG_GRAPH;
+    let data = evt?.srcElement?.__data__;
+    if (data) {
+      selectedNode.value = data;
+      dbg && console.log(msg, data, evt, selectedHref(), selectedText());
+    }
+  }
+
+  function selectedText() {
+    let { id } = selectedNode.value || {};
+    return id;
+  }
+
+  function selectedHref() {
+    let { id, group } = selectedNode.value || {};
+    let { card } = props;
+    let { location } = card;
+    let [ cardSuttaId, lang, author ] = location;
+
+    if (group == null) {
+      return "";
+    }
+    if (group === 'Examples') {
+      return `#/search/${id}`;
+    }
+    return `#/sutta/${id}/${lang}/${author}`;
+  }
 
 </script>
 
 <style>
 .d3-graph {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+.d3-selection {
+  color: red;
 }
 </style>
 
