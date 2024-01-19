@@ -31,8 +31,8 @@
   class D3Graph {
     static createSvg(data) {
       // Specify the dimensions of the chart.
-      const width = 928;
-      const height = 680;
+      const width = 550;
+      const height = 550;
 
       // Specify the color scale.
       const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -132,12 +132,16 @@
     const msg = "GraphView.onMounted()";
     const dbg = DBG_GRAPH;
     let { docLang } = useSettingsStore();
-    let [sutta_uid, lang=docLang] = props.card.location;
+    let { 
+      sutta_uid, 
+      lang, 
+      author 
+    } = SuttaRef.create(props.card.location.join("/"), docLang);
     let ed3 = await EbtD3.create({lang});
     let graph = ed3.slice({nodePat:sutta_uid, depth:2});
     let svgContainer = document.getElementById(svgId.value);
     let svg = D3Graph.createSvg(graph);
-    dbg && console.log(msg, '[1]append', graph, svg);
+    dbg && console.log(msg, '[1]append', {lang,sutta_uid}, graph, svg);
     svgContainer.append(svg);
   });
 

@@ -16,6 +16,12 @@
           <span :id="card.titleAnchor">{{card.chipTitle($t)}}</span>
         </template>
         <template v-slot:append>
+          <v-btn 
+            v-if="card.alt1Icon && routeCard===card"
+            :icon="card.alt1Icon" flat
+            :id="card.graphId"
+            @click.stop.prevent="clickAlt1"
+          />
           <v-btn icon="mdi-window-minimize" flat 
             :id="card.tab1Id"
             @click.stop.prevent="clickMinimize"
@@ -67,6 +73,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
   import { logger } from 'log-instance/index.mjs';
+  import { SuttaRef } from 'scv-esm';
   import { nextTick, ref } from "vue";
   import { 
     DBG_CLICK, DBG_MOUNTED, DBG_FOCUS, DBG_SCROLL,
@@ -160,7 +167,8 @@
         const dbgv = dbg && DBG_VERBOSE;
         let { volatile, settings, card } = this;
         let { appFocus } = volatile;
-        //dbg && console.log(msg, 'onClickCard', card.debugString);
+        dbg && console.log(msg, card.debugString, evt);
+
         //volatile.onClickCard(evt, card);
         let { target } = evt || {};
         let { nodeName, localName, href, hash } = target;
@@ -195,6 +203,21 @@
           dbg && console.log(msg, 'removeCard', card.debugString);
           settings.removeCard(card, config);
         }, 500);
+      },
+      clickAlt1(evt) {
+        const msg = "EbtCard.clickAlt1()";
+        const dbg = DBG_CLICK;
+        const { audio, card, volatile } = this;
+        const { context, location } = card;
+        dbg && console.log(msg, evt);
+        switch (context) {
+          case EbtCard.CONTEXT_GRAPH:
+          case EbtCard.CONTEXT_SUTTA: {
+            let { alt1Href } = this;
+            volatile.setRoute(alt1Href);
+            audio.playClick();
+          } break;
+        }
       },
       clickMinimize(evt) {
         const msg = "EbtCard.clickMinimize()";
@@ -289,6 +312,34 @@
       },
     },
     computed: {
+      alt1Href(ctx) {
+        const { card, volatile, settings } = this;
+        const { docLang } = settings;
+        const { context, location } = card;
+        let href;
+        switch (context) {
+          case EbtCard.CONTEXT_SUTTA: {
+            let sref = SuttaRef.create(location.join('/'), docLang);
+            let { sutta_uid, lang, author } = sref;
+            href = ['#', EbtCard.CONTEXT_GRAPH, sutta_uid, lang, author]
+              .join('/');
+          } break;
+          case EbtCard.CONTEXT_GRAPH: {
+            let sref = SuttaRef.create(location.join('/'), docLang);
+            let { sutta_uid, lang, author } = sref;
+            href = ['#', EbtCard.CONTEXT_SUTTA, ...location]
+              .join('/');
+          } break;
+          default: 
+            break;
+        }
+
+        return href;
+      },
+      isSuttaCard(ctx) {
+        let { card } = ctx;
+        return card.context === EbtCard.CONTEXT_SUTTA;
+      },
       topAnchorClass(ctx) {
         return DBG_VIEWPORT
           ? "card-top-anchor card-top-anchor-debug"

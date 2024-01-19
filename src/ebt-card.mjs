@@ -21,12 +21,14 @@ const CONTEXTS = {
   },
   [CONTEXT_SUTTA]: {
     icon: "mdi-file-document-outline",
+    alt1Icon: "mdi-graph-outline",
   },
   [CONTEXT_DEBUG]: {
     icon: "mdi-tools",
   },
   [CONTEXT_GRAPH]: {
     icon: "mdi-graph-outline",
+    alt1Icon: "mdi-file-document-outline",
   },
 }
 
@@ -171,6 +173,10 @@ export default class EbtCard {
     return card;
   }
 
+  get alt1Id() {
+    return `${this.id}-alt1`;
+  }
+
   get tab1Id() {
     return `${this.id}-tab1`;
   }
@@ -189,6 +195,10 @@ export default class EbtCard {
 
   get icon() {
     return CONTEXTS[this.context]?.icon || "mdi-alert-icon";
+  }
+
+  get alt1Icon() {
+    return CONTEXTS[this.context]?.alt1Icon || "mdi-alert-icon";
   }
 
   get topAnchor() {

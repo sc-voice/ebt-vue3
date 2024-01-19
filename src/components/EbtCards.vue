@@ -128,6 +128,7 @@
       onFocusIn(evt, card) {
         const msg = "EbtCards.onFocusIn() ";
         const dbg = DBG_FOCUS || DBG_SCROLL;
+        dbg && console.log(msg, '[0]', card.debugString, evt);
         let { volatile, settings } = this;
         let { cards } = settings;
         let { appFocus } = volatile;
@@ -142,11 +143,11 @@
         if (routeCard === card) {
           dbg && console.log(msg, `[1]scrollToCard`, 
             card.debugString, {evt})
-          volatile.scrollToCard(card, appFocus);
+          //volatile.scrollToCard(card, appFocus);
         } else {
           dbg && console.log(msg, `[2]setRoute`, 
             card.debugString, {evt})
-          volatile.setRoute(card.routeHash(), true, msg);
+          //volatile.setRoute(card.routeHash(), true, msg);
         }
       },
       async bindAudioSutta(route) {
