@@ -48,6 +48,33 @@
       const large = nodes.length > 200;
       const width = large ? 800 : 550;
       const height = width;
+      const strokeOpacity = d => {
+        if (d.group === 'Examples') {
+          return 1;
+        }
+        if (d.id === sutta_uid) {
+          return 1;
+        }
+        switch (d.rank) {
+          case 1: return 1;
+          case 2: return 0.6;
+        }
+        return 0.1;
+      }
+      const radius = d => {
+        if (d.id === sutta_uid) {
+          return 13;
+        }
+        if (d.group === 'Examples') {
+          return 8;
+        }
+        switch(d.rank) {
+          case 1: return 6;
+          case 2: return 5;
+          case 3: return 5;
+        }
+        return 5;
+      }
 
       // Create a simulation with several forces.
       const simulation = d3.forceSimulation(nodes)
@@ -74,11 +101,13 @@
 
       const node = svg.append("g")
           .attr("stroke", "#fff")
+          .attr("stroke-opacity", 0.5)
           .attr("stroke-width", 1.5)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-          .attr("r", d => d.id===sutta_uid ? 10 : 5)
+          .attr("r", radius)
+          .attr("stroke-opacity", strokeOpacity)
           .attr("fill", d => color(d.group));
 
       node.append("title")
@@ -164,8 +193,10 @@
   }
 
   function selectedText() {
-    let { id } = selectedNode.value || {};
-    return id;
+    let { id, group, links, rank } = selectedNode.value || {};
+    return group === 'Examples'
+      ? `${id} (${links})`
+      : `${id} #${rank}`;
   }
 
   function selectedHref() {
