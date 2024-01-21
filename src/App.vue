@@ -20,7 +20,7 @@
             <div :class="startupClass('ebt-title')" 
               @click="onClickAppBar">
               <v-icon icon="mdi-home" class="home-icon" size="24px"
-                @click.stop="onHome"
+                @click.stop.prevent="appHome"
               />
               <div :title="titlePopup">
                 {{config.appName}}
@@ -300,8 +300,8 @@
           console.warn(msg, '[1]ebtChips?', {evt});
         }
       },
-      onHome(evt) {
-        let msg = 'App.onHome()';
+      appHome(evt) {
+        let msg = 'App.appHome()';
         let { settings, volatile, audio, config } = this;
         let dbg = DBG_HOME;
         audio.playBlock();
@@ -313,21 +313,25 @@
         }
         volatile.setRouteCard(homeCard);
         let homePath = settings.homePath(config);
-        if (evt.ctrlKey) {
-          let location = `${config.basePath}${homePath}`;
-          dbg && console.log(msg, `[2]ctrl-Home`, location, evt);
-          window.location = location;
-        } else {
-          let cardLoc = 
-            [homeCard.context, ...homeCard.location].join('/');
-          let location = `${config.basePath}#/${cardLoc}`;
-          dbg && console.log(msg, `[3]home`, location, evt);
-          window.location = location;
-        }
+        let location = `${config.basePath}${homePath}`;
+        dbg && console.log(msg, `[2]ctrl-Home`, location, evt);
+        window.location = location;
+
         volatile.ebtChips && nextTick(()=>{
           dbg && console.log(msg, `[4]focusElement ebt-chips`);
           volatile.focusElement(volatile.ebtChips);
         });
+
+        let ebtCards = document.getElementById("ebt-cards");
+        ebtCards && ebtCards.scrollIntoView(true);
+      },
+      onHome(evt) {
+        let msg = 'App.onHome()';
+        let { settings, volatile, audio, config } = this;
+        let dbg = DBG_HOME;
+        if (evt.ctrlKey) {
+          this.appHome(evt);
+        }
       },
       async allowLocalStorage() {
         let { settings } = this;
@@ -366,7 +370,7 @@
         let msg = `App.onKeydown:${evt.code}`;
         let dbg = DBG_KEY;
         let { audio } = this;
-        switch (evt.code) {
+        switch (evt.key) {
           case 'Home': 
             dbg && console.log(msg, '[3]onHome', {evt}); 
             this.onHome(evt); 
