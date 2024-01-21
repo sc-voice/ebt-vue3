@@ -12,6 +12,9 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
+      <div class="settings-privacy">
+        <a :href="privacyLink"> {{$t('ebt.allowSettings')}}</a>
+      </div>
       <v-expansion-panels >
         <v-expansion-panel ><!--General-->
           <v-expansion-panel-title 
@@ -453,6 +456,10 @@ export default {
 
   },
   computed: {
+    privacyLink(ctx) {
+      let { config } = ctx;
+      return config.privacyLink || "#/wiki/privacy";
+    },
     tbd(ctx) {
       return DBG_TBD;
     },
@@ -517,5 +524,11 @@ export default {
 .settings-confirm {
   display: flex;
   flex-flow: column;
+}
+.settings-privacy {
+  display: flex;
+  justify-content: center;
+  flex-flow: row nowrap;
+  font-size: 80%;
 }
 </style>
