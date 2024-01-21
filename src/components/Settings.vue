@@ -13,7 +13,9 @@
         </v-btn>
       </v-toolbar>
       <div class="settings-privacy">
-        <a :href="privacyLink"> {{$t('ebt.allowSettings')}}</a>
+        <a @click.stop.prevent="onPrivacy">
+          {{$t('ebt.allowSettings')}}
+        </a>
       </div>
       <v-expansion-panels >
         <v-expansion-panel ><!--General-->
@@ -291,7 +293,7 @@ import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
 import { 
-  DBG_TBD, DBG_GDPR, DBG_TUTORIAL, DBG_LOG_HTML 
+  DBG_TBD, DBG_GDPR, DBG_TUTORIAL, DBG_LOG_HTML, DBG_ROUTE,
 } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
@@ -354,6 +356,15 @@ export default {
     logger.debug("Settings.mounted()", this.host);
   },
   methods: {
+    onPrivacy(evt) {
+      const msg = "Settings.onPrivacy()";
+      const dbg = DBG_ROUTE;
+      let { config, volatile, } = this;
+      let privacyLink = config.privacyLink || "#/wiki/privacy";
+      console.log(msg, '[1]setRoute', privacyLink, evt);
+      volatile.showSettings = false;
+      volatile.setRoute(privacyLink);
+    },
     showTutorials(show) {
       const msg = "Settings.showTutorials()";
       const dbg = DBG_TUTORIAL;
@@ -456,10 +467,6 @@ export default {
 
   },
   computed: {
-    privacyLink(ctx) {
-      let { config } = ctx;
-      return config.privacyLink || "#/wiki/privacy";
-    },
     tbd(ctx) {
       return DBG_TBD;
     },
@@ -530,5 +537,6 @@ export default {
   justify-content: center;
   flex-flow: row nowrap;
   font-size: 80%;
+  cursor: pointer;
 }
 </style>
