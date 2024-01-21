@@ -74,14 +74,18 @@ export default class EbtD3 {
     const dbg = DBG_D3;
     const dbgv = DBG_VERBOSE && dbg;
     let { graph } = this;
-    let { nodePat, depth=1 } = opts;
-    let rexNode = nodePat instanceof RegExp
-      ? nodePat
-      : nodePat && new RegExp(nodePat);
+    let { nodeMatch, idPat, depth=1 } = opts;
+    if (nodeMatch == null) {
+      nodeMatch = idPat instanceof RegExp
+        ? (n=>idPat.test(n.id))
+        : (n=>n.id === idPat);
+    }
+    let nodeCount = 0;
     let idMap = graph.nodes.reduce((a,n)=>{
       let { id } = n; 
-      if (rexNode) {
-        rexNode.test(id) && (a[id] = true);
+      if (nodeMatch(n)) {
+        a[id] = true;
+        nodeCount++;
       }
       return a;
     }, {});
@@ -93,9 +97,15 @@ export default class EbtD3 {
     }
     dbgv && console.log(msg, `[2]idMap`, idMap);
 
+    let nodes;
+    if (nodeCount === 0) {
+      nodes = [{ id: idPat, }];
+      dbg && console.log(msg, '[3]empty', nodes);
+    } else {
+      nodes = graph.nodes.filter(n=>idMap[n.id]);
+    }
     let links = graph.links
       .filter(l=> idMap[l.source] && idMap[l.target]);
-    let nodes = graph.nodes.filter(n=>idMap[n.id]);
 
     return {nodes, links}
   }

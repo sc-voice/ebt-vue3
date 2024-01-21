@@ -43,10 +43,10 @@ import should from "should";
     should(ed3_de.graph.nodes.length).above(3000).below(4000);
     should(ed3_de.graph.links.length).above(5000).below(7000);
   });
-  it("slice() nodePat s1 depth 1", async()=>{
-    let nodePat = 's1';
+  it("slice() idPat s1 depth 1", async()=>{
+    let idPat = 's1';
     let ed3 = await EbtD3.create({graph:TEST_GRAPH});
-    let graph = ed3.slice({nodePat});
+    let graph = ed3.slice({idPat});
     //console.log("slice", graph);
     should(graph.nodes.length).equal(2);
     should.deepEqual(graph.nodes, [ S1, E1 ]);
@@ -54,11 +54,11 @@ import should from "should";
       { source: 's1', target: 'e1'}, 
     ]);
   });
-  it("slice() nodePat s1 depth 2", async()=>{
-    let nodePat = 's1';
+  it("slice() idPat s1 depth 2", async()=>{
+    let idPat = 's1';
     let depth = 2;
     let ed3 = await EbtD3.create({graph:TEST_GRAPH});
-    let graph = ed3.slice({nodePat, depth});
+    let graph = ed3.slice({idPat, depth});
     //console.log("slice", graph);
     should.deepEqual(graph.nodes, [ S1, S2, E1 ]);
     should.deepEqual(graph.links, [
@@ -66,11 +66,11 @@ import should from "should";
       { source: 'e1', target: 's2'}, 
     ]);
   });
-  it("slice() nodePat s1 depth 3", async()=>{
-    let nodePat = 's1';
+  it("slice() idPat s1 depth 3", async()=>{
+    let idPat = 's1';
     let depth = 3;
     let ed3 = await EbtD3.create({graph:TEST_GRAPH});
-    let graph = ed3.slice({nodePat, depth});
+    let graph = ed3.slice({idPat, depth});
     //console.log("slice", graph);
     should.deepEqual(graph.nodes, [ S1, S2, E1, E2 ]);
     should.deepEqual(graph.links, [
@@ -79,18 +79,25 @@ import should from "should";
       { source: 's2', target: 'e2'}, 
     ]);
   });
-  it("TESTTESTslice() nodePat mn44", async()=>{
-    let nodePat = 'mn44';
+  it("TESTTESTslice() idPat an3.1", async()=>{
+    let idPat = 'an3.1'; // no examples
     let ed3 = await EbtD3.create();
-    let graph = ed3.slice({nodePat});
+    let graph = ed3.slice({idPat});
+    should.deepEqual(graph.nodes, [{id:idPat}]);
+    should(graph.links.length).equal(0);
+  });
+  it("TESTTESTslice() idPat mn44", async()=>{
+    let idPat = 'mn44';
+    let ed3 = await EbtD3.create();
+    let graph = ed3.slice({idPat});
     should(graph.nodes.length).above(11).below(100);
     should(graph.links.length).above(10).below(100);
   });
-  it("TESTTESTslice() nodePat depth", async()=>{
-    let nodePat = 'mn44';
+  it("slice() idPat depth", async()=>{
+    let idPat = 'mn44';
     let depth = 2;
     let ed3 = await EbtD3.create();
-    let graph = ed3.slice({nodePat, depth});
+    let graph = ed3.slice({idPat, depth});
     should(graph.nodes.length).above(156).below(500);
     should(graph.links.length).above(155).below(500);
   });

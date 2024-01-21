@@ -19,7 +19,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { default as IdbAudio } from '../idb-audio.mjs';
   import { SuttaRef } from 'scv-esm';
-  import { DBG_GRAPH } from '../defines.mjs';
+  import { DBG_GRAPH, DBG_VERBOSE } from '../defines.mjs';
   import { ref, computed, onMounted } from "vue";
 
   const selectedNode = ref(null);
@@ -167,6 +167,7 @@
   onMounted(async ()=>{
     const msg = "GraphView.onMounted()";
     const dbg = DBG_GRAPH;
+    const dbgv = DBG_VERBOSE && dbg;
     let { docLang } = useSettingsStore();
     let { 
       sutta_uid, 
@@ -174,11 +175,11 @@
       author 
     } = SuttaRef.create(props.card.location.join("/"), docLang);
     let ed3 = await EbtD3.create({lang});
-    let graph = ed3.slice({nodePat:sutta_uid, depth:2});
+    let graph = ed3.slice({idPat:sutta_uid, depth:2});
     let svgContainer = document.getElementById(svgId.value);
     let svg = D3Graph.createSvg(graph, sutta_uid, selectedNode);
     selectedNode.value = { id: sutta_uid };
-    dbg && console.log(msg, '[1]append', {lang,sutta_uid}, graph, svg);
+    dbgv && console.log(msg, '[3]append', {lang,sutta_uid}, graph, svg);
     svgContainer.append(svg);
   });
 
