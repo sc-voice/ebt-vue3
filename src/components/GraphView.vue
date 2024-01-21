@@ -37,16 +37,25 @@
     static createSvg(data, sutta_uid, selId) {
       // Specify the dimensions of the chart.
 
-      // Specify the color scale.
-      const color = d3.scaleOrdinal(d3.schemeCategory10);
 
       // The force simulation mutates links and nodes, so create a copy
       // so that re-evaluating this cell produces the same result.
       const links = data.links.map(d => ({...d}));
       const nodes = data.nodes.map(d => ({...d}));
 
-      const large = nodes.length > 200;
-      const width = large ? 800 : 550;
+      // Specify the color scale.
+      const color = links.length === 0
+        ? (d=>"#888")
+        : d3.scaleOrdinal(d3.schemeCategory10);
+
+      var width;
+      if (nodes.length < 50) {
+        width = 350;
+      } else if (nodes.length < 200) {
+        width = 550;
+      } else {
+        width = 800;
+      }
       const height = width;
       const strokeOpacity = d => {
         if (d.group === 'Examples') {
