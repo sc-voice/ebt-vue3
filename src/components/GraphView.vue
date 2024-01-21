@@ -194,9 +194,10 @@
 
   function selectedText() {
     let { id, group, links, rank } = selectedNode.value || {};
-    return group === 'Examples'
-      ? `${id} (${links})`
-      : `${id} #${rank}`;
+    if (group === 'Examples') {
+      return `${id} (${links})`
+    }
+    return rank ? `${id} #${rank}` : id;
   }
 
   function selectedHref() {
