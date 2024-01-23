@@ -161,7 +161,7 @@ export default {
     "addingExamples": "Beispiele hinzufügen",
     "advanced": "Erweitert",
     "allow": "Erlauben",
-    "allowSettings": "Klicken: zu Impressum und Datenschutzerklärung",
+    "allowSettings": "Ihre Daten werden nur in Ihrem Browser verwendet.",
     "allowSettingsLink": "(Mehr Info …)",
     "alwaysShowLatestText": "Neuesten Text zeigen",
     "and": "und",
