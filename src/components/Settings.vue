@@ -14,7 +14,7 @@
       </v-toolbar>
       <div class="settings-privacy">
         <a @click.stop.prevent="onPrivacy">
-          {{$t('ebt.allowSettings')}}
+          {{$t('ebt.showPrivacy')}}
         </a>
       </div>
       <v-expansion-panels >

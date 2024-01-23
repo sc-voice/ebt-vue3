@@ -291,6 +291,7 @@ export default {
     "showOnlyTransText": "Sýna aðeins þýðingu",
     "showPaliText": "Sýna texta á Pali",
     "showPaliTransText": "Sýna bæði texta á Pali og þýðingu",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Sýna SuttaCentral auðkenni hlutans",
     "showTransText": "Sýna þýðingu",

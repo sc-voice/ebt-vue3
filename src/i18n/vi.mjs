@@ -289,6 +289,7 @@ export default {
     "showOnlyTransText": "Chỉ hiển thị bản dịch",
     "showPaliText": "Hiển thị văn bản Pali",
     "showPaliTransText": "Hiển thị văn bản Pali và bản dịch",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Hiển thị SuttaCentral segment IDs",
     "showTransText": "Hiển thị bản dịch",

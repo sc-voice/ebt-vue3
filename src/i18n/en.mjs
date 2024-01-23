@@ -292,6 +292,7 @@ export default {
     "showOnlyTransText": "Show only translation text",
     "showPaliText": "Show Pali text",
     "showPaliTransText": "Show Pali and translation text",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Show SuttaCentral segment ids",
     "showTransText": "Show local translation text",
