@@ -201,7 +201,7 @@ global.AudioContext = MockAudioContext; // NodeJs has no AudioContext
     let currentTime = audio.currentTime;
     should(audio.currentTime).equal(currentTime);
   });
-  it("duration", async ()=>{
+  it("TESTTESTduration", async ()=>{
     let audioStore = useAudioStore();
     let src = IdbAudio.URL_NO_AUDIO + '?' + Math.random();
     let preload = true;
