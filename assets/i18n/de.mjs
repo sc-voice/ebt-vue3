@@ -290,7 +290,7 @@ export default {
     "showOnlyTransText": "Zeige nur Übersetzung",
     "showPaliText": "Zeige Palitext",
     "showPaliTransText": "Zeige Palitext und Übersetzung",
-    "showPrivacy": "Show privacy information",
+    "showPrivacy": "Klicken: zu Impressum und Datenschutzerklärung",
     "showReference": "Zeige Vergleichstext",
     "showTextSegmentIds": "SuttaCentral-ID zeigen",
     "showTransText": "Zeige lokale Übersetzung",
