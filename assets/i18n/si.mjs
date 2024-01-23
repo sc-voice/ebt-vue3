@@ -288,6 +288,7 @@ export default {
     "showOnlyTransText": "පරිවර්තන පෙළ පමණක් පෙන්වන්න",
     "showPaliText": "පාලි පෙළ පෙන්වන්න",
     "showPaliTransText": "පාලි සහ පරිවර්තන පෙළ පෙන්වන්න",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral හි කොටස් හැඳුනුම් අංක පෙන්වන්න",
     "showTransText": "පරිවර්තන පෙළ පෙන්වන්න",

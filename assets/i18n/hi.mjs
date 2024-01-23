@@ -284,6 +284,7 @@ export default {
     "showOnlyTransText": "केवल अनुवाद ही दिखाए",
     "showPaliText": "पालि ही दिखाए",
     "showPaliTransText": "पालि और अनुवाद दिखाए",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral सेगमेंट आयडी दिखाए",
     "showTransText": "अनुवाद ही दिखाए",

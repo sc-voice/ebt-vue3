@@ -290,6 +290,7 @@ export default {
     "showOnlyTransText": "訳文のみ表示",
     "showPaliText": "パーリ語テキストの表示",
     "showPaliTransText": "パーリ語テキストと訳文を表示",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral セグメントIDを表示",
     "showTransText": "訳文の表示",

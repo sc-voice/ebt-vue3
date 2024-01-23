@@ -287,6 +287,7 @@ export default {
     "showOnlyTransText": "Arată numai versiunea tradusă",
     "showPaliText": "Arată textul în Pali",
     "showPaliTransText": "Arată textul în Pali și versiunea tradusă",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Arată identificatori de segmente folosiți de SuttaCentral",
     "showTransText": "Arată versiunea tradusă",

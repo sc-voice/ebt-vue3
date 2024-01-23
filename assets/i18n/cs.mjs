@@ -290,6 +290,7 @@ export default {
     "showOnlyTransText": "Zobraz pouze překlad",
     "showPaliText": "Zobraz text v Páli",
     "showPaliTransText": "Zobraz text v Páli a překlad",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Zobraz čísla SuttaCentral segmentů",
     "showTransText": "Zobraz překlad",

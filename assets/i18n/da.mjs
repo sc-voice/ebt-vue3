@@ -288,6 +288,7 @@ export default {
     "showOnlyTransText": "Vis kun oversættelsestekst",
     "showPaliText": "Vis Pali tekst",
     "showPaliTransText": "Vis både Pali og oversættelsestekst",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Vis SuttaCentral segment-IDer",
     "showTransText": "Vis oversættelsestekst",

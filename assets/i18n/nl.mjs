@@ -290,6 +290,7 @@ export default {
     "showOnlyTransText": "Toon alleen vertaalde tekst",
     "showPaliText": "Toon tekst in Pali",
     "showPaliTransText": "Toon tekst in Pali en vertaalde tekst",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Toon SuttaCentral segment-identificatiecodes",
     "showTransText": "Toon vertaalde tekst",

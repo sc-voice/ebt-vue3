@@ -290,6 +290,7 @@ export default {
     "showOnlyTransText": "Pokaż tylko tłumaczenie",
     "showPaliText": "Pokaż tekst w Pali",
     "showPaliTransText": "Pokaż tekst w Pali i tłumaczenie",
+    "showPrivacy": "Show privacy information",
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Pokazuj segmentacje tekstów SuttaCentral",
     "showTransText": "Pokaż tłumaczenie",
