@@ -15,6 +15,7 @@ const CONTEXT_GRAPH = "graph";
 const CONTEXTS = {
   [CONTEXT_WIKI]: {
     icon: "mdi-wikipedia",
+    alt1Icon: "mdi-home",
   },
   [CONTEXT_SEARCH]: {
     icon: "mdi-magnify",

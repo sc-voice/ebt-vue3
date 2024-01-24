@@ -211,6 +211,7 @@
         const { context, location } = card;
         dbg && console.log(msg, evt);
         switch (context) {
+          case EbtCard.CONTEXT_WIKI:
           case EbtCard.CONTEXT_GRAPH:
           case EbtCard.CONTEXT_SUTTA: {
             let { alt1Href } = this;
@@ -313,11 +314,14 @@
     },
     computed: {
       alt1Href(ctx) {
-        const { card, volatile, settings } = this;
+        const { config, card, volatile, settings } = this;
         const { docLang } = settings;
         const { context, location } = card;
         let href;
         switch (context) {
+          case EbtCard.CONTEXT_WIKI: {
+            href = config.homePath;
+          } break;
           case EbtCard.CONTEXT_SUTTA: {
             let sref = SuttaRef.create(location.join('/'), docLang);
             let { sutta_uid, lang, author } = sref;
