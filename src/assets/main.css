@@ -124,7 +124,7 @@ a:focus {
 
 .ebt-wiki {
   padding: 1em;
-  padding-bottom: 20em;
+  padding-bottom: 2em;
   font-size: 107%;
 }
 .ebt-wiki li {
@@ -133,13 +133,20 @@ a:focus {
   margin-bottom: 0.15em;
 }
 .ebt-wiki p {
-  padding-top: 0.5em;
+  padding-top: 0.2em;
   padding-bottom: 0.2em;
   max-width: calc(min(100vw - 30px, 700px));
 }
-.ebt-wiki h1,h2,h3,h4,h5,h6 {
-  padding-top: 0.3em;
-  padding-bottom: 0.4em;
+.ebt-wiki h1,h2 {
+  padding-top: 0.9em;
+  padding-bottom: 0.2em;
+}
+.ebt-wiki h3 {
+  padding-top: 0.7em;
+  padding-bottom: 0.1em;
+}
+.ebt-wiki h4,h5,h6 {
+  padding-top: 0.5em;
 }
 .ebt-wiki h1 {
   font-size: 1.2em !important;
@@ -189,6 +196,11 @@ a:focus {
 }
 .ebt-wiki-breadcrumbs {
   font-weight: 500;
+}
+.ebt-image {
+  outline: 1px solid rgba(127,127,255, 0.8);
+  border: 3px solid rgba(127,127,255, 0.2);
+  border-radius: 5px;
 }
 .ebt-toc {
   margin: 1em;

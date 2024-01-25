@@ -183,7 +183,7 @@
       lang, 
       author 
     } = SuttaRef.create(props.card.location.join("/"), docLang);
-    let ed3 = await EbtD3.create({lang});
+    let ed3 = await EbtD3.create({lang, author});
     let graph = ed3.slice({idPat:sutta_uid, depth:2});
     let svgContainer = document.getElementById(svgId.value);
     let svg = D3Graph.createSvg(graph, sutta_uid, selectedNode);

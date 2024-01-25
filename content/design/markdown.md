@@ -42,6 +42,23 @@ Add new images to the following folder:
 To preserve disk space and network performance, keep your images small.
 For example, each wiki page header image should be 250wx200h pixels, preferably in PNG format.
 
+#### Other images
+Images can also be embedded using the ```<img>``` tag.
+Use the <kbd>ebt-image</kbd> class 
+for screenshots to avoid confusion between pictures of user interface
+and the actual user interface. For example:
+
+```
+
+<img>
+  src="img/jan-kopriva-7BootnN3-0I-unsplash.jpg"
+  class="ebt-image"
+/> 
+
+```
+
+<img src="img/jan-kopriva-7BootnN3-0I-unsplash.jpg" class="ebt-image"/>
+
 ## Footnotes
 
 ### Inline footnotes
