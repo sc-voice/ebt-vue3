@@ -287,7 +287,7 @@ export default {
     "show": "Show",
     "showGdpr": "Show GDPR notice",
     "showGithub": "Show Github source",
-    "showLineByLine": "Show line by line",
+    "showLineByLine": "Show line by line (vs. column view)",
     "showOnlyPaliText": "Show only Pali text",
     "showOnlyTransText": "Show only translation text",
     "showPaliText": "Show Pali text",
