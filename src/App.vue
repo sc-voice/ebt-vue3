@@ -535,8 +535,9 @@
         // allow other open cards
         let nonWikiOpen = openCards.filter(c=>c !== wikiCard).length; 
         if (nonWikiOpen) {
-          dbg && console.log(msg, '[6]wait', {nonWikiOpen});
-          return false;
+          //Settings doesn't use links
+          //dbg && console.log(msg, '[6]wait', {nonWikiOpen});
+          //return false;
         }
 
         dbg && console.log(msg, '[7]show');
