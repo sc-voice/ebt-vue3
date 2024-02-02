@@ -117,15 +117,13 @@ export const useAudioStore = defineStore('audio', {
           }
           break;
         case 'Space':
-          //if (!evt.altKey && !evt.metaKey) {
-            if (evt.shiftKey || evt.ctrlKey) {
-              dbg && console.log(msg, '[7]clickPlayToEnd');
-              this.clickPlayToEnd();
-            } else {
-              dbg && console.log(msg, '[8]clickPlayOne');
-              this.clickPlayOne();
-            }
-          //}
+          if (evt.altKey || evt.metaKey || evt.shiftKey || evt.ctrlKey) {
+            dbg && console.log(msg, '[7]clickPlayToEnd');
+            this.clickPlayToEnd();
+          } else {
+            dbg && console.log(msg, '[8]clickPlayOne');
+            this.clickPlayOne();
+          }
           break;
         case 'Enter':
           dbg && console.log(msg, '[9]clickPlayToEnd');
