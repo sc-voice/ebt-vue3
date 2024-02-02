@@ -194,7 +194,7 @@
 }
 .tutorial-content-tutorPlay {
   bottom: 40px !important;
-  right: calc(50vw - 113px)  !important;
+  right: calc(50vw - 120px)  !important;
 }
 .tutorial-content-tutorClose {
   top: 50px !important;
