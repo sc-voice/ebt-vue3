@@ -168,7 +168,7 @@
           setting="tutorSettings" 
           :title="$t('ebt.settingsTitle')" 
           :text="$t('ebt.customizeSettings')" arrow="top"
-          :msDelay="5000"
+          :msDelay="3000"
         ></Tutorial>
       </div>
     </v-main>
