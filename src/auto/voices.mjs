@@ -87,8 +87,26 @@ const VOICES= [
     "service": "human-tts"
   },
   {
+    "name": "Enrique",
+    "label": "🤖 Enrique (ES)",
+    "langTrans": "es",
+    "gender": "male",
+    "iVoice": 10,
+    "locale": "es-ES",
+    "service": "aws-polly"
+  },
+  {
+    "name": "Lucia",
+    "label": "🤖 Lucia (ES)",
+    "langTrans": "es",
+    "gender": "female",
+    "iVoice": 10,
+    "locale": "es-ES",
+    "service": "aws-polly"
+  },
+  {
     "name": "Ricardo",
-    "label": "🤖 Ricardo",
+    "label": "🤖 Ricardo (BR)",
     "langTrans": "pt",
     "gender": "male",
     "iVoice": 10,
@@ -97,7 +115,7 @@ const VOICES= [
   },
   {
     "name": "Ines",
-    "label": "🤖 Inés",
+    "label": "🤖 Inés (PT)",
     "langTrans": "pt",
     "gender": "female",
     "iVoice": 11,
@@ -117,7 +135,7 @@ const VOICES= [
     "name": "Mathieu",
     "label": "🤖 Mathieu",
     "langTrans": "fr",
-    "gender": "female",
+    "gender": "male",
     "iVoice": 10,
     "locale": "fr-FR",
     "service": "aws-polly"

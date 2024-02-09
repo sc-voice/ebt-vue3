@@ -185,9 +185,12 @@ export default class Settings {
     }, {
       code: 'en',
       label: 'English / EN',
-      //}, {
-      //code: 'fr',
-      //label: 'Français / FR',
+    }, {
+      code: 'es',
+      label: 'Español / ES',
+    }, {
+      code: 'fr',
+      label: 'Français / FR',
       //}, {
       //code: 'hi',
       //label: 'हिंदी / HI',
@@ -234,6 +237,9 @@ export default class Settings {
     }, {
       code: 'en',
       label: 'English / EN',
+    }, {
+      code: 'es',
+      label: 'Español / ES',
     }, {
       code: 'fr',
       label: 'Français / FR',

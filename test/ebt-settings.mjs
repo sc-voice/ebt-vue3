@@ -138,6 +138,8 @@ import should from "should";
       'cs',
       'de',
       'en',
+      'es',
+      'fr',
       'ja',
       'pt',
     ]);

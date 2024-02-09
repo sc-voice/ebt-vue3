@@ -12,6 +12,11 @@ const VOICE_LANGS = [
     "voice": true
   },
   {
+    "value": "es",
+    "title": "Español / ES",
+    "voice": true
+  },
+  {
     "value": "fr",
     "title": "Français / FR",
     "voice": true
@@ -46,6 +51,11 @@ const UI_LANGS = [
   {
     "value": "en",
     "title": "English / EN",
+    "voice": true
+  },
+  {
+    "value": "es",
+    "title": "Español / ES",
     "voice": true
   },
   {

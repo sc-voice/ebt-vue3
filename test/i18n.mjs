@@ -9,10 +9,11 @@ import {
 } from '../src/index.mjs';
 
 (typeof describe === 'function') && describe("audio-store.mjs", function () {
-  it("i18n", ()=>{
+  it("TESTTESTi18n", ()=>{
     should.deepEqual(Languages.VOICE_LANGS, [
       { value: 'de', title: 'Deutsch / DE', voice: true },
       { value: 'en', title: 'English / EN', voice: true },
+      { value: 'es', title: 'Español / ES', voice: true },
       { value: 'fr', title: 'Français / FR', voice: true },
       { value: 'ja', title: '日本語 / JA', voice: true },
       { value: 'pt', title: 'Português / PT', voice: true },
@@ -22,6 +23,7 @@ import {
       { value: 'da', title: 'Dansk / DA', voice: false },    
       { value: 'de', title: 'Deutsch / DE', voice: true },
       { value: 'en', title: 'English / EN', voice: true },
+      { value: 'es', title: 'Español / ES', voice: true },
       { value: 'fr', title: 'Français / FR', voice: true },
       { value: 'hi', title: 'हिंदी / HI', voice: false }, 
       { value: 'is', title: 'Íslenska / IS', voice: false },
