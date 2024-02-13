@@ -36,6 +36,8 @@ export default class EbtD3 {
   }
 
   static async create(opts={}) {
+    const msg = "EbtD3.create()";
+    const dbg = DBG_D3;
     let ed3;
     try {
       allowCtor = true;
@@ -46,6 +48,7 @@ export default class EbtD3 {
     let { graph } = ed3;
     if (graph == null) {
       let res = await fetch(ed3.graphUrl);
+      dbg && console.log(msg, ed3.graphUrl);
       graph = await res.json();
     }
 
