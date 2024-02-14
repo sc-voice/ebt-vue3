@@ -243,7 +243,7 @@ export default {
     "languages": "Sprog",
     "latestContent": "View latest sutta/vinaya content",
     "loadingAudio": "loading audio...",
-    "loadingSutta": "Loading A_SUTTA...",
+    "loadingSutta": "Loading ...",
     "logLevel": "Console messages",
     "no-location-debug": "Debug",
     "no-location-home": "Home",
