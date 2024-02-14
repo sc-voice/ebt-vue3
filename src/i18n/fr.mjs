@@ -243,7 +243,7 @@ export default {
     "latestContent": "Voir le dernier contenu sutta/vinaya",
     "legacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "loadingAudio": "loading audio...",
-    "loadingSutta": "Loading A_SUTTA...",
+    "loadingSutta": "Loading ...",
     "logLevel": "Console messages",
     "no-location-debug": "Debug",
     "no-location-home": "",

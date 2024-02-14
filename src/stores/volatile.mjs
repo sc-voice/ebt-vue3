@@ -28,6 +28,7 @@ const appFocus = ref(null); // because document.activeElement is flaky
 const transientMsg = ref(null);
 const showTransientMsg = ref(false);
 const showHtmlLog = ref(false);
+const waitingContext = ref('...');
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -56,6 +57,7 @@ const INITIAL_STATE = {
   waitingDelay: ref(500),
   waitingIcon: ref(ICON_DOWNLOAD),
   waitingMsg: ref('...'),
+  waitingContext,
 
 };
 
@@ -402,11 +404,17 @@ export const useVolatileStore = defineStore('volatile', {
       this.alertHtml = alertHtml;
       this.showAlertMsg = !!msg;
     },
-    waitBegin(msgKey, icon=ICON_DOWNLOAD, context='') {
+    waitBegin(msgKey, 
+      icon=ICON_DOWNLOAD, 
+      context=waitingContext.value || '') 
+    {
+      const msg = "volatile.waitBegin()";
+      const dbg = 0;
       let { $t } = this;
       msgKey && (this.waitingMsg = $t(msgKey));
+      dbg && console.log(msg, {msgKey, context}, this.waitingMsg);
       this.waitingIcon = icon;
-      this.waitingContext = context;
+      waitingContext.value = context;
       if (this.waiting === 0) {
         setTimeout(()=>{
           if (this.waiting > 0) {

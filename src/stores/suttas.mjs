@@ -53,7 +53,7 @@ export const useSuttasStore = defineStore('suttas', {
         let volatile = useVolatileStore();
         let url = this.suttaUrl(suttaRef);
         dbg && console.log(msg, '[1]fetchJson', url);
-        volatile.waitBegin('ebt.loadingSutta', undefined, msg);
+        volatile.waitBegin('ebt.loadingSutta', undefined, suttaRef.toString());
         let json = await volatile.fetchJson(url);
         volatile.waitEnd('ebt.loadingSutta', undefined, msg);
         this.nFetch++;

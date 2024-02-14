@@ -110,7 +110,7 @@
           return;
         }
         try {
-          volatile.waitBegin('ebt.searching');
+          volatile.waitBegin('ebt.searching', undefined, search);
           card.location[0] = search;
           res = await volatile.fetchJson(url);
           let searchResults = res.ok

@@ -244,7 +244,7 @@ export default {
     "languages": "Jazyky",
     "latestContent": "View latest sutta/vinaya content",
     "loadingAudio": "loading audio...",
-    "loadingSutta": "Loading A_SUTTA...",
+    "loadingSutta": "Loading _SUTTA...",
     "logLevel": "Console messages",
     "no-location-debug": "Debug",
     "no-location-home": "",

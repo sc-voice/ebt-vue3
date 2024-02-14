@@ -243,7 +243,7 @@ export default {
     "latestContent": "Neuester Text für Sutta/Vinaya",
     "legacyVoice": "Nicht mehr an altes voice.suttacentral.net erinnern",
     "loadingAudio": "Audio laden...",
-    "loadingSutta": "A_SUTTA wird geladen...",
+    "loadingSutta": "wird geladen...",
     "logLevel": "Konsolen-Info",
     "no-location-debug": "Fehlersuche",
     "no-location-home": "",
