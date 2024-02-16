@@ -255,7 +255,7 @@
         docLang = docLang || lang;
         docAuthor = docAuthor || author;
         let docInfo = AuthorsV2.authorInfo(docAuthor);
-        let docText = docInfo && docInfo.name.join(', ') || "docAuthor?";
+        let docText = docInfo && docInfo.name.join(', ') || "–∅–";
 
         refLang = refLang || settings.refLang;
         refAuthor = refAuthor || AuthorsV2.langAuthor(refLang);
