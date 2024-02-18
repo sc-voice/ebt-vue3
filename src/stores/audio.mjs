@@ -476,10 +476,21 @@ export const useAudioStore = defineStore('audio', {
       return audioContext;
     },
     transVoiceName(suttaRef, settings=useSettingsStore()) {
+      const msg = "audio.transVoiceName()";
+      const dbg = DBG_AUDIO;
       let vTrans = settings.vnameTrans;
-      let { lang, } = suttaRef;
-      if (lang !== settings.langTrans) {
-        let langVoice = VOICES.default.filter(v=>v.langTrans===lang)[0];
+      let { lang:voiceLang, } = suttaRef;
+      let { langTrans } = settings;
+      switch (voiceLang) {
+        case 'jpn': // AWS:ja-JP SC:'jpn'
+          voiceLang = 'ja';
+          break;
+      }
+      if (voiceLang !== settings.langTrans) {
+        let voices = VOICES.default;
+        let langVoice = voices.filter(v=>v.langTrans===voiceLang)[0];
+        dbg && console.log(msg, '[1]langVoice', {
+          langVoice, voiceLang, langTrans});
         vTrans = langVoice.name || vTrans;
       }
       return vTrans;
