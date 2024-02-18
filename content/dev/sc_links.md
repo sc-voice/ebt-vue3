@@ -8,7 +8,10 @@ img-alt: The inside of a mechanical watch
 
 
 # Suttaplex card
-Speaker link use cases (local EBT-Vue3)
+
+Suttaplex card speaker link use cases 
+
+### Local EBT-Vue3
 
 * [/?src=sc#/sutta/thig1.1/en](/?src=sc#/sutta/thig1.1/en) sujato
 * [/?src=sc#/sutta/thig1.1/de](/?src=sc#/sutta/thig1.1/de) sabbamitta
@@ -18,17 +21,11 @@ Speaker link use cases (local EBT-Vue3)
 * [/?src=sc#/sutta/mn44/pt](/?src=sc#/sutta/mn44/pt) ebt-deepl
 * [/?src=sc#/sutta/thig1.1/in](/?src=sc#/sutta/thig1.1/in) no voice
 
-Speaker link use cases (staging.api.sc-voice.net)
+### staging.api.sc-voice.net
 
-<p class="mt-3">
-To handle the multiplicity of Voice websites,
-SuttaCentral audio links should now be directed
-to the Voice application server at
-<code>https://www.api.sc-voice.net</code>
-</p>
 <table>
 <caption>
-  SuttaCentral Links
+  SuttaCentral SuttaPlex Links
   <div style="font-size: smaller;">
     NOTE: Voice only supports 
     <code style="background-color:#9C5B01">root/pli/ms/sutta</code>
@@ -142,6 +139,50 @@ to the Voice application server at
   </td>
 </tr>
 <tr>
+  <td>Suttaplex<sup>8</sup></th>
+  <td>
+    <pre>/scv/ebt-site/:seg_id/:lang/:author</pre>
+  </td>
+  <td>
+    <a href="https://staging.api.sc-voice.net/scv/ebt-site/an1.31-40/jpn"
+      target="_blank">
+      an1.31-40/jpn
+    </a>
+  </td>
+</tr>
+</table>
+<div class="legend">
+  <div><sup>1</sup>translated primary human</div>
+  <div><sup>2</sup>untranslated</div>
+  <div><sup>3</sup>unsupported language (Indonesian)</div>
+  <div><sup>6</sup>translated ebt-deepl</div>
+  <div><sup>7</sup>translated alternate human</div>
+  <div><sup>8</sup>ja / jpn / ja-JP conversion</div>
+</div>
+
+# Sutta Card
+
+Sutta card speaker link use cases 
+
+<table>
+<caption>
+  SuttaCentral Sutta Card Links
+  <div style="font-size: smaller;">
+    NOTE: Voice only supports 
+    <code style="background-color:#9C5B01">root/pli/ms/sutta</code>
+    or 
+    <code style="background-color:#9C5B01">root/pli/ms/vinaya</code> 
+    Bilara documents.
+  </div>
+</caption>
+<thead>
+  <tr>
+    <th>Source</th>
+    <th>https://staging.api.sc-voice.net/...</th>
+    <th>Example</th>
+  </tr>
+</thead>
+<tr>
   <td>Sutta<sup>4</sup></th>
   <td>
     <pre>/scv/ebt-site/:sutta_uid/:lang/:author</pre>
@@ -167,14 +208,11 @@ to the Voice application server at
 </tr>
 </table>
 <div class="legend">
-  <div><sup>1</sup>translated primary human</div>
-  <div><sup>2</sup>untranslated</div>
-  <div><sup>3</sup>unsupported language (Indonesian)</div>
   <div><sup>4</sup>please implement in SuttaCentral</div>
   <div><sup>5</sup>possible feature for SuttaCentral</div>
-  <div><sup>6</sup>translated ebt-deepl</div>
-  <div><sup>7</sup>translated alternate human</div>
 </div>
+
+# URL Variables
 <table>
   <caption>URL Variables</caption>
   <tr>
