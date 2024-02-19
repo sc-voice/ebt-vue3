@@ -2574,7 +2574,7 @@ const messages =  {
       "clear": "Clear {0}"
     }
   },
-  "ja": {
+  "jpn": {
     "close": "閉じる",
     "dataIterator": {
       "pageText": "{0}-{1} / {2}",

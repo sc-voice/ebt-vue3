@@ -203,7 +203,7 @@ import should from "should";
 
     });
   });
-  it("validate() ja", ()=>{
+  it("TESTTESTvalidate() ja", ()=>{
     let state = {
       langTrans: 'ja',
       vnameTrans: 'Amy',

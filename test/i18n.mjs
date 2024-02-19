@@ -38,7 +38,7 @@ import {
     ]);
   });
   it("messages", async()=>{
-    should(messages).properties([ 'en', 'de', 'pt', 'si', 'ja' ]);
+    should(messages).properties([ 'en', 'de', 'pt', 'si', 'jpn' ]);
     should(messages.en.ebt.translation).equal('Translation');
     should(messages.de.ebt.translation).equal('Übersetzung');
   });

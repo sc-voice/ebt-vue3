@@ -2,6 +2,9 @@ import { logger } from 'log-instance/index.mjs';
 import { default as EbtCard } from './ebt-card.mjs';
 import { default as VOICES } from './auto/voices.mjs';
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
+import {
+  DBG_VERBOSE, DBG_SETTINGS,
+} from './defines.mjs';
 
 const AUDIO = { MP3: 'mp3', OGG: 'ogg', OPUS: 'opus', };
 
@@ -28,7 +31,18 @@ const SERVERS = [{
   dev: true,
 }];
 
-export default class Settings {
+function scLang(lang) {
+  let scLang = lang.toLowerCase();
+  if (scLang === 'ja') {
+    scLang = 'jpn';
+  } else {
+    scLang = scLang.split('-')[0];
+  }
+
+  return scLang;
+}
+
+export default class EbtSettings {
   constructor(opts = {}) {
     const msg = 'ebt-settings.ctor() ';
     let {
@@ -65,7 +79,7 @@ export default class Settings {
       vnameRoot,
       vnameTrans,
 
-    } = Object.assign({}, Settings.INITIAL_STATE, opts);
+    } = Object.assign({}, EbtSettings.INITIAL_STATE, opts);
     (opts.logger || logger).logInstance(this, opts);
 
     this.audio = audio;
@@ -74,12 +88,12 @@ export default class Settings {
     this.swooshVolume = swooshVolume;
     this.fullLine = fullLine;
     this.ips = 6;
-    this.langTrans = Settings.TRANS_LANGUAGES.reduce((a, l) => {
+    this.langTrans = EbtSettings.TRANS_LANGUAGES.reduce((a, l) => {
       return l.code === langTrans ? langTrans : a;
     }, 'en');
     this.docAuthor = docAuthor;
     this.legacyVoice = legacyVoice;
-    this.locale = Settings.WEB_LANGUAGES.reduce((a, l) => {
+    this.locale = EbtSettings.WEB_LANGUAGES.reduce((a, l) => {
       return l.code === locale ? locale : a;
     }, 'en');
     this.maxResults = maxResults;
@@ -99,7 +113,7 @@ export default class Settings {
     this.vnameRoot = vnameRoot;
     this.vnameTrans = vnameTrans;
 
-    Settings.validate(this);
+    EbtSettings.validate(this);
   }
 
   static get SERVERS() {
@@ -317,7 +331,7 @@ export default class Settings {
   }
 
   static langLabel(lang) {
-    let info = Settings.WEB_LANGUAGES.find(l => l.code === lang) || {
+    let info = EbtSettings.WEB_LANGUAGES.find(l => l.code === lang) || {
       label: `unknown language:${lang}`
     };
     return info.label;
@@ -327,7 +341,7 @@ export default class Settings {
     return AUDIO;
   }
 
-  static segmentRef(idOrRef, settings=Settings.INITIAL_STATE) {
+  static segmentRef(idOrRef, settings=EbtSettings.INITIAL_STATE) {
     const msg = "EbtSettings.segmentRef() ";
     let sref = SuttaRef.create(idOrRef, settings.langTrans);
     let { lang } = sref;
@@ -342,8 +356,11 @@ export default class Settings {
     return sref;
   }
 
+  static scLang(lang) { return scLang(lang); }
+
   static validate(state) {
     const msg = "EbtSettings.validate() ";
+    const dbg = DBG_VERBOSE;
     let isValid = true;
     let changed = null;
     let error = null;
@@ -416,7 +433,9 @@ export default class Settings {
     vnameTrans = vnameTrans.toLowerCase();
     let voiceTrans = VOICES.find(v=>v.name.toLowerCase() === vnameTrans);
     if (voiceTrans.langTrans !== langTrans) {
-      voiceTrans = VOICES.find(v=>v.langTrans === langTrans);
+      voiceTrans = VOICES.find(v=>
+        scLang(v.langTrans) === scLang(langTrans));
+      dbg && console.log(msg, {voiceTrans, langTrans});
       vnameTrans = voiceTrans.name;
       if (voiceTrans) {
         changed = Object.assign({vnameTrans}, changed);
@@ -428,7 +447,8 @@ export default class Settings {
           langTrans,
           '. Using en/sujato.',
         ].join(' '));
-        changed = Object.assign({voiceTrans:'sujato', langTrans:'en'}, changed);
+        changed = Object.assign({voiceTrans:'sujato', langTrans:'en'}, 
+          changed);
       }
     }
 
