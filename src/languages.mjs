@@ -22,11 +22,6 @@ const VOICE_LANGS = [
     "voice": true
   },
   {
-    "value": "ja",
-    "title": "日本語 / JPN",
-    "voice": true
-  },
-  {
     "value": "pt",
     "title": "Português / PT",
     "voice": true
@@ -76,7 +71,7 @@ const UI_LANGS = [
   {
     "value": "jpn",
     "title": "日本語 / JPN",
-    "voice": true
+    "voice": false
   },
   {
     "value": "nb",
