@@ -481,11 +481,6 @@ export const useAudioStore = defineStore('audio', {
       let vTrans = settings.vnameTrans;
       let { lang:voiceLang, } = suttaRef;
       let { langTrans } = settings;
-      switch (voiceLang) {
-        case 'jpn': // AWS:ja-JP SC:'jpn'
-          voiceLang = 'ja';
-          break;
-      }
       if (voiceLang !== settings.langTrans) {
         let voices = VOICES.default;
         let langVoice = voices.filter(v=>v.langTrans===voiceLang)[0];

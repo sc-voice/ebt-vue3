@@ -143,7 +143,7 @@
   {
     "name": "Takumi",
     "label": "🤖 Takumi",
-    "langTrans": "ja",
+    "langTrans": "jpn",
     "gender": "male",
     "iVoice": 20,
     "locale": "ja-JP",
@@ -152,7 +152,7 @@
   {
     "name": "Mizuki",
     "label": "🤖 Mizuki",
-    "langTrans": "ja",
+    "langTrans": "jpn",
     "gender": "female",
     "iVoice": 21,
     "locale": "ja-JP",
