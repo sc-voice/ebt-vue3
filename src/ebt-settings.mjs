@@ -121,9 +121,13 @@ export default class EbtSettings {
   }
 
   static get INITIAL_STATE() {
+    const msg = 'EbtSettings.INITIAL_STATE';
+    const dbg = 0;
     let NAV_LANG = typeof navigator === 'undefined'
       ? 'en'
       : navigator.languages[0].split('-')[0];
+    NAV_LANG = scLang(NAV_LANG);
+    dbg && console.log(msg, {navigator, NAV_LANG});
     let REF_LANG = 'en';
     let vnameTrans = VOICES.reduce((a,v)=>{
       return !a && v.langTrans === NAV_LANG ? v.name : a;

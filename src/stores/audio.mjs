@@ -10,7 +10,7 @@ import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
   DBG_KEY, DBG_AUDIO, DBG_VERBOSE, DBG_HIGHLIGHT_EG,
-  DBG_LOG_HTML,
+  DBG_LOG_HTML, DBG_SOUND_STORE, DBG_IDB_AUDIO,
 } from '../defines.mjs';
 
 const URL_NOAUDIO = "audio/383542__alixgaus__turn-page.mp3"; 
@@ -137,23 +137,31 @@ export const useAudioStore = defineStore('audio', {
       evt.stopPropagation();
     },
     playPause(playMode) {
+      const msg = "audio.playPause()";
+      const dbg = DBG_AUDIO;
       let { idbAudio, mainContext, } = this;
       this.playClick();
 
-      if (idbAudio?.audioSource) {
+      if (idbAudio == null) {
+        dbg && console.log(msg, '[1]idbAudio?=>false');
+      } else if (idbAudio.audioSource) {
         if (!idbAudio.paused) {
+          dbg && console.log(msg, '[2]pause=>true');
           idbAudio.pause();
           return true;
         }
         if (playMode === this.playMode) {
+          dbg && console.log(msg, '[3]play=>false');
           idbAudio.play();
           return true;
         } 
+        dbg && console.log(msg, '[4]n/a=>false');
         return false;
+      } else {
+        dbg && console.log(msg, '[5]audioSource?=>false');
       }
 
       mainContext && mainContext.close();
-      //this.createIdbAudio();
       this.playMode = playMode;
       return false;
     },
@@ -182,30 +190,33 @@ export const useAudioStore = defineStore('audio', {
     },
     async playOne() {
       const msg = 'audio.playOne() ';
-      logger.info(msg +'PLAY', this.audioScid);
+      const dbg = DBG_AUDIO;
+      dbg && console.log(msg, '[1]playSegment', this.audioScid);
       let completed = await this.playSegment();
       if (!completed) {
         // interrupted
       } else if (await this.next()) {
-        logger.debug(msg+'OK');
+        dbg && console.log(msg, '[2]ok');
       } else {
-        logger.debug(msg+'END');
+        dbg && console.log(msg, '[3]end');
         this.playBell();
       }
     },
     clickPlayOne() {
-      let msg = 'audio.clickPlayOne() ';
+      const msg = 'audio.clickPlayOne() ';
+      const dbg = DBG_AUDIO;
       let settings = useSettingsStore();
       settings.tutorPlay = false;
 
       if (this.playPause(PLAY_ONE)) {
-        logger.info(msg + 'toggled');
+        dbg && console.log(msg, '[1]playPause toggled');
         return;
       }
 
-      logger.info(msg + 'playing');
-      this.createIdbAudio();
-      this.playOne();
+      dbg && console.log(msg, '[2]playing');
+      this.createIdbAudio(()=>{
+        this.playOne();
+      });
     },
     async playToEnd() {
       const msg = 'audio.playToEnd() ';
@@ -230,8 +241,9 @@ export const useAudioStore = defineStore('audio', {
       }
 
       logger.info(msg + 'playing');
-      this.createIdbAudio();
-      this.playToEnd();
+      this.createIdbAudio(()=>{
+        this.playToEnd();
+      });
     },
     back() {
       return this.incrementSegment(-1);
@@ -282,13 +294,14 @@ export const useAudioStore = defineStore('audio', {
     },
     async playSegment() {
       const msg = `audio.playSegment() `;
+      const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       let settings = useSettingsStore();
       let audio = this;
       let { idbAudio, audioScid } = audio;
       let segAudio = await audio.bindSegmentAudio();
       let { segment:seg, langTrans } = segAudio;
-
-      logger.debug(`${msg} ${audioScid}`);
+      dbg && console.log(msg, '[1]bindSegmentAudio', audioScid);
 
       let interval;
       try {
@@ -298,20 +311,19 @@ export const useAudioStore = defineStore('audio', {
           audio.audioElapsed = currentTime/1000;
           if (audio.audioScid !== audioScid) {
             clearInterval(interval);
-            logger.debug(msg + `interrupt`, 
-              interval,
+            dbgv && console.log(msg, '[2]interrupt', interval,
               `${audioScid}=>${audio.audioScid}`);
             audio.segmentPlaying = false;
             idbAudio.clear();
           }
         }, 100);
-        logger.debug(msg + 'setInterval', interval);
+        dbgv && console.log(msg + '[3]setInterval', interval);
         audio.segmentPlaying = true;
 
         if (audio.segmentPlaying && settings.speakPali && seg.pli) {
           let src = await audio.pliAudioUrl;
           idbAudio.src = src;
-          logger.debug(`${msg} pliUrl:`, src);
+          dbgv && console.log(msg, '[4]pliUrl', src);
           await idbAudio.play();
         }
 
@@ -320,21 +332,21 @@ export const useAudioStore = defineStore('audio', {
         if (audio.segmentPlaying && speakTrans) {
           let src = await audio.transAudioUrl;
           idbAudio.src = src;
-          logger.debug(`${msg} transUrl:`, src);
+          dbgv && console.log(msg, '[5]transUrl:', src);
           await idbAudio.play();
         }
-        logger.debug(msg + 'clearInterval', interval);
+        dbgv && console.log(msg, '[6]clearInterval', interval);
         clearInterval(interval);
         interval = undefined;
       } catch(e) {
         clearInterval(interval);
         interval = undefined;
-        logger.warn(msg, e);
+        console.warn(msg, e);
       } finally {
         audio.audioElapsed = -1;
       }
 
-      logger.debug(`${msg} segmentPlaying`, audio.segmentPlaying);
+      dbgv && console.log(msg, '[7]segmentPlaying', audio.segmentPlaying);
 
       if (!audio.segmentPlaying) {
         return false; // interrupted
@@ -347,19 +359,26 @@ export const useAudioStore = defineStore('audio', {
       let duration = this.idbAudio?.audioBuffer?.duration;
       return duration;
     },
-    createIdbAudio() {
+    createIdbAudio(playAction) {
       const msg = "audio.createIdbAudio() ";
-      const dbg = DBG_AUDIO;
+      const dbg = DBG_AUDIO || DBG_IDB_AUDIO;
       //console.trace(msg);
       // NOTE: Caller must be UI callback (iOS restriction)
-      let audioContext = this.mainContext = this.getAudioContext();
+      let {
+        audioContext,
+        promiseResume,
+      } = this.createAudioContext();
+      this.mainContext = audioContext;
       dbg && console.log(msg, '[1]new IdbAudio');
-      let idbAudio = this.idbAudio = new IdbAudio({audioContext});
-      return idbAudio;
+      this.idbAudio = new IdbAudio({audioContext});
+      promiseResume.then(()=>{
+        playAction();
+      });
     },
     async incrementSegment(delta) {
       const msg = `audio.incrementSegment(${delta}) `;
       const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
       let { audioSutta, } = this;
@@ -372,12 +391,14 @@ export const useAudioStore = defineStore('audio', {
         let hash = routeCard.routeHash();
         volatile.setRoute(hash, true, msg);
         this.playClick();
-        dbg && console.log(msg, '[1]incRes', incRes);
+        dbgv && console.log(msg, '[1]incRes', incRes);
       } else {
         this.playBell();
-        dbg && console.log(msg, '[2]END');
+        dbgv && console.log(msg, '[2]END');
       }
-      await new Promise(resolve=>nextTick(()=>resolve())); // sync instance
+
+      // sync instance
+      await new Promise(resolve=>nextTick(()=>resolve())); 
 
       return incRes;
     },
@@ -437,7 +458,6 @@ export const useAudioStore = defineStore('audio', {
     async setAudioSutta(audioSutta, audioIndex=0) {
       const msg = 'audio.setAudioSutta() '
       const dbg = DBG_AUDIO;
-      dbg && console.log(msg, `[1]${this.audioSutta} <=`, audioSutta);
       this.audioSutta = audioSutta;
       this.audioIndex = audioIndex;
 
@@ -445,6 +465,7 @@ export const useAudioStore = defineStore('audio', {
       let audioScid = segments
         ? segments[audioIndex].scid
         : null;
+      dbg && console.log(msg, `[1]audioScid:`, audioScid);
       this.audioScid = audioScid;
       if (audioScid) {
         this.updateAudioExamples();
@@ -466,14 +487,25 @@ export const useAudioStore = defineStore('audio', {
         dbg && console.log('msg', '[2]F highlightEamples');
       }
     },
-    getAudioContext() {
-      const msg = "audio.getAudioContext() "
+    createAudioContext() {
+      const msg = "audio.createAudioContext() "
       const dbg = DBG_AUDIO;
       // IMPORTANT! Call this from a user-initiated non-async context
-      dbg && console.log(msg, '[1]new AudioContext()');
       let audioContext = new AudioContext();
-      audioContext.resume(); // required for iOS
-      return audioContext;
+      dbg && console.log(msg, '[1]new AudioContext()', 
+        audioContext.state);
+      audioContext.onstatechange = val=>{
+        dbg && console.log(msg, '[2]onstatechange', 
+          audioContext.state, val);
+      }
+      let promiseResume = audioContext.resume(); // required for iOS
+      dbg && promiseResume.then(val=>{
+        console.log(msg, '[3]resume', audioContext.state, val);
+      });
+      return {
+        audioContext,
+        promiseResume,
+      };
     },
     transVoiceName(suttaRef, settings=useSettingsStore()) {
       const msg = "audio.transVoiceName()";
@@ -484,9 +516,8 @@ export const useAudioStore = defineStore('audio', {
       if (voiceLang !== settings.langTrans) {
         let voices = VOICES.default;
         let langVoice = voices.filter(v=>v.langTrans===voiceLang)[0];
-        dbg && console.log(msg, '[1]langVoice', {
-          langVoice, voiceLang, langTrans});
         vTrans = langVoice.name || vTrans;
+        dbg && console.log(msg, '[1]vTrans', `${vTrans}/${voiceLang}`);
       }
       return vTrans;
     },
@@ -529,16 +560,21 @@ export const useAudioStore = defineStore('audio', {
     async getSegmentAudio(idOrRef, settings=useSettingsStore()) {
       const msg = 'audio.getSegmentAudio() ';
       const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       let segAudioKey = this.segAudioKey(idOrRef, settings);
+      dbgv && console.log(msg, "[1]Idb.get", segAudioKey);
       let segAudio = await Idb.get(segAudioKey, SEG_AUDIO_STORE());
       if (segAudio) {
-        let age = ((Date.now()-segAudio.created)/1000).toFixed(1);
-        dbg && console.log(msg, "[1]segAudio", segAudioKey, {age});
+        dbg && console.log(msg, `[2]cached`, segAudioKey);
+        if (dbgv) {
+          let age = ((Date.now()-segAudio.created)/1000).toFixed(1);
+          console.log(msg, `[3]cached age:${age}s`, segAudio); 
+        }
       } else {
-        dbg && console.log(msg, "[2]fetchSegmentAudio", idOrRef);
+        dbg && console.log(msg, "[4]fetchSegmentAudio", idOrRef);
         segAudio = await this.fetchSegmentAudio(idOrRef, settings);
         segAudio.created = Date.now();
-        dbg && console.log(msg, '[3]Idb.set', segAudioKey);
+        dbg && console.log(msg, '[5]Idb.set', segAudioKey);
         await Idb.set(segAudioKey, segAudio, SEG_AUDIO_STORE());
       }
       return segAudio;
@@ -573,18 +609,23 @@ export const useAudioStore = defineStore('audio', {
     playUrl(url, opts={}) {
       const msg = "audio.playUrl() ";
       const dbg = DBG_AUDIO;
+      let promise;
       let { audioContext } = opts;
-      let tempContext = audioContext == null 
-        ? this.getAudioContext() : null;
-      audioContext = audioContext || tempContext;
-
-      dbg && console.log(msg, '[1]playUrlAsync', url);
-      let promise = this.playUrlAsync(url, {audioContext});
-
-      tempContext && promise.then(()=>{
-        tempContext.close();
-      });
-
+      if (audioContext == null) {
+        let {
+          audioContext:tempContext, 
+          promiseResume 
+        } = this.createAudioContext();
+        dbg && console.log(msg, '[1]playUrlAsync', url);
+        promise = this.playUrlAsync(url, {
+          audioContext: tempContext});
+        promise.then(()=>{
+          tempContext.close();
+        });
+      } else {
+        dbg && console.log(msg, '[2]playUrlAsync', url);
+        promise = this.playUrlAsync(url, {audioContext});
+      }
       return promise;
     },
     async playUrlAsync(url, opts) {
@@ -603,12 +644,13 @@ export const useAudioStore = defineStore('audio', {
       dbg && console.log(msg, '[1]fetchArrayBuffer', url);
       let arrayBuffer = await this.fetchArrayBuffer(url, opts);
       let { byteLength } = arrayBuffer;
-      dbgv && console.log(V+msg, `[2]playArrayBuffer[${byteLength}]`);
+      dbgv && console.log(msg, `[2]playArrayBuffer[${byteLength}]`, 
+        arrayBuffer);
       return this.playArrayBuffer({arrayBuffer, audioContext, });
     },
     async fetchArrayBuffer(url, opts={}) {
       const msg = `audio.fetchArrayBuffer()`;
-      const dbg = DBG_AUDIO;
+      const dbg = DBG_AUDIO || DBG_SOUND_STORE;
       const dbgv = DBG_VERBOSE && dbg;
       const volatile = useVolatileStore();
       let { headers=HEADERS_MPEG } = opts;
@@ -616,23 +658,24 @@ export const useAudioStore = defineStore('audio', {
         let urlParts = url.split('/');
         let iKey = Math.max(0, urlParts.length-4);
         let idbSegKey = urlParts.slice(iKey).join('/');
+        dbg && console.log(msg, '[1]idbGet', idbSegKey);
         let abuf = await Idb.get(idbSegKey, SOUND_STORE());
         if (abuf) {
-          dbgv && console.log(V+msg, '[1]cached');
+          dbg && console.log(msg, `[2]cached ${abuf.byteLength}B`);
         } else {
           this.nFetch++;
-          dbgv && console.log(V+msg, '[2]fetch', url);
+          dbgv && console.log(msg, '[3]fetch', url);
           let res = await fetch(url, { headers });
           switch (res.status) {
             case 200:
-              dbg && console.log(V+msg, `[3]fetch ok`);
+              dbg && console.log(msg, `[4]fetch ok`);
               break;
             default:
-              dbg && console.log(msg, `[4]fetch => HTTP${res.status}`);
+              dbg && console.log(msg, `[5]fetch => HTTP${res.status}`);
               break;
           }
           abuf = await res.arrayBuffer();
-          dbg && console.log(msg, `[4]Idb.set`, idbSegKey, 
+          dbg && console.log(msg, `[6]Idb.set`, idbSegKey, 
             abuf.byteLength);
           await Idb.set(idbSegKey, abuf, SOUND_STORE());
         }
@@ -680,15 +723,15 @@ export const useAudioStore = defineStore('audio', {
       return url;
     },
     async createAudioBuffer({audioContext, arrayBuffer}) {
+      const msg = 'audio.createAudioBuffer()';
       const dbg = DBG_AUDIO;
       const dbgv = DBG_VERBOSE && dbg;
-      const msgPrefix = 'audio.createAudioBuffer()';
       const volatile = useVolatileStore();
       try {
         if (arrayBuffer.byteLength < 500) {
-          let msg = `${msgPrefix} invalid arrayBuffer`;
-          volatile.alert(msg, 'ebt.audioError');
-          throw new Error(msg);
+          let emsg = `${msg} invalid arrayBuffer`;
+          volatile.alert(emsg, 'ebt.audioError');
+          throw new Error(emsg);
         }
         let audioData = await new Promise((resolve, reject)=>{
           audioContext.decodeAudioData(arrayBuffer, resolve, reject);
@@ -696,8 +739,8 @@ export const useAudioStore = defineStore('audio', {
         let numberOfChannels = Math.min(2, audioData.numberOfChannels);
         let length = audioData.length;
         let sampleRate = Math.max(SAMPLE_RATE, audioData.sampleRate);
-        logger.debug(`${msgPrefix}`, {
-          sampleRate, length, numberOfChannels});
+        dbgv && console.log(msg,  '[1]', 
+          {sampleRate, length, numberOfChannels});
         let audioBuffer = audioContext.createBuffer(
           numberOfChannels, length, sampleRate);
         for (let iChan = 0; iChan < numberOfChannels; iChan++) {
@@ -708,14 +751,14 @@ export const useAudioStore = defineStore('audio', {
 
         return audioBuffer;
       } catch(e) {
-        let msg = `${msgPrefix} ERROR`;
-        logger.warn(msg);
-        dbgv && console.trace(msg, e);
+        let emsg = `${msg} ERROR`;
+        logger.warn(emsg);
+        dbgv && console.trace(emsg, e);
         throw e;
       }
     },
     async createAudioSource({audioContext, audioBuffer}) {
-      const msg = 'IdbAudio.createAudioSource()';
+      const msg = 'audio.createAudioSource()';
       const dbg = DBG_AUDIO;
       dbg && console.log(msg, '[1]createBufferSource');
       let audioSource = audioContext.createBufferSource();
@@ -724,7 +767,7 @@ export const useAudioStore = defineStore('audio', {
       return audioSource;
     },
     async playAudioSource({audioSource}) {
-      const msg = 'IdbAudio.playAudioSource()';
+      const msg = 'audio.playAudioSource()';
       const dbg = DBG_AUDIO;
       const volatile = useVolatileStore();
       return new Promise((resolve, reject) => { try {
@@ -743,12 +786,13 @@ export const useAudioStore = defineStore('audio', {
       const dbg = DBG_AUDIO;
       const volatile = useVolatileStore();
       try {
+        let bytes = arrayBuffer?.byteLength;
         let audioBuffer = await this.createAudioBuffer(
           {audioContext, arrayBuffer});
         let audioSource = await this.createAudioSource(
           {audioBuffer, audioContext});
         dbg && console.log(msg, '[1]playAudioSource',
-          `${arrayBuffer.byteLength}B`);
+          {bytes, audioSource});
         return this.playAudioSource({audioContext, audioSource});
       } catch(e) {
         volatile.alert(e, 'ebt.audioError');
@@ -756,8 +800,9 @@ export const useAudioStore = defineStore('audio', {
       }
     },
     async bindSegmentAudio(args={}) {
-      const msg = 'sutta.bindSegmentAudio() ';
+      const msg = 'audio.bindSegmentAudio() ';
       const dbg = DBG_AUDIO;
+      const dbgv = DBG_VERBOSE && dbg;
       let { 
         volatile=useVolatileStore(),
         settings=useSettingsStore(),
@@ -777,7 +822,7 @@ export const useAudioStore = defineStore('audio', {
         volatile.waitBegin('ebt.loadingAudio');
 
         let segAudio = await this.getSegmentAudio(suttaRef);
-        dbg && console.log(V+msg, '[1]segAudio', segAudio);
+        dbg && console.log(msg, '[1]segAudio', segAudio);
         let { segment, vnameTrans, vnameRoot } = segAudio;
 
         if (settings.speakPali) {

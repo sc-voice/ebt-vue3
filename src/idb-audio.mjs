@@ -2,14 +2,17 @@ import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
 import {
-  DBG_AUDIO, DBG_VERBOSE,
+  DBG_AUDIO, DBG_VERBOSE, DBG_IDB_AUDIO
 } from './defines.mjs'
 
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
 const URL_NO_AUDIO = "https://github.com/ebt-site/ebt-vue3/blob/04a335368ebd751d1caf56312d6599f367eaa21f/public/audio/no_audio.mp3";
 
+const dbg = DBG_IDB_AUDIO;
+
 export default class IdbAudio {
   constructor(opts={}) {
+    const msg = "IdbAudio.ctor()";
     if (typeof(opts) === 'string') {
       opts = { src: opts };
     }
@@ -21,7 +24,15 @@ export default class IdbAudio {
     } = opts;
     if (audioContext == null) {
       audioContext = new AudioContext();
-      audioContext.resume(); // for iOS
+      dbg && console.log(msg, '[1]new AudioContext', audioContext.state);
+      audioContext.onstatechange = val=>{
+        dbg && console.log(msg, '[2]onstatechange', 
+          audioContext.state, val);
+      }
+      let promise = audioContext.resume(); // for iOS
+      dbg && promise.then(val=>{
+        console.log(msg, '[3]resume', audioContext.state, val);
+      });
     }
     Object.assign(this, {
       audioBuffer: null,
@@ -29,7 +40,7 @@ export default class IdbAudio {
       audioSource: null,
       audio: useAudioStore(),
       created,
-      ended: ()=>{ console.log("IdbAudio.ended()"); },
+      ended: ()=>{ console.log(msg, "[3]ended()"); },
       msPlay: 0,
       msStart: null,
       preload,
@@ -115,16 +126,19 @@ export default class IdbAudio {
   }
 
   pause() {
+    const msg = 'IdbAudio.pause()';
+    const dbg = DBG_IDB_AUDIO;
     let { audioContext, msStart, msPlay } = this;
     switch(audioContext.state) {
       case 'running':
         audioContext.suspend();
+        dbg && console.log(msg, '[1]suspend', audioContext.state);
         if (msStart != null) { // playing
           msPlay += Date.now() - msStart;
-          logger.debug("IdbAudio.pause() msStart");
+          dbg && console.log(msg, '[2]playing');
           this.msPlay = msPlay;
         } else {
-          logger.debug("IdbAudio.pause() !msStart");
+          dbg && console.log(msg, '[3]!playing');
         }
         break;
       case 'suspended':
@@ -142,10 +156,14 @@ export default class IdbAudio {
     const dbgv = DBG_VERBOSE && dbg;
     try {
       let { audioContext, audio, src } = this;
-      this.msStart = Date.now(); // temporarily use fetch time as playing time
+
+      // temporarily use fetch time as playing time
+      this.msStart = Date.now(); 
+
       let arrayBuffer = await audio.fetchArrayBuffer(src);
       this.arrayBuffer = arrayBuffer;
-      let audioBuffer = await audio.createAudioBuffer({audioContext, arrayBuffer});
+      let audioBuffer = await audio.createAudioBuffer({
+        audioContext, arrayBuffer});
       this.audioBuffer = audioBuffer;
       return audioBuffer;
     } catch(e) {
@@ -156,23 +174,27 @@ export default class IdbAudio {
   }
 
   async play() {
-    const msgPfx = 'IdbAudio.play()';
-    const dbg = DBG_AUDIO;
+    const msg = 'IdbAudio.play()';
+    const dbg = DBG_AUDIO || DBG_IDB_AUDIO;
     const dbgv = DBG_VERBOSE && dbg;
     try {
       let { audioContext, src, msStart, audio } = this;
 
       switch (audioContext.state) {
         case 'suspended':
+          dbg && console.log(msg, '[1]resume');
           audioContext.resume();
           this.msStart = Date.now(); // activate currentTime
           return;
         case 'running': {
           if (this.audioBuffer == null) {
+            dbg && console.log(msg, '[2]fetchAudioBuffer');
             this.audioBuffer = this.fetchAudioBuffer();
           }
           if (this.audioBuffer instanceof Promise) {
             this.audioBuffer = await this.audioBuffer;
+            dbg && console.log(msg, '[3]fetchAudioBuffer=>', 
+              this.audioBuffer);
           }
           let audioBuffer = this.audioBuffer;
           if (msStart == null) { // paused
@@ -181,27 +203,31 @@ export default class IdbAudio {
           let audioSource = await audio.createAudioSource({
             audioContext, audioBuffer});
           this.audioSource = audioSource;
-          await audio.playAudioSource({audioContext, audioSource});
+          /* void */ await audio.playAudioSource({
+            audioContext, audioSource});
+          dbg && console.log(msg, '[4]playAudioSource', 
+            audioContext.state);
           this.audioSource = null;
           this.audioBuffer = null;
           break;
         }
         case 'closed': {
-          let msg = `${msgPfx} audioContext is closed`;
-          logger.warn(msg);
-          dbgv && console.trace(msg);
-          throw new DOMException(msg, INVALID_STATE_ERROR);
+          let fullmsg = `${msg} [5]ERROR audioContext is closed`;
+          console.warn(fullmsg);
+          dbgv && console.trace(fullmsg);
+          throw new DOMException(fullmsg, INVALID_STATE_ERROR);
         }
         default: {
-          let msg = `${msgPfx} unknown state:${audioContext.state}`;
-          logger.warn(msg);
-          console.trace(msg);
-          throw new DOMException(msg, INVALID_STATE_ERROR);
+          let fullmsg = `${msg} [6]ERROR unknown state:${audioContext.state}`;
+          console.warn(fullmsg);
+          dbgv && console.trace(fullmsg);
+          throw new DOMException(fullmsg, INVALID_STATE_ERROR);
         }
       }
     } catch (e) {
-      logger.warn("IdbAudio.play()", e.message);
-      console.trace("ERROR", e.message);
+      let fullmsg = `${msg} [7]ERROR ${e.message}`;
+      console.warn(fullmsg);
+      dbgv && console.trace(fullmsg);
       return null;
     }
 

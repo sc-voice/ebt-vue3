@@ -203,9 +203,9 @@ import should from "should";
 
     });
   });
-  it("TESTTESTvalidate() ja", ()=>{
+  it("TESTTESTvalidate() jpn", ()=>{
     let state = {
-      langTrans: 'ja',
+      langTrans: 'jpn',
       vnameTrans: 'Amy',
       speakPali: false,
       speakTrans: false,
@@ -231,7 +231,7 @@ import should from "should";
     should.deepEqual(state, {
       docAuthor: 'kaz',
       docLang: 'jpn',
-      langTrans: 'ja',
+      langTrans: 'jpn',
       refAuthor: 'sujato',
       refLang: 'en',
       showPali: true,

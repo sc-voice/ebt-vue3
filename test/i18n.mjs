@@ -15,7 +15,7 @@ import {
       { value: 'en', title: 'English / EN', voice: true },
       { value: 'es', title: 'Español / ES', voice: true },
       { value: 'fr', title: 'Français / FR', voice: true },
-      { value: 'ja', title: '日本語 / JPN', voice: true },
+      { value: 'jpn', title: '日本語 / JPN', voice: true },
       { value: 'pt', title: 'Português / PT', voice: true },
     ]);
     should.deepEqual(Languages.UI_LANGS, [
