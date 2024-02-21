@@ -1,13 +1,33 @@
 {
   "name": "ebt-vue3",
   "version": "1.437.1",
+  "private": false,
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
+  "author": "Karl Lew",
+  "scripts": {
+    "build:dist": "scripts/build-dist.sh",
+    "build:docker": "scripts/build-docker.sh",
+    "build:html": "scripts/app-html.sh",
+    "build:messages": "node scripts/build-messages.mjs > src/auto/messages.mjs",
+    "dev": "vite",
+    "eslint": "eslint",
+    "gh-pages": "scripts/gh-pages.sh",
+    "git:commit": "scripts/git-commit.sh",
+    "preview": "vite preview",
+    "push-action": "scripts/push-action",
+    "schedule-action": "scripts/schedule-action",
+    "serve": "vite preview",
+    "test": "npm run test:verbose",
+    "test:one": "mocha --inline-diffs -g TESTTEST",
+    "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
+    "test:verbose": "mocha --inline-diffs",
+    "test:watch": "mocha -w --inline-diffs",
+    "version": "scripts/version.sh",
+    "vite:build": "vite build",
+    "vite": "vite"
+  },
   "main": "src/index.mjs",
   "module": "index.mjs",
-  "private": false,
-  "directories": {
-    "test": "test"
-  },
   "dependencies": {
     "@mdi/font": "5.9.55",
     "compression": "^1.7.4",
@@ -46,39 +66,19 @@
     "vite-plugin-vuetify": "^1.0.2",
     "vue-cli-plugin-vuetify": "~2.5.1"
   },
-  "repository": {
-    "tag": "git"
-  },
-  "scripts": {
-    "build:dist": "scripts/build-dist.sh",
-    "build:docker": "scripts/build-docker.sh",
-    "build:html": "scripts/app-html.sh",
-    "build:messages": "node scripts/build-messages.mjs > src/auto/messages.mjs",
-    "dev": "vite",
-    "eslint": "eslint",
-    "gh-pages": "scripts/gh-pages.sh",
-    "git:commit": "scripts/git-commit.sh",
-    "preview": "vite preview",
-    "push-action": "scripts/push-action",
-    "schedule-action": "scripts/schedule-action",
-    "serve": "vite preview",
-    "test": "npm run test:verbose",
-    "test:one": "mocha --inline-diffs -g TESTTEST",
-    "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
-    "test:verbose": "mocha --inline-diffs",
-    "test:watch": "mocha -w --inline-diffs",
-    "version": "scripts/version.sh",
-    "vite:build": "vite build",
-    "vite": "vite"
-  },
   "bin": {},
+  "directories": {
+    "test": "test"
+  },
+  "homepage": "https://github.com/sc-voice/ebt-vue3",
   "keywords": [
     "SuttaCentral",
     "EBT-Site",
     "translation",
     "Voice"
   ],
-  "author": "Karl Lew",
-  "homepage": "https://github.com/sc-voice/ebt-vue3",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "tag": "git"
+  }
 }
