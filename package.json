@@ -5,6 +5,7 @@
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
+    "serve": "vite preview",
     "build:dist": "scripts/build-dist.sh",
     "build:docker": "scripts/build-docker.sh",
     "build:html": "scripts/app-html.sh",
@@ -16,15 +17,14 @@
     "preview": "vite preview",
     "push-action": "scripts/push-action",
     "schedule-action": "scripts/schedule-action",
-    "serve": "vite preview",
     "test": "npm run test:verbose",
     "test:one": "mocha --inline-diffs -g TESTTEST",
     "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
     "test:verbose": "mocha --inline-diffs",
     "test:watch": "mocha -w --inline-diffs",
     "version": "scripts/version.sh",
-    "vite:build": "vite build",
-    "vite": "vite"
+    "vite": "vite",
+    "vite:build": "vite build"
   },
   "main": "src/index.mjs",
   "module": "index.mjs",
