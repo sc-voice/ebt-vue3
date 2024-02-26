@@ -1,13 +1,32 @@
 {
   "name": "ebt-vue3",
-  "version": "1.437.0",
+  "version": "1.438.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
+  "author": "Karl Lew",
+  "scripts": {
+    "serve": "vite preview",
+    "build:dist": "scripts/build-dist.sh",
+    "build:docker": "scripts/build-docker.sh",
+    "build:html": "scripts/app-html.sh",
+    "build:messages": "node scripts/build-messages.mjs > src/auto/messages.mjs",
+    "dev": "vite",
+    "eslint": "eslint",
+    "gh-pages": "scripts/gh-pages.sh",
+    "git:commit": "scripts/git-commit.sh",
+    "preview": "vite preview",
+    "push-action": "scripts/push-action",
+    "schedule-action": "scripts/schedule-action",
+    "test": "npm run test:verbose",
+    "test:one": "mocha --inline-diffs -g TESTTEST",
+    "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
+    "test:verbose": "mocha --inline-diffs",
+    "test:watch": "mocha -w --inline-diffs",
+    "version": "scripts/version.sh",
+    "vite": "vite",
+    "vite:build": "vite build"
+  },
   "main": "src/index.mjs",
   "module": "index.mjs",
-  "private": false,
-  "directories": {
-    "test": "test"
-  },
   "dependencies": {
     "@mdi/font": "5.9.55",
     "compression": "^1.7.4",
@@ -16,18 +35,20 @@
     "merkle-json": "^2.6.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.101.4",
+    "scv-bilara": "^3.147.4",
+    "scv-esm": "^1.101.16",
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
-    "vue": "^3.3.4",
+    "vue": "^3.4.19",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.5",
-    "vuetify": "^3.5.4",
+    "vuetify": "^3.5.6",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "axios": "^1.6.1",
+    "ebt-deepl": "^1.29.1",
     "eslint": "^8.56.0",
     "esm": "^3.2.25",
     "execa": "^6.1.0",
@@ -46,39 +67,19 @@
     "vite-plugin-vuetify": "^1.0.2",
     "vue-cli-plugin-vuetify": "~2.5.1"
   },
-  "scripts": {
-    "version": "scripts/version.sh",
-    "dev": "vite",
-    "eslint": "eslint",
-    "serve": "vite preview",
-    "build:dist": "scripts/build-dist.sh",
-    "build:html": "scripts/app-html.sh",
-    "build:messages": "node scripts/build-messages.mjs > src/auto/messages.mjs",
-    "build:docker": "scripts/build-docker.sh",
-    "preview": "vite preview",
-    "vite": "vite",
-    "vite:build": "vite build",
-    "git:commit": "scripts/git-commit.sh",
-    "gh-pages": "scripts/gh-pages.sh",
-    "push-action": "scripts/push-action",
-    "schedule-action": "scripts/schedule-action",
-    "test": "npm run test:verbose",
-    "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
-    "test:verbose": "mocha --inline-diffs",
-    "test:one": "mocha --inline-diffs -g TESTTEST",
-    "test:watch": "mocha -w --inline-diffs"
-  },
-  "repository": {
-    "tag": "git"
-  },
   "bin": {},
+  "directories": {
+    "test": "test"
+  },
+  "homepage": "https://github.com/sc-voice/ebt-vue3",
   "keywords": [
     "SuttaCentral",
     "EBT-Site",
     "translation",
     "Voice"
   ],
-  "author": "Karl Lew",
-  "homepage": "https://github.com/sc-voice/ebt-vue3",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "tag": "git"
+  }
 }
