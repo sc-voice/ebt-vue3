@@ -245,7 +245,7 @@
           ? [...examples ]
           : [`${this.search}`, ...examples];
 
-        let MAX_CHOICES = config.searchDropdown || 5;
+        let MAX_CHOICES = config.searchDropdown || 50;
         return examples.slice(0,MAX_CHOICES);
       },
       url: (ctx) => {
