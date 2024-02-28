@@ -36,7 +36,7 @@
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
     "scv-bilara": "^3.147.4",
-    "scv-esm": "^1.101.19",
+    "scv-esm": "^1.101.20",
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
     "vue": "^3.4.19",
