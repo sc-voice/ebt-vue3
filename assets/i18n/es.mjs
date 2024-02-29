@@ -243,7 +243,7 @@ export default
     "highlightExamples": "Mostrar todos los enlaces de ejemplo (lento)",
     "homeSound": "Inicio",
     "inspireMe": "¡Inspíreme!",
-    "languageCode": "English / ES",
+    "languageCode": "Español / ES",
     "languages": "Idiomas",
     "latestContent": "Ver el contenido más reciente de sutta/vinaya",
     "loadingAudio": "cargando audio...",
