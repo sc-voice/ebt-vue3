@@ -93,7 +93,7 @@ import should from "should";
     should(graph.nodes.length).above(10).below(100);
     should(graph.links.length).above(9).below(100);
   });
-  it("TESTTESTslice() idPat depth", async()=>{
+  it("slice() idPat depth", async()=>{
     let idPat = 'mn44';
     let depth = 2;
     let ed3 = await EbtD3.create();

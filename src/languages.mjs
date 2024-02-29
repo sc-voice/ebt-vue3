@@ -13,7 +13,7 @@ const VOICE_LANGS = [
   },
   {
     "value": "es",
-    "title": "English / ES",
+    "title": "Español / ES",
     "voice": true
   },
   {
@@ -55,7 +55,7 @@ const UI_LANGS = [
   },
   {
     "value": "es",
-    "title": "English / ES",
+    "title": "Español / ES",
     "voice": true
   },
   {
