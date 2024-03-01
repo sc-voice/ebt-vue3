@@ -180,6 +180,13 @@
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
+            <v-slider v-model="settings.maxPlayMinutes" 
+              min=15 max=135 step=15 
+              :label="maxPlayMinutesLabel"
+              :ticks="maxPlayMinutesTicks"
+              show-ticks="always"
+              append-icon="mdi-timer"
+            ></v-slider>
             <v-select id="ips-select" 
               :menu-icon="selectIcon"
               ref="sound-focus"
@@ -199,18 +206,17 @@
             />
             <v-slider v-model="settings.clickVolume" min=0 max=4 step=1 
               :label="$t('ebt.click')"
-              @update:modelValue="onClickVolume"
-              prepend-icon="mdi-volume-high"
+              append-icon="mdi-volume-high"
             ></v-slider>
             <v-slider v-model="settings.blockVolume" min=0 max=4 step=1 
               :label="$t('ebt.homeSound')"
               @update:modelValue="onBlockVolume"
-              prepend-icon="mdi-volume-high"
+              append-icon="mdi-volume-high"
             ></v-slider>
             <v-slider v-model="settings.swooshVolume" min=0 max=4 step=1 
               :label="$t('ebt.swooshSound')"
               @update:modelValue="onSwooshVolume"
-              prepend-icon="mdi-volume-high"
+              append-icon="mdi-volume-high"
             ></v-slider>
             <template v-for="bell,i in ipsChoices">
               <audio v-if="bell.value" 
@@ -342,6 +348,12 @@ export default {
       settings: useSettingsStore(),
       volatile: useVolatileStore(),
       btnSettings: ref(undefined),
+      maxPlayMinutesTicks: {
+        30: '30',
+        60: '60',
+        90: '90',
+        120: '120',
+      },
       DBG_LOG_HTML,
     }
     logger.debug("Settings.setup()", data.settings);
@@ -467,6 +479,11 @@ export default {
 
   },
   computed: {
+    maxPlayMinutesLabel(ctx) {
+      let label = ctx.$t('ebt.maxPlayMinutes');
+      let { maxPlayMinutes } = ctx.settings;
+      return `${label} ${maxPlayMinutes}`;
+    },
     tbd(ctx) {
       return DBG_TBD;
     },

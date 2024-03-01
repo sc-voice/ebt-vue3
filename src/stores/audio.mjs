@@ -69,7 +69,6 @@ const audioElapsed = ref(0);
 const idbAudio = ref(undefined);
 const playMode = ref(PLAY_ONE);
 const playedSeconds = ref(0); 
-const maxPlayMinutes = ref(1);  
 
 export const useAudioStore = defineStore('audio', {
   state: () => {
@@ -87,7 +86,6 @@ export const useAudioStore = defineStore('audio', {
       idbAudio,
       playMode,
       playedSeconds,
-      maxPlayMinutes,
       clickElt,
       PLAY_ONE,
       PLAY_END,
@@ -230,6 +228,7 @@ export const useAudioStore = defineStore('audio', {
       const msg = 'audio.playToEnd() ';
       const dbg = DBG.PLAY;
       let settings = useSettingsStore();
+      let { maxPlayMinutes } = settings;
       settings.tutorPlay = false;
       playedSeconds.value = 0;
 

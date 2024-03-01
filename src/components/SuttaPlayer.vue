@@ -134,8 +134,8 @@
           : `${min}:${sec}`;
       },
       maxPlayMinutes(ctx) {
-        let { maxPlayMinutes } = ctx.audio;
-        return maxPlayMinutes.toFixed(0);
+        let { maxPlayMinutes } = ctx.settings;
+        return `${maxPlayMinutes}:00`;
       },
       audioElapsed(ctx) {
         let elapsed = ctx.audio.audioElapsed;

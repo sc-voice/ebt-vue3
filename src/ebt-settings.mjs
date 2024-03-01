@@ -58,6 +58,7 @@ export default class EbtSettings {
       langTrans,  // UI translation language (e.g., 'ja') 
       legacyVoice,// Show legacy voice dialog
       locale,     // Web page language
+      maxPlayMinutes, 
       maxResults,
       refAuthor,
       refLang,
@@ -97,6 +98,7 @@ export default class EbtSettings {
       return l.code === locale ? locale : a;
     }, 'en');
     this.maxResults = maxResults;
+    this.maxPlayMinutes = maxPlayMinutes;
     this.refLang = refLang;
     this.refAuthor = refAuthor;
     this.docLang = docLang;
@@ -153,6 +155,7 @@ export default class EbtSettings {
       locale: NAV_LANG,
       logLevel: 'warn',
       maxDuration: 3*60*60,
+      maxPlayMinutes: 30,
       maxResults: 5,
       refAuthor: AuthorsV2.langAuthor(REF_LANG),
       refLang: REF_LANG,
