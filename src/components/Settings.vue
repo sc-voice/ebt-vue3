@@ -166,6 +166,13 @@
               item-value="name"
               :label="settings.langRoot"
             />
+            <v-slider v-model="settings.maxPlayMinutes" 
+              min=15 max=135 step=15 
+              :label="maxPlayMinutesLabel"
+              :ticks="maxPlayMinutesTicks"
+              show-ticks="always"
+              append-icon="mdi-timer"
+            ></v-slider>
           </v-expansion-panel-text>
         </v-expansion-panel><!--Narrator-->
 
@@ -180,13 +187,6 @@
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-slider v-model="settings.maxPlayMinutes" 
-              min=15 max=135 step=15 
-              :label="maxPlayMinutesLabel"
-              :ticks="maxPlayMinutesTicks"
-              show-ticks="always"
-              append-icon="mdi-timer"
-            ></v-slider>
             <v-select id="ips-select" 
               :menu-icon="selectIcon"
               ref="sound-focus"
