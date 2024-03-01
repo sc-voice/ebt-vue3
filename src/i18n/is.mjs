@@ -265,6 +265,7 @@ export default {
     "pinned": "Pinned A_DATE",
     "playAll": "Play all",
     "playEndStop": "Play till end of sutta",
+    "playEndTipitaka": "Play Tipitaka",
     "playSection": "Play Section A_SECTION",
     "point": "Punktur",
     "processing": "Processing...",

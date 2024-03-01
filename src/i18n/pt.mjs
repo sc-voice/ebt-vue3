@@ -264,6 +264,8 @@ export default {
     "pinned": "Seleção: A_DATE",
     "playAll": "Ler tudo",
     "playEndStop": "Play till end of sutta",
+    "playEndRepeat": "Play and repeat sutta",
+    "playEndTipitaka": "Play Tipitaka",
     "playSection": "Ler seção A_SECTION",
     "point": "Ponto",
     "publicDomain": "Domínio público",

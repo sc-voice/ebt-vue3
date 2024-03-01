@@ -261,6 +261,8 @@ export default {
     "pinned": "Gepinnt A_DATE",
     "playAll": "Alle wiedergeben",
     "playEndStop": "Play till end of sutta",
+    "playEndRepeat": "Play and repeat sutta",
+    "playEndTipitaka": "Play Tipitaka",
     "playSection": "Abschnitt A_SECTION wiedergeben",
     "point": "Punkt",
     "processing": "Verarbeiten...",

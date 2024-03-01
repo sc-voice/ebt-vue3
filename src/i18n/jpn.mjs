@@ -264,6 +264,8 @@ export default {
     "pinned": "Pinned A_DATE",
     "playAll": "すべて再生",
     "playEndStop": "Play till end of sutta",
+    "playEndRepeat": "Play and repeat sutta",
+    "playEndTipitaka": "Play Tipitaka",
     "playSection": " A_SECTION セクションを再生",
     "point": "Punkt",
     "processing": "Processing...",
