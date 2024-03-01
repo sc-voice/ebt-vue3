@@ -261,7 +261,7 @@ export default {
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
     "playAll": "Play all",
-    "playEnd": "Play...",
+    "playEnd": "Play sutta...",
     "playEndRepeat": "Play and repeat sutta",
     "playSection": "Play Section A_SECTION",
     "point": "Punkt",

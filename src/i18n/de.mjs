@@ -260,7 +260,7 @@ export default {
     "pageNotFound": "Seite nicht gefunden",
     "pinned": "Gepinnt A_DATE",
     "playAll": "Alle wiedergeben",
-    "playEnd": "Play...",
+    "playEnd": "Play sutta...",
     "playEndRepeat": "Play and repeat sutta",
     "playEndStop": "Play till end of sutta",
     "playEndTipitaka": "Play Tipitaka",
