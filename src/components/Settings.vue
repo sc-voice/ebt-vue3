@@ -168,17 +168,20 @@
               item-value="name"
               :label="settings.langRoot"
             />
-            <v-slider v-model="settings.maxPlayMinutes" 
-              min=0 max=135 step=15 
-              :label="maxPlayMinutesLabel"
-              :ticks="maxPlayMinutesTicks"
-              show-ticks="always"
-              append-icon="mdi-timer"
-            ></v-slider>
             <v-select v-model="settings.playEnd" :items="playEndItems" 
               :menu-icon="selectIcon"
               :label="$t('ebt.playEnd')"
             />
+            <div class="text-caption">
+              {{$t(maxPlayMinutesLabel)}}
+            </div>
+            <v-slider v-model="settings.maxPlayMinutes" 
+              min=0 max=135 step=15 
+              :ticks="maxPlayMinutesTicks"
+              :hint="''+settings.maxPlayMinutes"
+              show-ticks="always"
+              append-icon="mdi-timer"
+            ></v-slider>
           </v-expansion-panel-text>
         </v-expansion-panel><!--Narrator-->
 
@@ -486,9 +489,11 @@ export default {
   },
   computed: {
     maxPlayMinutesLabel(ctx) {
-      let label = ctx.$t('ebt.maxPlayMinutes');
       let { maxPlayMinutes } = ctx.settings;
-      return `${label} ${maxPlayMinutes}`;
+      let label = ctx.$t('ebt.maxPlayMinutes', {
+        minutes:maxPlayMinutes}
+      );
+      return label;
     },
     tbd(ctx) {
       return DBG_TBD;
