@@ -260,6 +260,7 @@ export default {
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
     "playAll": "Play all",
+    "playEndStop": "Play till end of sutta",
     "playSection": "Play Section A_SECTION",
     "point": "Punktum",
     "processing": "Processing...",

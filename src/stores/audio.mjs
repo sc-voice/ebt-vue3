@@ -228,7 +228,6 @@ export const useAudioStore = defineStore('audio', {
       const msg = 'audio.playToEnd() ';
       const dbg = DBG.PLAY;
       let settings = useSettingsStore();
-      let { maxPlayMinutes } = settings;
       settings.tutorPlay = false;
       playedSeconds.value = 0;
 
@@ -237,7 +236,7 @@ export const useAudioStore = defineStore('audio', {
       do {
         dbg && console.log(msg, '[1]playSegment', this.audioScid);
         segPlayed = await this.playSegment();
-        playEnded = playedSeconds.value / 60 > maxPlayMinutes.value;
+        playEnded = playedSeconds.value / 60 > settings.maxPlayMinutes;
       } while(segPlayed && !playEnded && (await this.next()));
       if (segPlayed) {
         dbg && console.log(msg, '[2]end');

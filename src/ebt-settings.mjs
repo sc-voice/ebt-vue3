@@ -60,6 +60,7 @@ export default class EbtSettings {
       locale,     // Web page language
       maxPlayMinutes, 
       maxResults,
+      playEnd,
       refAuthor,
       refLang,
       serverUrl,
@@ -99,6 +100,7 @@ export default class EbtSettings {
     }, 'en');
     this.maxResults = maxResults;
     this.maxPlayMinutes = maxPlayMinutes;
+    this.playEnd = playEnd;
     this.refLang = refLang;
     this.refAuthor = refAuthor;
     this.docLang = docLang;
@@ -117,6 +119,10 @@ export default class EbtSettings {
 
     EbtSettings.validate(this);
   }
+
+  static get END_REPEAT() { return "repeat"; }
+  static get END_STOP() { return "stop"; }
+  static get END_TIPITAKA() { return "tipitaka"; }
 
   static get SERVERS() {
     return SERVERS;
@@ -157,6 +163,7 @@ export default class EbtSettings {
       maxDuration: 3*60*60,
       maxPlayMinutes: 30,
       maxResults: 5,
+      playEnd: EbtSettings.END_STOP,
       refAuthor: AuthorsV2.langAuthor(REF_LANG),
       refLang: REF_LANG,
       scid: undefined,

@@ -142,13 +142,15 @@
 
         <v-expansion-panel><!--Narrator-->
           <v-expansion-panel-title 
-            expand-icon="mdi-dots-vertical" collapse-icon="mdi-dots-horizontal"
+            expand-icon="mdi-dots-vertical" 
+            collapse-icon="mdi-dots-horizontal"
             >
             {{$t('ebt.reader')}}
             <v-spacer/>
             <div class="settings-summary">
               {{settings.vnameRoot}}
               {{settings.vnameTrans}}
+              {{settings.maxPlayMinutes}}
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
@@ -167,12 +169,16 @@
               :label="settings.langRoot"
             />
             <v-slider v-model="settings.maxPlayMinutes" 
-              min=15 max=135 step=15 
+              min=0 max=135 step=15 
               :label="maxPlayMinutesLabel"
               :ticks="maxPlayMinutesTicks"
               show-ticks="always"
               append-icon="mdi-timer"
             ></v-slider>
+            <v-select v-model="settings.playEnd" :items="playEndItems" 
+              :menu-icon="selectIcon"
+              :label="$t('ebt.playEnd')"
+            />
           </v-expansion-panel-text>
         </v-expansion-panel><!--Narrator-->
 
@@ -503,6 +509,18 @@ export default {
       let { settings } = ctx;
       let server = settings.server;
       return server?.hint || server?.title;
+    },
+    playEndItems: ctx=>{
+      return [{
+        title: ctx.$t('ebt.playEndStop'),
+        value: EbtSettings.EBT_STOP,
+      },{
+        title: ctx.$t('ebt.playEndRepeat'),
+        value: EbtSettings.EBT_REPEAT,
+      },{
+        title: ctx.$t('ebt.playEndTipitaka'),
+        value: EbtSettings.EBT_TIPITAKA,
+      }]
     },
     themes: (ctx)=>{
       let { $t=(s=>s) } = ctx;

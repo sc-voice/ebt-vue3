@@ -263,6 +263,7 @@ export default {
     "pageNotFound": "Página no encontrada",
     "pinned": "Fijado A_DATE",
     "playAll": "Jugar a todo",
+    "playEndStop": "Play till end of sutta",
     "playSection": "Jugar Sección A_SECCIÓN",
     "point": "punto",
     "processing": "Procesando...",

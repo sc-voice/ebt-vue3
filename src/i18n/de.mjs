@@ -260,6 +260,7 @@ export default {
     "pageNotFound": "Seite nicht gefunden",
     "pinned": "Gepinnt A_DATE",
     "playAll": "Alle wiedergeben",
+    "playEndStop": "Play till end of sutta",
     "playSection": "Abschnitt A_SECTION wiedergeben",
     "point": "Punkt",
     "processing": "Verarbeiten...",

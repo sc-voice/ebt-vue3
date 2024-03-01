@@ -263,6 +263,7 @@ export default {
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
     "playAll": "すべて再生",
+    "playEndStop": "Play till end of sutta",
     "playSection": " A_SECTION セクションを再生",
     "point": "Punkt",
     "processing": "Processing...",

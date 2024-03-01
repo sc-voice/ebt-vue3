@@ -263,6 +263,7 @@ export default {
     "pageNotFound": "Página não encontrada",
     "pinned": "Seleção: A_DATE",
     "playAll": "Ler tudo",
+    "playEndStop": "Play till end of sutta",
     "playSection": "Ler seção A_SECTION",
     "point": "Ponto",
     "publicDomain": "Domínio público",

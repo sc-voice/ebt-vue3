@@ -261,6 +261,7 @@ export default {
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
     "playAll": "සියල්ල වාදනය කරන්න",
+    "playEndStop": "Play till end of sutta",
     "playSection": "A_SECTION කොටස වාදනය කරන්න",
     "point": "Punkt",
     "publicDomain": "Public Domain",
