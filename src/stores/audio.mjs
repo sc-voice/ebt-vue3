@@ -8,11 +8,13 @@ import { default as IdbAudio } from '../idb-audio.mjs';
 import * as VOICES from "../auto/voices.mjs";
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
-import { 
+import {  
+  DBG,
   DBG_KEY, DBG_AUDIO, DBG_VERBOSE, DBG_HIGHLIGHT_EG,
   DBG_LOG_HTML, DBG_SOUND_STORE, DBG_IDB_AUDIO,
 } from '../defines.mjs';
 
+const MS_MINUTE = 60*1000;
 const URL_NOAUDIO = "audio/383542__alixgaus__turn-page.mp3"; 
 const HEADERS_JSON = { ["Accept"]: "application/json", };
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
@@ -66,6 +68,8 @@ const segmentPlaying = ref(false);
 const audioElapsed = ref(0);
 const idbAudio = ref(undefined);
 const playMode = ref(PLAY_ONE);
+const playedSeconds = ref(0); 
+const maxPlayMinutes = ref(1);  
 
 export const useAudioStore = defineStore('audio', {
   state: () => {
@@ -82,7 +86,11 @@ export const useAudioStore = defineStore('audio', {
       audioElapsed,
       idbAudio,
       playMode,
+      playedSeconds,
+      maxPlayMinutes,
       clickElt,
+      PLAY_ONE,
+      PLAY_END,
     }
   },
   getters: {
@@ -138,7 +146,7 @@ export const useAudioStore = defineStore('audio', {
     },
     playPause(playMode) {
       const msg = "audio.playPause()";
-      const dbg = DBG_AUDIO;
+      const dbg = DBG.PLAY || DBG_AUDIO;
       let { idbAudio, mainContext, } = this;
       this.playClick();
 
@@ -220,28 +228,36 @@ export const useAudioStore = defineStore('audio', {
     },
     async playToEnd() {
       const msg = 'audio.playToEnd() ';
+      const dbg = DBG.PLAY;
       let settings = useSettingsStore();
       settings.tutorPlay = false;
+      playedSeconds.value = 0;
 
-      logger.info(msg+'PLAY', this.audioScid);
       let segPlayed;
+      let playEnded;
       do {
+        dbg && console.log(msg, '[1]playSegment', this.audioScid);
         segPlayed = await this.playSegment();
-      } while(segPlayed && (await this.next()));
+        playEnded = playedSeconds.value / 60 > maxPlayMinutes.value;
+      } while(segPlayed && !playEnded && (await this.next()));
       if (segPlayed) {
-        logger.info(msg+'END');
+        dbg && console.log(msg, '[2]end');
         await this.playBell();
+      } else {
+        dbg && console.log(msg, '[3]!segPlayed');
       }
     },
     clickPlayToEnd() {
       const msg = 'audio.clickPlayToEnd() ';
+      const dbg = DBG.PLAY;
       if (this.playPause(PLAY_END)) {
-        logger.debug(msg + 'toggled');
+        dbg && console.log(msg, '[1]toggle', this.audioScid);
         return;
       }
 
-      logger.info(msg + 'playing');
+      dbg && console.log(msg, '[2]createIdbAudio', this.audioScid);
       this.createIdbAudio(()=>{
+        dbg && console.log(msg, '[3]playToEnd', this.audioScid);
         this.playToEnd();
       });
     },
@@ -301,6 +317,7 @@ export const useAudioStore = defineStore('audio', {
       let { idbAudio, audioScid } = audio;
       let segAudio = await audio.bindSegmentAudio();
       let { segment:seg, langTrans } = segAudio;
+      let lastCurrentTime = 0;
       dbg && console.log(msg, '[1]bindSegmentAudio', audioScid);
 
       let interval;
@@ -308,6 +325,10 @@ export const useAudioStore = defineStore('audio', {
         audio.audioElapsed = -2;
         interval = setInterval( ()=>{
           let currentTime = audio.idbAudio?.currentTime || -1;
+          if (currentTime > 0) {
+            playedSeconds.value += (currentTime - lastCurrentTime)/1000;
+            lastCurrentTime = currentTime;
+          }
           audio.audioElapsed = currentTime/1000;
           if (audio.audioScid !== audioScid) {
             clearInterval(interval);
@@ -323,6 +344,7 @@ export const useAudioStore = defineStore('audio', {
         if (audio.segmentPlaying && settings.speakPali && seg.pli) {
           let src = await audio.pliAudioUrl;
           idbAudio.src = src;
+          lastCurrentTime = idbAudio.currentTime;
           dbgv && console.log(msg, '[4]pliUrl', src);
           await idbAudio.play();
         }
@@ -332,6 +354,7 @@ export const useAudioStore = defineStore('audio', {
         if (audio.segmentPlaying && speakTrans) {
           let src = await audio.transAudioUrl;
           idbAudio.src = src;
+          lastCurrentTime = idbAudio.currentTime;
           dbgv && console.log(msg, '[5]transUrl:', src);
           await idbAudio.play();
         }

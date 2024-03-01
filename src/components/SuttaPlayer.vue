@@ -31,8 +31,11 @@
           <div @click="onShowScid">
             {{audio.audioScid}}
           </div>
-          <div v-if="audioDuration" class="audioElapsed">
+          <div v-if="playOne" class="audioElapsed">
             {{ audioElapsed }} / {{ audioDuration }}
+          </div>
+          <div v-if="playEnd" class="audioElapsed">
+            {{ playedMinutes }} / {{ maxPlayMinutes }}
           </div>
         </div>
         <v-btn id="audio-play-to-end"
@@ -111,6 +114,29 @@
       },
     },
     computed: {
+      playOne(ctx) {
+        let { 
+          audioElapsed, playMode, PLAY_ONE, audioDuration 
+        } = ctx.audio;
+        return audioElapsed>0 && playMode===PLAY_ONE && audioDuration;
+      },
+      playEnd(ctx) {
+        let { playMode, PLAY_END, } = ctx.audio;
+        return playMode === PLAY_END;
+      },
+      playedMinutes(ctx) {
+        let { playedSeconds } = ctx.audio;
+        let seconds = Math.round(playedSeconds);
+        let min = Math.floor(seconds / 60);
+        let sec = seconds % 60;
+        return sec < 10
+          ? `${min}:0${sec}`
+          : `${min}:${sec}`;
+      },
+      maxPlayMinutes(ctx) {
+        let { maxPlayMinutes } = ctx.audio;
+        return maxPlayMinutes.toFixed(0);
+      },
       audioElapsed(ctx) {
         let elapsed = ctx.audio.audioElapsed;
         return elapsed.toFixed(1);

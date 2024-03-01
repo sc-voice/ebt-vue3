@@ -1,3 +1,6 @@
+export const DBG = {
+  PLAY: 0,
+};
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
 export const DBG_REMOVE_CARD  = 0;
