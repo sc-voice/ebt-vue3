@@ -1,5 +1,4 @@
-export default 
-{
+export default {
   "close": "Cerrar",
   "dataIterator": {
     "pageText": "{0}-{1} de {2}",
@@ -249,6 +248,7 @@ export default
     "loadingAudio": "cargando audio...",
     "loadingSutta": "Cargando ...",
     "logLevel": "Mensajes de la consola",
+    "maxPlayMinutes": "Play Minutes",
     "no-location-debug": "Depurar",
     "no-location-home": "",
     "no-location-search": "Buscar...",

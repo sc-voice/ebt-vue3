@@ -248,6 +248,7 @@ export default {
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",
+    "maxPlayMinutes": "Play Minutes",
     "no-location-debug": "Debug",
     "no-location-home": "Home",
     "no-location-search": "Search...",
