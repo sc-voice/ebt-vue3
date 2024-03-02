@@ -3,9 +3,10 @@ const EbtConfig = {
   "basePath": "/",
   "homePath": "#/wiki/welcome",
   "tutorialPath": "#/wiki/tutorial/tutorial",
-  "monolingual": false,
+  //"monolingual": "en",
   "privacyLink": "#/wiki/privacy",
-  "searchDropdown": 5,
+  //"searchDropdown": 50,
+  //"maxPlayMinutes": 30,
   "footnotes": "Footnotes",
   "content": {
     "index": "toc",

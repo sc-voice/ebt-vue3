@@ -2,6 +2,7 @@ import { logger } from 'log-instance/index.mjs';
 import { default as EbtCard } from './ebt-card.mjs';
 import { default as VOICES } from './auto/voices.mjs';
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
+import { default as EbtConfig } from "../ebt-config.mjs";
 import {
   DBG,
   DBG_VERBOSE, 
@@ -162,7 +163,7 @@ export default class EbtSettings {
       locale: NAV_LANG,
       logLevel: 'warn',
       maxDuration: 3*60*60,
-      maxPlayMinutes: 30,
+      maxPlayMinutes: EbtConfig.maxPlayMinutes || 30,
       maxResults: 5,
       playEnd: EbtSettings.END_STOP,
       refAuthor: AuthorsV2.langAuthor(REF_LANG),
