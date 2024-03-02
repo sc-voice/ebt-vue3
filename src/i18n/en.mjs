@@ -190,7 +190,7 @@ export default {
     "ariaSeconds": "A_SECONDS seconds",
     "ariaSettings": "Settings",
     "ariaSuttaCentralNewTab": "suttacentral.net opens in new tab",
-    "audio": "Audio",
+    "audio": "Sounds",
     "audioError": "Audio Error",
     "author": "Author",
     "bellIndian": "Indian Bell",
