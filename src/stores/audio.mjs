@@ -231,14 +231,14 @@ export const useAudioStore = defineStore('audio', {
       settings.tutorPlay = false;
       playedSeconds.value = 0;
 
-      let segPlayed;
-      let playEnded;
+      let playing;
       do {
         dbg && console.log(msg, '[1]playSegment', this.audioScid);
-        segPlayed = await this.playSegment();
-        playEnded = playedSeconds.value / 60 > settings.maxPlayMinutes;
-      } while(segPlayed && !playEnded && (await this.next()));
-      if (segPlayed) {
+        let segPlayed = await this.playSegment();
+        let timeout = playedSeconds.value / 60 > settings.maxPlayMinutes;
+        playing = segPlayed && !timeout;
+      } while(playing && (await this.next()));
+      if (playing) {
         dbg && console.log(msg, '[2]end');
         await this.playBell();
       } else {
@@ -262,8 +262,15 @@ export const useAudioStore = defineStore('audio', {
     back() {
       return this.incrementSegment(-1);
     },
-    next() {
-      return this.incrementSegment(1);
+    async next() {
+      const msg = "audio.next()";
+      const dbg = DBG.PLAY;
+      let incRes = await this.incrementSegment(1);
+      if (playMode.value === PLAY_END) {
+        dbg && console.log(msg, incRes);
+      }
+
+      return incRes;
     },
     setLocation(delta=0) {
       const msg = `audio.setLocation(${delta}) `;

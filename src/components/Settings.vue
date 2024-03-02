@@ -173,7 +173,7 @@
               :label="$t('ebt.playEnd')"
             />
             <div class="text-caption">
-              {{$t(maxPlayMinutesLabel)}}
+              {{maxPlayMinutesLabel}}
             </div>
             <v-slider v-model="settings.maxPlayMinutes" 
               min=0 max=135 step=15 
@@ -181,6 +181,7 @@
               :hint="''+settings.maxPlayMinutes"
               show-ticks="always"
               append-icon="mdi-timer"
+              class="pl-3"
             ></v-slider>
           </v-expansion-panel-text>
         </v-expansion-panel><!--Narrator-->
@@ -491,8 +492,8 @@ export default {
     maxPlayMinutesLabel(ctx) {
       let { maxPlayMinutes } = ctx.settings;
       let label = ctx.$t('ebt.maxPlayMinutes', {
-        minutes:maxPlayMinutes}
-      );
+        A_MINUTES:maxPlayMinutes
+      });
       return label;
     },
     tbd(ctx) {

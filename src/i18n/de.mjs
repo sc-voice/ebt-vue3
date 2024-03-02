@@ -245,7 +245,7 @@ export default {
     "loadingAudio": "Audio laden...",
     "loadingSutta": "wird geladen...",
     "logLevel": "Konsolen-Info",
-    "maxPlayMinutes": "Play Minutes",
+    "maxPlayMinutes": "Play time: {A_MINUTES} minutes",
     "no-location-debug": "Fehlersuche",
     "no-location-home": "",
     "no-location-search": "Suche...",
