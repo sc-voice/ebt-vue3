@@ -267,7 +267,7 @@ export default {
     "playEnd": "Tocar sutta...",
     "playEndRepeat": "Tocar e repetir sutta",
     "playEndStop": "Tocar sutta uma vez",
-    "playEndTipitaka": "Tocar todos os suttas",
+    "playEndTipitaka": "Tocar coleção",
     "playSection": "Ler seção A_SECTION",
     "point": "Ponto",
     "publicDomain": "Domínio público",

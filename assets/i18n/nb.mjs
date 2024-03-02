@@ -264,7 +264,7 @@ export default {
     "playEnd": "Play sutta...",
     "playEndRepeat": "Play and repeat sutta",
     "playEndStop": "Play till end of sutta",
-    "playEndTipitaka": "Play Tipitaka",
+    "playEndTipitaka": "Play collection",
     "playSection": "Play Section A_SECTION",
     "point": "Punkt",
     "processing": "Processing...",

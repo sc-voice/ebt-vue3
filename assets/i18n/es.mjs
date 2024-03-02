@@ -267,7 +267,7 @@ export default {
     "playEnd": "Reproducir sutta...",
     "playEndRepeat": "Reproducir e repetir sutta",
     "playEndStop": "Reproducir sutta una vez",
-    "playEndTipitaka": "Reproducir Tipitaka",
+    "playEndTipitaka": "Reproducir collection",
     "playSection": "Jugar Sección A_SECCIÓN",
     "point": "punto",
     "processing": "Procesando...",

@@ -265,6 +265,7 @@ export default {
     "playEnd": "Play...",
     "playEndRepeat": "Play and repeat sutta",
     "playEndStop": "Play till end of sutta",
+    "playEndTipitaka": "Play collection",
     "playSection": "A_SECTION කොටස වාදනය කරන්න",
     "point": "Punkt",
     "publicDomain": "Public Domain",
