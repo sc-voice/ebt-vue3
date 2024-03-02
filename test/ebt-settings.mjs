@@ -197,6 +197,7 @@ import should from "should";
     should.deepEqual(res.changed, {
       docAuthor: 'sabbamitta',
       docLang: 'de',
+      playEnd: EbtSettings.END_STOP,
       refAuthor: 'laera-quaresma',
       showPali:true, 
       showSutta: true,
@@ -220,6 +221,7 @@ import should from "should";
     should(res.isValid).equal(true);
     should(!!res.error).equal(false);
     should.deepEqual(res.changed, {
+      playEnd: EbtSettings.END_STOP,
       docAuthor: 'kaz',
       docLang: 'jpn',
       refAuthor: 'sujato',
@@ -235,6 +237,7 @@ import should from "should";
       docAuthor: 'kaz',
       docLang: 'jpn',
       langTrans: 'jpn',
+      playEnd: EbtSettings.END_STOP,
       refAuthor: 'sujato',
       refLang: 'en',
       showPali: true,
