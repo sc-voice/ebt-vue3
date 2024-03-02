@@ -919,7 +919,7 @@ const messages =  {
       "playEnd": "Sutta wiedergeben …",
       "playEndRepeat": "Sutta wiedergeben und wiederholen",
       "playEndStop": "Wiedergabe bis Ende des Sutta",
-      "playEndTipitaka": "Tipitaka wiedergeben",
+      "playEndTipitaka": "Sammlung wiedergeben",
       "playSection": "Abschnitt A_SECTION wiedergeben",
       "point": "Punkt",
       "processing": "Verarbeiten...",
