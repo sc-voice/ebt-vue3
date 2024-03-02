@@ -187,7 +187,7 @@ export default {
     "ariaSeconds": "A_SECONDS Sekunden",
     "ariaSettings": "Einstellungen",
     "ariaSuttaCentralNewTab": "suttacentral.net öffnet in neuem Tab",
-    "audio": "Audio",
+    "audio": "Töne",
     "audioError": "Audio-Fehler",
     "author": "Autor",
     "bellIndian": "Indischer Gong",
