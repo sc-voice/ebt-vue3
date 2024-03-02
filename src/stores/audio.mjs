@@ -266,8 +266,22 @@ export const useAudioStore = defineStore('audio', {
       const msg = "audio.next()";
       const dbg = DBG.PLAY;
       let incRes = await this.incrementSegment(1);
-      if (playMode.value === PLAY_END) {
-        dbg && console.log(msg, incRes);
+      if (incRes==null && playMode.value === PLAY_END) {
+        let settings = useSettingsStore();
+        switch (settings.playEnd) {
+          case EbtSettings.END_REPEAT:
+            incRes = this.setLocation(0);
+            dbg && console.log(msg, '[1]repeat', incRes);
+          case EbtSettings.END_TIPITAKA:
+            dbg && console.log(msg, '[2]tipitaka', incRes);
+            break;
+          case EbtSettings.END_STOP:
+            dbg && console.log(msg, '[3]stop', incRes);
+            break;
+          default:
+            dbg && console.warn(msg, `[4]${settings.playEnd}?`, incRes);
+            break;
+        }
       }
 
       return incRes;

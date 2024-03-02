@@ -179,9 +179,10 @@
   import { onUpdated } from "vue";
   import { useVolatileStore } from './stores/volatile.mjs';
   import { 
+    DBG,
     DBG_TUTORIAL, DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
-    DBG_ROUTE, DBG_WAITING, DBG_SETTINGS, DBG_LOG_HTML,
+    DBG_ROUTE, DBG_WAITING, DBG_LOG_HTML,
     DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO,
     DBG_VERBOSE,
 
@@ -382,7 +383,7 @@
       },
       async onSettingsChanged(mutation, state) {
         const msg = "App.onSettingsChanged()";
-        const dbg = DBG_SETTINGS;
+        const dbg = DBG.SETTINGS;
         let { settings, $i18n, $vuetify } = this;
         $vuetify.theme.global.name = settings.theme === 'dark' 
           ? 'dark' : 'light';

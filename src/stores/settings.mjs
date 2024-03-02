@@ -6,7 +6,8 @@ import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
-  DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, DBG_SETTINGS, 
+  DBG,
+  DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, 
   DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, DBG_CARD_PATH,
   DBG_VERBOSE, DBG_REMOVE_CARD,
 } from '../defines.mjs';
@@ -40,7 +41,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async loadSettings(config) {
       let msg = 'settings.loadSettings() ';
-      let dbg = DBG_SETTINGS || DBG_ADD_CARD;
+      let dbg = DBG.SETTINGS || DBG_ADD_CARD;
       if (this.loaded) {
         return this;
       }
@@ -106,7 +107,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async saveSettings() {
       const msg = "settings.saveSettings() ";
-      let dbg = DBG_SETTINGS;
+      let dbg = DBG.SETTINGS;
       let saved = Utils.assignTyped({}, EbtSettings.INITIAL_STATE, this);
       logger.logLevel = saved.logLevel;
       let validRes = EbtSettings.validate(saved);

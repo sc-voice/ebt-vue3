@@ -3,7 +3,8 @@ import { default as EbtCard } from './ebt-card.mjs';
 import { default as VOICES } from './auto/voices.mjs';
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import {
-  DBG_VERBOSE, DBG_SETTINGS,
+  DBG,
+  DBG_VERBOSE, 
 } from './defines.mjs';
 
 const AUDIO = { MP3: 'mp3', OGG: 'ogg', OPUS: 'opus', };
@@ -120,9 +121,9 @@ export default class EbtSettings {
     EbtSettings.validate(this);
   }
 
-  static get END_REPEAT() { return "repeat"; }
-  static get END_STOP() { return "stop"; }
-  static get END_TIPITAKA() { return "tipitaka"; }
+  static get END_REPEAT() { return "⥀"; }
+  static get END_STOP() { return "\u23f8"; }
+  static get END_TIPITAKA() { return "🡺"; }
 
   static get SERVERS() {
     return SERVERS;
@@ -382,6 +383,8 @@ export default class EbtSettings {
       docAuthor,
       docLang,
       langTrans,
+      maxPlayMinutes,
+      playEnd,
       refAuthor,
       refLang,
       showPali,
@@ -474,11 +477,25 @@ export default class EbtSettings {
       showSutta = true;
       changed = Object.assign({showSutta}, changed);
     }
+    if (maxPlayMinutes <= 0) {
+      maxPlayMinutes = 1;
+      changed = Object.assign({maxPlayMinutes}, changed);
+    }
+    switch (playEnd) {
+      case EbtSettings.END_STOP:
+      case EbtSettings.END_REPEAT:
+        break; // OK
+      case EbtSettings.END_TIPITAKA: // TODO
+      default:
+        playEnd = EbtSettings.END_STOP;
+        changed = Object.assign({playEnd}, changed);
+        break;
+    }
 
+    //------- END VALIDATION ------------
     if (changed) {
       Object.assign(state, changed);
     }
-
     return {
       isValid,
       changed,

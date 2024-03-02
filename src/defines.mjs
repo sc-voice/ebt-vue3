@@ -1,6 +1,7 @@
 export const DBG = {
-  PLAY: true,
-  CARD: true,
+  PLAY: 0,
+  CARD: 0,
+  SETTINGS: 0,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
@@ -28,7 +29,6 @@ export const DBG_MOUNTED      = 0;
 export const DBG_ROUTE        = 0;
 export const DBG_SCROLL       = 0;
 export const DBG_SEARCH       = 0;
-export const DBG_SETTINGS     = 0;
 export const DBG_SOUND_STORE  = 0;
 export const DBG_STARTUP      = 0;
 export const DBG_SUTTA        = 0;

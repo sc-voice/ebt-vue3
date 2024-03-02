@@ -22,7 +22,8 @@
           <v-expansion-panel-title 
             v-if="volatile.showSettings"
             id="settings-autofocus"
-            expand-icon="mdi-dots-vertical" collapse-icon="mdi-dots-horizontal"
+            expand-icon="mdi-dots-vertical" 
+            collapse-icon="mdi-dots-horizontal"
             >
             {{$t('ebt.general')}}
             <v-spacer/>
@@ -150,6 +151,7 @@
             <div class="settings-summary">
               {{settings.vnameRoot}}
               {{settings.vnameTrans}}
+              {{settings.playEnd}}
               {{settings.maxPlayMinutes}}
             </div>
           </v-expansion-panel-title>
@@ -168,8 +170,9 @@
               item-value="name"
               :label="settings.langRoot"
             />
-            <v-select v-model="settings.playEnd" :items="playEndItems" 
+            <v-select v-model="settings.playEnd" 
               :menu-icon="selectIcon"
+              :items="playEndItems" 
               :label="$t('ebt.playEnd')"
             />
             <div class="text-caption">
@@ -517,15 +520,16 @@ export default {
       return server?.hint || server?.title;
     },
     playEndItems: ctx=>{
+      let { $t=(s=>s) } = ctx;
       return [{
-        title: ctx.$t('ebt.playEndStop'),
-        value: EbtSettings.EBT_STOP,
+        title: $t('ebt.playEndStop'),
+        value: EbtSettings.END_STOP,
       },{
-        title: ctx.$t('ebt.playEndRepeat'),
-        value: EbtSettings.EBT_REPEAT,
+        title: $t('ebt.playEndRepeat'),
+        value: EbtSettings.END_REPEAT,
       },{
-        title: ctx.$t('ebt.playEndTipitaka'),
-        value: EbtSettings.EBT_TIPITAKA,
+        title: $t('ebt.playEndTipitaka'),
+        value: EbtSettings.END_TIPITAKA,
       }]
     },
     themes: (ctx)=>{
