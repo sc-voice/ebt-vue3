@@ -185,6 +185,9 @@
               :menu-icon="selectIcon"
               :items="playEndItems" 
               :label="$t('ebt.playEnd')"
+              autocomplete="off"
+              aria-autocomplete="off"
+              name="playEnd-block-autofill"
             />
             <div class="text-caption">
               {{maxPlayMinutesLabel}}

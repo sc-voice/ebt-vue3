@@ -196,16 +196,15 @@ export const useAudioStore = defineStore('audio', {
     },
     async playOne() {
       const msg = 'audio.playOne() ';
-      const dbg = DBG_AUDIO;
+      const dbg = DBG.PLAY;
       dbg && console.log(msg, '[1]playSegment', this.audioScid);
       let completed = await this.playSegment();
       if (!completed) {
-        // interrupted
+        dbg && console.log(msg, '[2]interrupted');
       } else if (await this.next()) {
-        dbg && console.log(msg, '[2]ok');
+        dbg && console.log(msg, '[3]ok');
       } else {
-        dbg && console.log(msg, '[3]end');
-        this.playBell();
+        dbg && console.log(msg, '[4]end');
       }
     },
     clickPlayOne() {
@@ -238,12 +237,7 @@ export const useAudioStore = defineStore('audio', {
         let timeout = playedSeconds.value / 60 > settings.maxPlayMinutes;
         playing = segPlayed && !timeout;
       } while(playing && (await this.next()));
-      if (playing) {
-        dbg && console.log(msg, '[2]end');
-        await this.playBell();
-      } else {
-        dbg && console.log(msg, '[3]!segPlayed');
-      }
+      dbg && console.log(msg, '[2]end', this.audioScid);
     },
     clickPlayToEnd() {
       const msg = 'audio.clickPlayToEnd() ';
@@ -288,6 +282,7 @@ export const useAudioStore = defineStore('audio', {
     },
     setLocation(delta=0) {
       const msg = `audio.setLocation(${delta}) `;
+      const dbg = DBG.PLAY;
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
       let { audioSutta, } = this;
@@ -298,10 +293,10 @@ export const useAudioStore = defineStore('audio', {
         this.audioScid = segments[iSegment].scid;
         volatile.setRoute(routeCard.routeHash(), true, msg);
         this.playSwoosh();
-        logger.debug(msg, incRes);
+        dbg && console.log(msg, '[1]playSwoosh', incRes);
       } else {
         this.playBell();
-        logger.debug(msg+'END');
+        dbg && console.log(msg, '[2]playBell');
       }
 
       return incRes;
@@ -319,10 +314,10 @@ export const useAudioStore = defineStore('audio', {
         this.audioScid = segments[iSegment].scid;
         volatile.setRoute(routeCard.routeHash(), true, msg);
         this.playSwoosh();
-        dbg && console.log(msg, '[1]incRes', incRes);
+        dbg && console.log(msg, '[1]playSwoosh', incRes);
       } else {
         this.playBell();
-        dbg && console.log(msg, '[2]END');
+        dbg && console.log(msg, '[2]playBell');
       }
 
       return incRes;
@@ -419,7 +414,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async incrementSegment(delta) {
       const msg = `audio.incrementSegment(${delta}) `;
-      const dbg = DBG_AUDIO;
+      const dbg = DBG.PLAY || DBG_AUDIO;
       const dbgv = DBG_VERBOSE && dbg;
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
@@ -433,10 +428,10 @@ export const useAudioStore = defineStore('audio', {
         let hash = routeCard.routeHash();
         volatile.setRoute(hash, true, msg);
         this.playClick();
-        dbgv && console.log(msg, '[1]incRes', incRes);
+        dbg && console.log(msg, '[1]playClick', incRes);
       } else {
-        this.playBell();
-        dbgv && console.log(msg, '[2]END');
+        await this.playBell();
+        dbg && console.log(msg, '[2]playBell');
       }
 
       // sync instance
@@ -489,7 +484,7 @@ export const useAudioStore = defineStore('audio', {
     },
     playBell(audioContext) {
       const msg = 'audio.playBell() ';
-      const dbg = DBG_AUDIO;
+      const dbg = DBG.PLAY || DBG_AUDIO;
       let settings = useSettingsStore();
       let { ips } = settings;
       let ipsChoice = EbtSettings.IPS_CHOICES.filter(c=>c.value===ips)[0];
