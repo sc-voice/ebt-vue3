@@ -246,6 +246,7 @@ export default {
     "loadingSutta": "wird geladen...",
     "logLevel": "Konsolen-Info",
     "maxPlayMinutes": "Play time: {A_MINUTES} minutes",
+    "narration": "Narration",
     "no-location-debug": "Fehlersuche",
     "no-location-home": "",
     "no-location-search": "Suche...",

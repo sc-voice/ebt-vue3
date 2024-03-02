@@ -249,6 +249,7 @@ export default {
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",
     "maxPlayMinutes": "Duração de tocar: {A_MINUTES} minutos",
+    "narration": "Narration",
     "no-location-debug": "Debug",
     "no-location-home": "",
     "no-location-search": "...",

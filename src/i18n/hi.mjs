@@ -244,6 +244,7 @@ export default {
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",
     "maxPlayMinutes": "Play time: {A_MINUTES} minutes",
+    "narration": "Narration",
     "no-location-home": "",
     "no-location-sutta": "Sutta...",
     "no-location-wiki": "Unknown wiki location",

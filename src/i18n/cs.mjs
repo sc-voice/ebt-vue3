@@ -247,6 +247,7 @@ export default {
     "loadingSutta": "Loading _SUTTA...",
     "logLevel": "Console messages",
     "maxPlayMinutes": "Play time: {A_MINUTES} minutes",
+    "narration": "Narration",
     "no-location-debug": "Debug",
     "no-location-home": "",
     "no-location-search": "Search...",

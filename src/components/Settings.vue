@@ -141,12 +141,12 @@
           </v-expansion-panel-text>
         </v-expansion-panel><!--Text Layout-->
 
-        <v-expansion-panel><!--Narrator-->
+        <v-expansion-panel><!--Narration-->
           <v-expansion-panel-title 
             expand-icon="mdi-dots-vertical" 
             collapse-icon="mdi-dots-horizontal"
             >
-            {{$t('ebt.reader')}}
+            {{$t('ebt.narration')}}
             <v-spacer/>
             <div class="settings-summary">
               {{settings.vnameRoot}}
@@ -156,19 +156,30 @@
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <v-select v-model="settings.vnameTrans" 
-              :menu-icon="selectIcon"
-              :items="langVoices(settings.langTrans, 'vnameTrans')"
-              item-title="label"
-              item-value="name"
-              :label="settings.langTrans"
+            <v-checkbox v-model="settings.speakPali" density="compact"
+              :label="$t('ebt.speakPali')"
             />
-            <v-select v-model="settings.vnameRoot" 
+            <v-select v-if="settings.speakPali"
+              v-model="settings.vnameRoot" 
               :menu-icon="selectIcon"
               :items="langVoices(settings.langRoot, 'vnameRoot')"
               item-title="label"
               item-value="name"
               :label="settings.langRoot"
+              class="pl-5"
+            />
+            <v-checkbox v-model="settings.speakTranslation" 
+              density="compact"
+              :label="$t('ebt.speakTranslation')"
+            />
+            <v-select v-if="settings.speakTranslation"
+              v-model="settings.vnameTrans" 
+              :menu-icon="selectIcon"
+              :items="langVoices(settings.langTrans, 'vnameTrans')"
+              item-title="label"
+              item-value="name"
+              :label="settings.langTrans"
+              class="pl-5"
             />
             <v-select v-model="settings.playEnd" 
               :menu-icon="selectIcon"
@@ -211,12 +222,6 @@
               :hint="ipsItem.hint"
               >
             </v-select>
-            <v-checkbox v-model="settings.speakPali" density="compact"
-              :label="$t('ebt.speakPali')"
-            />
-            <v-checkbox v-model="settings.speakTranslation" density="compact"
-              :label="$t('ebt.speakTranslation')"
-            />
             <v-slider v-model="settings.clickVolume" min=0 max=4 step=1 
               :label="$t('ebt.click')"
               append-icon="mdi-volume-high"
