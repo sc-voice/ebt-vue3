@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia';
 import { logger } from 'log-instance/index.mjs';
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
+import { useSuttasStore } from './suttas.mjs';
 import { useSettingsStore } from './settings.mjs';
 import { useVolatileStore } from './volatile.mjs';
 import { default as EbtSettings } from '../ebt-settings.mjs';
 import { default as IdbAudio } from '../idb-audio.mjs';
+import { default as EbtConfig } from '../../ebt-config.mjs';
 import * as VOICES from "../auto/voices.mjs";
+import { Tipitaka } from 'scv-esm';
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import {  
@@ -69,6 +72,7 @@ const audioElapsed = ref(0);
 const idbAudio = ref(undefined);
 const playMode = ref(PLAY_ONE);
 const playedSeconds = ref(0); 
+const tipitaka = new Tipitaka();
 
 export const useAudioStore = defineStore('audio', {
   state: () => {
@@ -256,6 +260,37 @@ export const useAudioStore = defineStore('audio', {
     back() {
       return this.incrementSegment(-1);
     },
+    async nextTipitaka() {
+      const msg = "audio.netTipitaka()";
+      const dbg = DBG.PLAY;
+      let settings = useSettingsStore();
+      let volatile = useVolatileStore();
+      let { routeCard } = volatile;
+      let { audioSutta } = this;
+      let { sutta_uid:suid, lang, author } = audioSutta;
+      let sutta_uid = tipitaka.nextSuid(suid, Tipitaka.folderOfSuid);
+      let incRes = null;
+      if (sutta_uid) {
+        routeCard.open(false);
+        let sref = SuttaRef.create({sutta_uid, lang, author});
+        let suttas = useSuttasStore();
+        let nextSuttaRef = await suttas.getIdbSuttaRef(sref);
+        settings.removeCard(routeCard, EbtConfig);
+        let nextSutta = nextSuttaRef.value;
+        let nextPath = [
+          '/sutta', sutta_uid, lang, author
+        ].join('/');
+        let nextCard = settings.pathToCard(nextPath);
+        if (nextCard) {
+          volatile.setRouteCard(nextCard);
+          this.setAudioSutta(nextSutta);
+          incRes = this.setLocation(0);
+          dbg && console.log(msg, '[2]tipitaka', sref, nextCard, 
+            nextSutta);
+        }
+      }
+      return incRes;
+    },
     async next() {
       const msg = "audio.next()";
       const dbg = DBG.PLAY;
@@ -266,8 +301,8 @@ export const useAudioStore = defineStore('audio', {
           case EbtSettings.END_REPEAT:
             incRes = this.setLocation(0);
             dbg && console.log(msg, '[1]repeat', incRes);
-          case EbtSettings.END_TIPITAKA:
-            dbg && console.log(msg, '[2]tipitaka', incRes);
+          case EbtSettings.END_TIPITAKA: 
+            incRes = await this.nextTipitaka();
             break;
           case EbtSettings.END_STOP:
             dbg && console.log(msg, '[3]stop', incRes);

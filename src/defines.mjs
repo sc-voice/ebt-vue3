@@ -1,12 +1,12 @@
 export const DBG = {
   PLAY: 0,
   CARD: 0,
+  CARD_PATH: 0,
   SETTINGS: 0,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
 export const DBG_REMOVE_CARD  = 0;
-export const DBG_CARD_PATH    = 0;
 export const DBG_AUDIO        = 0;
 export const DBG_IDB_AUDIO    = 0;
 export const DBG_BLUR         = 0;

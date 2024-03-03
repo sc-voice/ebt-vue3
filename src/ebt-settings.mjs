@@ -485,8 +485,8 @@ export default class EbtSettings {
     switch (playEnd) {
       case EbtSettings.END_STOP:
       case EbtSettings.END_REPEAT:
+      case EbtSettings.END_TIPITAKA: 
         break; // OK
-      case EbtSettings.END_TIPITAKA: // TODO
       default:
         playEnd = EbtSettings.END_STOP;
         changed = Object.assign({playEnd}, changed);

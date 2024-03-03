@@ -210,20 +210,21 @@
         let { volatile, settings } = ctx;
         let { displayBox } = volatile;
         let w = displayBox.value.w;
-        let nCols = 0;
-        settings.showPali && nCols++;
-        settings.showReference && nCols++;
-        settings.showTrans && nCols++;
-        settings.fullLine && (nCols = 1);
-        switch (nCols) {
+        let n = 0;
+
+        if (settings.showPali) { n++ }
+        if (settings.showReference) { n++ }
+        if (settings.showTrans) { n++ }
+        if (settings.fullLine) { n = 1 }
+        switch (n) {
           case 3: 
-            nCols = w < 820 ? 1 : nCols;
+            n = w < 820 ? 1 : n;
             break;
           case 2: 
-            nCols = w < 566 ? 1 : nCols;
+            n = w < 566 ? 1 : n;
             break;
         }
-        return nCols;
+        return n;
       },
       langTrans(ctx) {
         let { settings, card } = ctx;

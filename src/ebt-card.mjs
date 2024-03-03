@@ -2,8 +2,9 @@ import { logger } from 'log-instance/index.mjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
+  DBG,
   DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
-  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, DBG_CARD_PATH,
+  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, 
   DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
 
@@ -129,7 +130,7 @@ export default class EbtCard {
 
   static pathToCard(args) {
     const msg = 'ebt-card.pathToCard()';
-    const dbg = DBG_CARD_PATH;
+    const dbg = DBG.CARD_PATH;
     let {
       path='/', cards=[], addCard, defaultLang, isOpen,
     } = args;
@@ -366,7 +367,7 @@ export default class EbtCard {
 
   matchPath(strOrObj) {
     const msg = 'ebt-card.matchPath() ';
-    const dbg = DBG_CARD_PATH;
+    const dbg = DBG.CARD_PATH;
     const dbgv = DBG_VERBOSE && dbg;
     let opts = typeof strOrObj === 'string'
       ? { path: strOrObj }
