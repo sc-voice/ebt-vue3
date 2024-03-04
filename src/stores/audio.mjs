@@ -8,7 +8,7 @@ import { default as EbtSettings } from '../ebt-settings.mjs';
 import { default as IdbAudio } from '../idb-audio.mjs';
 import { default as EbtConfig } from '../../ebt-config.mjs';
 import * as VOICES from "../auto/voices.mjs";
-import { Tipitaka } from 'scv-esm';
+import { Tipitaka } from 'scv-esm/main.mjs';
 import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import {  
