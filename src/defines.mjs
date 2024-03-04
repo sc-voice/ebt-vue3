@@ -1,8 +1,9 @@
 export const DBG = {
-  PLAY: 0,
+  PLAY: true,
   CARD: 0,
   CARD_PATH: 0,
   SETTINGS: 0,
+  LOG_HTML: true,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
@@ -23,7 +24,6 @@ export const DBG_IDB_SUTTA    = 0;
 export const DBG_KEY          = 0;
 export const DBG_LEGACY       = 0;
 export const DBG_LOAD         = 0;
-export const DBG_LOG_HTML     = 0; // when debug console doesn't work
 export const DBG_ML_DOC       = 0;
 export const DBG_MOUNTED      = 0;
 export const DBG_ROUTE        = 0;

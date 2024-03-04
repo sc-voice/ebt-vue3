@@ -6,7 +6,8 @@ import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import { useAudioStore } from "./audio.mjs";
 import {
-  DBG_CLICK, DBG_FOCUS, DBG_HOME, DBG_LOG_HTML,
+  DBG,
+  DBG_CLICK, DBG_FOCUS, DBG_HOME, 
   DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
   DBG_COPY, DBG_FETCH
 } from "../defines.mjs";
@@ -134,7 +135,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     enableLog(on) {
       const msg = "volatile.enableLog()";
-      const dbg = DBG_LOG_HTML;
+      const dbg = DBG.LOG_HTML;
       if (on) {
         if (console_log.value == null) {
           console_log.value = console.log; // save true console.log
@@ -487,7 +488,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     clearLog() {
       const msg = "volatile.clearLog()";
-      const dbg = DBG_LOG_HTML;
+      const dbg = DBG.LOG_HTML;
       logHtml.value = [];
       dbg && console.log(msg, logHtml.value.length);
     },

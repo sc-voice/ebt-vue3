@@ -14,7 +14,7 @@ import * as Idb from 'idb-keyval';
 import {  
   DBG,
   DBG_KEY, DBG_AUDIO, DBG_VERBOSE, DBG_HIGHLIGHT_EG,
-  DBG_LOG_HTML, DBG_SOUND_STORE, DBG_IDB_AUDIO,
+  DBG_SOUND_STORE, DBG_IDB_AUDIO,
 } from '../defines.mjs';
 
 const MS_MINUTE = 60*1000;
@@ -178,7 +178,7 @@ export const useAudioStore = defineStore('audio', {
     registerClickElt(elt) {
       const msg = 'audio.registerClickElt()';
       const dbg = DBG_AUDIO;
-      const dbgv = dbg && DBG_VERBOSE && !DBG_LOG_HTML;
+      const dbgv = dbg && DBG_VERBOSE && !DBG.LOG_HTML;
       if (clickElt.value === elt) { // no change
         dbgv && console.log(V+msg, '[1]n/a');
         return elt;
@@ -261,7 +261,7 @@ export const useAudioStore = defineStore('audio', {
       return this.incrementSegment(-1);
     },
     async nextTipitaka() {
-      const msg = "audio.netTipitaka()";
+      const msg = "audio.nextTipitaka()";
       const dbg = DBG.PLAY;
       let settings = useSettingsStore();
       let volatile = useVolatileStore();
@@ -285,8 +285,9 @@ export const useAudioStore = defineStore('audio', {
           volatile.setRouteCard(nextCard);
           this.setAudioSutta(nextSutta);
           incRes = this.setLocation(0);
-          dbg && console.log(msg, '[2]tipitaka', sref, nextCard, 
-            nextSutta);
+          dbg && console.log(msg, '[2]tipitaka', sref, incRes );
+        } else {
+          dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
         }
       }
       return incRes;

@@ -182,7 +182,7 @@
     DBG,
     DBG_TUTORIAL, DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
-    DBG_ROUTE, DBG_WAITING, DBG_LOG_HTML,
+    DBG_ROUTE, DBG_WAITING, 
     DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO,
     DBG_VERBOSE,
 
@@ -397,7 +397,7 @@
       const dbg = DBG_STARTUP;
       let { volatile } = this;
 
-      if (DBG_LOG_HTML) {
+      if (DBG.LOG_HTML) {
         dbg && console.log(msg, '[1]enableLog');
         volatile.enableLog(true);
       }

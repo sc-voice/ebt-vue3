@@ -300,7 +300,7 @@
                 {{$t('ebt.showGithub')}}
               </a>
             </v-sheet>
-            <v-checkbox v-if="DBG_LOG_HTML"
+            <v-checkbox v-if="DBG.LOG_HTML"
               v-model="volatile.showHtmlLog" 
               density="compact"
               label="Show HTML log"
@@ -320,7 +320,8 @@ import { useAudioStore } from "../stores/audio.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
 import { 
-  DBG_TBD, DBG_GDPR, DBG_TUTORIAL, DBG_LOG_HTML, DBG_ROUTE,
+  DBG,
+  DBG_TBD, DBG_GDPR, DBG_TUTORIAL, DBG_ROUTE,
 } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
@@ -375,7 +376,7 @@ export default {
         90: '90',
         120: '120',
       },
-      DBG_LOG_HTML,
+      DBG,
     }
     logger.debug("Settings.setup()", data.settings);
     return data;
