@@ -111,7 +111,11 @@ export const useAudioStore = defineStore('audio', {
             this.incrementGroup(-1);
           } else {
             dbg && console.log(msg, '[3]back');
-            this.back();
+            this.back().then(incRes => {
+              if (!incRes) {
+                this.playBell();
+              }
+            });
           }
           break;
         case 'ArrowDown':
@@ -123,7 +127,11 @@ export const useAudioStore = defineStore('audio', {
             this.incrementGroup(1);
           } else {
             dbg && console.log(msg, '[6]next');
-            this.next();
+            this.next().then(incRes => {
+              if (!incRes) {
+                this.playBell();
+              }
+            });
           }
           break;
         case 'Space':
@@ -209,6 +217,7 @@ export const useAudioStore = defineStore('audio', {
         dbg && console.log(msg, '[3]ok');
       } else {
         dbg && console.log(msg, '[4]end');
+        await this.playBell();
       }
     },
     clickPlayOne() {
@@ -241,7 +250,9 @@ export const useAudioStore = defineStore('audio', {
         let timeout = playedSeconds.value / 60 > settings.maxPlayMinutes;
         playing = segPlayed && !timeout;
       } while(playing && (await this.next()));
-      dbg && console.log(msg, '[2]end', this.audioScid);
+      dbg && console.log(msg, '[2]playBell', this.audioScid);
+      await this.playBell();
+      dbg && console.log(msg, '[3]end', this.audioScid);
     },
     clickPlayToEnd() {
       const msg = 'audio.clickPlayToEnd() ';
@@ -465,9 +476,6 @@ export const useAudioStore = defineStore('audio', {
         volatile.setRoute(hash, true, msg);
         this.playClick();
         dbg && console.log(msg, '[1]playClick', incRes);
-      } else {
-        await this.playBell();
-        dbg && console.log(msg, '[2]playBell');
       }
 
       // sync instance
