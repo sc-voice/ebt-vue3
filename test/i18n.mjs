@@ -15,6 +15,7 @@ import {
       { value: 'en', title: 'English / EN', voice: true },
       { value: 'es', title: 'Español / ES', voice: true },
       { value: 'fr', title: 'Français / FR', voice: true },
+      { value: 'it', title: 'Italiano / IT', voice: true },
       { value: 'jpn', title: '日本語 / JPN', voice: true },
       { value: 'pt', title: 'Português / PT', voice: true },
     ]);
@@ -27,6 +28,7 @@ import {
       { value: 'fr', title: 'Français / FR', voice: true },
       { value: 'hi', title: 'हिंदी / HI', voice: false }, 
       { value: 'is', title: 'Íslenska / IS', voice: false },
+      { value: 'it', title: 'Italiano / IT', voice: true },
       { value: 'jpn', title: '日本語 / JPN', voice: true },
       { value: 'nb', title: 'Norsk / NB', voice: false },
       { value: 'nl', title: 'Nederlands / NL', voice: false },

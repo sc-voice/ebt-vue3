@@ -143,6 +143,7 @@ import should from "should";
       'en',
       'es',
       'fr',
+      'it',
       'ja',
       'pt',
     ]);
