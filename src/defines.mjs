@@ -1,9 +1,9 @@
 export const DBG = {
-  PLAY: true,
+  PLAY: 0,
   CARD: 0,
   CARD_PATH: 0,
   SETTINGS: 0,
-  LOG_HTML: true,
+  LOG_HTML: 0,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
