@@ -228,6 +228,9 @@ export default class EbtSettings {
       //code: 'is',
       //label: 'Íslenska / IS',
     }, {
+      code: 'it',
+      label: 'Italiano / IT',
+    }, {
       code: 'ja',
       label: '日本語 / JA',
       //}, {
@@ -279,6 +282,9 @@ export default class EbtSettings {
     }, {
       code: 'is',
       label: 'Íslenska / IS',
+    }, {
+      code: 'it',
+      label: 'Italiano / IT',
     }, {
       code: 'jpn',
       label: '日本語 / JPN',

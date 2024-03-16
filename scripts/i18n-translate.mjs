@@ -18,6 +18,7 @@ if (dstLang == null) {
   process.exit(-1);
 }
 
+let outPath = path.join(scriptPath, '../../src/i18n', `${dstLang}.mjs`);
 
 (async()=>{
   let dlt = await DeepLAdapter.create({srcLang, dstLang});
@@ -41,5 +42,10 @@ if (dstLang == null) {
   }
 
   let xlt = await translate(EN);
-  console.log(JSON.stringify(xlt, null, 2));
+  console.warn(msg, '[4]writing', outPath);
+
+  let json = JSON.stringify(xlt, null, 2);
+  let js = 'export default ' + json;
+  await fs.promises.writeFile(outPath, js);
+  console.warn(msg, '[5]done');
 })();

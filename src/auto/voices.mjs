@@ -157,6 +157,24 @@ const VOICES= [
     "iVoice": 21,
     "locale": "ja-JP",
     "service": "aws-polly"
+  },
+  {
+    "name": "Bianca",
+    "label": "🤖 Amy (lento)",
+    "langTrans": "it",
+    "gender": "female",
+    "iVoice": 22,
+    "locale": "it-IT",
+    "service": "aws-polly"
+  },
+  {
+    "name": "Giorgio",
+    "label": "🤖 Giorgio (veloce)",
+    "langTrans": "it",
+    "gender": "male",
+    "iVoice": 23,
+    "locale": "it-IT",
+    "service": "aws-polly"
   }
 ]
 export default VOICES
