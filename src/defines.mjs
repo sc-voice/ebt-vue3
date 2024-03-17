@@ -4,6 +4,7 @@ export const DBG = {
   CARD_PATH: 0,
   SETTINGS: 0,
   LOG_HTML: 0,
+  TEST: 0,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
