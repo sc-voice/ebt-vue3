@@ -15,7 +15,11 @@ import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
 
 const suttas = new Map();
-const displayBox = ref();
+const displayBox = ref({
+  w:  375,
+  h: 667,
+  initialized: false,
+});
 const showSettings = ref(false);
 const homeHtml = ref('loading...');
 const SAMPLE_RATE = 48000;
@@ -85,16 +89,12 @@ export const useVolatileStore = defineStore('volatile', {
           displayBox.value = {
             w: root.clientWidth,
             h: root.clientHeight,
+            initialized: true,
           }
         }
-        if (displayBox.value == null) {
+        if (!displayBox.value?.initialized) {
           document.defaultView.onresize = onresize;
-          onresize();
-        }
-      } else {
-        displayBox.value = {
-          w:  375,
-          h: 667,
+          nextTick(()=>onresize());
         }
       }
       return displayBox;

@@ -111,7 +111,8 @@
     },
     methods: {
       segKey(card, seg) {
-        return `${card.id}_${seg.scid}`
+        let rawId = `${seg.scid}_CARD${card.id.substring(0,8)}`;
+        return rawId.replaceAll('.',"_").replaceAll(/:/g,"__");
       },
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
