@@ -23,6 +23,7 @@
           @click="clickPlayOne" 
           @blur="onAudioBlur"
           @focus="onAudioFocus('audio-play-pause')"
+          :disabled="audio.playing && audio.playMode!=='one'"
         >
           <v-icon size="small" 
             :icon="audio.idbAudio?.isPlaying ? 'mdi-pause' : 'mdi-play-pause'" />
@@ -45,6 +46,7 @@
           @keydown="audio.keydown"
           @blur="onAudioBlur"
           @focus="onAudioFocus('audio-play-to-end')"
+          :disabled="audio.playing && audio.playMode!=='end'"
         >
           <v-icon size="small" 
             :icon="audio.idbAudio?.isPlaying ? 'mdi-pause' : 'mdi-play'" />

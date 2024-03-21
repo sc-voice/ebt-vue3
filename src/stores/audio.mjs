@@ -23,6 +23,7 @@ const HEADERS_JSON = { ["Accept"]: "application/json", };
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
 const SAMPLE_RATE = 48000;
 const V = ' ';
+const playing = ref(false);
 var segAudioDb;
 var soundDb;
 
@@ -88,6 +89,7 @@ export const useAudioStore = defineStore('audio', {
       segmentPlaying,
       audioElapsed,
       idbAudio,
+      playing,
       playMode,
       playedSeconds,
       clickElt,
@@ -162,18 +164,22 @@ export const useAudioStore = defineStore('audio', {
 
       if (idbAudio == null) {
         dbg && console.log(msg, '[1]idbAudio?=>false');
+        playing.value = false;
       } else if (idbAudio.audioSource) {
         if (!idbAudio.paused) {
           dbg && console.log(msg, '[2]pause=>true');
           idbAudio.pause();
+          playing.value = false;
           return true;
         }
         if (playMode === this.playMode) {
           dbg && console.log(msg, '[3]play=>false');
           idbAudio.play();
+          playing.value = false;
           return true;
         } 
         dbg && console.log(msg, '[4]n/a=>false');
+        playing.value = true;
         return false;
       } else {
         dbg && console.log(msg, '[5]audioSource?=>false');
@@ -181,6 +187,7 @@ export const useAudioStore = defineStore('audio', {
 
       mainContext && mainContext.close();
       this.playMode = playMode;
+      playing.value = true;
       return false;
     },
     registerClickElt(elt) {
@@ -209,20 +216,25 @@ export const useAudioStore = defineStore('audio', {
     async playOne() {
       const msg = 'audio.playOne() ';
       const dbg = DBG.PLAY;
-      dbg && console.log(msg, '[1]playSegment', this.audioScid);
-      let completed = await this.playSegment();
-      if (!completed) {
-        dbg && console.log(msg, '[2]interrupted');
-      } else if (await this.next()) {
-        dbg && console.log(msg, '[3]ok');
-      } else {
-        dbg && console.log(msg, '[4]end');
-        await this.playBell();
+      try {
+        playing.value = true;
+        dbg && console.log(msg, '[1]playSegment', this.audioScid);
+        let completed = await this.playSegment();
+        if (!completed) {
+          dbg && console.log(msg, '[2]interrupted');
+        } else if (await this.next()) {
+          dbg && console.log(msg, '[3]ok');
+        } else {
+          dbg && console.log(msg, '[4]end');
+          await this.playBell();
+        }
+      } finally {
+        playing.value = false;
       }
     },
     clickPlayOne() {
       const msg = 'audio.clickPlayOne() ';
-      const dbg = DBG_AUDIO;
+      const dbg = DBG.PLAY;
       let settings = useSettingsStore();
       settings.tutorPlay = false;
 
@@ -233,26 +245,32 @@ export const useAudioStore = defineStore('audio', {
 
       dbg && console.log(msg, '[2]playing');
       this.createIdbAudio(()=>{
-        this.playOne();
+        this.playOne()
+        .then(()=>playing.value = false);
       });
     },
     async playToEnd() {
       const msg = 'audio.playToEnd() ';
       const dbg = DBG.PLAY;
-      let settings = useSettingsStore();
-      settings.tutorPlay = false;
-      playedSeconds.value = 0;
+      try {
+        let settings = useSettingsStore();
+        settings.tutorPlay = false;
+        playedSeconds.value = 0;
 
-      let playing;
-      do {
-        dbg && console.log(msg, '[1]playSegment', this.audioScid);
-        let segPlayed = await this.playSegment();
-        let timeout = playedSeconds.value / 60 > settings.maxPlayMinutes;
-        playing = segPlayed && !timeout;
-      } while(playing && (await this.next()));
-      dbg && console.log(msg, '[2]playBell', this.audioScid);
-      await this.playBell();
-      dbg && console.log(msg, '[3]end', this.audioScid);
+        playing.value = true;
+        do {
+          dbg && console.log(msg, '[1]playSegment', this.audioScid);
+          let segPlayed = await this.playSegment();
+          let playedMinutes = playedSeconds.value / 60;
+          let timeout = playedMinutes > settings.maxPlayMinutes;
+          playing.value = segPlayed && !timeout;
+        } while(playing.value && (await this.next()));
+        dbg && console.log(msg, '[2]playBell', this.audioScid);
+        await this.playBell();
+        dbg && console.log(msg, '[3]end', this.audioScid);
+      } finally {
+        playing.value = false;
+      }
     },
     clickPlayToEnd() {
       const msg = 'audio.clickPlayToEnd() ';

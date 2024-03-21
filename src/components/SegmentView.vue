@@ -4,9 +4,54 @@
       {{segment.scid}}
     </span>
   </div>
+  <div v-if="segment.scid === cardScid"
+    class="segment-menu"
+  >
+    <div class="pb-1">{{cardScid}}</div>
+    <v-spacer/>
+    <v-btn icon="mdi-pause"
+      v-if="audio.playing"
+      size="small"
+      @click="audio.clickPlayOne()"
+    ></v-btn>
+    <v-btn icon="mdi-play-pause"
+      v-if="!audio.playing"
+      size="small"
+      @click="audio.clickPlayOne()"
+    ></v-btn>
+    <v-btn icon="mdi-play"
+      v-if="!audio.playing"
+      size="small"
+      @click="audio.clickPlayToEnd()"
+    ></v-btn>
+    <v-menu 
+      offset-y 
+    >
+      <template v-slot:activator="{ props }">
+        <v-btn
+          size="small"
+          dark
+          v-bind="props"
+          icon="mdi-link-plus"
+        >
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item v-for="(item, index) in menuItems" :key="index">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>
+            <pre>{{JSON.stringify(menuContext,null,1)}}</pre>
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
   <div :class="segMatchedClass(segment)"
     :id="id"
-    @click='onClickSegBody'
+    @click.left='onClickSegBody'
+    @click.right='onClickSegMenu'
     :title="segment.scid"
   >
     <div class="seg-id" v-if="settings.showId"> 
@@ -35,16 +80,18 @@
   import { Examples, SuttaRef } from "scv-esm";
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
-  import { 
-    DBG_CLICK, DBG_COPY, DBG_KEY, DBG_FOCUS, DBG_MOUNTED 
-  } from '../defines.mjs';
+  import { DBG, DBG_MOUNTED } from '../defines.mjs';
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
   const EMPTY_TEXT = '<div class="empty-text">&#8211;&#8709;&#8211;</div>'
+  const showMenu = ref(false);
+  const menuX = ref(0);
+  const menuY = ref(0);
+  const menuContext = ref({});
 
   export default {
     props: {
-      id: { type: String, rquired:true },
+      id: { type: String, required:true },
       segment: { type: Object, required:true },
       idbSuttaRef: { type: Object, required:true },
       card: { type: Object, required:true },
@@ -57,6 +104,21 @@
         volatile: useVolatileStore(),
         suttas: useSuttasStore(),
         logger,
+        showMenu,
+        menuX,
+        menuY,
+        menuContext,
+        menuItems: [{
+          title: `Copy quote with link`,
+        },{
+          title: `Copy audio`,
+        },{
+          title: `Copy link to document`,
+        },{
+          title: `Copy quote with link (SuttaCentral)`,
+        },{
+          title: `Copy link to document (SuttaCentral)`,
+        }],
       }
     },
     components: {
@@ -73,18 +135,44 @@
       }
     },
     methods: {
+      onClickSegMenu(evt) {
+        const msg = 'SegmentView.onClickSegMenu()';
+        const dbg = DBG.CLICK_SEG;
+        let { target, clientX, clientY } = evt;
+        let ctx = target?.__vnode?.ctx?.ctx;
+        if (ctx == null) {
+          dbg && console.log(msg, '[1]ctx?', evt);
+          return;
+        }
+        let { id, segId } = ctx;
+        Object.assign(menuContext.value, {
+          clientX, 
+          clientY,
+          id,
+          segId,
+        });
+
+        showMenu.value = !showMenu.value;
+        dbg && console.log(msg, '[1]evt', ctx, showMenu.value);
+        //evt.preventDefault();
+        showMenu.value = false;
+        menuX.value = clientX;
+        menuY.value = clientY;
+        nextTick(() => { showMenu.value = true; });
+      },
       onClickSegBody(evt) {
         const msg = 'SegmentView.onClickSegBody()';
-        const dbg = DBG_COPY || DBG_CLICK;
+        const dbg = DBG.CLICK_SEG;
         let { 
-          segment, currentScid, routeCard, card, settings, 
+          segment, cardScid, routeCard, card, settings, 
           idbSuttaRef, volatile,
         } = this;
-        let { srcElement } = evt;
-        let { className, innerText } = srcElement;
+        let { target } = evt;
+        let { className, innerText } = target;
         let { scid } = segment;
+        dbg && console.log(msg, '[1]evt', scid, evt);
 
-        if (currentScid === scid && routeCard === card) {
+        if (cardScid === scid && routeCard === card) {
           if (className === 'ebt-example') {
             let pattern = encodeURIComponent(innerText);
             let hash = `#/search/${pattern}`;
@@ -131,7 +219,7 @@
         }
       },
       segMatchedClass(seg) {
-        let { displayBox, card, currentScid, audio, routeCard } = this;
+        let { displayBox, card, cardScid, audio, routeCard } = this;
         let { audioFocused } = audio;
         let idClass = displayBox.w < 1200 
           ? "seg-id-col" 
@@ -139,7 +227,7 @@
         let matchedClass = seg.matched 
           ? "seg-match seg-matched" 
           : "seg-match";
-        let currentClass = seg.scid === currentScid 
+        let currentClass = seg.scid === cardScid 
           ? "seg-current" 
           : '';
         let audioClass = seg.scid === audio.audioScid && 
@@ -176,7 +264,7 @@
         }
         return suttaRef.sutta_uid;
       },
-      currentScid(ctx) {
+      cardScid(ctx) {
         let { card } = ctx;
         return card.location[0];
       },
@@ -217,10 +305,19 @@
       displayBox(ctx) {
         return ctx.volatile.displayBox.value;
       },
+      isCurrent(ctx) {
+        let { segment, audio, } = ctx;
+        return segment.scid === audio.audioScid;
+      },
     },
   }
 </script>
 
 <style >
+.segment-menu {
+  display: flex; 
+  justify-content: flex-end;
+  align-items: flex-end;
+}
 </style>
 
