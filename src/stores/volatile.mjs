@@ -9,7 +9,7 @@ import {
   DBG,
   DBG_CLICK, DBG_FOCUS, DBG_HOME, 
   DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
-  DBG_COPY, DBG_FETCH
+  DBG_FETCH
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -531,12 +531,18 @@ export const useVolatileStore = defineStore('volatile', {
       }
       return scrolled;
     },
-    copySegment(segment) {
+    copySegment(opts={}) {
       const msg = "volatile.copySegment()";
-      const dbg = DBG_COPY;
+      const dbg = DBG.COPY_SEG;
       let audio = useAudioStore();
       let settings = useSettingsStore();
       let { docLang, showTrans, showPali } = settings;
+      let { 
+        segment, 
+        href=window.location.href,
+        lang,
+        author,
+      } = opts;
       let { $t, } = this;
       if (segment == null) {
         let { audioSutta, audioIndex } = audio;
@@ -544,16 +550,15 @@ export const useVolatileStore = defineStore('volatile', {
         segment = segments[audioIndex] || {};
       }
       let { scid } = segment;
-      let langText = segment[docLang];
+      let langText = segment[lang];
       let paliText = showPali && segment.pli;
-      let { href } = window.location;
       let mdList = [];
 
       showPali && paliText && 
-        mdList.push(`> [${scid}](${href}) <i>${paliText}</i>`);
+        mdList.push(`> [${scid}](${href}) <i>${paliText}</i>  \n`);
       showTrans && langText &&
-        mdList.push(`> [${scid}](${href}) ${langText}`);
-      let clip = mdList.join('\n  ');
+        mdList.push(`> [${scid}](${href}) ${langText}  \n`);
+      let clip = mdList.join('');
       dbg && console.log(msg, '[1]clip', clip);
       Utils.updateClipboard(clip);
       let tm = `${scid}: ${$t('ebt.copiedToClipboard')}`;

@@ -576,6 +576,45 @@ logger.logLevel = 'warn';
     should.deepEqual(card.incrementGroup({segments, delta:1}), null);
     should(card.location[0]).equal(segments[2].scid);
   });
+  it("TESTTESTscidToApiUrl() thig1.1:1.2/en/soma", ()=>{
+    let context = EbtCard.CONTEXT_SUTTA;
+    let segnum = "1.2"
+    let sref = SuttaRef.create(`thig1.1:${segnum}/en/soma`);
+    let { sutta_uid, lang, author, scid } = sref;
+    const API_URL = "https://www.api.sc-voice.net/scv/ebt-site";
+    let card = new EbtCard({
+      context,
+      location: [scid, lang, author],
+    });
+    should(card.scidToApiUrl(scid))
+      .equal(`${API_URL}/${scid}/${lang}/${author}`);
+  });
+  it("scidToSCUrl() thig1.1:1.2/en/soma", ()=>{
+    let context = EbtCard.CONTEXT_SUTTA;
+    let segnum = "1.2"
+    let sref = SuttaRef.create(`thig1.1:${segnum}/en/soma`);
+    let { sutta_uid, lang, author, scid } = sref;
+    const SC_URL = "https://suttacentral.net";
+    let card = new EbtCard({
+      context,
+      location: [scid, lang, author],
+    });
+    should(card.scidToSCUrl(scid))
+      .equal(`${SC_URL}/${sutta_uid}/${lang}/${author}#1.2`);
+  });
+  it("scidToSCUrl() an1.5:1.1/pt/ebt-deepl", ()=>{
+    let context = EbtCard.CONTEXT_SUTTA;
+    let segnum = "1.1"
+    let sref = SuttaRef.create(`an1.5:${segnum}/pt/ebt-deepl`);
+    let { sutta_uid, lang, author, scid } = sref;
+    const SC_URL = "https://suttacentral.net";
+    let card = new EbtCard({
+      context,
+      location: [scid, lang, author],
+    });
+    should(card.scidToSCUrl(scid))
+      .equal(`${SC_URL}/${sutta_uid}`);
+  });
   it("segmentElementId()", ()=>{
     let context = EbtCard.CONTEXT_SUTTA;
     let scid = 'test-scid';

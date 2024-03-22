@@ -33,6 +33,7 @@ const CONTEXTS = {
     alt1Icon: "mdi-file-document-outline",
   },
 }
+const API_ENDPOINT = 'https://www.api.sc-voice.net/scv/ebt-site';
 
 export default class EbtCard {
   constructor(opts = {}) {
@@ -586,6 +587,39 @@ export default class EbtCard {
     }
 
     return result;
+  }
+
+  scidToSCUrl(scid, scEndpoint="https://suttacentral.net") {
+    const msg = 'EbtCard.scidToSCUrl()';
+    let { id, context, location } = this;
+    if (context !== CONTEXT_SUTTA) {
+      let emsg = `${msg} cannot be called for context:${context}`;
+      throw new Error(emsg);
+    }
+    let sref = SuttaRef.create(scid);
+    let { sutta_uid, segnum } = sref;
+    let [ defaultScid, lang, author ] = location;
+    if (author === 'ebt-deepl') {
+      return `${scEndpoint}/${sutta_uid}`;
+    } 
+
+    let hash = segnum ? `#${segnum}` : '';
+    let sla = `${sutta_uid}/${lang}/${author}`;
+    return `https://suttacentral.net/${sla}${hash}`;
+  }
+
+  scidToApiUrl(scid, apiEndpoint=API_ENDPOINT) {
+    const msg = 'EbtCard.scidToApiUrl()';
+    let { id, context, location } = this;
+    if (context !== CONTEXT_SUTTA) {
+      let emsg = `${msg} cannot be called for context:${context}`;
+      throw new Error(emsg);
+    }
+
+    let [ defaultScid, lang, author ] = location;
+    scid = scid || defaultScid;
+
+    return `${apiEndpoint}/${scid}/${lang}/${author}`;
   }
 
   segmentElementId(scid) {

@@ -24,9 +24,7 @@
       size="small"
       @click="audio.clickPlayToEnd()"
     ></v-btn>
-    <v-menu 
-      offset-y 
-    >
+    <v-menu offset-y class="ebt-menu">
       <template v-slot:activator="{ props }">
         <v-btn
           size="small"
@@ -37,13 +35,11 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item v-for="(item, index) in menuItems" :key="index">
+        <v-list-item v-for="(item, index) in menuItems" :key="index"
+          @click="menuClick(item.action)"
+          :disabled="item.suttacentral && !isSCDocument"
+        >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <pre>{{JSON.stringify(menuContext,null,1)}}</pre>
-          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -51,7 +47,6 @@
   <div :class="segMatchedClass(segment)"
     :id="id"
     @click.left='onClickSegBody'
-    @click.right='onClickSegMenu'
     :title="segment.scid"
   >
     <div class="seg-id" v-if="settings.showId"> 
@@ -80,14 +75,10 @@
   import { Examples, SuttaRef } from "scv-esm";
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
-  import { DBG, DBG_MOUNTED } from '../defines.mjs';
+  import { ACTION, DBG, DBG_MOUNTED } from '../defines.mjs';
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
   const EMPTY_TEXT = '<div class="empty-text">&#8211;&#8709;&#8211;</div>'
-  const showMenu = ref(false);
-  const menuX = ref(0);
-  const menuY = ref(0);
-  const menuContext = ref({});
 
   export default {
     props: {
@@ -104,20 +95,24 @@
         volatile: useVolatileStore(),
         suttas: useSuttasStore(),
         logger,
-        showMenu,
-        menuX,
-        menuY,
-        menuContext,
         menuItems: [{
           title: `Copy quote with link`,
-        },{
-          title: `Copy audio`,
-        },{
-          title: `Copy link to document`,
+          action: ACTION.COPY_QUOTE,
+          suttacentral: false,
+        //},{
+          //title: `Copy link to document`,
+          //action: ACTION.COPY_DOC_LINK,
+          //suttacentral: false,
+        //},{
+          //title: `Copy audio`,
         },{
           title: `Copy quote with link (SuttaCentral)`,
-        },{
-          title: `Copy link to document (SuttaCentral)`,
+          action: ACTION.COPY_QUOTE_SC,
+          suttacentral: true,
+        //},{
+          //title: `Copy link to document (SuttaCentral)`,
+          //action: ACTION.COPY_DOC_LINK_SC,
+          //suttacentral: true,
         }],
       }
     },
@@ -125,7 +120,7 @@
     },
     mounted() {
       const msg = "SegmentView.mounted()";
-      const dbg = DBG_MOUNTED;
+      const dbg = DBG.SEG_MOUNTED;
       let { volatile, segment, card, audio } = this;
       if (segment.scid === audio.audioScid) {
         let { segId, card, settings } = this;
@@ -135,30 +130,38 @@
       }
     },
     methods: {
-      onClickSegMenu(evt) {
-        const msg = 'SegmentView.onClickSegMenu()';
-        const dbg = DBG.CLICK_SEG;
-        let { target, clientX, clientY } = evt;
-        let ctx = target?.__vnode?.ctx?.ctx;
-        if (ctx == null) {
-          dbg && console.log(msg, '[1]ctx?', evt);
-          return;
+      menuClick(action) {
+        const msg = 'SegmentView.menuClick()';
+        const dbg = DBG.COPY_SEG;
+        const { 
+          volatile, segment, card
+        } = this;
+        let [ defaultScid, lang, author ] = card.location;
+        // Always use main API endpoint for copy segments.
+        let serverUrl = "https://www.api.sc-voice.net/scv";
+        let apiEndpoint = `${serverUrl}/ebt-site`;
+        let scEndpoint = `https://suttacentral.com`;
+        switch (action) {
+          case ACTION.COPY_QUOTE: {
+            dbg && console.log(msg, '[1]', action);
+            let href = card.scidToApiUrl(segment.scid, apiEndpoint);
+            volatile.copySegment({segment, href, lang, author});
+          } break;
+          case ACTION.COPY_DOC: {
+            dbg && console.log(msg, '[2]', action);
+          } break;
+          case ACTION.COPY_QUOTE_SC: {
+            dbg && console.log(msg, '[3]', action);
+            let href = card.scidToSCUrl(segment.scid, scEndpoint);
+            volatile.copySegment({segment, href, lang, author});
+          } break;
+          case ACTION.COPY_DOC_SC: {
+            dbg && console.log(msg, '[4]', action);
+          } break;
+          default: 
+            dbg && console.log(msg, "[5]action?", action);
+            break;
         }
-        let { id, segId } = ctx;
-        Object.assign(menuContext.value, {
-          clientX, 
-          clientY,
-          id,
-          segId,
-        });
-
-        showMenu.value = !showMenu.value;
-        dbg && console.log(msg, '[1]evt', ctx, showMenu.value);
-        //evt.preventDefault();
-        showMenu.value = false;
-        menuX.value = clientX;
-        menuY.value = clientY;
-        nextTick(() => { showMenu.value = true; });
       },
       onClickSegBody(evt) {
         const msg = 'SegmentView.onClickSegBody()';
@@ -178,9 +181,6 @@
             let hash = `#/search/${pattern}`;
             dbg && console.log(msg, 'example', scid, pattern);
             volatile.setRoute(hash, undefined, msg);
-          } else {
-            dbg && console.log(msg, 'copied', scid);
-            volatile.copySegment();
           }
         } else {
           let [ locationScid, lang, author ] = card.location;
@@ -248,6 +248,11 @@
       },
     },
     computed: {
+      isSCDocument(ctx) {
+        let { card } = ctx;
+        let [ scid, lang, author ] = card.location;
+        return author !== 'ebt-deepl';
+      },
       segBodyId(ctx) {
         let { card, segment } = ctx;
         return `${card.id}-${segment.scid}`;

@@ -94,6 +94,13 @@ a:focus {
   opacity: 0;
 }
 
+.ebt-menu .v-list {
+  border: 2pt solid rgba(var(--v-theme-menu), 0.4);
+}
+.ebt-menu .v-list-item:hover {
+  color: rgb(var(--v-theme-menu));
+}
+
 .ebt-icon-btn {
   margin: 0;
   margin-left:2px;

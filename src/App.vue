@@ -839,6 +839,7 @@
   border: 1pt solid rgb(var(--v-theme-debug));
 }
 .transient-msg {
+  margin-bottom: calc(50vh - 25px);
   max-width: calc(min(100vw, 400px)) !important;
   min-width: calc(min(100vw, 310px)) !important;
 }

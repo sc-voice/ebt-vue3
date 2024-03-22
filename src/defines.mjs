@@ -1,10 +1,20 @@
+export const ACTION = {
+  COPY_QUOTE: "copy-quote",
+  COPY_DOC_LINK: "copy-doc-link",
+  COPY_QUOTE_SC: "copy-quote-sc",
+  COPY_DOC_LINK_SC: "copy-doc-link-sc",
+};
+
 export const DBG = {
   PLAY: 0,
   CARD: 0,
   CARD_PATH: 0,
+  SEG_MOUNTED: 0,
   SETTINGS: 0,
   LOG_HTML: 0,
   TEST: 0,
+  COPY_SEG: 0,
+  CLICK_SEG: 0,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
@@ -13,7 +23,6 @@ export const DBG_AUDIO        = 0;
 export const DBG_IDB_AUDIO    = 0;
 export const DBG_BLUR         = 0;
 export const DBG_CLICK        = 0;
-export const DBG_COPY         = 0;
 export const DBG_D3           = 0;
 export const DBG_HIGHLIGHT_EG = 0;
 export const DBG_FETCH        = 0;
