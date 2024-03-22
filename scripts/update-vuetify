@@ -1,0 +1,16 @@
+#!/bin/bash
+DIR=`dirname $0`; 
+APPDIR="$DIR/.."
+pushd $APPDIR
+SCRIPT=`basename $0 | tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ`
+echo -e "${SCRIPT}: BEGIN `date`"
+
+set -e
+
+git pull
+echo -e "${SCRIPT}: updating Vuetify..."
+npm install --save \
+  vuetify@latest \
+  // END NPM INSTALL
+
+echo -e "${SCRIPT}: END `date`"
