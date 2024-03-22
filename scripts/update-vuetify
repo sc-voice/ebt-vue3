@@ -10,7 +10,11 @@ set -e
 git pull
 echo -e "${SCRIPT}: updating Vuetify..."
 npm install --save \
+  vue@latest \
+  vite@latest \
+  @vitejs/plugin-vue@latest \
   vuetify@latest \
+  vite-plugin-vuetify@latest \
   // END NPM INSTALL
 
 echo -e "${SCRIPT}: END `date`"
