@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "push-action": "scripts/push-action",
     "schedule-action": "scripts/schedule-action",
+    "update:vuetify": "scripts/update-vuetify",
     "test": "npm run test:verbose",
     "test:one": "mocha --inline-diffs -g TESTTEST",
     "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
