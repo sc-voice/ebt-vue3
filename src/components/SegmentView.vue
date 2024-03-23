@@ -97,25 +97,6 @@
         volatile: useVolatileStore(),
         suttas: useSuttasStore(),
         logger,
-        menuItems: [{
-          title $t('ebt.copyQuoteWithLink'),
-          action: ACTION.COPY_QUOTE,
-          suttacentral: false,
-        },{
-          title $t('ebt.copyLinkToDocument'),
-          action: ACTION.COPY_DOC_LINK,
-          suttacentral: false,
-        //},{
-          //title: `Copy audio`,
-        },{
-          title $t('ebt.copyQuoteWithLinkSC'),
-          action: ACTION.COPY_QUOTE_SC,
-          suttacentral: true,
-        //},{
-          //title: `Copy link to document (SuttaCentral)`,
-          //action: ACTION.COPY_DOC_LINK_SC,
-          //suttacentral: true,
-        }],
       }
     },
     components: {
@@ -251,6 +232,28 @@
       },
     },
     computed: {
+      menuItems(ctx) {
+        let { $t } = ctx;
+        return [{
+          title: $t('ebt.copyQuoteWithLink'),
+          action: ACTION.COPY_QUOTE,
+          suttacentral: false,
+        },{
+          title: $t('ebt.copyLinkToDocument'),
+          action: ACTION.COPY_DOC_LINK,
+          suttacentral: false,
+        //},{
+          //title: `Copy audio`,
+        },{
+          title: $t('ebt.copyQuoteWithLinkSC'),
+          action: ACTION.COPY_QUOTE_SC,
+          suttacentral: true,
+        //},{
+          //title: `Copy link to document (SuttaCentral)`,
+          //action: ACTION.COPY_DOC_LINK_SC,
+          //suttacentral: true,
+        }]
+      },
       isSCDocument(ctx) {
         let { card } = ctx;
         let [ scid, lang, author ] = card.location;
