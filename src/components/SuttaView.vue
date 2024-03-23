@@ -121,15 +121,6 @@
         const { audio, card, settings, volatile } = this;
         let { shiftKey, ctrlKey, code } = evt;
         switch (code) {
-          case 'KeyC': {
-            if (ctrlKey) {
-              let segment = volatile.copySegment();
-              let { scid } = segment;
-              dbg && console.log(msg, `[1]copy${scid}`, {evt});
-              evt.preventDefault();
-              evt.stopPropagation();
-            }
-          } break;
           case 'Tab': {
             let elt;
             if (evt.shiftKey) {
