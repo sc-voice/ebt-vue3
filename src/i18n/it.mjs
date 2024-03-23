@@ -223,6 +223,7 @@ export default {
     "context-search": "Busque en",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copiado al portapapeles",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Personalizzare la configurazione",
     "days": "A_DAYS días",
     "dedicated": "A la oscuridad rumbo a la luz",

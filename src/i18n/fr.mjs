@@ -218,6 +218,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copié",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Personnaliser les paramètres",
     "days": "A_DAYS days",
     "dedicated": "A ceux dans l’obscurité destinés à la lumière",

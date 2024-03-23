@@ -82,6 +82,7 @@
   const EMPTY_TEXT = '<div class="empty-text">&#8211;&#8709;&#8211;</div>'
 
   export default {
+    inject: ['config'],
     props: {
       id: { type: String, required:true },
       segment: { type: Object, required:true },
@@ -97,17 +98,17 @@
         suttas: useSuttasStore(),
         logger,
         menuItems: [{
-          title: `Copy quote with link`,
+          title $t('ebt.copyQuoteWithLink'),
           action: ACTION.COPY_QUOTE,
           suttacentral: false,
         },{
-          title: `Copy link to document`,
+          title $t('ebt.copyLinkToDocument'),
           action: ACTION.COPY_DOC_LINK,
           suttacentral: false,
         //},{
           //title: `Copy audio`,
         },{
-          title: `Copy quote with link (SuttaCentral)`,
+          title $t('ebt.copyQuoteWithLinkSC'),
           action: ACTION.COPY_QUOTE_SC,
           suttacentral: true,
         //},{

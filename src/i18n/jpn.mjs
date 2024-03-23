@@ -222,6 +222,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "クリップボードにコピーされる",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "設定のカスタマイズ",
     "days": "A_DAYS days",
     "dedicated": "暗闇から光へ向かう人達に",

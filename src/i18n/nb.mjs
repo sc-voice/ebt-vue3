@@ -220,6 +220,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "copiedToClipboard": "Copied to clipboard",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Dedikert til mørket på vei mot lyset",

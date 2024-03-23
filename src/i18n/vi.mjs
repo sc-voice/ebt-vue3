@@ -222,6 +222,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copied to clipboard",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Sống trong bóng tối, hướng đến ánh sáng",

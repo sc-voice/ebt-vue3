@@ -223,6 +223,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copied to clipboard",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "To the dark bound for light",

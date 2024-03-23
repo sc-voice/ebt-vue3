@@ -221,6 +221,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copied to clipboard",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Do ciemności zmierzającej ku światłu",

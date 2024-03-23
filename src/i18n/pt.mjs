@@ -221,6 +221,7 @@ export default {
     "context-search": "Buscar",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copiado",
+    "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Personalizar configurações",
     "days": "A_DAYS days",
     "dedicated": "Para aqueles na escuridão e tendo a luz como destino",
