@@ -76,6 +76,7 @@
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
   import { ACTION, DBG, DBG_MOUNTED } from '../defines.mjs';
+  import Utils from "../utils.mjs";
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
   const EMPTY_TEXT = '<div class="empty-text">&#8211;&#8709;&#8211;</div>'
@@ -99,10 +100,10 @@
           title: `Copy quote with link`,
           action: ACTION.COPY_QUOTE,
           suttacentral: false,
-        //},{
-          //title: `Copy link to document`,
-          //action: ACTION.COPY_DOC_LINK,
-          //suttacentral: false,
+        },{
+          title: `Copy link to document`,
+          action: ACTION.COPY_DOC_LINK,
+          suttacentral: false,
         //},{
           //title: `Copy audio`,
         },{
@@ -146,15 +147,17 @@
             dbg && console.log(msg, '[1]', action);
             volatile.copySegment({segment, lang, author});
           } break;
-          case ACTION.COPY_DOC: {
+          case ACTION.COPY_DOC_LINK: {
             dbg && console.log(msg, '[2]', action);
+            let href = card.scidToDocUrl(segment.scid);
+            Utils.updateClipboard(href);
           } break;
           case ACTION.COPY_QUOTE_SC: {
             dbg && console.log(msg, '[3]', action);
             let href = card.scidToSCUrl(segment.scid, scEndpoint);
             volatile.copySegment({segment, href, lang, author});
           } break;
-          case ACTION.COPY_DOC_SC: {
+          case ACTION.COPY_DOC_LINK_SC: {
             dbg && console.log(msg, '[4]', action);
           } break;
           default: 

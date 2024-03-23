@@ -576,7 +576,23 @@ logger.logLevel = 'warn';
     should.deepEqual(card.incrementGroup({segments, delta:1}), null);
     should(card.location[0]).equal(segments[2].scid);
   });
-  it("TESTTESTscidToApiUrl() thig1.1:1.2/en/soma", ()=>{
+  it("TESTTESTscidToDocUrl() thig1.1:1.2/en/soma", ()=>{
+    let context = EbtCard.CONTEXT_SUTTA;
+    let segnum = "1.2"
+    let sref = SuttaRef.create(`thig1.1:${segnum}/en/soma`);
+    let { sutta_uid, lang, author, scid } = sref;
+    let card = new EbtCard({
+      context,
+      location: [scid, lang, author],
+    });
+    let origin = 'test-origin';
+    global.window = { 
+      location: { origin },
+    };
+    should(card.scidToDocUrl(scid))
+      .equal(`${origin}/#/sutta/${sutta_uid}/${lang}/${author}`);
+  });
+  it("scidToApiUrl() thig1.1:1.2/en/soma", ()=>{
     let context = EbtCard.CONTEXT_SUTTA;
     let segnum = "1.2"
     let sref = SuttaRef.create(`thig1.1:${segnum}/en/soma`);

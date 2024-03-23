@@ -608,6 +608,24 @@ export default class EbtCard {
     return `https://suttacentral.net/${sla}${hash}`;
   }
 
+  scidToDocUrl(scid) {
+    const msg = 'EbtCard.scidToDocUrl()';
+    let { id, context, location } = this;
+    if (context !== CONTEXT_SUTTA) {
+      let emsg = `${msg} cannot be called for context:${context}`;
+      throw new Error(emsg);
+    }
+
+    let [ defaultScid, lang, author ] = location;
+    scid = scid || defaultScid;
+    let sref = SuttaRef.create(`${scid}/${lang}/${author}`);
+    let { sutta_uid } = sref;
+    let { origin } = window.location;
+    let apiEndpoint = `${origin}/#/sutta`;
+
+    return `${apiEndpoint}/${sutta_uid}/${lang}/${author}`;
+  }
+
   scidToApiUrl(scid, apiEndpoint=API_ENDPOINT) {
     const msg = 'EbtCard.scidToApiUrl()';
     let { id, context, location } = this;
