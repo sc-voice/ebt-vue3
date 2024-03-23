@@ -144,8 +144,7 @@
         switch (action) {
           case ACTION.COPY_QUOTE: {
             dbg && console.log(msg, '[1]', action);
-            let href = card.scidToApiUrl(segment.scid, apiEndpoint);
-            volatile.copySegment({segment, href, lang, author});
+            volatile.copySegment({segment, lang, author});
           } break;
           case ACTION.COPY_DOC: {
             dbg && console.log(msg, '[2]', action);
