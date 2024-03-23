@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "1.459.0",
+  "version": "1.460.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "push-action": "scripts/push-action",
     "schedule-action": "scripts/schedule-action",
+    "update:vuetify": "scripts/update-vuetify",
     "test": "npm run test:verbose",
     "test:one": "mocha --inline-diffs -g TESTTEST",
     "test:test": "mocha --config test/mocha-config.json -g TESTTEST",
@@ -35,7 +36,7 @@
     "merkle-json": "^2.6.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.104.22",
+    "scv-esm": "^1.104.23",
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
     "vite-plugin-vuetify": "^2.0.3",
@@ -64,7 +65,7 @@
     "should": "^13.2.3",
     "supertest": "^6.3.3",
     "ts-import": "^4.0.0-beta.6",
-    "vite": "^5.2.3",
+    "vite": "^5.2.4",
     "vue-cli-plugin-vuetify": "~2.5.1"
   },
   "bin": {},
