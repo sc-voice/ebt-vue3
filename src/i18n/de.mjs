@@ -221,6 +221,7 @@ export default {
     "copiedToClipboard": "in Zwischenablage kopiert",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "customizeSettings": "Einstellungen anpassen",
     "days": "A_DAYS Tage",
     "dedicated": "Den Dunklen auf dem Weg zum Licht",

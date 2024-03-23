@@ -223,6 +223,7 @@ export default {
     "copiedToClipboard": "Copiado",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "customizeSettings": "Personalizar configurações",
     "days": "A_DAYS days",
     "dedicated": "Para aqueles na escuridão e tendo a luz como destino",

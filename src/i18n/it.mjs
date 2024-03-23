@@ -225,6 +225,7 @@ export default {
     "copiedToClipboard": "Copiado al portapapeles",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "customizeSettings": "Personalizzare la configurazione",
     "days": "A_DAYS días",
     "dedicated": "A la oscuridad rumbo a la luz",

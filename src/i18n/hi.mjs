@@ -221,6 +221,7 @@ export default {
     "copiedToClipboard": "Copied to clipboard",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "days": "A_DAYS days",
     "dedicated": "उजाले के लिए अँधेरी सीमा की ओर",
     "dedicatedSearch": "the dark bound for light",

@@ -220,6 +220,7 @@ export default {
     "copiedToClipboard": "Copié",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "customizeSettings": "Personnaliser les paramètres",
     "days": "A_DAYS days",
     "dedicated": "A ceux dans l’obscurité destinés à la lumière",

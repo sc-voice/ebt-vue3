@@ -224,6 +224,7 @@ export default {
     "copiedToClipboard": "クリップボードにコピーされる",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "customizeSettings": "設定のカスタマイズ",
     "days": "A_DAYS days",
     "dedicated": "暗闇から光へ向かう人達に",

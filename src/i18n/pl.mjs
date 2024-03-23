@@ -223,6 +223,7 @@ export default {
     "copiedToClipboard": "Copied to clipboard",
     "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
+    "copyQuoteWithLinkSC": "Copy quote with link (SuttaCentral)",
     "customizeSettings": "Customize settings",
     "days": "A_DAYS days",
     "dedicated": "Do ciemności zmierzającej ku światłu",
