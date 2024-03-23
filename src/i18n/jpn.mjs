@@ -222,6 +222,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "クリップボードにコピーされる",
+    "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "設定のカスタマイズ",
     "days": "A_DAYS days",

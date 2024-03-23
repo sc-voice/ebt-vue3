@@ -220,6 +220,7 @@ export default {
     "context-home": "Home",
     "context-search": "Search",
     "copiedToClipboard": "Copied to clipboard",
+    "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
     "days": "A_DAYS days",
     "dedicated": "Pentru cei din întuneric, ce se îndreaptă spre lumină",

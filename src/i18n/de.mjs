@@ -219,6 +219,7 @@ export default {
     "context-home": "",
     "context-search": "Suche",
     "copiedToClipboard": "in Zwischenablage kopiert",
+    "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Einstellungen anpassen",
     "days": "A_DAYS Tage",

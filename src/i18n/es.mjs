@@ -223,6 +223,7 @@ export default {
     "context-search": "Busque en",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copiado al portapapeles",
+    "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
     "customizeSettings": "Personalizar la configuración",
     "days": "A_DAYS días",

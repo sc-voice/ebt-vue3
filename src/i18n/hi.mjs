@@ -219,6 +219,7 @@ export default {
     "context-search": "Search",
     "context-sutta": "Sutta",
     "copiedToClipboard": "Copied to clipboard",
+    "copyLinkToDocument": "Copy link to document",
     "copyQuoteWithLink": "Copy quote with link",
     "days": "A_DAYS days",
     "dedicated": "उजाले के लिए अँधेरी सीमा की ओर",
