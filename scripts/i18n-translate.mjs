@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { default as EN } from "../src/i18n/es.mjs"
+import { default as EN } from "../src/i18n/en.mjs"
 import {
   DeepLAdapter,
 } from "ebt-deepl";
@@ -29,7 +29,19 @@ let outPath = path.join(scriptPath, '../../src/i18n', `${dstLang}.mjs`);
     for (let i=0; i<keys.length; i++) {
       let key = keys[i];
       let srcVal = src[key];
-      if (typeof srcVal === 'object') {
+      if (key === 'languageCode') {
+        switch (dstLang) {
+          case 'it':
+            dst[key] = "Italiano / IT";
+            break;
+          case 'pt':
+            dst[key] = "Português / PT";
+            break;
+          case 'es':
+            dst[key] = "Español / ES";
+            break;
+        }
+      } else if (typeof srcVal === 'object') {
         console.warn(msg, '[2]object', key);
         dst[key] = await translate(srcVal);
       } else {
