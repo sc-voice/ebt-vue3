@@ -18,6 +18,7 @@ const VOICE_LANGS = [
   },
   {
     "value": "fr",
+    "title": "Français / FR",
     "voice": true
   },
   {
@@ -64,6 +65,7 @@ const UI_LANGS = [
   },
   {
     "value": "fr",
+    "title": "Français / FR",
     "voice": true
   },
   {

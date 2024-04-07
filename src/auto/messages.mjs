@@ -1454,6 +1454,7 @@ const messages =  {
       "homeSound": "Accueil",
       "inspireMe": "Inspirez-moi !",
       "languages": "Langues",
+      "languageCode": "Français / FR",
       "latestContent": "Voir le contenu des derniers sutta/vinaya",
       "loadingAudio": "chargement de l'audio...",
       "loadingSutta": "Chargement ...",
