@@ -5,6 +5,8 @@ import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
 import { useAudioStore } from "./audio.mjs";
+import { useSuttasStore } from './suttas.mjs';
+import { default as IdbSutta } from '../idb-sutta.mjs';
 import {
   DBG,
   DBG_CLICK, DBG_FOCUS, DBG_HOME, 
@@ -34,6 +36,7 @@ const transientMsg = ref(null);
 const showTransientMsg = ref(false);
 const showHtmlLog = ref(false);
 const waitingContext = ref('...');
+const searchResultMap = ref({});
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -48,6 +51,7 @@ const INITIAL_STATE = {
   homeHtml,
   logHtml,
   routeCard,
+  searchResultMap,
   showAlertMsg: ref(false),
   showHtmlLog,
   showLegacyDialog,
@@ -101,6 +105,85 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    async searchResults(search, opts={}) {
+      let {
+        cached=false,
+      } = opts;
+      let searchResult = searchResultMap.value[search];
+      if (cached && searchResult) {
+        return searchResult;
+      }
+      const suttas = useSuttasStore();
+      let url = this.searchUrl(search);
+      let res = await this.fetchJson(url);
+      let resJson = res.ok
+        ? await res.json()
+        : res;
+      let { results, mlDocs=[] } = resJson;
+      let cardData = results.map((r,i)=>{
+        let mld = mlDocs[i];
+        let scids = Object.keys(mld.segMap);
+        let segments = [];
+        for (let i=0; i<scids.length; i++) {
+          let scid = scids[i];
+          let seg = mld.segMap[scid];
+          if (seg?.matched) {
+            segments.push(seg);
+            break;
+          }
+        }
+        let title = mld.title.split('\n').slice(1).join('\n');
+        return {
+          uid: r.uid,
+          lang: mld.docLang,
+          author_uid: mld.docAuthor,
+          blurb: r.blurb,
+          title,
+          segments,
+          stats: r.stats,
+          suttaplex: r.suttaplex,
+        }
+      });
+      mlDocs.forEach(mlDoc=>this.addMlDoc(mlDoc));
+      for (let i = 0; i < mlDocs.length; i++) {
+        try {
+          let mlDoc = mlDocs[i];
+          let { sutta_uid, lang, author_uid } = mlDoc;
+          this.waitBegin('ebt.processing', 
+            this.ICON_PROCESSING, sutta_uid);
+
+          let idbKey = IdbSutta.idbKey({
+            sutta_uid, lang, author:author_uid});
+          let idbData = await Idb.get(idbKey);
+          let idbSutta;
+          let msStart2 = Date.now();
+          if (idbData) {
+            idbSutta = IdbSutta.create(idbData);
+            idbSutta.merge({mlDoc});
+          } else {
+            idbSutta = IdbSutta.create(mlDoc);
+          }
+
+          suttas.saveIdbSutta(idbSutta);
+          let result = cardData[i];
+          result.segsMatched = idbSutta.segments.reduce((a,v)=>{
+            return a + (v.matched ? 1 : 0);
+          }, 0);
+          result.showMatched = Math.min(3, result.segsMatched);
+          delete result.sections;
+          result.segments = idbSutta.segments;
+        } finally {
+          this.waitEnd();
+        }
+      }
+      searchResult = {
+        res,
+        mlDocs,
+        cardData,
+      }
+      searchResultMap.value[search] = searchResult;
+      return searchResult;
+    },
     setTransientMessage(msg) {
       transientMsg.value = msg;
       showTransientMsg.value = true;

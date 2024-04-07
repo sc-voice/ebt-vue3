@@ -105,81 +105,22 @@
         let { 
           settings, $t, volatile, url, search, card, suttas, 
         } = this;
-        let res;
         if (!search) {
           return;
         }
         try {
           volatile.waitBegin('ebt.searching', undefined, search);
           card.location[0] = search;
-          res = await volatile.fetchJson(url);
-          let searchResults = res.ok
-            ? await res.json()
-            : res;
-
           let routeHash = card.routeHash();
           dbg && console.log(msg, '[1]setRoute', routeHash);
           volatile.setRoute(routeHash, undefined, msg);
-          let { results, mlDocs=[] } = searchResults;
-          let cardData = results.map((r,i)=>{
-            let mld = mlDocs[i];
-            let scids = Object.keys(mld.segMap);
-            let segments = [];
-            for (let i=0; i<scids.length; i++) {
-              let scid = scids[i];
-              let seg = mld.segMap[scid];
-              if (seg?.matched) {
-                segments.push(seg);
-                break;
-              }
-            }
-            let title = mld.title.split('\n').slice(1).join('\n');
-            return {
-              uid: r.uid,
-              lang: mld.docLang,
-              author_uid: mld.docAuthor,
-              blurb: r.blurb,
-              title,
-              segments,
-              stats: r.stats,
-              suttaplex: r.suttaplex,
-            }
-          });
+
+          let {
+            cardData,
+          } = await volatile.searchResults(search);
           card.data = cardData;
-          mlDocs.forEach(mlDoc=>volatile.addMlDoc(mlDoc));
-          for (let i = 0; i < mlDocs.length; i++) {
-            try {
-              let mlDoc = mlDocs[i];
-              let { sutta_uid, lang, author_uid } = mlDoc;
-              volatile.waitBegin('ebt.processing', 
-                volatile.ICON_PROCESSING, sutta_uid);
-
-              let idbKey = IdbSutta.idbKey({
-                sutta_uid, lang, author:author_uid});
-              let idbData = await Idb.get(idbKey);
-              let idbSutta;
-              let msStart2 = Date.now();
-              if (idbData) {
-                idbSutta = IdbSutta.create(idbData);
-                idbSutta.merge({mlDoc});
-              } else {
-                idbSutta = IdbSutta.create(mlDoc);
-              }
-
-              suttas.saveIdbSutta(idbSutta);
-              let result = card.data[i];
-              result.segsMatched = idbSutta.segments.reduce((a,v)=>{
-                return a + (v.matched ? 1 : 0);
-              }, 0);
-              result.showMatched = Math.min(3, result.segsMatched);
-              delete result.sections;
-              result.segments = idbSutta.segments;
-            } finally {
-              volatile.waitEnd();
-            }
-          }
         } catch(e) {
-          logger.warn("onSearch() ERROR:", res, e);
+          logger.warn(msg, "Search failed:", search, e);
         } finally {
           volatile.waitEnd();
         }

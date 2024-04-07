@@ -1,16 +1,25 @@
 <template>
   <v-sheet class="debug-card" >
-    <div>
-      Layout: {{volatile.displayBox}}
-      <div class="test-touch" >
-        collapseAppBar {{volatile.collapseAppBar}}
-      </div>
+    <h4>searchResultMap</h4>
+    <v-list>
+      <v-list-item v-for="key in searchMapKeys" :key="key"
+        :title="key"
+        :subtitle="searchMapValue(key)"
+      ></v-list-item>
+    </v-list>
 
-      <h3 class="mt-4">Links</h3>
-      <div style="width: 20em">
-        <div v-for="link in testLinks">
-          <a :href="link">{{link.replace(/#/,'')}}</a>
-        </div>
+    <h4>Display {{volatile.displayBox}}</h4>
+
+    <h4 class="mt-4">Test touch</h4>
+    <div class="test-touch" >
+      TOUCH-ME
+      collapseAppBar {{volatile.collapseAppBar}}
+    </div>
+
+    <h4 class="mt-4">Links</h4>
+    <div style="width: 20em">
+      <div v-for="link in testLinks">
+        <a :href="link">{{link.replace(/#/,'')}}</a>
       </div>
     </div>
   </v-sheet>
@@ -37,6 +46,15 @@
     components: {
     },
     methods: {
+      searchMapValue(key) {
+        let { volatile } = this;
+        let value = volatile.searchResultMap[key] || {
+          mlDocs: [{
+            uid: "(no-mlDocs?)",
+          }],
+        };
+        return value.mlDocs.map(mld=>mld.sutta_uid).join(", ");
+      },
       updateMessage(msg) {
         this.message = msg;
         logger.info(msg);
@@ -45,6 +63,10 @@
     mounted() {
     },
     computed: {
+      searchMapKeys: (ctx) => {
+        let { volatile } = ctx;
+        return Object.keys(volatile.searchResultMap);
+      },
       testLinks: (ctx) => [
         "#/debug",
         "#/",
@@ -80,7 +102,7 @@
 }
 .test-touch {
   width: 100%;
-  height: 10em;
+  height: 3em;
   border: 1pt solid red;
 }
 </style>
