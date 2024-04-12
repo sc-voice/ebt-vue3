@@ -1,6 +1,6 @@
 ---
 title: Great Reference
-description: License requirement for Buddhism
+description: Perserve the Buddhist teachings
 img: ethical-ai.png
 img-alt: Ethical AI
 order: 1

@@ -1,17 +1,15 @@
 ---
-title: Code of Conduct
-description: License requirement for code of conduct
+title: MN8 Code of Conduct
+description: Code of conduct
 img: ethical-ai.png
 img-alt: Ethical AI
 order: 1
 ---
 
-### Code of Conduct 
+### MN8 Code of Conduct 
 
 As users, creators, and caretakers of this websites content, 
 we agree to abide by the following rules of conduct from [Middle Discourses 8](https://suttacentral.net/mn8):
-Use of this website's content is only permitted to those who agree to this code of conduct.
-Any other use of this content will be considered as theft.
 
 > [mn8:12.2](https://www.sc-voice.net/#/sutta/mn8:12.2/en/sujato) ‘Others will be cruel, but here we will not be cruel.’   
 > [MN8:12.3](https://suttacentral.net/mn8/en/sujato#mn8:12.3): ‘Others will kill living creatures, but here we will not kill living creatures.’  
