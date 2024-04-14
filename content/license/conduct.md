@@ -14,26 +14,14 @@ we agree to abide by the following rules of conduct from [Middle Discourses 8](h
 > [mn8:12.2](https://www.sc-voice.net/#/sutta/mn8:12.2/en/sujato) ‘Others will be cruel, but here we will not be cruel.’   
 > [MN8:12.3](https://suttacentral.net/mn8/en/sujato#mn8:12.3): ‘Others will kill living creatures, but here we will not kill living creatures.’  
 > [MN8:12.4](https://suttacentral.net/mn8/en/sujato#mn8:12.4): ‘Others will steal, but here we will not steal.’  
-> [MN8:12.5](https://suttacentral.net/mn8/en/sujato#mn8:12.5): ‘Others will be unchaste, but here we will not be unchaste.’  
+> ...  
 > [MN8:12.6](https://suttacentral.net/mn8/en/sujato#mn8:12.6): ‘Others will lie, but here we will not lie.’  
 > [MN8:12.7](https://suttacentral.net/mn8/en/sujato#mn8:12.7): ‘Others will speak divisively, but here we will not speak divisively.’  
 > [MN8:12.8](https://suttacentral.net/mn8/en/sujato#mn8:12.8): ‘Others will speak harshly, but here we will not speak harshly.’  
 > [MN8:12.9](https://suttacentral.net/mn8/en/sujato#mn8:12.9): ‘Others will talk nonsense, but here we will not talk nonsense.’  
 > [MN8:12.10](https://suttacentral.net/mn8/en/sujato#mn8:12.10): ‘Others will be covetous, but here we will not be covetous.’  
 > [MN8:12.11](https://suttacentral.net/mn8/en/sujato#mn8:12.11): ‘Others will have ill will, but here we will not have ill will.’  
-> [MN8:12.12](https://suttacentral.net/mn8/en/sujato#mn8:12.12): ‘Others will have wrong view, but here we will have right view.’  
-> [MN8:12.13](https://suttacentral.net/mn8/en/sujato#mn8:12.13): ‘Others will have wrong thought, but here we will have right thought.’  
-> [MN8:12.14](https://suttacentral.net/mn8/en/sujato#mn8:12.14): ‘Others will have wrong speech, but here we will have right speech.’  
-> [MN8:12.15](https://suttacentral.net/mn8/en/sujato#mn8:12.15): ‘Others will have wrong action, but here we will have right action.’  
-> [MN8:12.16](https://suttacentral.net/mn8/en/sujato#mn8:12.16): ‘Others will have wrong livelihood, but here we will have right livelihood.’  
-> [MN8:12.17](https://suttacentral.net/mn8/en/sujato#mn8:12.17): ‘Others will have wrong effort, but here we will have right effort.’  
-> [MN8:12.18](https://suttacentral.net/mn8/en/sujato#mn8:12.18): ‘Others will have wrong mindfulness, but here we will have right mindfulness.’  
-> [MN8:12.19](https://suttacentral.net/mn8/en/sujato#mn8:12.19): ‘Others will have wrong immersion, but here we will have right immersion.’  
-> [MN8:12.20](https://suttacentral.net/mn8/en/sujato#mn8:12.20): ‘Others will have wrong knowledge, but here we will have right knowledge.’  
-> [MN8:12.21](https://suttacentral.net/mn8/en/sujato#mn8:12.21): ‘Others will have wrong freedom, but here we will have right freedom.’  
-> [MN8:12.22](https://suttacentral.net/mn8/en/sujato#mn8:12.22): ‘Others will be overcome with dullness and drowsiness, but here we will be rid of dullness and drowsiness.’  
-> [MN8:12.23](https://suttacentral.net/mn8/en/sujato#mn8:12.23): ‘Others will be restless, but here we will not be restless.’  
-> [MN8:12.24](https://suttacentral.net/mn8/en/sujato#mn8:12.24): ‘Others will have doubts, but here we will have gone beyond doubt.’  
+> ...  
 > [MN8:12.25](https://suttacentral.net/mn8/en/sujato#mn8:12.25): ‘Others will be irritable, but here we will be without anger.’  
 > [MN8:12.26](https://suttacentral.net/mn8/en/sujato#mn8:12.26): ‘Others will be hostile, but here we will be without hostility.’  
 > [MN8:12.27](https://suttacentral.net/mn8/en/sujato#mn8:12.27): ‘Others will be offensive, but here we will be inoffensive.’  
