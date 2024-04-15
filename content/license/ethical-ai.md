@@ -1,5 +1,5 @@
 ---
-title: Ethical AI
+title: Ethical Use of AI
 description: Declaration of AI content
 img: ethical-ai.png
 img-alt: Ethical AI
@@ -12,7 +12,7 @@ We believe that AI should be used ethically for the good of all and not for the 
 Specfically, we declare that our use of AI is governed by the code of conduct
 described below.
 
-### Code of Content
+### Code of Conduct
 The creators and caretakers of this website abide by a [code of conduct](#wiki/license/conduct).
 If you use this website or its content we ask that you review and consider the code of conduct
 since it governs our use of AI.
