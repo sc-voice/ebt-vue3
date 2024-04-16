@@ -247,7 +247,6 @@ export default {
     "languageCode": "Íslenska / IS",
     "languages": "Tungumál",
     "latestContent": "View latest sutta/vinaya content",
-    "legacyVoice": "Don't remind me about legacy voice.suttacentral.net",
     "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",

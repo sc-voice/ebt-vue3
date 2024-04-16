@@ -15,7 +15,6 @@ import should from "should";
       fullLine: false,
       ips: 6,
       langTrans: 'en',
-      legacyVoice: 'ask',
       maxPlayMinutes: 30,
       maxResults: 5,
       refAuthor: 'sujato',

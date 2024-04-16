@@ -18,14 +18,6 @@ const SERVERS = [{
   title: 'staging.api.sc-voice.net',
   value: 'https://staging.api.sc-voice.net/scv',
   hint: 'Voice API server (Linode pre-production)',
-//},{
-  //title: 's1.sc-voice.net (DEPRECATED)',
-  //value: 'https://s1.sc-voice.net/scv',
-  //hint: 'Voice API server (Linode legacy)',
-//},{
-  //title: 'voice.suttacentral.net (DEPRECATED)',
-  //value: 'https://voice.suttacentral.net/scv',
-  //hint: 'Voice server (AWS production)',
 },{
   title: 'localhost:8080 (DEVELOPMENT)',
   value: 'http://localhost:8080/scv',
@@ -58,7 +50,6 @@ export default class EbtSettings {
       highightExamples,
       ips,
       langTrans,  // UI translation language (e.g., 'ja') 
-      legacyVoice,// Show legacy voice dialog
       locale,     // Web page language
       maxPlayMinutes, 
       maxResults,
@@ -96,7 +87,6 @@ export default class EbtSettings {
       return l.code === langTrans ? langTrans : a;
     }, 'en');
     this.docAuthor = docAuthor;
-    this.legacyVoice = legacyVoice;
     this.locale = EbtSettings.WEB_LANGUAGES.reduce((a, l) => {
       return l.code === locale ? locale : a;
     }, 'en');
@@ -155,7 +145,6 @@ export default class EbtSettings {
       fullLine: false,
       highlightExamples: false,
       id: 1,
-      legacyVoice: "ask",
       ips: 6,
       langRoot: 'pli',
       langs: `pli+${NAV_LANG}`,

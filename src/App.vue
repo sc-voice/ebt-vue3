@@ -45,12 +45,6 @@
                   title="viewWidth x viewHeight">
                   {{viewWidth}}x{{viewHeight}}
                 </div>
-                <div v-if="DBG_LEGACY" 
-                  class="app-dbg"
-                  title="legacyVoice:showLegacyDialog">
-                  {{settings.legacyVoice}}:
-                  {{volatile.showLegacyDialog ? 'legacy' : 'nolegacy'}}
-                </div> 
                 <div v-if="DBG_WAITING" 
                   class="app-dbg"
                   :title="volatile.waitingMsg">
@@ -93,7 +87,6 @@
       <v-sheet id="app-body">
         <div>
           <ebt-processing />
-          <LegacyVoice v-if="settings.loaded"/>
           <Settings />
           <EbtCards v-if="settings?.cards?.length" />
           <div v-if="volatile.showHtmlLog" class="app-log">
@@ -219,7 +212,6 @@
   import EbtChips from './components/EbtChips.vue';
   import Settings from './components/Settings.vue';
   import EbtProcessing from './components/EbtProcessing.vue';
-  import LegacyVoice from './components/LegacyVoice.vue';
   import { useSettingsStore } from './stores/settings.mjs';
   import { useAudioStore } from './stores/audio.mjs';
   import { logger } from "log-instance/index.mjs";
@@ -247,7 +239,6 @@
       EbtChips,
       Settings,
       EbtProcessing,
-      LegacyVoice,
       Tutorial,
     },
     methods: {
