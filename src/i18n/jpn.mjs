@@ -248,6 +248,7 @@ export default {
     "languageCode": "日本語 / JPN",
     "languages": "言語",
     "latestContent": "View latest sutta/vinaya content",
+    "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",

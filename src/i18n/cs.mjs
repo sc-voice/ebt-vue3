@@ -246,6 +246,7 @@ export default {
     "languageCode": "Čeština / CS",
     "languages": "Jazyky",
     "latestContent": "View latest sutta/vinaya content",
+    "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading _SUTTA...",
     "logLevel": "Console messages",

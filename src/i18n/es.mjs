@@ -96,6 +96,7 @@ export default {
     "languageCode": "Español / ES",
     "languages": "Idiomas",
     "latestContent": "Ver el contenido más reciente de sutta/vinaya",
+    "license": "License",
     "loadingAudio": "cargando audio...",
     "loadingSutta": "Cargando ...",
     "logLevel": "Mensajes de la consola",

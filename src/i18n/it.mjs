@@ -248,6 +248,7 @@ export default {
     "languageCode": "Italiano / IT",
     "languages": "Lingue",
     "latestContent": "Visualizza gli ultimi contenuti di sutta/vinaya",
+    "license": "License",
     "loadingAudio": "caricamento dell'audio...",
     "loadingSutta": "Caricamento ...",
     "logLevel": "Messaggi della console",
