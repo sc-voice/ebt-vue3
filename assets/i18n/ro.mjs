@@ -244,7 +244,7 @@ export default {
     "languageCode": "Română / RO",
     "languages": "Limbi",
     "latestContent": "View latest sutta/vinaya content",
-    "legacyVoice": "Don't remind me about legacy voice.suttacentral.net",
+    "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",

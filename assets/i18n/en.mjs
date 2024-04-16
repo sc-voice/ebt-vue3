@@ -2,7 +2,7 @@ export default {
   "close": "Close",
   "auth": {
     "cancel": "Cancel",
-    "required": "(required)",
+    "required": "(required)"
   },
   "ebt": {
     "HHMM": "A_HOURSh A_MINUTESm",
@@ -96,6 +96,7 @@ export default {
     "languageCode": "English / EN",
     "languages": "Languages",
     "latestContent": "View latest sutta/vinaya content",
+    "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",

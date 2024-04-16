@@ -248,6 +248,7 @@ export default {
     "languageCode": "Nederlands / NL",
     "languages": "Talen",
     "latestContent": "View latest sutta/vinaya content",
+    "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",

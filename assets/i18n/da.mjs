@@ -245,6 +245,7 @@ export default {
     "languageCode": "Dansk / DA",
     "languages": "Sprog",
     "latestContent": "View latest sutta/vinaya content",
+    "license": "License",
     "loadingAudio": "loading audio...",
     "loadingSutta": "Loading ...",
     "logLevel": "Console messages",
