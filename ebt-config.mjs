@@ -10,6 +10,7 @@ const EbtConfig = {
     "repository": "ebt-vue3"
   },
   "homePath": "#/wiki/welcome",
+  //"license": "https://ebt-vue3.sc-voice.net/#/wiki/license/toc",
   //"maxPlayMinutes": 30,
   //"monolingual": "en",
   "privacyLink": "#/wiki/privacy",

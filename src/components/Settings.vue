@@ -16,6 +16,12 @@
         <a @click.stop.prevent="onPrivacy">
           {{$t('ebt.showPrivacy')}}
         </a>
+        &nbsp;
+        &#x2022;
+        &nbsp;
+        <a :href="licenseUrl" target="_blank">
+          {{$t('ebt.license')}}
+        </a>
       </div>
       <v-expansion-panels >
         <v-expansion-panel ><!--General-->
@@ -341,6 +347,8 @@ const maxResultsItems = [{
   value: 50,
 }]
 
+const LICENSE = 
+  "http://ebt-vue3.sc-voice.net/#/wiki/license/toc";
 
 export default {
   inject: ['config'],
@@ -501,6 +509,12 @@ export default {
 
   },
   computed: {
+    licenseUrl(ctx) {
+      const msg = "Settings.licenseUrl";
+      let url = ctx?.config?.license || LICENSE;
+      console.log(msg, url);
+      return url;
+    },
     maxPlayMinutesLabel(ctx) {
       let { maxPlayMinutes } = ctx.settings;
       let label = ctx.$t('ebt.maxPlayMinutes', {
