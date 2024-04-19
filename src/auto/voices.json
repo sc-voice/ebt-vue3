@@ -1,7 +1,7 @@
 [
   {
     "name": "Amy",
-    "label": "🤖 Amy (slower)",
+    "label": "🤖 Amy-robot (slower)",
     "langTrans": "en",
     "gender": "female",
     "iVoice": 0,
@@ -10,7 +10,7 @@
   },
   {
     "name": "Raveena",
-    "label": "🤖 Raveena (faster)",
+    "label": "🤖 Raveena-robot (faster)",
     "langTrans": "en",
     "gender": "female",
     "iVoice": 2,
@@ -19,7 +19,7 @@
   },
   {
     "name": "Matthew",
-    "label": "🤖 Matthew (fastest)",
+    "label": "🤖 Matthew-robot (fastest)",
     "langTrans": "en",
     "gender": "male",
     "iVoice": 3,
@@ -28,7 +28,7 @@
   },
   {
     "name": "Aditi",
-    "label": "🤖 Aditi",
+    "label": "🤖 Aditi-robot",
     "langTrans": "pli",
     "gender": "female",
     "locale": "hi-IN",
@@ -36,7 +36,7 @@
   },
   {
     "name": "Brian",
-    "label": "🤖 Brian (medium)",
+    "label": "🤖 Brian-robot (medium)",
     "langTrans": "en",
     "gender": "male",
     "iVoice": 1,
@@ -53,7 +53,7 @@
   },
   {
     "name": "Vicki",
-    "label": "🤖 Vicki (langsamer)",
+    "label": "🤖 Vicki-robot (langsamer)",
     "langTrans": "de",
     "gender": "female",
     "iVoice": 10,
@@ -62,7 +62,7 @@
   },
   {
     "name": "Hans",
-    "label": "🤖 Hans (mittel)",
+    "label": "🤖 Hans-robot (mittel)",
     "langTrans": "de",
     "gender": "male",
     "iVoice": 11,
@@ -71,7 +71,7 @@
   },
   {
     "name": "Marlene",
-    "label": "🤖 Marlene (schneller)",
+    "label": "🤖 Marlene-robot (schneller)",
     "langTrans": "de",
     "gender": "female",
     "iVoice": 12,
@@ -88,7 +88,7 @@
   },
   {
     "name": "Enrique",
-    "label": "🤖 Enrique (ES)",
+    "label": "🤖 Enrique-robot (ES)",
     "langTrans": "es",
     "gender": "male",
     "iVoice": 10,
@@ -97,7 +97,7 @@
   },
   {
     "name": "Lucia",
-    "label": "🤖 Lucia (ES)",
+    "label": "🤖 Lucia-robot (ES)",
     "langTrans": "es",
     "gender": "female",
     "iVoice": 10,
@@ -106,7 +106,7 @@
   },
   {
     "name": "Ricardo",
-    "label": "🤖 Ricardo (BR)",
+    "label": "🤖 Ricardo-robot (BR)",
     "langTrans": "pt",
     "gender": "male",
     "iVoice": 10,
@@ -115,7 +115,7 @@
   },
   {
     "name": "Ines",
-    "label": "🤖 Inés (PT)",
+    "label": "🤖 Inés-robot (PT)",
     "langTrans": "pt",
     "gender": "female",
     "iVoice": 11,
@@ -124,7 +124,7 @@
   },
   {
     "name": "Celine",
-    "label": "🤖 Celine",
+    "label": "🤖 Celine-robot",
     "langTrans": "fr",
     "gender": "female",
     "iVoice": 10,
@@ -133,7 +133,7 @@
   },
   {
     "name": "Mathieu",
-    "label": "🤖 Mathieu",
+    "label": "🤖 Mathieu-robot",
     "langTrans": "fr",
     "gender": "male",
     "iVoice": 10,
@@ -142,7 +142,7 @@
   },
   {
     "name": "Takumi",
-    "label": "🤖 Takumi",
+    "label": "🤖 Takumi-robot",
     "langTrans": "jpn",
     "gender": "male",
     "iVoice": 20,
@@ -151,7 +151,7 @@
   },
   {
     "name": "Mizuki",
-    "label": "🤖 Mizuki",
+    "label": "🤖 Mizuki-robot",
     "langTrans": "jpn",
     "gender": "female",
     "iVoice": 21,
@@ -160,7 +160,7 @@
   },
   {
     "name": "Bianca",
-    "label": "🤖 Bianca (lento)",
+    "label": "🤖 Bianca-robot (lento)",
     "langTrans": "it",
     "gender": "female",
     "iVoice": 22,
@@ -169,7 +169,7 @@
   },
   {
     "name": "Giorgio",
-    "label": "🤖 Giorgio (veloce)",
+    "label": "🤖 Giorgio-robot (veloce)",
     "langTrans": "it",
     "gender": "male",
     "iVoice": 23,
