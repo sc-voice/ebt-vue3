@@ -244,7 +244,7 @@ export default {
     "languageCode": "Deutsch / DE",
     "languages": "Sprachen",
     "latestContent": "Neuester Text für Sutta/Vinaya",
-    "license": "License",
+    "license": "Copyright",
     "loadingAudio": "Audio laden...",
     "loadingSutta": "wird geladen...",
     "logLevel": "Konsolen-Info",
