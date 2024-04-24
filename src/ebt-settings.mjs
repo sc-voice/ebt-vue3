@@ -66,6 +66,7 @@ export default class EbtSettings {
       speakPali,
       speakTranslation,
       swooshVolume,
+      tutorAsk,
       tutorClose,
       tutorPlay,
       tutorSearch,
@@ -106,6 +107,12 @@ export default class EbtSettings {
     this.showTrans = showTrans;
     this.showSutta = showSutta;
     this.showVinaya = showVinaya;
+    this.tutorAsk = tutorAsk;
+    this.tutorClose = tutorClose;
+    this.tutorPlay = tutorPlay;
+    this.tutorSearch = tutorSearch;
+    this.tutorSettings = tutorSettings;
+    this.tutorWiki = tutorWiki;
     this.vnameRoot = vnameRoot;
     this.vnameTrans = vnameTrans;
 
@@ -168,6 +175,7 @@ export default class EbtSettings {
       speakTranslation: true,
       sutta_uid: undefined,
       swooshVolume: 2,
+      tutorAsk: true,
       tutorClose: true,
       tutorPlay: true,
       tutorSearch: true,

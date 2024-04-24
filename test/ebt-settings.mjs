@@ -3,7 +3,7 @@ import { default as EbtCard } from "../src/ebt-card.mjs";
 import should from "should";
 
 (typeof describe === 'function') && describe("ebt-settings.mjs", function () {
-  it("default ctor en", async () => {
+  it("TESTTESTdefault ctor en", async () => {
     global.navigator = { languages: ['en-US'] };
     var ebt = new EbtSettings();
     should(ebt).properties({
@@ -29,6 +29,12 @@ import should from "should";
       swooshVolume: 2,
       vnameRoot: 'Aditi',
       vnameTrans: 'Amy',
+      tutorAsk: true,
+      tutorClose: true,
+      tutorPlay: true,
+      tutorSearch: true,
+      tutorSettings: true,
+      tutorWiki: true,
 
     });
     let keys = Object.keys(ebt);
@@ -62,7 +68,7 @@ import should from "should";
       global.navigator = { languages: ['en-us'] };
     }
   });
-  it("INITIAL_STATE", async () => {
+  it("TESTTESTINITIAL_STATE", async () => {
     should(EbtSettings.INITIAL_STATE).properties({
       audio: 'ogg',
       audioSuffix: 'mp3',
@@ -94,6 +100,12 @@ import should from "should";
       swooshVolume: 2,
       theme: 'dark',
       translator: 'sujato',
+      tutorAsk: true,
+      tutorClose: true,
+      tutorPlay: true,
+      tutorSearch: true,
+      tutorSettings: true,
+      tutorWiki: true,
       vnameRoot: 'Aditi',
       vnameTrans: 'Amy',
 
