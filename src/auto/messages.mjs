@@ -968,7 +968,7 @@ const messages =  {
       "showReference": "Zeige Vergleichstext",
       "showTextSegmentIds": "SuttaCentral-ID zeigen",
       "showTransText": "Zeige lokale Übersetzung",
-      "showTutorial": "Would you like a tutorial?",
+      "showTutorial": "Möchten Sie Erklärhinweise sehen?",
       "showTutorials": "Erklärhinweise einblenden",
       "shutdown2024": "Stillegung 2024",
       "speakPali": "Pali sprechen",
