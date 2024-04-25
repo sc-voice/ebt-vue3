@@ -15,6 +15,8 @@ export const DBG = {
   TEST: 0,
   COPY_SEG: 0,
   CLICK_SEG: 0,
+  TUTORIAL: 0,
+  VERBOSE: 0,
 };
 export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
@@ -43,7 +45,6 @@ export const DBG_SOUND_STORE  = 0;
 export const DBG_STARTUP      = 0;
 export const DBG_SUTTA        = 0;
 export const DBG_TBD          = 0; // experimental feature
-export const DBG_TUTORIAL     = 0;
 export const DBG_UPDATED      = 0;
 export const DBG_VERBOSE      = 0;  // trace non-mutative logic
 export const DBG_VIEWPORT     = 0;

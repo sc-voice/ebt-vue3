@@ -136,6 +136,32 @@
         </div>
       </v-snackbar>
       <div v-if="showTutorial">
+        <v-dialog v-model="settings.tutorAsk" width="auto"
+          persistent
+        >
+          <v-card
+            max-width="400"
+            color="tutorial"
+            prepend-icon="mdi-school-outline"
+            style="color: yellow !important;"
+            :text="$t('ebt.showTutorial')"
+            :title="$t('ebt.tutorial')"
+          >
+            <template v-slot:actions>
+              <v-btn
+                class="ms-auto"
+                icon="mdi-close"
+                @click="onTutorAsk(false)"
+              ></v-btn>
+              <v-spacer />
+              <v-btn
+                class="ms-auto"
+                icon="mdi-check"
+                @click="onTutorAsk(true)"
+              ></v-btn>
+            </template>
+          </v-card>
+        </v-dialog>
         <Tutorial v-if="showTutorClose"
           setting="tutorClose" :title="$t('ebt.closeCard')" 
           containerId="home-card-id" 
@@ -173,7 +199,7 @@
   import { useVolatileStore } from './stores/volatile.mjs';
   import { 
     DBG,
-    DBG_TUTORIAL, DBG_HOME, DBG_KEY, DBG_STARTUP, 
+    DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
     DBG_ROUTE, DBG_WAITING, 
     DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO,
@@ -242,6 +268,14 @@
       Tutorial,
     },
     methods: {
+      onTutorAsk(value) {
+        const msg = "App.onTutorAsk()";
+        const dbg = DBG.TUTORIAL;
+        let { volatile, settings } = this;
+        dbg && console.log(msg, settings.tutorAsk);
+        settings.tutorAsk = false;
+        volatile.showTutorials(value);
+      },
       startupClass(className) {
         let { settings, } = this;
         return settings.loaded
@@ -359,16 +393,19 @@
         });
       },
       onKeydown(evt) {
-        let msg = `App.onKeydown:${evt.code}`;
+        let msg = `App.onKeydown:${evt.key}`;
         let dbg = DBG_KEY;
         let { audio } = this;
         switch (evt.key) {
           case 'Home': 
-            dbg && console.log(msg, '[3]onHome', {evt}); 
+            dbg && console.log(msg, '[1]onHome', {evt}); 
             this.onHome(evt); 
             break;
+          case 'Escape':
+            dbg && console.log(msg, '[2]Escape', {evt}); 
+            break;
           default: 
-            dbg && console.log(msg, '[4]', {evt}); 
+            dbg && console.log(msg, `[3]${evt.code}`, {evt}); 
             break;
         }
       },
@@ -471,31 +508,33 @@
         let { volatile, settings } = ctx;
         let { loaded:settingsLoaded } = settings;
         let { showSettings, showLegacyDialog } = volatile;
-        let dbg = DBG_TUTORIAL;
+        let dbg = DBG.TUTORIAL;
+        let dbgv = dbg && DBG.VERBOSE;
         
         if (!settings.loaded) {
-          dbg && console.log(msg, '[1]wait', {settingsLoaded});
+          dbgv && console.log(msg, '[1]wait', {settingsLoaded});
           return false;
         }
         if (showSettings) {
-          //dbg && console.log(msg, '[2]wait', {showSettings});
+          //dbgv && console.log(msg, '[2]wait', {showSettings});
           return false;
         }
         if (settings.tutorialState(false)) {
-          dbg && console.log(msg, '[3]completed');
+          dbgv && console.log(msg, '[3]completed');
           return false;
         }
         if (showLegacyDialog) {
-          dbg && console.log(msg, '[4]wait', {showLegacyDialog});
+          dbgv && console.log(msg, '[4]wait', {showLegacyDialog});
           return false;
         } 
 
-        dbg && console.log(msg, '[5]show');
+        dbgv && console.log(msg, '[5]show');
         return true;
       },
       showTutorSettings(ctx) {
         const msg = "App.showTutorSettings()";
-        const dbg = DBG_TUTORIAL;
+        const dbg = DBG.TUTORIAL;
+        const dbgv = dbg && DBG.VERBOSE;
         let { settings } = this;
         let { 
           tutorSettings, tutorPlay, tutorSearch, 
@@ -503,23 +542,23 @@
         } = settings;
 
         if (!tutorSettings) {
-          dbg && console.log(msg, '[1]done', {tutorSettings});
+          dbgv && console.log(msg, '[1]done', {tutorSettings});
           return false;
         }
         if (tutorPlay) {
-          dbg && console.log(msg, '[2]wait', {tutorPlay});
+          dbgv && console.log(msg, '[2]wait', {tutorPlay});
           return false;
         }
         if (tutorSearch) {
-          dbg && console.log(msg, '[3]wait', {tutorSearch});
+          dbgv && console.log(msg, '[3]wait', {tutorSearch});
           return false;
         }
         if (tutorWiki) {
-          dbg && console.log(msg, '[4]wait', {tutorWiki});
+          dbgv && console.log(msg, '[4]wait', {tutorWiki});
           return false;
         }
         if (tutorClose) {
-          dbg && console.log(msg, '[5]wait', {tutorClose});
+          dbgv && console.log(msg, '[5]wait', {tutorClose});
           return false;
         }
 
@@ -528,36 +567,40 @@
         let nonWikiOpen = openCards.filter(c=>c !== wikiCard).length; 
         if (nonWikiOpen) {
           //Settings doesn't use links
-          //dbg && console.log(msg, '[6]wait', {nonWikiOpen});
+          //dbgv && console.log(msg, '[6]wait', {nonWikiOpen});
           //return false;
         }
 
-        dbg && console.log(msg, '[7]show');
+        dbgv && console.log(msg, '[7]show');
         return true;
       },
       showTutorWiki(ctx) {
         const msg = "App.showTutorWiki()";
-        const dbg = DBG_TUTORIAL;
-        const dbgv = DBG_VERBOSE;
+        const dbg = DBG.TUTORIAL;
+        const dbgv = dbg && DBG.VERBOSE;
         let { audio, settings, } = this;
         let { 
-          wikiCard, openCards, tutorWiki, tutorPlay 
+          wikiCard, openCards, tutorWiki, tutorPlay, tutorAsk,
         } = settings;
+        if (tutorAsk) {
+          dbgv && console.log(msg, '[0]tutorAsk');
+          return false;
+        }
         if (!tutorWiki) {
-          dbg && console.log(msg, '[1]done');
+          dbgv && console.log(msg, '[1]done');
           return false;
         }
 
         let { segmentPlaying } = audio;
         if (segmentPlaying) {
-          dbg && console.log(msg, '[2]wait', 
+          dbgv && console.log(msg, '[2]wait', 
             segmentPlaying && "segmentPlaying",
             tutorPlay && "tutorPlay");
           return false;
         }
 
         if (wikiCard?.isOpen) {
-          dbg && console.log(msg, '[3]wikiCard');
+          dbgv && console.log(msg, '[3]wikiCard');
           return false;
         }
 
@@ -565,43 +608,51 @@
         // allow other open cards
         let nonWikiOpen = openCards.filter(c=>c !== wikiCard).length;
         if (nonWikiOpen) {
-          dbg && console.log(msg, '[4]wait', {nonWikiOpen});
+          dbgv && console.log(msg, '[4]wait', {nonWikiOpen});
           return false;
         }
 
-        dbg && console.log(msg, '[5]show');
+        dbgv && console.log(msg, '[5]show');
         return true;
       },
       showTutorPlay(ctx) {
         const msg = "App.showTutorPlay()";
-        const dbg = DBG_TUTORIAL;
+        const dbg = DBG.TUTORIAL;
+        const dbgv = dbg && DBG.VERBOSE;
         let { audio, settings, } = this;
         let { tutorPlay, tutorWiki } = settings;
         let { audioScid } = audio;
         if (!tutorPlay) {
-          dbg && console.log(msg, '[1]done', {tutorPlay});
+          dbgv && console.log(msg, '[1]done', {tutorPlay});
           return false;
         }
         if (!audioScid) {
-          dbg && console.log(msg, '[2]wait', {audioScid});
+          dbgv && console.log(msg, '[2]wait', {audioScid});
           return false;
         }
-        dbg && console.log(msg, '[3]show');
+        dbgv && console.log(msg, '[3]show');
         return true;
       },
       showTutorSearch(ctx) {
         const msg = "App.showTutorSearch()";
-        const dbg = DBG_TUTORIAL;
+        const dbg = DBG.TUTORIAL;
+        const dbgv = dbg && DBG.VERBOSE;
         let { audio, settings, } = this;
-        let { tutorSearch, tutorClose, tutorWiki, cards } = settings;
+        let { 
+          tutorAsk, tutorSearch, tutorClose, tutorWiki, cards 
+        } = settings;
 
+        if (tutorAsk) {
+          dbgv && console.log(msg, '[0]tutorAsk');
+          return false;
+        }
         if (!tutorSearch) {
-          dbg && console.log(msg, '[1]done', {tutorSearch});
+          dbgv && console.log(msg, '[1]done', {tutorSearch});
           return false;
         }
 
         if (tutorClose || tutorWiki) {
-          dbg && console.log(msg, '[2]wait', {tutorClose, tutorWiki});
+          dbgv && console.log(msg, '[2]wait', {tutorClose, tutorWiki});
           return false;
         }
 
@@ -615,31 +666,32 @@
         }, 0);
         let { audioScid } = audio;
         if (audioScid || nOpen > 0) {
-          dbg && console.log(msg, '[3]wait', {nOpen, audioScid});
+          dbgv && console.log(msg, '[3]wait', {nOpen, audioScid});
           return false;
         }
 
-        dbg && console.log(msg, '[4]show');
+        dbgv && console.log(msg, '[4]show');
         return true;
       },
       showTutorClose(ctx) {
         const msg = "App.showTutorClose()";
-        const dbg = DBG_TUTORIAL;
+        const dbg = DBG.TUTORIAL;
+        const dbgv = dbg && DBG.VERBOSE;
         let { settings, } = this;
         let { tutorClose, tutorWiki, cards } = settings;
         let wikiCard = cards.reduce((a,card)=>{
           return card.context === EbtCard.CONTEXT_WIKI ? card : a;
         }, null);
         if (!tutorClose) {
-          dbg && console.log(msg, '[1]done', {tutorClose});
+          dbgv && console.log(msg, '[1]done', {tutorClose});
           return false;
         }
         if (!wikiCard || !wikiCard.isOpen) {
-          dbg && console.log(msg, '[2]wait:wiki card hidden');
+          dbgv && console.log(msg, '[2]wait:wiki card hidden');
           return false;
         }
 
-        dbg && console.log(msg, '[3]show');
+        dbgv && console.log(msg, '[3]show');
         return true;
       },
       viewWidth(ctx) {

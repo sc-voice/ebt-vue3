@@ -107,11 +107,11 @@ export default class EbtSettings {
     this.showTrans = showTrans;
     this.showSutta = showSutta;
     this.showVinaya = showVinaya;
-    this.tutorAsk = tutorAsk;
-    this.tutorClose = tutorClose;
-    this.tutorPlay = tutorPlay;
-    this.tutorSearch = tutorSearch;
-    this.tutorSettings = tutorSettings;
+    //this.tutorAsk = tutorAsk;
+    //this.tutorClose = tutorClose;
+    //this.tutorPlay = tutorPlay;
+    //this.tutorSearch = tutorSearch;
+    //this.tutorSettings = tutorSettings;
     this.tutorWiki = tutorWiki;
     this.vnameRoot = vnameRoot;
     this.vnameTrans = vnameTrans;

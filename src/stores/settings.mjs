@@ -256,6 +256,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async clear() {
       const msg = 'settings.clear() ';
+      const dbg = DBG.TUTORIAL;
       // remove legacy ebt-site settings
       delete localStorage.settings; 
 
@@ -263,9 +264,11 @@ export const useSettingsStore = defineStore('settings', {
       Idb.clear(); 
 
       // Save new settings
-      Utils.assignTyped(this, EbtSettings.INITIAL_STATE);
+      let cleared = Utils.assignTyped({}, EbtSettings.INITIAL_STATE);
+      Object.assign(this, cleared);
+      dbg && console.log(msg, "[1]tutorAsk", cleared.tutorAsk);
       await this.saveSettings();
-      //console.log(msg, this);
+      dbg && console.log(msg, "[2]tutorAsk", settings.tutorAsk);
     },
     openCard(card) {
       const msg = "settings.openCard()";

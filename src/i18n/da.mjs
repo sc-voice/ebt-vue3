@@ -302,6 +302,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Vis SuttaCentral segment-IDer",
     "showTransText": "Vis oversættelsestekst",
+    "showTutorial": "Would you like a tutorial?",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",

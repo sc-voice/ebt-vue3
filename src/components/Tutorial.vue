@@ -55,7 +55,7 @@
   import { useSettingsStore } from "../stores/settings.mjs";
   import { useVolatileStore } from "../stores/volatile.mjs";
   import { default as EbtCard } from "../ebt-card.mjs";
-  import { DBG_TUTORIAL, DBG_STARTUP } from "../defines.mjs";
+  import { DBG, DBG_STARTUP } from "../defines.mjs";
 
   const audio = useAudioStore();
   const settings = useSettingsStore();
@@ -75,7 +75,7 @@
   });
   onMounted(()=>{
     const msg = "Tutorial.mounted()";
-    let dbg = DBG_STARTUP && DBG_TUTORIAL;
+    let dbg = DBG_STARTUP && DBG.TUTORIAL;
     let { setting, msDelay, hflip } = props;
 
     if (msDelay) {
@@ -90,7 +90,7 @@
   });
   const showTutorial = computed(()=>{
     const msg = "Tutorial.showTutorial()";
-    let dbg = DBG_TUTORIAL;
+    let dbg = DBG.TUTORIAL;
     let { setting, } = props;
 
     if (isDelayed.value) {
@@ -103,7 +103,7 @@
     return true;
   });
   function tutorialsAllowed() {
-    let dbg = DBG_TUTORIAL;
+    let dbg = DBG.TUTORIAL;
     if (!settings.loaded) {
       dbg && console.log(msg, "false");
       return false;
@@ -118,7 +118,7 @@
   const location = computed(()=>{
     const msg = 'Tutorial.location';
     let { bottom, top, setting, arrow } = props;
-    let dbg = DBG_TUTORIAL;
+    let dbg = DBG.TUTORIAL;
     let vertical = top && "top" || bottom && "bottom" || arrow;
     let loc = `${vertical} right`;
     //dbg && console.log(msg, {top, arrow, loc});

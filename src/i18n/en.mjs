@@ -154,6 +154,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Show SuttaCentral segment ids",
     "showTransText": "Show local translation text",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",

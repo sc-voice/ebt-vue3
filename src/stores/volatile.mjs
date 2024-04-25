@@ -11,7 +11,7 @@ import {
   DBG,
   DBG_CLICK, DBG_FOCUS, DBG_HOME, 
   DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
-  DBG_FETCH
+  DBG_FETCH, 
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
 import * as Idb from "idb-keyval";
@@ -37,6 +37,7 @@ const showTransientMsg = ref(false);
 const showHtmlLog = ref(false);
 const waitingContext = ref('...');
 const searchResultMap = ref({});
+const config = ref(undefined);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -44,7 +45,7 @@ const INITIAL_STATE = {
   appFocus,
   btnSettings: ref(undefined),
   collapseAppBar: ref(false),
-  config: ref(undefined),
+  config,
   debugText: ref('debugText:'),
   delayedWaiting: 0,
   ebtChips: ref(undefined),
@@ -105,6 +106,27 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    showTutorials(show) {
+      const msg = "volatile.showTutorials()";
+      const dbg = DBG.TUTORIAL;
+      let settings = useSettingsStore();
+      let { tutorialPath, homePath } = config;
+
+      settings.tutorClose = show;
+      settings.tutorPlay = show;
+      settings.tutorSearch = show;
+      settings.tutorSettings = show;
+      settings.tutorWiki = show;
+
+      if (show) {
+        tutorialPath = tutorialPath || homePath;
+        dbg && console.log(msg, "[1]show", tutorialPath);
+        this.setRoute(tutorialPath);
+      } else {
+        dbg && console.log(msg, "[2]hide", homePath);
+        this.setRoute(homePath);
+      }
+    },
     async searchResults(search, opts={}) {
       let {
         cached=false,

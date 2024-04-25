@@ -302,6 +302,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral හි කොටස් හැඳුනුම් අංක පෙන්වන්න",
     "showTransText": "පරිවර්තන පෙළ පෙන්වන්න",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Show tutorials",
     "speakPali": "Speak Pali",
     "speakSearchText": "සෙවුම් පෙළ පවසන්න",

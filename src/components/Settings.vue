@@ -56,10 +56,10 @@
               density="compact"
               :label="$t('ebt.showGdpr')">
             </v-checkbox>
-            <v-btn @click="showTutorials(true)" 
+            <v-btn @click="volatile.showTutorials(true)" 
               :disabled="settings.tutorialState(true)"
               >{{$t('ebt.showTutorials')}}</v-btn>
-            <v-btn @click="showTutorials(false)" 
+            <v-btn @click="volatile.showTutorials(false)" 
               :disabled="settings.tutorialState(false)"
               >{{$t('ebt.hideTutorials')}}</v-btn>
           </v-expansion-panel-text>
@@ -327,7 +327,7 @@ import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
 import { 
   DBG,
-  DBG_TBD, DBG_GDPR, DBG_TUTORIAL, DBG_ROUTE,
+  DBG_TBD, DBG_GDPR, DBG_ROUTE,
 } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
@@ -407,27 +407,6 @@ export default {
       volatile.showSettings = false;
       volatile.setRoute(privacyLink);
     },
-    showTutorials(show) {
-      const msg = "Settings.showTutorials()";
-      const dbg = DBG_TUTORIAL;
-      let { config, volatile, settings } = this;
-      let { tutorialPath, homePath } = config;
-
-      settings.tutorClose = show;
-      settings.tutorPlay = show;
-      settings.tutorSearch = show;
-      settings.tutorSettings = show;
-      settings.tutorWiki = show;
-
-      if (show) {
-        tutorialPath = tutorialPath || homePath;
-        dbg && console.log(msg, "[1]show", tutorialPath);
-        volatile.setRoute(tutorialPath);
-      } else {
-        dbg && console.log(msg, "[2]hide", homePath);
-        volatile.setRoute(homePath);
-      }
-    },
     validate() {
       const msg = "Settings.validate() ";
       let { settings } = this;
@@ -468,12 +447,17 @@ export default {
     },
     resetDefaults() {
       const msg = "Settings.resetDefaults() ";
+      const dbg = DBG.TUTORIAL;
       let { settings, volatile } = this;
       settings.clear();
       volatile.showSettings = false;
-      logger.warn("Settings.resetDefaults()", Object.assign({}, settings));
+      let { tutorAsk } = settings;
+      dbg && console.log(msg, '[1]tutorAsk', tutorAsk);
       volatile.setRoute(undefined, undefined, msg);
-      nextTick(()=>window.location.reload());
+      nextTick(()=>{
+        window.location.reload();
+        dbg && console.log(msg, '[2]tutorAsk', tutorAsk);
+      });
     },
     langVoices(lang, vnameKey) {
       let { settings } = this;

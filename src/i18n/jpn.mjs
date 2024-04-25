@@ -305,6 +305,7 @@ export default {
     "showReference": "代替参照の表示",
     "showTextSegmentIds": "SuttaCentral セグメントIDを表示",
     "showTransText": "訳文の表示",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "チュートリアルを表示",
     "shutdown2024": "2024年閉鎖予定",
     "speakPali": "パーリ語を話す",

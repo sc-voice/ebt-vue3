@@ -63,7 +63,7 @@
     "node-fetch": "^3.2.10",
     "scv-bilara": "^3.147.4",
     "should": "^13.2.3",
-    "supertest": "^6.3.3",
+    "supertest": "^7.0.0",
     "ts-import": "^4.0.0-beta.6",
     "vite": "^5.2.4",
     "vue-cli-plugin-vuetify": "~2.5.1"
