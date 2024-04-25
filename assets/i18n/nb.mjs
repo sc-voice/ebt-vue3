@@ -301,6 +301,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Vis SuttaCentral segmentidentifikasjon",
     "showTransText": "Vis oversatt tekst",
+    "showTutorial": "Would you like a tutorial?",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Lagre innstillinger i nettleser informasjonskapsler",

@@ -297,6 +297,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "SuttaCentral सेगमेंट आयडी दिखाए",
     "showTransText": "अनुवाद ही दिखाए",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",

@@ -303,6 +303,7 @@ export default {
     "showReference": "Zeige Vergleichstext",
     "showTextSegmentIds": "SuttaCentral-ID zeigen",
     "showTransText": "Zeige lokale Übersetzung",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Erklärhinweise einblenden",
     "shutdown2024": "Stillegung 2024",
     "speakPali": "Pali sprechen",

@@ -304,6 +304,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Zobraz čísla SuttaCentral segmentů",
     "showTransText": "Zobraz překlad",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",

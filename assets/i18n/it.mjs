@@ -306,6 +306,7 @@ export default {
     "showReference": "Mostra un riferimento alternativo",
     "showTextSegmentIds": "Mostra gli id del segmento SuttaCentral",
     "showTransText": "Mostra il testo della traduzione locale",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Mostra tutorial",
     "shutdown2024": "Chiusura programmata nel 2024",
     "speakPali": "Parlare Pali",

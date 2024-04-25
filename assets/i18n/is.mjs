@@ -303,6 +303,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Sýna SuttaCentral auðkenni hlutans",
     "showTransText": "Sýna þýðingu",
+    "showTutorial": "Would you like a tutorial?",
     "speakSearchText": "Speak search text",
     "speakTranslation": "Speak translation",
     "storeSettingsInCookies": "Geyma stillingar í vafrakökum",

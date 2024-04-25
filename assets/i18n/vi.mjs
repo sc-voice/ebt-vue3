@@ -302,6 +302,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Hiển thị SuttaCentral segment IDs",
     "showTransText": "Hiển thị bản dịch",
+    "showTutorial": "Would you like a tutorial?",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakPali": "Speak Pali",
     "speakSearchText": "Speak search text",

@@ -300,6 +300,7 @@ export default {
     "showReference": "Show alternate reference",
     "showTextSegmentIds": "Arată identificatori de segmente folosiți de SuttaCentral",
     "showTransText": "Arată versiunea tradusă",
+    "showTutorial": "Would you like a tutorial?",
     "showTutorials": "Show tutorials",
     "shutdown2024": "Scheduled shutdown in 2024",
     "speakSearchText": "Speak search text",
