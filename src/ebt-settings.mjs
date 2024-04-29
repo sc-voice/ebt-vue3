@@ -507,4 +507,26 @@ export default class EbtSettings {
     }
   }
 
+  static trilingualPattern(settings, search, trilingual) {
+    const msg = 'ebt-settings.trilingualPattern()';
+    let { refAuthor, refLang, docAuthor, docLang, } = settings;
+    let pattern = search && search.toLowerCase().trim();
+    if (trilingual) {
+      if (!/-dl\b/.test(pattern)) {
+        pattern += ` -dl ${docLang}`;
+      }
+      if (!/-da\b/.test(pattern)) {
+        pattern += ` -da ${docAuthor}`;
+      }
+      if (!/-rl\b/.test(pattern)) {
+        pattern += ` -rl ${refLang}`;
+      }
+      if (!/-ra\b/.test(pattern)) {
+        pattern += ` -ra ${refAuthor}`;
+      }
+      pattern += ` -ml1`;
+    }
+    return pattern;
+  }
+
 }

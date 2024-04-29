@@ -270,4 +270,69 @@ import should from "should";
     });
   });
 
+  it("TESTTESTtrilingualPattern()", ()=>{
+    let docLang = 'test-docLang';
+    let docAuthor = 'test-docAuthor';
+    let refLang = 'test-refLang';
+    let refAuthor = 'test-refAuthor';
+    let settings = { docLang, docAuthor, refLang, refAuthor };
+    let pat1 = 'thig1.1, thig1.2';
+
+    should(EbtSettings.trilingualPattern(settings, pat1, true))
+    .equal(
+      [
+        pat1,
+        `-dl ${docLang}`,
+        `-da ${docAuthor}`,
+        `-rl ${refLang}`,
+        `-ra ${refAuthor}`,
+        '-ml1',
+      ].join(' '), 
+    );
+
+    let pat2 = `${pat1} -dl en -da soma`;
+    should(EbtSettings.trilingualPattern(settings, pat2, true))
+    .equal(
+      [
+        pat2,
+        `-rl ${refLang}`,
+        `-ra ${refAuthor}`,
+        '-ml1',
+      ].join(' '), 
+    );
+
+    let pat3 = `${pat1} -rl en -ra soma`;
+    should(EbtSettings.trilingualPattern(settings, pat3, true))
+    .equal(
+      [
+        pat3,
+        `-dl ${docLang}`,
+        `-da ${docAuthor}`,
+        '-ml1',
+      ].join(' '), 
+    );
+
+    let pat4 = `${pat1} -da soma`;
+    should(EbtSettings.trilingualPattern(settings, pat4, true))
+    .equal(
+      [
+        pat4,
+        `-dl ${docLang}`,
+        `-rl ${refLang}`,
+        `-ra ${refAuthor}`,
+        '-ml1',
+      ].join(' '), 
+    );
+
+    let pat5 = `${pat1} -ra soma`;
+    should(EbtSettings.trilingualPattern(settings, pat5, true))
+    .equal([
+      pat5,
+      `-dl ${docLang}`,
+      `-da ${docAuthor}`,
+      `-rl ${refLang}`,
+      '-ml1',
+    ].join(' '));
+  });
+
 });

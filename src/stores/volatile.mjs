@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { SuttaRef } from "scv-esm/main.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
+import { default as EbtSettings } from "../ebt-settings.mjs";
 import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
@@ -300,19 +301,7 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.trilingualPattern() ';
       let settings = useSettingsStore();
       let { trilingual } = this;
-      let { refAuthor, refLang, docAuthor, docLang, } = settings;
-      let pattern = search && search.toLowerCase().trim();
-      if (trilingual) {
-        pattern = [
-          pattern,
-          `-dl ${docLang}`,
-          `-da ${docAuthor}`,
-          `-rl ${refLang}`,
-          `-ra ${refAuthor}`,
-          `-ml1`,
-        ].join(' ');
-      }
-      return pattern;
+      return EbtSettings.trilingualPattern(settings, search, trilingual);
     },
     searchUrl(search) {
       let settings = useSettingsStore();
