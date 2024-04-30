@@ -132,7 +132,8 @@ export const useVolatileStore = defineStore('volatile', {
       let {
         cached=false,
       } = opts;
-      let searchResult = searchResultMap.value[search];
+      let searchKey = this.trilingualPattern(search);
+      let searchResult = searchResultMap.value[searchKey];
       if (cached && searchResult) {
         return searchResult;
       }
@@ -204,7 +205,7 @@ export const useVolatileStore = defineStore('volatile', {
         mlDocs,
         cardData,
       }
-      searchResultMap.value[search] = searchResult;
+      searchResultMap.value[searchKey] = searchResult;
       return searchResult;
     },
     setTransientMessage(msg) {
