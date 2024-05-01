@@ -53,7 +53,10 @@
             uid: "(no-mlDocs?)",
           }],
         };
-        return value.mlDocs.map(mld=>mld.sutta_uid).join(", ");
+        return value.mlDocs.map(mld=>{
+          let { sutta_uid, lang, author_uid } = mld;
+          return `${sutta_uid}/${lang}/${author_uid}`;
+        }).join(", ");
       },
       updateMessage(msg) {
         this.message = msg;
