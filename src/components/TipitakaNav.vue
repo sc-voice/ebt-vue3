@@ -6,9 +6,17 @@
       </a>
     </div>
     <div>
-      <a :href="hrefSuttaCentral(sutta_uid)" target="_blank" tabindex=-1>
+      <v-select 
+        v-if="DBG?.PLAYLIST"
+        density="compact"
+        hide-details
+        :items="playlist"
+        v-model="card.location[0]"
+        @click.prevent.stop="onPlaylist"
+      ></v-select>
+      <!--a :href="hrefSuttaCentral(sutta_uid)" target="_blank" tabindex=-1>
         {{scLabel}}
-      </a>
+      </a-->
     </div>
     <div>
       <a :href="`#/sutta/${nextSuid}`" v-if="nextSuid" tabindex=-1>
@@ -29,7 +37,9 @@
   import * as Idb from "idb-keyval";
   import { default as SegmentView } from './SegmentView.vue';
   import { default as SegmentHeader } from './SegmentHeader.vue';
+  import { DBG } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
+  const playlist = ref(['thig1.10', 'an1.11-20', 'mn121']);
 
   var hello = 0;
 
@@ -47,9 +57,11 @@
         settings,
         volatile,
         suttas,
+        playlist,
         idbSuttaRef,
         taka: new Tipitaka(),
         showTakaNav,
+        DBG,
       }
     },
     components: {
@@ -60,8 +72,21 @@
       hrefSuttaCentral(sutta_uid) {
         return `https://suttacentral.net/${sutta_uid}`;
       },
+      onPlaylist(evt) {
+        const msg = "TipitakaNav.onPlaylist()";
+        const dbg = DBG.PLAYLIST;
+        dbg && console.log(msg, evt);
+      }
     },
     computed: {
+      playListItems(ctx) {
+        let { card } = ctx;
+        let dummy = ['thig1.1', 'an1.1-10', 'mn8'];
+        if (dummy.find(elt=>elt===card.location[0])) {
+          dummy.push(card.location[0]);
+        }
+        return dummy;
+      },
       isNarrow(ctx) {
         let root = document.documentElement;
         const viewRight = (window.innerWidth || root.clientWidth);
@@ -103,7 +128,7 @@
 .tipitaka-nav {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
   opacity: 0.4;
   margin-bottom: 0.5rem;
 }

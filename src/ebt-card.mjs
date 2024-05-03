@@ -46,6 +46,8 @@ export default class EbtCard {
       isOpen,
       data = undefined,
       langTrans, // factory prop
+      titleHref,
+      playListItems=["an1.1-10", "mn8", "thig1.1"],
     } = opts;
 
     if (context == null || context === '') {
@@ -91,6 +93,8 @@ export default class EbtCard {
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
         dbg && console.log(msg, `[5]${context} after`, location);
+        titleHref = titleHref || 
+          `https://suttacentral.net/${location[0]}`;
         break;
       case CONTEXT_GRAPH:
         location[0] = location[0] || 'mn44';
@@ -105,6 +109,7 @@ export default class EbtCard {
       context,
       data,
       isOpen: isOpen === undefined ? true : isOpen,
+      titleHref,
     });
 
     // secondary properties
