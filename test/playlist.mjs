@@ -2,6 +2,7 @@ import { setActivePinia, createPinia } from 'pinia';
 import { useSettingsStore } from '../src/stores/settings.mjs';
 import { default as Playlist } from "../src/playlist.mjs";
 import { DBG } from '../src/defines.mjs';
+import { Tipitaka } from "scv-esm/main.mjs";
 import should from "should";
 
 global.window = {};
@@ -23,7 +24,7 @@ let settings;
     settings.docLang = TEST_LANG;
     settings.docAuthor = TEST_AUTHOR;
   });
-  it("TESTTESTdefault ctor()", ()=>{
+  it("default ctor()", ()=>{
     const msg = "test.playlist@25";
 
     let pl = new Playlist();
@@ -32,7 +33,7 @@ let settings;
     should(pl.docAuthor).equal(TEST_AUTHOR);
     should.deepEqual(pl.suttaRefs, []);
   });
-  it("TESTTESTcustom ctor()", ()=>{
+  it("custom ctor()", ()=>{
     const msg = "test.playlist@33";
     const opts = {
       docLang: 'de',
@@ -55,7 +56,7 @@ let settings;
       'thig1.3:3.4/en/soma',
     ]);
   });
-  it("TESTTESTcursor", ()=>{
+  it("cursor", ()=>{
     const msg = "test.playlist@54";
     let suttaRefs = TEST_SUTTAREFS;
     let docLang = 'de';
@@ -79,7 +80,7 @@ let settings;
     should(pl.suttaRefs[2].segnum).equal('4.2');
     should(pl.suttaRefs[2].scid).equal('thig1.3:4.2');
   });
-  it("TESTTESTcursor errors", ()=>{
+  it("cursor errors", ()=>{
     const msg = "test.playlist@78";
     let suttaRefs = TEST_SUTTAREFS;
     let docLang = 'de';
@@ -107,7 +108,7 @@ let settings;
     catch(e) { eCaught = e; }
     should(eCaught?.message).match(/not in playlist/);
   });
-  it("TESTTESTserializable", ()=>{
+  it("serializable", ()=>{
     const msg = "test.playlist@106";
     const dbg = 0;
     let suttaRefs = TEST_SUTTAREFS;
@@ -123,7 +124,7 @@ let settings;
     let pl2 = new Playlist(opts2);
     should.deepEqual(pl2, pl);
   });
-  it("TESTTESTadvance()", ()=>{
+  it("advance()", ()=>{
     const msg = "test.playlist@127";
     let suttaRefs = TEST_SUTTAREFS;
     let docLang = 'en';
@@ -143,5 +144,35 @@ let settings;
     pl.index = 0;
     should(pl.advance(4)).equal(false);
     should(pl.cursor.toString()).equal('thig1.1/en/sujato');
+  });
+  it("empty()", ()=>{
+    let pl = new Playlist();
+    should(pl.cursor).equal(undefined);
+    should(pl.advance(1)).equal(false);
+    should(pl.advance(-1)).equal(false);
+    should(pl.cursor).equal(undefined);
+    should(pl.index).equal(0);
+  });
+  it("tipitaka", ()=>{
+    let pl = new Playlist({
+      docLang: 'en',
+      docAuthor: 'sujato',
+      suttaRefs:["thig1.2"],
+    });
+    should(pl.tipitaka).instanceOf(Tipitaka);
+
+    // Start of nikaya
+    should(pl.advance(1)).equal(true);
+    should(pl.cursor.toString()).equal("thig1.3/en/sujato");
+    should(pl.advance(-2)).equal(true);
+    should(pl.cursor.toString()).equal("thig1.1/en/sujato");
+    should(pl.advance(-1)).equal(false);
+    should(pl.cursor.toString()).equal("thig1.1/en/sujato");
+
+    // End of nikaya
+    should(pl.advance(72)).equal(true);
+    should(pl.cursor.toString()).equal("thig16.1/en/sujato");
+    should(pl.advance(1)).equal(false);
+    should(pl.cursor.toString()).equal("thig16.1/en/sujato");
   });
 });

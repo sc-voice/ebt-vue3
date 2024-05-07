@@ -3,9 +3,10 @@ import { logger } from 'log-instance/index.mjs';
 import { useSettingsStore } from './stores/settings.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
-import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
+import { Tipitaka, AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { DBG } from './defines.mjs'
 
+const tipitaka = new Tipitaka();
 
 export default class Playlist {
   constructor(opts={}) {
@@ -34,6 +35,10 @@ export default class Playlist {
       pattern,
       suttaRefs,
     });
+  }
+
+  get tipitaka() {
+    return tipitaka;
   }
 
   get cursor() {
@@ -70,6 +75,33 @@ export default class Playlist {
     return this.cursor;
   }
 
+  #advanceTipitaka(delta=1) {
+    const msg = 'Playlist.#advanceTipitaka()';
+    const dbg = DBG.PLAYLIST;
+    let sutta_uid = this.cursor.sutta_uid;
+    if (delta > 0) {
+      while (sutta_uid && delta > 0) {
+        sutta_uid = tipitaka.nextSuid(sutta_uid);
+        dbg && console.log(msg, ">", sutta_uid);
+        delta--;
+      }
+    } else if (delta < 0) {
+      while (sutta_uid && delta < 0) {
+        sutta_uid = tipitaka.previousSuid(sutta_uid);
+        dbg && console.log(msg, "<", sutta_uid);
+        delta++;
+      }
+    }
+    if (!sutta_uid) {
+      return false;
+    }
+
+    this.cursor.sutta_uid = sutta_uid;
+    this.cursor.segnum = undefined;
+    this.cursor.scid = sutta_uid;
+    return true;
+  }
+
   advance(delta=1) {
     const msg = "Playlist.advance()";
     let { index, suttaRefs } = this;
@@ -83,7 +115,12 @@ export default class Playlist {
       throw new Error(emsg);
     }
 
+    if (end === 0) {
+      return this.#advanceTipitaka(delta);
+    } 
+
     let newIndex = index+delta;
+
     if (newIndex<0 || end<newIndex || newIndex===index) {
       return false;
     }
