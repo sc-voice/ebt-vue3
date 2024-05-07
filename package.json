@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "1.478.7",
+  "version": "1.479.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
@@ -36,11 +36,7 @@
     "merkle-json": "^2.6.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-<<<<<<< HEAD
     "scv-esm": "^1.105.1",
-=======
-    "scv-esm": "^1.105.0",
->>>>>>> 0af9aba (v1.478.6 += playlist)
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
     "vite-plugin-vuetify": "^2.0.3",
