@@ -575,7 +575,7 @@ logger.logLevel = 'warn';
     should.deepEqual(card.incrementGroup({segments, delta:1}), null);
     should(card.location[0]).equal(segments[2].scid);
   });
-  it("TESTTESTscidToDocUrl() thig1.1:1.2/en/soma", ()=>{
+  it("scidToDocUrl() thig1.1:1.2/en/soma", ()=>{
     let context = EbtCard.CONTEXT_SUTTA;
     let segnum = "1.2"
     let sref = SuttaRef.create(`thig1.1:${segnum}/en/soma`);
