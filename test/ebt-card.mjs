@@ -265,7 +265,6 @@ logger.logLevel = 'warn';
 
     // since the home card is a singleton, the location must be updated
     let childPath = `#/${EbtCard.CONTEXT_WIKI}/x/y/z`;
-    console.log('DBG0513', {childPath, homePath});
     let cardHome3 = EbtCard.pathToCard({path:childPath, cards, addCard});
     should.deepEqual(cards, [cardHome]);
     should.deepEqual(cardHome.location, childPath.split('/').slice(2));

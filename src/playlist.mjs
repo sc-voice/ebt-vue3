@@ -37,7 +37,7 @@ export default class Playlist {
     });
   }
 
-  get tipitaka() {
+  static get tipitaka() {
     return tipitaka;
   }
 
@@ -127,6 +127,7 @@ export default class Playlist {
     this.index = newIndex;
     return true;
   }
+
 }
 
 

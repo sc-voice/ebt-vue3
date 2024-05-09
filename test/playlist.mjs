@@ -159,7 +159,7 @@ let settings;
       docAuthor: 'sujato',
       suttaRefs:["thig1.2"],
     });
-    should(pl.tipitaka).instanceOf(Tipitaka);
+    should(Playlist.tipitaka).instanceOf(Tipitaka);
 
     // Start of nikaya
     should(pl.advance(1)).equal(true);

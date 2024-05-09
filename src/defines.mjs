@@ -10,6 +10,7 @@ export const DBG = {
   CARD_PATH: 0,
   CLICK_SEG: 0,
   COPY_SEG: 0,
+  IDB_SUTTA: 0,
   LOG_HTML: 0,
   PLAY: 0,
   PLAYLIST: 0,
@@ -33,7 +34,6 @@ export const DBG_FOCUS        = 0;
 export const DBG_GDPR         = 0;
 export const DBG_GRAPH        = 0;
 export const DBG_HOME         = 0;
-export const DBG_IDB_SUTTA    = 0;
 export const DBG_KEY          = 0;
 export const DBG_LEGACY       = 0;
 export const DBG_LOAD         = 0;

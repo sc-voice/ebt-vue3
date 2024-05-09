@@ -7,7 +7,7 @@ import { default as IdbSutta } from '../idb-sutta.mjs';
 import { ref, shallowRef } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DBG_LOAD, DBG_IDB_SUTTA, DBG_VERBOSE,
+  DBG, DBG_LOAD, DBG_VERBOSE,
 } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
@@ -25,7 +25,7 @@ export const useSuttasStore = defineStore('suttas', {
   actions: {
     suttaUrl(idOrRef) {
       const msg = 'suttas.suttaUrl()';
-      const dbg = DBG_IDB_SUTTA
+      const dbg = DBG.IDB_SUTTA;
       let settings = useSettingsStore();
       let { langTrans, } = settings;
       let volatile = useVolatileStore();
@@ -76,7 +76,7 @@ export const useSuttasStore = defineStore('suttas', {
     },
     async saveIdbSutta(idbSutta) { // low-level API
       const msg = 'suttas.saveIdbSutta()';
-      const dbg = DBG_LOAD || DBG_IDB_SUTTA;
+      const dbg = DBG_LOAD || DBG.IDB_SUTTA;
       let { idbKey } = idbSutta;
       let vueRef = VUEREFS.get(idbKey);
       if (vueRef == null) {
@@ -102,7 +102,7 @@ export const useSuttasStore = defineStore('suttas', {
     },
     async getIdbSuttaRef(suttaRef, opts={refresh:true}) { // get/post API
       const msg = `suttas.getIdbSuttaRef()`;
-      const dbg = DBG_LOAD || DBG_IDB_SUTTA;
+      const dbg = DBG_LOAD || DBG.IDB_SUTTA;
       const dbgv = DBG_VERBOSE && dbg;
       let settings = useSettingsStore();
       try {

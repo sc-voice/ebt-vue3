@@ -6,8 +6,6 @@ import { SuttaRef } from "scv-esm/main.mjs";
 import { default as IdbSutta } from "../src/idb-sutta.mjs";
 import * as Idb from "idb-keyval";
 
-logger.logLevel = 'warn';
-
 const TESTLANG = 'testlang';
 
 const TESTSEG1_0 = {
@@ -77,8 +75,10 @@ const TESTMLDOC_EN = {
 (typeof describe === 'function') && describe("idb-sutta.mjs", ()=>{
   beforeEach(() => {
     setActivePinia(createPinia());
+    logger.logLevel = "warn";
   });
   it("private ctor", async () => {
+    logger.logLevel = "error";
     let sutta_uid = "testsuid";
     let lang = TESTLANG;
     let author = 'test-author';
@@ -92,6 +92,7 @@ const TESTMLDOC_EN = {
     should(eCaught?.message).match(/use idbSutta.create/i);
   });
   it("create(mlDoc)", ()=>{
+    logger.logLevel = "error";
     let sutta_uid = "testsuid";
     let lang = TESTLANG;
     let author = 'test-author';
@@ -108,6 +109,7 @@ const TESTMLDOC_EN = {
     should.deepEqual(sutta.segments, TESTSEGS);
   });
   it("create(mlDoc) segment order", ()=>{
+    logger.logLevel = "error";
     let sutta_uid = "testsuid";
     let lang = TESTLANG;
     let author = 'test-author';
@@ -127,6 +129,7 @@ const TESTMLDOC_EN = {
     should.deepEqual(sutta.segments, TESTSEGS);
   });
   it("create(mlDocProxy)", ()=>{
+    logger.logLevel = "error";
     let sutta_uid = "testsuid";
     let lang = TESTLANG;
     let author = 'test-author';
@@ -138,6 +141,7 @@ const TESTMLDOC_EN = {
     should.deepEqual(sutta.segments, TESTSEGS);
   });
   it("create(idbSutta)", ()=>{
+    logger.logLevel = "error";
     let sutta_uid = "testsuid";
     let lang = TESTLANG;
     let author = 'test-author';
@@ -151,6 +155,7 @@ const TESTMLDOC_EN = {
     should.deepEqual(sutta3, sutta);
   });
   it("serialize", ()=>{
+    logger.logLevel = "error";
     let sutta_uid = "testsuid";
     let lang = TESTLANG;
     let author = 'test-author';
@@ -215,6 +220,7 @@ const TESTMLDOC_EN = {
     .equal('an1.1-10/de/sabbamitta/en/soma');
   });
   it("merge mlDoc lang", ()=>{
+    logger.logLevel = "error";
     let sutta = IdbSutta.create(TESTMLDOC);
     let dstSutta = IdbSutta.create(TESTMLDOC);
     let sutta_uid = 'testsuid';
@@ -243,11 +249,13 @@ const TESTMLDOC_EN = {
     ]);
   });
   it("merge mlDoc matched", ()=>{
+    logger.logLevel = "error";
     let sutta = IdbSutta.create(TESTMLDOC);
     let dstSutta = IdbSutta.create(TESTMLDOC);
     let sutta_uid = 'testsuid';
     let lang = TESTLANG;
     let author_uid = 'test-author';
+    logger.logLevel = "error";
 
     // Mark all dstSutta segments as matched:true
     dstSutta.segments.forEach(seg=>seg.matched = true);
@@ -276,6 +284,7 @@ const TESTMLDOC_EN = {
     ]);
   });
   it("merge mlDoc refLang", ()=>{
+    logger.logLevel = "error";
     let sutta = IdbSutta.create(TESTMLDOC);
     let dstSutta = IdbSutta.create(TESTMLDOC);
     let sutta_uid = 'testsuid';
@@ -318,6 +327,7 @@ const TESTMLDOC_EN = {
     should(dstSutta.segments.length).equal(4);
   });
   it("highlightExamples()", async ()=>{
+    logger.logLevel = "error";
     let suttaBefore = IdbSutta.create(TESTMLDOC_EN);
     let suttaAfter = IdbSutta.create(TESTMLDOC_EN);
     let lang = 'en';

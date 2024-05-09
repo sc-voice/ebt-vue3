@@ -1,10 +1,11 @@
 import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
+import { default as Playlist } from './playlist.mjs';
 import { 
   Examples, AuthorsV2, SuttaRef, SuttaCentralId 
 } from 'scv-esm/main.mjs';
 import {
-  DBG_IDB_SUTTA, DBG_VERBOSE,
+  DBG, DBG_VERBOSE,
 } from './defines.mjs';
 import * as Idb from "idb-keyval";
 
@@ -19,10 +20,13 @@ export default class IdbSutta {
   static #privateCtor;
 
   constructor(opts = {}) {
+    const msg = 'IdbSutta.ctor()';
+    const dbg = DBG.IDB_SUTTA;
     if (!IdbSutta.#privateCtor) {
       throw new Error("use IdbSutta.create()");
     }
 
+    dbg && console.log(msg, opts);
     Object.assign(this, opts);
   }
   
@@ -40,7 +44,7 @@ export default class IdbSutta {
 
   static create(opts = {}) {
     const msg = 'IdbSutta.create()';
-    const dbg = DBG_IDB_SUTTA;
+    const dbg = DBG.IDB_SUTTA;
     let { 
       sutta_uid, 
       lang, 
@@ -52,8 +56,24 @@ export default class IdbSutta {
       refAuthor,
       trilingual,
       segments,
+      playlist,
     } = opts;
-    dbg && console.log(msg, opts);
+
+    if (playlist == null) {
+      let sr = SuttaRef.create({ sutta_uid, lang, author });
+      if (sr && sr.exists()) {
+        dbg && console.log(msg, '[1]', sr);
+        playlist = new Playlist({
+          docLang: lang,
+          docAuthor: author,
+          pattern: sr.toString(),
+          suttaRefs: [sr],
+        });
+      }
+      //dbg && console.log(msg, '[1]playlist', playlist);
+    } else {
+      playlist = new Playlist(playlist);
+    }
 
     try {
       IdbSutta.#privateCtor = true;
@@ -63,6 +83,7 @@ export default class IdbSutta {
           sutta_uid, lang, author, title, 
           docLang, docAuthor, refLang, refAuthor, trilingual,
           segments,
+          playlist,
         };
         IdbSutta.#copyOptional(opts, idbSutta);
         return new IdbSutta(idbSutta);
@@ -78,6 +99,7 @@ export default class IdbSutta {
         sutta_uid, lang, author, title, 
         docLang, docAuthor, refLang, refAuthor, trilingual,
         segments:[],
+        playlist,
       });
       let mlDoc = {
         sutta_uid, lang, author_uid:author, title, segMap,
@@ -94,7 +116,7 @@ export default class IdbSutta {
     sutta_uid, docLang='en', docAuthor, refLang='en', refAuthor,
   }) {
     const msg = 'IdbSutta.idbKey()';
-    const dbg = DBG_IDB_SUTTA;
+    const dbg = DBG.IDB_SUTTA;
     const dbgv = DBG_VERBOSE && dbg;
 
     let idbKey = [
@@ -142,7 +164,7 @@ export default class IdbSutta {
 
   merge(opts={}) {
     const msg = 'IdbSutta.merge()';
-    const dbg = DBG_IDB_SUTTA;
+    const dbg = DBG.IDB_SUTTA;
     let { mlDoc, refLang:refLangOpts, highlightExamples=false } = opts;
     if (mlDoc == null) {
       let emsg = `${msg} [1]mlDoc?`;
