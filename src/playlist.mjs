@@ -3,6 +3,7 @@ import { logger } from 'log-instance/index.mjs';
 import { useSettingsStore } from './stores/settings.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
+import { default as EbtCard } from './ebt-card.mjs';
 import { Tipitaka, AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { DBG } from './defines.mjs'
 
@@ -73,6 +74,40 @@ export default class Playlist {
     }
 
     return this.cursor;
+  }
+
+  static fromCard(card={}) {
+    const msg = "Playlist.fromCard()";
+    const dbg = DBG.PLAYLIST;
+    let { location, context, data } = card;
+    switch (context) {
+      case EbtCard.CONTEXT_SEARCH:
+        dbg && console.log(msg, '[1]search');
+        break;
+      default: {
+        let emsg = `${msg} invalid card context:${context}`;
+        throw new Error(emsg);
+      }
+    }
+
+    let [ pattern, docLang ] = location;
+    let suttaRefs = data.reduce((a,result)=>{
+      let { author_uid: author, uid:sutta_uid, lang } = result;
+      let sr = SuttaRef.create({ sutta_uid, lang, author });
+      sr && a.push(sr);
+      return a;
+    }, []);
+    dbg && console.log(msg, '[2]suttaRefs', suttaRefs);
+    let docAuthor = suttaRefs[0]?.author;
+
+    let playlist = new Playlist({
+      docAuthor,
+      docLang,
+      pattern,
+      suttaRefs,
+    });
+
+    return playlist;
   }
 
   #advanceTipitaka(delta=1) {

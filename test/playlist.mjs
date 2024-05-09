@@ -1,8 +1,9 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { useSettingsStore } from '../src/stores/settings.mjs';
 import { default as Playlist } from "../src/playlist.mjs";
+import { default as EbtCard } from "../src/ebt-card.mjs";
 import { DBG } from '../src/defines.mjs';
-import { Tipitaka } from "scv-esm/main.mjs";
+import { Tipitaka, SuttaRef } from "scv-esm/main.mjs";
 import should from "should";
 
 global.window = {};
@@ -174,5 +175,48 @@ let settings;
     should(pl.cursor.toString()).equal("thig16.1/en/sujato");
     should(pl.advance(1)).equal(false);
     should(pl.cursor.toString()).equal("thig16.1/en/sujato");
+  });
+  it("TESTTESTfromCard()", ()=>{
+    let lang = 'en';
+    let author_uid = 'soma';
+    let pattern = 'thig1.1-3';
+    let card = {
+      context: EbtCard.CONTEXT_SEARCH,
+      location: [ pattern, lang ],
+      data: [
+        { uid:'thig1.1', lang, author_uid },
+        { uid:'thig1.2', lang, author_uid },
+        { uid:'thig1.3', lang, author_uid },
+      ],
+    };
+    let playlist = Playlist.fromCard(card);
+    should(playlist).properties({
+      docLang: lang,
+      docAuthor: author_uid,
+      pattern,
+    });
+    should.deepEqual(playlist.suttaRefs.map(sr=>sr.sutta_uid), [
+      'thig1.1', 'thig1.2', 'thig1.3', ]);
+    should.deepEqual(playlist.suttaRefs.map(sr=>sr.lang), [
+      lang, lang, lang ]);
+    should.deepEqual(playlist.suttaRefs.map(sr=>sr.author), [
+      author_uid, author_uid, author_uid ]);
+  });
+  it("TESTTESTfromCard() error", ()=>{
+    let eCaught;
+    let pl;
+
+    eCaught = undefined;
+    try { pl = Playlist.fromCard(undefined); } 
+    catch(e) { eCaught = e; }
+    should(eCaught?.message).match(/invalid card context/);
+
+    eCaught = undefined;
+    try { 
+      pl = Playlist.fromCard({
+        context: EbtCard.CONTEXT_SUTTA,
+      }); 
+    } catch(e) { eCaught = e; }
+    should(eCaught?.message).match(/invalid card context/);
   });
 });
