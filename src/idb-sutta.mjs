@@ -1,6 +1,5 @@
 import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
-import { default as Playlist } from './playlist.mjs';
 import { 
   Examples, AuthorsV2, SuttaRef, SuttaCentralId 
 } from 'scv-esm/main.mjs';
@@ -56,24 +55,7 @@ export default class IdbSutta {
       refAuthor,
       trilingual,
       segments,
-      playlist,
     } = opts;
-
-    if (playlist == null) {
-      let sr = SuttaRef.create({ sutta_uid, lang, author });
-      if (sr && sr.exists()) {
-        dbg && console.log(msg, '[1]', sr);
-        playlist = new Playlist({
-          docLang: lang,
-          docAuthor: author,
-          pattern: sr.toString(),
-          suttaRefs: [sr],
-        });
-      }
-      //dbg && console.log(msg, '[1]playlist', playlist);
-    } else {
-      playlist = new Playlist(playlist);
-    }
 
     try {
       IdbSutta.#privateCtor = true;
@@ -83,7 +65,6 @@ export default class IdbSutta {
           sutta_uid, lang, author, title, 
           docLang, docAuthor, refLang, refAuthor, trilingual,
           segments,
-          playlist,
         };
         IdbSutta.#copyOptional(opts, idbSutta);
         return new IdbSutta(idbSutta);
@@ -99,7 +80,6 @@ export default class IdbSutta {
         sutta_uid, lang, author, title, 
         docLang, docAuthor, refLang, refAuthor, trilingual,
         segments:[],
-        playlist,
       });
       let mlDoc = {
         sutta_uid, lang, author_uid:author, title, segMap,
