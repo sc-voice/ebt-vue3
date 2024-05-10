@@ -13,6 +13,7 @@ const CONTEXT_SEARCH = "search";
 const CONTEXT_SUTTA = "sutta";
 const CONTEXT_DEBUG = "debug";
 const CONTEXT_GRAPH = "graph";
+const CONTEXT_PLAY = "play";
 const CONTEXTS = {
   [CONTEXT_WIKI]: {
     icon: "mdi-wikipedia",
@@ -20,6 +21,10 @@ const CONTEXTS = {
   },
   [CONTEXT_SEARCH]: {
     icon: "mdi-magnify",
+  },
+  [CONTEXT_PLAY]: {
+    icon: "mdi-file-document-multiple-outline",
+    alt1Icon: "mdi-graph-outline",
   },
   [CONTEXT_SUTTA]: {
     icon: "mdi-file-document-outline",
@@ -101,6 +106,15 @@ export default class EbtCard {
         location[1] = location[1] || langTrans;
         dbg && console.log(msg, `[6]${context} after`, location);
         break;
+      case CONTEXT_PLAY:
+        dbg && console.log(msg, `[7]${context} before`, location);
+        location[1] == null && (location[1] = langTrans);
+        location[2] == null && 
+          (location[2] = AuthorsV2.langAuthor(location[1]));
+        dbg && console.log(msg, `[8]${context} after`, location);
+        titleHref = titleHref || 
+          `https://suttacentral.net/${location[0]}`;
+        break;
     }
 
     Object.assign(this, {// primary properties
@@ -120,13 +134,17 @@ export default class EbtCard {
   static get CONTEXT_WIKI() { return CONTEXT_WIKI; }
   static get CONTEXT_SEARCH() { return CONTEXT_SEARCH; }
   static get CONTEXT_SUTTA() { return CONTEXT_SUTTA; }
+  static get CONTEXT_PLAY() { return CONTEXT_PLAY; }
   static get CONTEXT_DEBUG() { return CONTEXT_DEBUG; }
   static get CONTEXT_GRAPH() { return CONTEXT_GRAPH; }
 
   static routeSuttaRef(route, langTrans='en') {
-    const msg = 'ebt-card.routeSuttaRef() ';
-    let routeParts = route.split('#/sutta');
+    const msg = 'ebt-card.routeSuttaRef()';
+    let routeParts = route.split(`#/${CONTEXT_SUTTA}`);
     //console.log(msg, {route, langTrans, routeParts});
+    if (routeParts.length !== 2) {
+      routeParts = route.split(`#/${CONTEXT_PLAY}`);
+    }
     if (routeParts.length !== 2) {
       return null;
     }
@@ -168,6 +186,7 @@ export default class EbtCard {
               newLocation);
           }
         } break;
+        case CONTEXT_PLAY:
         case CONTEXT_SUTTA: {
           if (location[0].indexOf(':') >= 0) { // different scid
             dbg && console.log(msg, '[5]location', card.debugString, 
@@ -217,24 +236,30 @@ export default class EbtCard {
     return `${this.id}-title`;
   }
 
+  get isSuttaCard() {
+    let { context } = this;
+    switch (context) {
+      case CONTEXT_PLAY:
+      case CONTEXT_SUTTA: 
+        return true;
+      break;
+    }
+
+    return false;
+  }
+
   get currentElementId() {
     const msg = "ebt-data.currentElementId()";
     const dbg = DBG_CLICK;
     let { titleAnchor, tab1Id, deleteId, context, location } = this;
     let aeId = document?.activeElement?.id;
-    switch (context) {
-      case CONTEXT_SUTTA:
-        //if (aeId === tab1Id || aeId === deleteId) {
-          //dbg && console.log(msg, aeId);
-          //return titleAnchor;
-        //}
+    if (this.isSuttaCard) {
+      return location.length>0 && location[0].includes(':')
+        ? this.segmentElementId()
+        : titleAnchor;
+    } 
 
-        return location.length>0 && location[0].includes(':')
-          ? this.segmentElementId()
-          : titleAnchor;
-      default:
-        return this.titleAnchor;
-    }
+    return this.titleAnchor;
   }
 
   get debugString() {
@@ -299,7 +324,7 @@ export default class EbtCard {
           return `${a}/${encodeURIComponent(v)}`;
         }, `#/${context}`);
         
-      case CONTEXT_SUTTA: 
+      case CONTEXT_SUTTA: {
         if (dstPath) {
           let [ 
             ignored, ctx, suttaSeg, lang, author 
@@ -309,6 +334,18 @@ export default class EbtCard {
         let [ suttaSeg, lang, author ] = location;
         // NOTE: See segmentElementId()
         return `#/sutta/${suttaSeg}/${lang}/${author}`;
+      } break;
+      case CONTEXT_PLAY:  {
+        if (dstPath) {
+          let [ 
+            ignored, ctx, suttaSeg, lang, author 
+          ] =  dstPath.split('/');
+          location[0] = suttaSeg;
+        }
+        let [ suttaSeg, lang, author, pattern ] = location;
+        // NOTE: See segmentElementId()
+        return `#/play/${suttaSeg}/${lang}/${author}/${pattern}`;
+      } break;
       default:
         return location.reduce((a,v) => {
           return `${a}/${encodeURIComponent(v)}`;
@@ -406,13 +443,13 @@ export default class EbtCard {
       dbgv && console.log(msg, `[3]F context`, id, path, this.context);
       return false;
     }
-    if (context === CONTEXT_SUTTA) {
+    if (this.isSuttaCard) {
       let matchArgs = {opts, context, location, cardLocation};
       if ( this.matchPathSutta(matchArgs)) {
-        dbg && console.log(msg, `[4]T sutta`, id, path);
+        dbg && console.log(msg, `[6]T sutta`, id, path);
         return true;
       } 
-      dbg && console.log(msg, `[5]F sutta`, id, path);
+      dbg && console.log(msg, `[7]F sutta`, id, path);
       return false;
     }
     if (location.length !== cardLocation.length) {
@@ -423,12 +460,12 @@ export default class EbtCard {
         if (cardLocation[0].toLowerCase() === location[0] && 
           location.length<2) 
         {
-          dbg && console.log(msg, '[6]T location', id, path);
+          dbg && console.log(msg, '[8]T location', id, path);
           return true; // empty search path without langTrans
         }
       }
       dbg && console.log(msg, [
-        '[7]F location',
+        '[8]F location',
         id,
         path,
         `location:${JSON.stringify(location)}`,
@@ -440,15 +477,15 @@ export default class EbtCard {
       let vDecoded = decodeURIComponent(v.toLowerCase());
       let match = a && (vDecoded === cardLocation[i].toLowerCase());
       if (!match) {
-        dbgv && console.log(msg, `[8]F location`, id, path, location,
+        dbgv && console.log(msg, `[9]F location`, id, path, location,
           cardLocation);
         return false;
       }
-      dbgv && console.log(msg, `[9]T location`, id, path, location);
+      dbgv && console.log(msg, `[10]T location`, id, path, location);
       return match;
     }, true);
 
-    dbg && console.log(msg, `[10]${match?'T':'F'} location`, 
+    dbg && console.log(msg, `[11]${match?'T':'F'} location`, 
       id, path, location); 
     return match;
   }
@@ -457,7 +494,7 @@ export default class EbtCard {
     let { context } = this;
     let [...location] = this.location;
 
-    if (context === CONTEXT_SUTTA) {
+    if (this.isSuttaCard) {
       let [ scid, lang, author ] = location;
       let iSeg = segments.findIndex(seg=>seg.scid === scid);
       if (iSeg < 0) {
@@ -465,7 +502,8 @@ export default class EbtCard {
       }
       let iSegNext = iSeg + delta;
       if (iSeg<0 || iSegNext<0 || segments.length<=iSegNext) {
-        logger.debug("next segment out of bounds", {iSeg, iSegNext, delta});
+        logger.debug("next segment out of bounds", 
+          {iSeg, iSegNext, delta});
         return null;
       }
       location[0] = segments[iSegNext].scid;
@@ -497,7 +535,7 @@ export default class EbtCard {
     let [...newLocation] = this.location;
 
     let result = null;
-    if (context === CONTEXT_SUTTA) {
+    if (this.isSuttaCard) {
       if (segments.length <= 0) {
         //logger.info(msg, "no segments");
         return result;
@@ -525,7 +563,11 @@ export default class EbtCard {
     const msg = 'ebt-card.groupStartIndex() ';
     let { context, } = this;
 
-    if (context !== CONTEXT_SUTTA || segments.length <= 0) {
+    if (this.isSuttaCard) {
+      if (segments.length <= 0) {
+        return 0;
+      }
+    } else {
       return 0;
     }
 
@@ -551,7 +593,11 @@ export default class EbtCard {
     let { context } = this;
     let [...location] = this.location;
 
-    if (context !== CONTEXT_SUTTA || segments.length <= 0) {
+    if (this.isSuttaCard) {
+      if (segments.length <= 0) {
+        return result;
+      }
+    } else {
       return result;
     }
 
@@ -597,7 +643,8 @@ export default class EbtCard {
   scidToSCUrl(scid, scEndpoint="https://suttacentral.net") {
     const msg = 'EbtCard.scidToSCUrl()';
     let { id, context, location } = this;
-    if (context !== CONTEXT_SUTTA) {
+
+    if (!this.isSuttaCard) {
       let emsg = `${msg} cannot be called for context:${context}`;
       throw new Error(emsg);
     }
@@ -616,7 +663,7 @@ export default class EbtCard {
   scidToDocUrl(scid) {
     const msg = 'EbtCard.scidToDocUrl()';
     let { id, context, location } = this;
-    if (context !== CONTEXT_SUTTA) {
+    if (!this.isSuttaCard) {
       let emsg = `${msg} cannot be called for context:${context}`;
       throw new Error(emsg);
     }
@@ -634,7 +681,7 @@ export default class EbtCard {
   scidToApiUrl(scid, apiEndpoint=API_ENDPOINT) {
     const msg = 'EbtCard.scidToApiUrl()';
     let { id, context, location } = this;
-    if (context !== CONTEXT_SUTTA) {
+    if (!this.isSuttaCard) {
       let emsg = `${msg} cannot be called for context:${context}`;
       throw new Error(emsg);
     }
@@ -647,7 +694,7 @@ export default class EbtCard {
 
   segmentElementId(scid) {
     let { id, context, location } = this;
-    if (context !== CONTEXT_SUTTA) {
+    if (!this.isSuttaCard) {
       scid = scid || 'no-segment';
       return `${id}:${scid}`;
     }
@@ -683,11 +730,9 @@ export default class EbtCard {
     } else if (focusId === deleteId) {
       viewportId = deleteId;
     } else if (focusId === autofocusId) {
-      switch (context) {
-        case EbtCard.CONTEXT_SUTTA: {
-          let [ scid, lang, author ] = location;
-          viewportId = this.segmentElementId(scid);
-        } break;
+      if (this.isSuttaCard) {
+        let [ scid, lang, author ] = location;
+        viewportId = this.segmentElementId(scid);
       }
     }
 

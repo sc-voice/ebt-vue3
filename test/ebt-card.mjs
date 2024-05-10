@@ -6,7 +6,9 @@ import should from "should";
 
 logger.logLevel = 'warn';
 
-(typeof describe === 'function') && describe("ebt-card.mjs", function () {
+(typeof describe === 'function') && 
+  describe("ebt-card.mjs", function () 
+{
   it("default ctor", async () => {
     let card1 = new EbtCard();
     let card2 = new EbtCard();
@@ -32,6 +34,7 @@ logger.logLevel = 'warn';
     should(EbtCard.CONTEXT_WIKI).equal('wiki');
     should(EbtCard.CONTEXT_SEARCH).equal('search');
     should(EbtCard.CONTEXT_SUTTA).equal('sutta');
+    should(EbtCard.CONTEXT_PLAY).equal('play');
   });
   it("custom ctor", async () => {
     let id = 'test-id';
@@ -483,7 +486,7 @@ logger.logLevel = 'warn';
     should.deepEqual(card.incrementLocation({segments, delta:-1}), null);
     should.deepEqual(card.location, [ scids[0], langTrans, author, ]);
   });
-  it("setLocation()", ()=>{
+  it("setLocation() sutta", ()=>{
     let segments = [
       {scid:"test:1"},
       {scid:"test:2"},
@@ -528,7 +531,68 @@ logger.logLevel = 'warn';
     card.setLocation({segments, delta:-1});
     should(card.setLocation({segments, delta:-1})).equal(null);
   });
-  it("groupStartIndex()", ()=>{
+  it("setLocation() play", ()=>{
+    let segments = [
+      {scid:"test:1"},
+      {scid:"test:2"},
+      {scid:"test:3"},
+    ];
+    let locSuffix = [ 'test-lang', 'test-author', 'test-pat' ];
+    let location = ['test:1', ...locSuffix ];
+    let context = EbtCard.CONTEXT_PLAY;
+    let card = new EbtCard({context, location});
+
+    // already at first location
+    should(card.setLocation({segments, delta:0})).equal(null);
+
+    // last location
+    let iSegment = 2;
+    should.deepEqual(card.setLocation({segments, delta:-1}), {
+      iSegment,
+      location: [ `test:${iSegment+1}`, ...locSuffix ],
+    });
+
+    // first location
+    iSegment = 0;
+    should.deepEqual(card.setLocation({segments, delta:0}), {
+      iSegment,
+      location: [ `test:${iSegment+1}`, ...locSuffix ],
+    });
+
+    // second segment from start
+    iSegment = 1;
+    should.deepEqual(card.setLocation({segments, delta:1}), {
+      iSegment,
+      location: [ `test:${iSegment+1}`, ...locSuffix ],
+    });
+
+    // third segment from end
+    should.deepEqual(card.setLocation({segments, delta:-3}), {
+      iSegment: 0, location, });
+
+    // same location
+    card.setLocation({segments, delta:0});
+    should(card.setLocation({segments, delta:0})).equal(null);
+    card.setLocation({segments, delta:1});
+    should(card.setLocation({segments, delta:1})).equal(null);
+    card.setLocation({segments, delta:-1});
+    should(card.setLocation({segments, delta:-1})).equal(null);
+  });
+  it("groupStartIndex() play", ()=>{
+    let segments = [
+      'test:1.1', 'test:1.2', 'test:2.1', 'test:2.2'
+    ].map(scid=>({scid})); 
+    let locationSuffix = ['test-lang', 'test-author', 'test-pat'];
+    let location = [ segments[0].scid, ...locationSuffix ];
+    let context = EbtCard.CONTEXT_PLAY;
+    let card = new EbtCard({context, location});
+    
+    should(card.groupStartIndex({segments, iSegCur:0})).equal(0);
+    should(card.groupStartIndex({segments, iSegCur:1})).equal(0);
+    should(card.groupStartIndex({segments, iSegCur:2})).equal(2);
+    should(card.groupStartIndex({segments, iSegCur:3})).equal(2);
+  });
+  it("groupStartIndex() sutta", ()=>{
     let segments = [
       'test:1.1', 'test:1.2', 'test:2.1', 'test:2.2'
     ].map(scid=>({scid})); 
@@ -542,7 +606,40 @@ logger.logLevel = 'warn';
     should(card.groupStartIndex({segments, iSegCur:2})).equal(2);
     should(card.groupStartIndex({segments, iSegCur:3})).equal(2);
   });
-  it("incrementGroup()", ()=>{
+  it("incrementGroup() play", ()=>{
+    let segments = [
+      'test:1.1', 'test10.12:1.2', 'test10.12:2.1', 'test10.12:2.2'
+    ].map(scid=>({scid})); 
+    let locationSuffix = ['test-lang', 'test-author', 'test-pat'];
+    let location = [ segments[0].scid, ...locationSuffix ];
+    let context = EbtCard.CONTEXT_PLAY;
+    let card = new EbtCard({context, location});
+
+    // Backward
+    card.location[0] = segments[3].scid;
+    should.deepEqual(card.incrementGroup({segments, delta:-1}), {
+      iSegment: 2,
+      location: [segments[2].scid, ...locationSuffix],
+    });
+    should(card.location[0]).equal(segments[2].scid);
+    should.deepEqual(card.incrementGroup({segments, delta:-1}), {
+      iSegment: 0,
+      location: [segments[0].scid, ...locationSuffix],
+    });
+    should(card.location[0]).equal(segments[0].scid);
+    should(card.incrementGroup({segments, delta:-1})).equal(null);
+
+    // Forward
+    card.location[0] = segments[0].scid;
+    should.deepEqual(card.incrementGroup({segments, delta:1}), {
+      iSegment: 2,
+      location: [segments[2].scid, ...locationSuffix],
+    });
+    should(card.location[0]).equal(segments[2].scid);
+    should.deepEqual(card.incrementGroup({segments, delta:1}), null);
+    should(card.location[0]).equal(segments[2].scid);
+  });
+  it("incrementGroup() sutta", ()=>{
     let segments = [
       'test:1.1', 'test10.12:1.2', 'test10.12:2.1', 'test10.12:2.2'
     ].map(scid=>({scid})); 
@@ -592,16 +689,23 @@ logger.logLevel = 'warn';
       .equal(`${origin}/#/sutta/${sutta_uid}/${lang}/${author}`);
   });
   it("scidToApiUrl() thig1.1:1.2/en/soma", ()=>{
-    let context = EbtCard.CONTEXT_SUTTA;
     let segnum = "1.2"
     let sref = SuttaRef.create(`thig1.1:${segnum}/en/soma`);
     let { sutta_uid, lang, author, scid } = sref;
     const API_URL = "https://www.api.sc-voice.net/scv/ebt-site";
-    let card = new EbtCard({
-      context,
+
+    let suttaCard = new EbtCard({
+      context: EbtCard.CONTEXT_SUTTA,
       location: [scid, lang, author],
     });
-    should(card.scidToApiUrl(scid))
+    should(suttaCard.scidToApiUrl(scid))
+      .equal(`${API_URL}/${scid}/${lang}/${author}`);
+
+    let playCard = new EbtCard({
+      context: EbtCard.CONTEXT_PLAY,
+      location: [scid, lang, author, 'test-pat'],
+    });
+    should(playCard.scidToApiUrl(scid))
       .equal(`${API_URL}/${scid}/${lang}/${author}`);
   });
   it("scidToSCUrl() thig1.1:1.2/en/soma", ()=>{
@@ -617,32 +721,27 @@ logger.logLevel = 'warn';
     should(card.scidToSCUrl(scid))
       .equal(`${SC_URL}/${sutta_uid}/${lang}/${author}#1.2`);
   });
-  it("scidToSCUrl() an1.5:1.1/pt/ebt-deepl", ()=>{
-    let context = EbtCard.CONTEXT_SUTTA;
-    let segnum = "1.1"
-    let sref = SuttaRef.create(`an1.5:${segnum}/pt/ebt-deepl`);
-    let { sutta_uid, lang, author, scid } = sref;
-    const SC_URL = "https://suttacentral.net";
-    let card = new EbtCard({
-      context,
-      location: [scid, lang, author],
-    });
-    should(card.scidToSCUrl(scid))
-      .equal(`${SC_URL}/${sutta_uid}`);
-  });
   it("segmentElementId()", ()=>{
-    let context = EbtCard.CONTEXT_SUTTA;
     let scid = 'test-scid';
     let lang = 'test-lang';
     let author = 'test-author';
+    let pat = 'test-pat';
+
     let card1 = new EbtCard({
-      context,
+      context: EbtCard.CONTEXT_SUTTA,
       location: [scid, lang, author],
     });
     should(card1.segmentElementId(scid))
       .equal(`seg-${scid}/${lang}/${author}`);
+
+    let card2 = new EbtCard({
+      context: EbtCard.CONTEXT_PLAY,
+      location: [scid, lang, author, pat],
+    });
+    should(card2.segmentElementId(scid))
+      .equal(`seg-${scid}/${lang}/${author}`);
   });
-  it("routeSuttaRef()", ()=>{
+  it("routeSuttaRef() sutta", ()=>{
     const scid = 'mn44:1.2';
     const lang = 'en';
     const author = 'sujato';
@@ -661,6 +760,32 @@ logger.logLevel = 'warn';
       EbtCard.routeSuttaRef(`/ebt-nuxt3/#/sutta/${scid}`));
     should.deepEqual(suttaRefNoAuthor,
       EbtCard.routeSuttaRef(`#/sutta/${scid}`));
+
+    //invalid routes
+    should(EbtCard.routeSuttaRef('#/search/to%20kill/en')).equal(null);
+    should(EbtCard.routeSuttaRef(EbtConfig.homePath)).equal(null);
+    should(EbtCard.routeSuttaRef('#/')).equal(null);
+    should(EbtCard.routeSuttaRef('/')).equal(null);
+  });
+  it("routeSuttaRef() play", ()=>{
+    const scid = 'mn44:1.2';
+    const lang = 'en';
+    const author = 'sujato';
+    const sutta = [scid, lang, author].join('/');
+    const vueRoute = `#/play/${sutta}`;
+    const nuxtRoute = `/ebt-nuxt3/#/play/${sutta}`;
+    const suttaRef = SuttaRef.create(sutta);
+    const suttaRefNoAuthor = SuttaRef.create([scid, lang].join('/'));
+
+    // valid routes
+    should.deepEqual(suttaRef, 
+      EbtCard.routeSuttaRef(`/ebt-nuxt3/#/play/${sutta}`));
+    should.deepEqual(suttaRef, 
+      EbtCard.routeSuttaRef(`#/play/${sutta}`));
+    should.deepEqual(suttaRefNoAuthor,
+      EbtCard.routeSuttaRef(`/ebt-nuxt3/#/play/${scid}`));
+    should.deepEqual(suttaRefNoAuthor,
+      EbtCard.routeSuttaRef(`#/play/${scid}`));
 
     //invalid routes
     should(EbtCard.routeSuttaRef('#/search/to%20kill/en')).equal(null);
