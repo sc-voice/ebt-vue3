@@ -153,17 +153,22 @@
       async bindAudioSutta(route) {
         let { volatile, suttas, audio, settings, } = this;
         let { routeCard } = volatile;
-        if (routeCard?.context === EbtCard.CONTEXT_SUTTA) {
-          let suttaRef = EbtCard.routeSuttaRef(route, settings.langTrans);
-          let idbSuttaRef = await suttas.getIdbSuttaRef(suttaRef);
-          let idbSutta = idbSuttaRef.value;
-          let { sutta_uid, segnum } = suttaRef;
-          let { segments } = idbSutta;
-          let incRes = routeCard.incrementLocation({segments, delta:0});
-          let { iSegment=0 } = incRes || {};
-          audio.setAudioSutta(idbSutta, iSegment);
-        } else {
-          audio.setAudioSutta(null);
+        switch (routeCard?.context) {
+          case EbtCard.CONTEXT_PLAY: 
+          case EbtCard.CONTEXT_SUTTA: {
+            let suttaRef = EbtCard.routeSuttaRef(route, 
+              settings.langTrans);
+            let idbSuttaRef = await suttas.getIdbSuttaRef(suttaRef);
+            let idbSutta = idbSuttaRef.value;
+            let { sutta_uid, segnum } = suttaRef;
+            let { segments } = idbSutta;
+            let incRes = routeCard.incrementLocation({segments, delta:0});
+            let { iSegment=0 } = incRes || {};
+            audio.setAudioSutta(idbSutta, iSegment);
+          } break;
+          default: {
+            audio.setAudioSutta(null);
+          } break;
         }
       },
       routeScid(route) {
@@ -237,6 +242,7 @@
                 break;
               default:
               case EbtCard.CONTEXT_SEARCH:
+              case EbtCard.CONTEXT_PLAY:
               case EbtCard.CONTEXT_SUTTA:
                 dbg && console.log(msg, '[6]focus', `${id} ${context}`);
                 volatile.focusCardElementId(card);

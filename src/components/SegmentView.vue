@@ -167,8 +167,9 @@
             volatile.setRoute(hash, undefined, msg);
           }
         } else {
+          let { context } = card;
           let [ locationScid, lang, author ] = card.location;
-          let hash = `#/sutta/${scid}/${lang}/${author}`
+          let hash = `#/${context}/${scid}/${lang}/${author}`
           card.location[0] = scid;
           //console.log(msg, 'segment', scid);
           volatile.setRoute(hash, undefined, msg);

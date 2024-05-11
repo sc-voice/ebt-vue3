@@ -7,7 +7,7 @@ import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG,
-  DBG_OPEN_CARD, DBG_ADD_CARD, DBG_HOME, 
+  DBG_OPEN_CARD, DBG_HOME, 
   DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, 
   DBG_VERBOSE, DBG_REMOVE_CARD,
 } from '../defines.mjs';
@@ -41,7 +41,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async loadSettings(config) {
       let msg = 'settings.loadSettings() ';
-      let dbg = DBG.SETTINGS || DBG_ADD_CARD;
+      let dbg = DBG.SETTINGS || DBG.ADD_CARD;
       if (this.loaded) {
         return this;
       }
@@ -160,7 +160,7 @@ export const useSettingsStore = defineStore('settings', {
       const msg = "settings.addCard()";
       let { cards, langTrans } = this;
       let { isOpen, context, location } = opts;
-      let dbg = DBG_ADD_CARD, DBG_OPEN_CARD;
+      let dbg = DBG.ADD_CARD || DBG_OPEN_CARD;
       let card = null;
       let loc = location ? location.join('/') : loc;
       switch (context) {
@@ -175,6 +175,7 @@ export const useSettingsStore = defineStore('settings', {
         } break;
         case EbtCard.CONTEXT_DEBUG:
         case EbtCard.CONTEXT_SEARCH:
+        case EbtCard.CONTEXT_PLAY:
         case EbtCard.CONTEXT_SUTTA:
         case EbtCard.CONTEXT_GRAPH:
           dbg && console.log(msg, `[2]${context}`, {isOpen, loc});

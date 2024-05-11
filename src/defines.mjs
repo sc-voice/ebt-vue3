@@ -6,6 +6,7 @@ export const ACTION = {
 };
 
 export const DBG = {
+  ADD_CARD: 0,
   CARD: 0,
   CARD_PATH: 0,
   CLICK_SEG: 0,
@@ -20,7 +21,6 @@ export const DBG = {
   TUTORIAL: 0,
   VERBOSE: 0,
 };
-export const DBG_ADD_CARD     = 0;
 export const DBG_OPEN_CARD    = 0;
 export const DBG_REMOVE_CARD  = 0;
 export const DBG_AUDIO        = 0;

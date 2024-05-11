@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { 
   DBG,
-  DBG_ADD_CARD, DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
+  DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
   DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, 
   DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
@@ -43,7 +43,7 @@ const API_ENDPOINT = 'https://www.api.sc-voice.net/scv/ebt-site';
 export default class EbtCard {
   constructor(opts = {}) {
     let msg = 'ebt-card.ctor() ';
-    let dbg = DBG_ADD_CARD;
+    let dbg = DBG.ADD_CARD;
     let {
       id,
       context,

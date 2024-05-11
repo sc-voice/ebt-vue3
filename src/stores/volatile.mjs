@@ -84,9 +84,13 @@ export const useVolatileStore = defineStore('volatile', {
       return ICON_LOADING;
     },
     audioCard() {
-      return routeCard.value?.context === EbtCard.CONTEXT_SUTTA 
-        ? routeCard.value 
-        : null;
+      switch (routeCard.value?.context) {
+        case EbtCard.CONTEXT_PLAY:
+        case EbtCard.CONTEXT_SUTTA:
+          return true;
+      }
+
+      return null;
     },
     displayBox() {
       let root = document?.documentElement;
@@ -352,11 +356,12 @@ export const useVolatileStore = defineStore('volatile', {
       if (window.location.hash === route) {
         if (card.isOpen) {
           switch (card.context) {
-            case 'wiki':
+            case EbtCard.CONTEXT_WIKI:
               // dbg && console.log(msg, "[4]n/a", card.debugString);
               break;
-            case 'search':
-            case 'sutta':
+            case EbtCard.CONTEXT_SEARCH:
+            case EbtCard.CONTEXT_PLAY:
+            case EbtCard.CONTEXT_SUTTA:
               dbg && console.log(msg, "[5]scrollToCard", 
                 card.debugString);
               /* await */ this.scrollToCard(card);

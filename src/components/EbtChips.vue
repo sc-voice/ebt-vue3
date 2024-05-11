@@ -87,7 +87,14 @@
           nextIndex = (index + delta + cards.length) % cards.length;
         }
         let card = cards[nextIndex];
-        volatile.setRoute(card, card.context===EbtCard.CONTEXT_SUTTA);
+        let keepFocus = false;
+        switch (card.context) {
+          case EbtCard.CONTEXT_PLAY:
+          case EbtCard.CONTEXT_SUTTA:
+            keepFocus = true;
+            break;
+        }
+        volatile.setRoute(card, keepFocus);
       },
       async onTab(evt) {
         let msg = "EbtChips.onTab()";

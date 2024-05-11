@@ -57,6 +57,10 @@
             :card="card" 
             :routeCard="routeCard"
           ></sutta-view>
+          <play-view v-if="card.context===CONTEXT_PLAY && routeCard" 
+            :card="card" 
+            :routeCard="routeCard"
+          ></play-view>
           <graph-view v-if="card.context===CONTEXT_GRAPH"
             :card="card"
           >
@@ -79,6 +83,7 @@
   import { default as HomeView } from './HomeView.vue';
   import { default as SearchView } from './SearchView.vue';
   import { default as SuttaView } from './SuttaView.vue';
+  import { default as PlayView } from './PlayView.vue';
   import { default as EbtCard } from '../ebt-card.mjs';
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
@@ -110,6 +115,7 @@
       DebugView,
       GraphView,
       HomeView,
+      PlayView,
       SearchView,
       SuttaView,
     },
@@ -224,6 +230,7 @@
         switch (context) {
           case EbtCard.CONTEXT_WIKI:
           case EbtCard.CONTEXT_GRAPH:
+          case EbtCard.CONTEXT_PLAY:
           case EbtCard.CONTEXT_SUTTA: {
             let { alt1Href } = this;
             volatile.setRoute(alt1Href);
@@ -333,6 +340,13 @@
           case EbtCard.CONTEXT_WIKI: {
             href = config.homePath;
           } break;
+          case EbtCard.CONTEXT_PLAY: {
+            let loc3 = location.slice(0,3);
+            let sref = SuttaRef.create(loc3.join('/'), docLang);
+            let { sutta_uid, lang, author } = sref;
+            href = ['#', EbtCard.CONTEXT_GRAPH, sutta_uid, lang, author]
+              .join('/');
+          } break;
           case EbtCard.CONTEXT_SUTTA: {
             let sref = SuttaRef.create(location.join('/'), docLang);
             let { sutta_uid, lang, author } = sref;
@@ -403,6 +417,7 @@
       CONTEXT_DEBUG: (ctx)=>EbtCard.CONTEXT_DEBUG,
       CONTEXT_WIKI: (ctx)=>EbtCard.CONTEXT_WIKI,
       CONTEXT_SEARCH: (ctx)=>EbtCard.CONTEXT_SEARCH,
+      CONTEXT_PLAY: (ctx)=>EbtCard.CONTEXT_PLAY,
       CONTEXT_SUTTA: (ctx)=>EbtCard.CONTEXT_SUTTA,
       CONTEXT_GRAPH: (ctx)=>EbtCard.CONTEXT_GRAPH,
       contexts: (ctx) => {
@@ -416,6 +431,9 @@
         },{
           title: $t('ebt.context-search'),
           value: EbtCard.CONTEXT_SEARCH,
+        },{
+          title: $t('ebt.context-play'),
+          value: EbtCard.CONTEXT_PLAY,
         },{
           title: $t('ebt.context-debug'),
           value: EbtCard.CONTEXT_DEBUG,
