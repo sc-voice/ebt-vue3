@@ -3,6 +3,7 @@ import { logger } from 'log-instance/index.mjs';
 import { useSettingsStore } from './stores/settings.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
+import { ref } from 'vue';
 import { default as EbtCard } from './ebt-card.mjs';
 import { Tipitaka, AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { DBG } from './defines.mjs'
@@ -32,14 +33,34 @@ export default class Playlist {
     Object.assign(this, {
       docAuthor,
       docLang,
-      index,
       pattern,
       suttaRefs,
+    });
+
+    Object.defineProperty(this, "_index", {
+      value: ref(index),
     });
   }
 
   static get tipitaka() {
     return tipitaka;
+  }
+
+  get index() {
+    return this._index.value;
+  }
+
+  set index(value) {
+    this._index.value = 0;
+    return this.advance(value);
+  }
+
+  get page() {
+    return this.index+1;
+  }
+
+  set page(value) {
+    return this.index = value-1;
   }
 
   get cursor() {
@@ -61,11 +82,10 @@ export default class Playlist {
         dbg && console.log(msg, '[2]!author', srv.author, sr.author);
         return a;
       }
-
       sr.segnum = srv.segnum;
       sr.scid = srv.scid;
       sr.author = sr.author || srv.author;
-      this.index = i;
+      this._index.value = i;
       return true;
     }, false);
     if (!exists) {
@@ -139,10 +159,10 @@ export default class Playlist {
 
   advance(delta=1) {
     const msg = "Playlist.advance()";
-    let { index, suttaRefs } = this;
+    let { suttaRefs } = this;
     let end = suttaRefs.length - 1;
-    if (typeof index !== 'number') {
-      index = 0;
+    if (typeof this._index.value !== 'number') {
+      this._index.value = 0;
       return true;
     }
     if (typeof delta !== 'number') {
@@ -154,13 +174,17 @@ export default class Playlist {
       return this.#advanceTipitaka(delta);
     } 
 
-    let newIndex = index+delta;
+    let newIndex = this._index.value+delta;
 
-    if (newIndex<0 || end<newIndex || newIndex===index) {
+    if (newIndex<0 || end<newIndex || newIndex===this._index.value) {
       return false;
     }
-    this.index = newIndex;
+    this._index.value = newIndex;
     return true;
+  }
+
+  clear() {
+    this._index.value = 0;
   }
 
 }

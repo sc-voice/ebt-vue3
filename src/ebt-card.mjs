@@ -24,7 +24,6 @@ const CONTEXTS = {
   },
   [CONTEXT_PLAY]: {
     icon: "mdi-file-document-multiple-outline",
-    alt1Icon: "mdi-graph-outline",
   },
   [CONTEXT_SUTTA]: {
     icon: "mdi-file-document-outline",

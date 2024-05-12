@@ -15,7 +15,7 @@ const TEST_PATTERN = 'test-pattern';
 let settings;
 
 (typeof describe ==='function') && 
- describe("playlist.mjs", function () {
+ describe("TESTTESTplaylist.mjs", function () {
 
   beforeEach(() => {
     window.localStorage = global.localStorage;

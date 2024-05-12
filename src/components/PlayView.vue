@@ -1,9 +1,20 @@
 <template>
   <v-sheet>
-    <tipitaka-nav :card="card"/>
+    <v-pagination 
+      v-model="playlist.page"
+      :length="playlist.suttaRefs.length"
+      :aria-label="playlist.cursor.sutta_uid"
+      :current-page-aria-label="playlist.cursor.sutta_uid"
+      @click.stop.prevent="onClickPlaylist"
+    ></v-pagination>
     <sutta-core :card="card" :routeCard="routeCard"
     ></sutta-core>
-    <tipitaka-nav :card="card" class="mt-3"/>
+    <v-pagination 
+      v-model="playlist.page"
+      :length="playlist.suttaRefs.length"
+      :aria-label="playlist.cursor.sutta_uid"
+      @click.stop.prevent="onClickPlaylist"
+    ></v-pagination>
   </v-sheet>
 </template>
 
@@ -12,9 +23,18 @@
   import { ref } from "vue";
   import { default as SuttaCore } from './SuttaCore.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
+  import { default as Playlist } from '../playlist.mjs';
   import { 
     DBG, DBG_MOUNTED, DBG_VERBOSE, 
   } from '../defines.mjs';
+
+  const DUMMY_SUTTAREFS = [
+    "thig1.1/en/soma", 
+    "thig1.2/en/soma", 
+    "thig1.3/en/soma",
+    "thig1.4/en/soma",
+    "thig1.5/en/soma",
+  ];
 
   export default {
     inject: ['config'],
@@ -25,6 +45,9 @@
     setup() {
       return {
         taka: new Tipitaka(),
+        playlist: new Playlist({
+          suttaRefs: DUMMY_SUTTAREFS,
+        }),
       }
     },
     components: {
@@ -34,9 +57,20 @@
     mounted() {
       const msg = 'PlayView.mounted() ';
       const dbg = DBG_MOUNTED;
-      dbg && console.log(msg);
+      console.log(msg);
     },
     methods: {
+      onClickPlaylist(evt) {
+        const msg = "PlayView.onClickPlaylist()";
+        let { playlist } = this;
+        console.log(msg, `${playlist.cursor}`);
+      },
+      testNext(value=1) {
+        const msg = "PlayView.testNext()";
+        let { playlist } = this;
+        let res = playlist.advance(value-1);
+        console.log(msg, res, playlist.index);
+      },
     },
     computed: {
     },
@@ -44,5 +78,13 @@
 </script>
 
 <style >
+.playlist-slider {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.playlist-label {
+  color: orange;
+  font-weight: 800;
+}
 </style>
 
