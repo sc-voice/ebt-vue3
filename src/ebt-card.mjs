@@ -1,9 +1,10 @@
 import { logger } from 'log-instance/index.mjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
+import { default as Playlist } from './playlist.mjs';
 import { 
   DBG,
-  DBG_CLICK, DBG_FOCUS, DBG_MOUNTED,
+  DBG_CLICK, DBG_FOCUS, 
   DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, 
   DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
@@ -51,7 +52,7 @@ export default class EbtCard {
       data = undefined,
       langTrans, // factory prop
       titleHref,
-      playListItems=["an1.1-10", "mn8", "thig1.1"],
+      playlist,
     } = opts;
 
     if (context == null || context === '') {
@@ -116,6 +117,11 @@ export default class EbtCard {
         break;
     }
 
+    if (playlist && !(playlist instanceof Playlist)) {
+      playlist = new Playlist(playlist);
+      dbg && console.log(msg, '[9]playlist', playlist);
+    }
+
     Object.assign(this, {// primary properties
       id,
       location,
@@ -123,6 +129,7 @@ export default class EbtCard {
       data,
       isOpen: isOpen === undefined ? true : isOpen,
       titleHref,
+      playlist,
     });
 
     // secondary properties
@@ -175,7 +182,7 @@ export default class EbtCard {
       dbg && console.log(msg, '[3]existing', card.debugString);
     } 
 
-    if (card) {
+    if (card) { // context already matches, so check location
       switch (card.context) {
         case CONTEXT_WIKI: {
           let newLocation = path.split('/').slice(2);
@@ -299,7 +306,7 @@ export default class EbtCard {
 
   onAfterMounted({settings, volatile}) {
     const msg = "ebt-card.onAfterMounted()";
-    const dbg = DBG_ROUTE || DBG_MOUNTED;
+    const dbg = DBG_ROUTE || DBG.MOUNTED;
     let { langTrans, } = settings;
     let { id } = this;
     let route = window.location.hash.split('#')[1] || '';
@@ -355,10 +362,18 @@ export default class EbtCard {
   chipTitle($t=((k)=>k)) {
     let { location, context } = this;
     if (location.length) {
-      if (context === CONTEXT_SEARCH) {
-        return location[0];
+      switch (context) {
+        case CONTEXT_PLAY: {
+          let { playlist={} } = this;
+          let { index, length } = playlist;
+          let position = `${index+1}/${length}`;
+          return `${location[0]} ${position}`;
+        }
+        case CONTEXT_SEARCH:
+          return location[0];
+        default:
+          return location.join('/');
       }
-      return location.join('/');
     }
     return $t(`ebt.no-location-${context}`);
   }

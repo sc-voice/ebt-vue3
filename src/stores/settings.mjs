@@ -88,7 +88,7 @@ export const useSettingsStore = defineStore('settings', {
       this.loaded = true;
       return this;
     },
-    pathToCard(fullPath) {
+    pathToCard(fullPath, addCard) {
       const msg = `settings.pathToCard() `;
       const dbg = DBG.CARD_PATH;
       let { cards } = this;
@@ -96,7 +96,7 @@ export const useSettingsStore = defineStore('settings', {
         path:fullPath, 
         cards, 
         defaultLang: this.langTrans,
-        addCard: (opts) => this.addCard(opts),
+        addCard: addCard || ((opts) => this.addCard(opts)),
       });
       if (card) {
         dbg && console.log(msg, '[1]pathToCard', fullPath, 
@@ -173,18 +173,25 @@ export const useSettingsStore = defineStore('settings', {
           }, opts));
           this.cards.push(card);
         } break;
+        case EbtCard.CONTEXT_PLAY: {
+          let { playlist } = opts;
+          dbg && console.log(msg, `[2]${context}`, {
+            isOpen, loc, playlist});
+          card = new EbtCard(Object.assign({langTrans}, opts));
+          this.cards.push(card);
+          /* await */ this.saveSettings();
+        } break;
         case EbtCard.CONTEXT_DEBUG:
         case EbtCard.CONTEXT_SEARCH:
-        case EbtCard.CONTEXT_PLAY:
         case EbtCard.CONTEXT_SUTTA:
         case EbtCard.CONTEXT_GRAPH:
-          dbg && console.log(msg, `[2]${context}`, {isOpen, loc});
+          dbg && console.log(msg, `[3]${context}`, {isOpen, loc});
           card = new EbtCard(Object.assign({langTrans}, opts));
           this.cards.push(card);
           /* await */ this.saveSettings();
           break;
         default:
-          dbg && console.warn(msg, `[3]${context}`, {isOpen, loc});
+          dbg && console.warn(msg, `[4]${context}`, {isOpen, loc});
           break;
       }
       return card;

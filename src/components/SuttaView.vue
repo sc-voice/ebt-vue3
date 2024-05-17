@@ -49,7 +49,7 @@
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
     DBG,
-    DBG_CLICK, DBG_MOUNTED, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
+    DBG_CLICK, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
     DBG_VERBOSE, 
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
@@ -78,7 +78,7 @@
     },
     async mounted() {
       const msg = 'SuttaView.mounted() ';
-      const dbg = DBG_MOUNTED;
+      const dbg = DBG.MOUNTED;
       let { $route, suttas, settings, volatile, card, config, } = this;
       let { fullPath } = $route;
       let { 

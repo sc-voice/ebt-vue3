@@ -219,4 +219,22 @@ let settings;
     } catch(e) { eCaught = e; }
     should(eCaught?.message).match(/invalid card context/);
   });
+  it("serialize", ()=>{
+    let index = 1;
+    const opts = {
+      docLang: 'de',
+      docAuthor: 'sabbamitta',
+      suttaRefs: TEST_SUTTAREFS,
+      pattern: TEST_PATTERN,
+    }
+    let pl1 = new Playlist(opts);
+    pl1.index = index;
+    let json = JSON.stringify(pl1, null, 2);
+    let pl2 = new Playlist(JSON.parse(json));
+    should.deepEqual(pl2.suttaRefs, pl1.suttaRefs);
+    should.deepEqual(pl2.docLang, pl1.docLang);
+    should.deepEqual(pl2.docAuthor, pl1.docAuthor);
+    should.deepEqual(pl2.pattern, pl1.pattern);
+    should(pl1.index).equal(pl2.index);
+  });
 });

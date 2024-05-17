@@ -92,7 +92,8 @@
   import { SuttaRef } from 'scv-esm';
   import { nextTick, ref } from "vue";
   import { 
-    DBG_CLICK, DBG_MOUNTED, DBG_FOCUS, DBG_SCROLL,
+    DBG,
+    DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
     DBG_UPDATED, DBG_VISIBLE, DBG_BLUR, DBG_VERBOSE,
     DBG_VIEWPORT,
   } from '../defines.mjs';
@@ -121,7 +122,7 @@
     },
     beforeMount() {
       const msg = 'EbtCard.beforeMount() ';
-      const dbg = DBG_MOUNTED;
+      const dbg = DBG.MOUNTED;
       let { card, $route, volatile, settings } = this;
       let { fullPath:path } = $route;
       let { langTrans:defaultLang } = settings;
@@ -134,7 +135,7 @@
     },
     mounted() {
       const msg = 'EbtCard.mounted() ';
-      const dbg = DBG_MOUNTED; 
+      const dbg = DBG.MOUNTED; 
       let { card } = this;
       dbg && console.log(msg, '[1]addIntersectionObserver',
         card.debugString, );
@@ -142,13 +143,13 @@
     },
     unmounted() {
       const msg = 'EbtCard.unmounted() ';
-      const dbg = DBG_MOUNTED;
+      const dbg = DBG.MOUNTED;
       let { card } = this;
       //dbg && console.log(msg, card.debugString);
     },
     deactivated() {
       const msg = 'EbtCard.deactivated() ';
-      const dbg = DBG_MOUNTED;
+      const dbg = DBG.MOUNTED;
       dbg && console.log(msg, this.debugString);
     },
     updated() {

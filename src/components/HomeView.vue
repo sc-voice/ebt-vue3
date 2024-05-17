@@ -12,7 +12,8 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { logger } from 'log-instance/index.mjs';
   import { 
-    DBG_MOUNTED, DBG_HOME, DBG_WIKI, 
+    DBG,
+    DBG_HOME, DBG_WIKI, 
     DBG_FOCUS, DBG_CLICK, DBG_VERBOSE,
   } from '../defines.mjs';
   import { ref } from "vue";
@@ -49,7 +50,7 @@
     },
     async mounted() {
       const msg = "HomeView.mounted() ";
-      const dbg = DBG_HOME || DBG_MOUNTED || DBG_WIKI;
+      const dbg = DBG_HOME || DBG.MOUNTED || DBG_WIKI;
       let { card, $route, volatile, settings } = this;
       let { langTrans } = settings;
       let { fullPath } = $route;

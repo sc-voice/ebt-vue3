@@ -24,8 +24,9 @@
   import { default as SuttaCore } from './SuttaCore.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { default as Playlist } from '../playlist.mjs';
+  import { useAudioStore } from '../stores/audio.mjs';
   import { 
-    DBG, DBG_MOUNTED, DBG_VERBOSE, 
+    DBG, DBG_VERBOSE, 
   } from '../defines.mjs';
 
   const DUMMY_SUTTAREFS = [
@@ -45,6 +46,7 @@
     setup() {
       return {
         taka: new Tipitaka(),
+        audio: useAudioStore(),
         playlist: new Playlist({
           suttaRefs: DUMMY_SUTTAREFS,
         }),
@@ -56,14 +58,17 @@
     },
     mounted() {
       const msg = 'PlayView.mounted() ';
-      const dbg = DBG_MOUNTED;
-      console.log(msg);
+      const dbg = DBG.MOUNTED;
+      let { card } = this;
+      let { playlist } = card;
+      console.log(msg, playlist);
     },
     methods: {
       onClickPlaylist(evt) {
         const msg = "PlayView.onClickPlaylist()";
-        let { playlist } = this;
+        let { playlist, audio } = this;
         console.log(msg, `${playlist.cursor}`);
+        audio.syncPlaylist(playlist);
       },
       testNext(value=1) {
         const msg = "PlayView.testNext()";

@@ -289,6 +289,44 @@ export const useAudioStore = defineStore('audio', {
     back() {
       return this.incrementSegment(-1);
     },
+    async syncPlaylist(playlist) {
+      const msg = "audio.syncPlaylist()";
+      const dbg = DBG.TEST;
+      let settings = useSettingsStore();
+      let volatile = useVolatileStore();
+      let { routeCard } = volatile;
+      let { audioSutta } = this;
+      let { sutta_uid:suid, lang, author } = audioSutta;
+      let { index, cursor }  = playlist;
+      let { sutta_uid }  = cursor;
+      dbg && console.log(msg, {suid, index, sutta_uid}, 
+        routeCard.chipTitle());
+      //let sutta_uid = tipitaka.nextSuid(suid, Tipitaka.folderOfSuid);
+      let incRes = null;
+      if (sutta_uid) {
+      /*
+        routeCard.open(false);
+        let sref = SuttaRef.create({sutta_uid, lang, author});
+        let suttas = useSuttasStore();
+        let nextSuttaRef = await suttas.getIdbSuttaRef(sref);
+        settings.removeCard(routeCard, EbtConfig);
+        let nextSutta = nextSuttaRef.value;
+        let nextPath = [
+          '/sutta', sutta_uid, lang, author
+        ].join('/');
+        let nextCard = settings.pathToCard(nextPath);
+        if (nextCard) {
+          volatile.setRouteCard(nextCard);
+          this.setAudioSutta(nextSutta);
+          incRes = this.setLocation(0);
+          dbg && console.log(msg, '[2]tipitaka', sref, incRes );
+        } else {
+          dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
+        }
+      */
+      }
+      return incRes;
+    },
     async nextTipitaka() {
       const msg = "audio.nextTipitaka()";
       const dbg = DBG.PLAY;

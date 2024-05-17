@@ -202,7 +202,7 @@
     DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
     DBG_ROUTE, DBG_WAITING, 
-    DBG_GDPR, DBG_MOUNTED, DBG_WIKI, DBG_AUDIO,
+    DBG_GDPR, DBG_WIKI, DBG_AUDIO,
     DBG_VERBOSE,
 
     APP_BAR_H,
@@ -432,7 +432,7 @@
     },
     async mounted() {
       const msg = 'App.mounted()';
-      const dbg = DBG_MOUNTED || DBG_WIKI || DBG_AUDIO;
+      const dbg = DBG.MOUNTED || DBG_WIKI || DBG_AUDIO;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route

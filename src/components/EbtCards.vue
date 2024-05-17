@@ -29,10 +29,12 @@
   import { useSuttasStore } from '../stores/suttas.mjs';
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
+  import { default as Playlist } from '../playlist.mjs';
   import { logger } from "log-instance/index.mjs";
   import { 
+    DBG,
     DBG_HOME, DBG_ROUTE, DBG_STARTUP, DBG_FOCUS, DBG_SCROLL,
-    DBG_CLICK, DBG_MOUNTED, DBG_OPEN_CARD, DBG_UPDATED, DBG_VISIBLE
+    DBG_CLICK, DBG_OPEN_CARD, DBG_UPDATED, DBG_VISIBLE
   } from '../defines.mjs';
 
   export default {
@@ -52,11 +54,11 @@
     },
     mounted() {
       const msg = 'EbtCards.mounted() ';
-      const dbg = DBG_MOUNTED;
+      const dbg = DBG.MOUNTED;
       let { settings, volatile, $route, config }  = this;
       let { params, path='/' }  = $route;
       let { cards, debugScroll } = settings;
-      let card = settings.pathToCard(path);
+      let card = settings.pathToCard(path, this.addCard);
 
       if (card == null) {
         dbg && console.warn(msg, "[3]no card", {$route, path});
@@ -175,6 +177,28 @@
         let { sutta_uid, segnum } = this.routeSuttaRef(route);
         return segnum ? `${sutta_uid}:${segnum}` : sutta_uid;
       },
+      addCard(opts) {
+        const msg = 'EbtCards.addCard()';
+        const dbg = DBG.ADD_CARD;
+        let { settings } = this;
+        dbg && console.log(msg,);
+        switch (opts.context) {
+          case EbtCard.CONTEXT_PLAY: {
+            const DUMMY_SUTTAREFS = [
+              "thig1.1/en/soma", 
+              "thig1.2/en/soma", 
+              "thig1.3/en/soma",
+              "thig1.4/en/soma",
+              "thig1.5/en/soma",
+            ];
+            let playlist = new Playlist({
+              suttaRefs: DUMMY_SUTTAREFS,
+            });
+            opts.playlist = playlist;
+          } break;
+        }
+        return settings.addCard(opts);
+      },
     },
     computed: {
       cardsClass(ctx) {
@@ -193,7 +217,7 @@
         let card = EbtCard.pathToCard({
           path: to.fullPath, 
           cards, 
-          addCard: (opts) => settings.addCard(opts),
+          addCard: (opts) => this.addCard(opts),
           defaultLang: settings.langTrans,
         });
         let { activeElement } = document;

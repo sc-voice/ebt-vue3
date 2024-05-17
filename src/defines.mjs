@@ -6,18 +6,19 @@ export const ACTION = {
 };
 
 export const DBG = {
-  ADD_CARD: 0,
+  ADD_CARD: true,
   CARD: 0,
   CARD_PATH: 0,
   CLICK_SEG: 0,
   COPY_SEG: 0,
   IDB_SUTTA: 0,
   LOG_HTML: 0,
+  MOUNTED: true,
   PLAY: 0,
   PLAYLIST: 0,
   SEG_MOUNTED: 0,
   SETTINGS: 0,
-  TEST: 0,
+  TEST: true,
   TUTORIAL: 0,
   VERBOSE: 0,
 };
@@ -38,7 +39,6 @@ export const DBG_KEY          = 0;
 export const DBG_LEGACY       = 0;
 export const DBG_LOAD         = 0;
 export const DBG_ML_DOC       = 0;
-export const DBG_MOUNTED      = 0;
 export const DBG_ROUTE        = 0;
 export const DBG_SCROLL       = 0;
 export const DBG_SEARCH       = 0;

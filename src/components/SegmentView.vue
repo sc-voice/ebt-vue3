@@ -75,7 +75,7 @@
   import { Examples, SuttaRef } from "scv-esm";
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
-  import { ACTION, DBG, DBG_MOUNTED } from '../defines.mjs';
+  import { ACTION, DBG, } from '../defines.mjs';
   import Utils from "../utils.mjs";
   import * as Idb from "idb-keyval";
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;

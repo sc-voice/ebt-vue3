@@ -11,6 +11,8 @@ import { DBG } from './defines.mjs'
 const tipitaka = new Tipitaka();
 
 export default class Playlist {
+  #index = 0;
+
   constructor(opts={}) {
     const msg = "playlist.ctor()";
     let settings = useSettingsStore();
@@ -18,7 +20,7 @@ export default class Playlist {
     let {
       docLang = settings?.docLang,
       docAuthor = settings?.docAuthor,
-      index = 0,
+      index,
       pattern,
       suttaRefs = [],
     } = opts;
@@ -37,22 +39,31 @@ export default class Playlist {
       suttaRefs,
     });
 
-    Object.defineProperty(this, "_index", {
-      value: ref(index),
+    Object.defineProperty(this, "index", {
+      get: ()=>{
+        return this.#index;
+      },
+      set: (value)=>{
+        this.#index = value;
+      },
+      enumerable: true,
     });
+    if (index != null) {
+      this.index = Number(index);
+    }
   }
 
   static get tipitaka() {
     return tipitaka;
   }
 
-  get index() {
-    return this._index.value;
+  set xindex(value) {
+    this.index = 0;
+    return this.advance(value);
   }
 
-  set index(value) {
-    this._index.value = 0;
-    return this.advance(value);
+  get length() {
+    return this.suttaRefs?.length || 0;
   }
 
   get page() {
@@ -85,7 +96,7 @@ export default class Playlist {
       sr.segnum = srv.segnum;
       sr.scid = srv.scid;
       sr.author = sr.author || srv.author;
-      this._index.value = i;
+      this.index = i;
       return true;
     }, false);
     if (!exists) {
@@ -161,8 +172,8 @@ export default class Playlist {
     const msg = "Playlist.advance()";
     let { suttaRefs } = this;
     let end = suttaRefs.length - 1;
-    if (typeof this._index.value !== 'number') {
-      this._index.value = 0;
+    if (typeof this.index !== 'number') {
+      this.index = 0;
       return true;
     }
     if (typeof delta !== 'number') {
@@ -174,17 +185,17 @@ export default class Playlist {
       return this.#advanceTipitaka(delta);
     } 
 
-    let newIndex = this._index.value+delta;
+    let newIndex = this.index+delta;
 
-    if (newIndex<0 || end<newIndex || newIndex===this._index.value) {
+    if (newIndex<0 || end<newIndex || newIndex===this.index) {
       return false;
     }
-    this._index.value = newIndex;
+    this.index = newIndex;
     return true;
   }
 
   clear() {
-    this._index.value = 0;
+    this.index = 0;
   }
 
 }
