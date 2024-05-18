@@ -15,7 +15,7 @@ const TEST_PATTERN = 'test-pattern';
 let settings;
 
 (typeof describe ==='function') && 
- describe("TESTTESTplaylist.mjs", function () {
+ describe("playlist.mjs", function () {
 
   beforeEach(() => {
     window.localStorage = global.localStorage;
@@ -125,7 +125,7 @@ let settings;
     let pl2 = new Playlist(opts2);
     should.deepEqual(pl2, pl);
   });
-  it("TESTTESTadvance()", ()=>{
+  it("advance()", ()=>{
     const msg = "test.playlist@127";
     let suttaRefs = TEST_SUTTAREFS;
     let docLang = 'en';
@@ -176,7 +176,7 @@ let settings;
     should(pl.advance(1)).equal(false);
     should(pl.cursor.toString()).equal("thig16.1/en/sujato");
   });
-  it("TESTTESTfromCard()", ()=>{
+  it("fromCard()", ()=>{
     let lang = 'en';
     let author_uid = 'soma';
     let pattern = 'thig1.1-3';
@@ -202,7 +202,7 @@ let settings;
     should.deepEqual(playlist.suttaRefs.map(sr=>sr.author), [
       author_uid, author_uid, author_uid ]);
   });
-  it("TESTTESTfromCard() error", ()=>{
+  it("fromCard() error", ()=>{
     let eCaught;
     let pl;
 

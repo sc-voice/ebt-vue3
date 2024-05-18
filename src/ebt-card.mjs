@@ -9,12 +9,12 @@ import {
   DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
 
-const CONTEXT_WIKI = "wiki";
-const CONTEXT_SEARCH = "search";
-const CONTEXT_SUTTA = "sutta";
-const CONTEXT_DEBUG = "debug";
-const CONTEXT_GRAPH = "graph";
-const CONTEXT_PLAY = "play";
+export const CONTEXT_WIKI = "wiki";
+export const CONTEXT_SEARCH = "search";
+export const CONTEXT_SUTTA = "sutta";
+export const CONTEXT_DEBUG = "debug";
+export const CONTEXT_GRAPH = "graph";
+export const CONTEXT_PLAY = "play";
 const CONTEXTS = {
   [CONTEXT_WIKI]: {
     icon: "mdi-wikipedia",

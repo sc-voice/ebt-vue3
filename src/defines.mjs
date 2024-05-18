@@ -6,20 +6,21 @@ export const ACTION = {
 };
 
 export const DBG = {
-  ADD_CARD: true,
+  ADD_CARD: 0,
   CARD: 0,
   CARD_PATH: 0,
+  CARD_FACTORY: 0,
   CLICK_SEG: 0,
   COPY_SEG: 0,
   IDB_SUTTA: 0,
   LOG_HTML: 0,
   MOUNTED: 0,
   PLAY: 0,
-  PLAYLIST: true,
+  PLAYLIST: 0,
   SEG_MOUNTED: 0,
-  SUTTA_MOUNTED: true,
+  SUTTA_MOUNTED: 0,
   SETTINGS: 0,
-  TEST: true,
+  TEST: 0,
   TUTORIAL: 0,
   VERBOSE: 0,
 };
