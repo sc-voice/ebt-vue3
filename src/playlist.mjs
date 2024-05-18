@@ -11,10 +11,11 @@ import { DBG } from './defines.mjs'
 const tipitaka = new Tipitaka();
 
 export default class Playlist {
-  #index = 0;
+  #index = ref(0);
 
   constructor(opts={}) {
     const msg = "playlist.ctor()";
+    const dbg = DBG.PLAYLIST;
     let settings = useSettingsStore();
 
     let {
@@ -41,25 +42,25 @@ export default class Playlist {
 
     Object.defineProperty(this, "index", {
       get: ()=>{
-        return this.#index;
+        return this.#index.value;
       },
       set: (value)=>{
-        this.#index = value;
+        if (typeof value !== 'number') {
+          throw new Error(`Expected number: ${value}`);
+        }
+        this.#index.value = value;
       },
       enumerable: true,
     });
-    if (index != null) {
-      this.index = Number(index);
+    if (index) {
+      this.index = index;
     }
+
+    dbg && console.log(msg, this);
   }
 
   static get tipitaka() {
     return tipitaka;
-  }
-
-  set xindex(value) {
-    this.index = 0;
-    return this.advance(value);
   }
 
   get length() {

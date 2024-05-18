@@ -125,7 +125,7 @@ let settings;
     let pl2 = new Playlist(opts2);
     should.deepEqual(pl2, pl);
   });
-  it("advance()", ()=>{
+  it("TESTTESTadvance()", ()=>{
     const msg = "test.playlist@127";
     let suttaRefs = TEST_SUTTAREFS;
     let docLang = 'en';

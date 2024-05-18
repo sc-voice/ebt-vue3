@@ -76,7 +76,7 @@
     },
     async mounted() {
       const msg = 'SuttaCore.mounted() ';
-      const dbg = DBG.MOUNTED;
+      const dbg = DBG.MOUNTED || DBG.SUTTA_MOUNTED;
       let { $route, suttas, settings, volatile, card, config, } = this;
       let { fullPath } = $route;
       let { 
@@ -98,7 +98,7 @@
         return;
       }
       let { sutta_uid, lang, author, segnum } = suttaRef;
-      dbg && console.log(msg, `[1]suttaRef:${suttaRef}`, {id, idbKey});
+      dbg && console.log(msg, `[1]suttaRef:${suttaRef}`, {id, sutta_uid});
       let idbSuttaRef = await suttas.getIdbSuttaRef({
         sutta_uid, lang, author});
       dbg && console.log(msg, `[2]loaded`, {id, idbSuttaRef, sutta_uid});

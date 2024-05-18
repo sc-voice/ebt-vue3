@@ -100,6 +100,34 @@ export const useAudioStore = defineStore('audio', {
   getters: {
   },
   actions: {
+    addCard(opts) {
+      const msg = 'settings.addCard()';
+      const dbg = DBG.ADD_CARD;
+      let { settings } = this;
+      switch (opts.context) {
+        case EbtCard.CONTEXT_PLAY: {
+          const DUMMY_SUTTAREFS = [
+            SuttaRef.create("thig1.1/en/soma"), 
+            SuttaRef.create("thig1.2/en/soma"), 
+            SuttaRef.create("thig1.3/en/soma"),
+            SuttaRef.create("thig1.4/en/soma"),
+            SuttaRef.create("thig1.5/en/soma"),
+          ];
+          let { location=[] } = opts;
+          let [ scid, lang, author, pattern ] = location;
+          let suttaRefs = DUMMY_SUTTAREFS;
+          let { author:docAuthor, lang:docLang } = suttaRefs[0];
+          let index = suttaRefs.findIndex(sr=>sr.scid===scid);
+          dbg && console.log(msg, '[1]index', index);
+          index = index < 0 ? 0 : index;
+          let playlist = new Playlist({ 
+            pattern, suttaRefs, docLang, docAuthor });
+          opts.playlist = playlist;
+          dbg && console.log(msg, '[2]playlist', playlist);
+        } break;
+      }
+      return settings.addCard(opts);
+    },
     keydown(evt) {
       const msg = `audio.keydown(${evt.code}) `;
       const dbg = DBG_KEY || DBG_AUDIO;
@@ -292,38 +320,35 @@ export const useAudioStore = defineStore('audio', {
     async syncPlaylist(playlist) {
       const msg = "audio.syncPlaylist()";
       const dbg = DBG.TEST;
+      let suttas = useSuttasStore();
       let settings = useSettingsStore();
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
       let { audioSutta } = this;
-      let { sutta_uid:suid, lang, author } = audioSutta;
-      let { index, cursor }  = playlist;
-      let { sutta_uid }  = cursor;
-      dbg && console.log(msg, {suid, index, sutta_uid}, 
-        routeCard.chipTitle());
-      //let sutta_uid = tipitaka.nextSuid(suid, Tipitaka.folderOfSuid);
+      let { sutta_uid:audioSuid, lang, author } = audioSutta;
+      let { index, cursor, pattern }  = playlist;
+      let { sutta_uid, scid }  = cursor;
       let incRes = null;
       if (sutta_uid) {
-      /*
+        let next = SuttaRef.create({sutta_uid, lang, author});
+        let nextSuttaRef = await suttas.getIdbSuttaRef(next);
         routeCard.open(false);
-        let sref = SuttaRef.create({sutta_uid, lang, author});
-        let suttas = useSuttasStore();
-        let nextSuttaRef = await suttas.getIdbSuttaRef(sref);
         settings.removeCard(routeCard, EbtConfig);
         let nextSutta = nextSuttaRef.value;
         let nextPath = [
-          '/sutta', sutta_uid, lang, author
+          '/play', sutta_uid, lang, author, pattern
         ].join('/');
+        dbg && console.log(msg, 
+          {audioSuid, index, nextSuttaRef, nextPath});
         let nextCard = settings.pathToCard(nextPath);
         if (nextCard) {
           volatile.setRouteCard(nextCard);
           this.setAudioSutta(nextSutta);
           incRes = this.setLocation(0);
-          dbg && console.log(msg, '[2]tipitaka', sref, incRes );
+          dbg && console.log(msg, '[2]nextCard', next, incRes );
         } else {
           dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
         }
-      */
       }
       return incRes;
     },

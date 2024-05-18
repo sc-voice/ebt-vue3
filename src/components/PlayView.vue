@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet v-if="playlist">
     <v-pagination 
       v-model="playlist.page"
       :length="playlist.suttaRefs.length"
@@ -7,6 +7,7 @@
       :current-page-aria-label="playlist.cursor.sutta_uid"
       @click.stop.prevent="onClickPlaylist"
     ></v-pagination>
+    {{playlist.index}}/{{playlist.page}}
     <sutta-core :card="card" :routeCard="routeCard"
     ></sutta-core>
     <v-pagination 
@@ -47,9 +48,7 @@
       return {
         taka: new Tipitaka(),
         audio: useAudioStore(),
-        playlist: new Playlist({
-          suttaRefs: DUMMY_SUTTAREFS,
-        }),
+        playlist: ref(),
       }
     },
     components: {
@@ -61,20 +60,15 @@
       const dbg = DBG.MOUNTED;
       let { card } = this;
       let { playlist } = card;
+      this.playlist = playlist;
       console.log(msg, playlist);
     },
     methods: {
       onClickPlaylist(evt) {
         const msg = "PlayView.onClickPlaylist()";
         let { playlist, audio } = this;
-        console.log(msg, `${playlist.cursor}`);
+        console.log(msg, `${playlist.cursor}`, playlist);
         audio.syncPlaylist(playlist);
-      },
-      testNext(value=1) {
-        const msg = "PlayView.testNext()";
-        let { playlist } = this;
-        let res = playlist.advance(value-1);
-        console.log(msg, res, playlist.index);
       },
     },
     computed: {

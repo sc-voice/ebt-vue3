@@ -181,20 +181,23 @@
         const msg = 'EbtCards.addCard()';
         const dbg = DBG.ADD_CARD;
         let { settings } = this;
-        dbg && console.log(msg,);
         switch (opts.context) {
           case EbtCard.CONTEXT_PLAY: {
             const DUMMY_SUTTAREFS = [
-              "thig1.1/en/soma", 
-              "thig1.2/en/soma", 
-              "thig1.3/en/soma",
-              "thig1.4/en/soma",
-              "thig1.5/en/soma",
+              SuttaRef.create("thig1.1/en/soma"), 
+              SuttaRef.create("thig1.2/en/soma"), 
+              SuttaRef.create("thig1.3/en/soma"),
+              SuttaRef.create("thig1.4/en/soma"),
+              SuttaRef.create("thig1.5/en/soma"),
             ];
-            let playlist = new Playlist({
-              suttaRefs: DUMMY_SUTTAREFS,
-            });
+            let { location=[] } = opts;
+            let pattern = location[3];
+            let suttaRefs = DUMMY_SUTTAREFS;
+            let { author:docAuthor, lang:docLang } = suttaRefs[0];
+            let playlist = new Playlist({ 
+              pattern, suttaRefs, docLang, docAuthor });
             opts.playlist = playlist;
+            dbg && console.log(msg, '[1]playlist', playlist);
           } break;
         }
         return settings.addCard(opts);
