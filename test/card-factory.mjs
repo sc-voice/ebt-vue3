@@ -27,6 +27,21 @@ import "fake-indexeddb/auto";
 global.window = {}
 import 'mock-local-storage'
 
+class MockSettings {
+  constructor() {
+    this.cards = [];
+  }
+
+  homePath() { 
+    return '#/wiki/welcome'; 
+  }
+
+  saveSettings() {
+    const msg = "MockSettings.saveSettings()";
+    DBG.TEST && console.log(msg, this.cards);
+  }
+}
+
 (typeof describe === 'function') && 
   describe("card-factory.mjs", function () 
 {
@@ -37,6 +52,8 @@ import 'mock-local-storage'
   });
   it("default ctor()", ()=>{
     let cf = new CardFactory();
+    should(cf.settings).instaceOf(Settings);
+    should.deepEqual(cf.cards, []);
   });
   it("pathToCard() content", ()=>{
     let cf = new CardFactory();
@@ -164,7 +181,8 @@ import 'mock-local-storage'
     should.deepEqual(cards, [cardSN42_11]);
   });
   it("TESTTESTaddCard() PLAY", ()=>{
-    let cf = new CardFactory();
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
     let isOpen = true;
     let context = CONTEXT_PLAY;
     let sutta_uid = 'thig1.2';
@@ -176,6 +194,7 @@ import 'mock-local-storage'
     let opts = { isOpen, context, location };
     //DBG.ADD_CARD = true;
     let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
     should(card.context).equal(context);
     should.deepEqual(card.location, location);
     let { playlist } = card;
@@ -193,7 +212,8 @@ import 'mock-local-storage'
     should(playlist.page).equal(2);
   });
   it("TESTTESTaddCard() SUTTA", ()=>{
-    let cf = new CardFactory();
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
     let isOpen = true;
     let context = CONTEXT_SUTTA;
     let sutta_uid = 'thig1.2';
@@ -203,42 +223,49 @@ import 'mock-local-storage'
     let location = [scid, lang, author ];
     let opts = { isOpen, context, location };
     let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
     should(card.context).equal(context);
     should.deepEqual(card.location, location);
     should(card.isOpen).equal(isOpen);
     should(card.playlist).equal(undefined);
   });
   it("TESTTESTaddCard() WIKI", ()=>{
-    let cf = new CardFactory();
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
     let isOpen = true;
     let context = CONTEXT_WIKI;
     let location = [ 'welcome' ];
     let opts = { isOpen, context, location };
     let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
     should(card.context).equal(context);
     should.deepEqual(card.location, location);
     should(card.isOpen).equal(false);
     should(card.playlist).equal(undefined);
   });
   it("TESTTESTaddCard() SEARCH", ()=>{
-    let cf = new CardFactory();
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
     let isOpen = true;
     let context = CONTEXT_SEARCH;
     let location = [ 'root of suffering' ];
     let opts = { isOpen, context, location };
     let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
     should(card.context).equal(context);
     should.deepEqual(card.location, location);
     should(card.isOpen).equal(true);
     should(card.playlist).equal(undefined);
   });
   it("TESTTESTaddCard() DEBUG", ()=>{
-    let cf = new CardFactory();
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
     let isOpen = true;
     let context = CONTEXT_DEBUG;
     let location = [ 'root of suffering' ];
     let opts = { isOpen, context, location };
     let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
     should(card.context).equal(context);
     should.deepEqual(card.location, location);
     should(card.isOpen).equal(true);
