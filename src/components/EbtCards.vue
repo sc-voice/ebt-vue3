@@ -23,6 +23,7 @@
   import { SuttaRef } from 'scv-esm';
   import { default as HomeView } from './HomeView.vue';
   import { default as EbtCard } from '../ebt-card.mjs';
+  import { default as CardFactory } from '../card-factory.mjs';
   import { default as EbtCardVue } from './EbtCard.vue';
   import { default as SuttaPlayer } from './SuttaPlayer.vue';
   import { useVolatileStore } from '../stores/volatile.mjs';
@@ -45,6 +46,7 @@
         suttas: useSuttasStore(),
         settings: useSettingsStore(),
         volatile: useVolatileStore(),
+        cardFactory: new CardFactory(),
       }
     },
     updated() {
@@ -55,10 +57,11 @@
     mounted() {
       const msg = 'EbtCards.mounted() ';
       const dbg = DBG.MOUNTED;
-      let { settings, volatile, $route, config }  = this;
+      let { cardFactory, settings, volatile, $route, config }  = this;
       let { params, path='/' }  = $route;
       let { cards, debugScroll } = settings;
-      let card = settings.pathToCard(path, this.addCard);
+      let addCard = (opts=>cardFactory.addCard(opts));
+      let card = cardFactory.pathToCard({path, addCard});
 
       if (card == null) {
         dbg && console.warn(msg, "[3]no card", {$route, path});
@@ -131,15 +134,14 @@
         const msg = "EbtCards.onFocusIn() ";
         const dbg = DBG_FOCUS || DBG_SCROLL;
         dbg && console.log(msg, '[0]', card.debugString, evt);
-        let { volatile, settings } = this;
-        let { cards } = settings;
+        let { cardFactory, volatile, settings } = this;
         let { appFocus } = volatile;
         let { context, location } = card;
         let routeHash = window.location.hash;
-        let routeCard = EbtCard.pathToCard({
+        let addCard = (opts=>{});
+        let routeCard = cardFactory.pathToCard({
           path: routeHash,
-          cards, 
-          addCard: (opts) => {},
+          addCard,
           defaultLang: settings.langTrans,
         });
         if (routeCard === card) {
@@ -177,31 +179,6 @@
         let { sutta_uid, segnum } = this.routeSuttaRef(route);
         return segnum ? `${sutta_uid}:${segnum}` : sutta_uid;
       },
-      addCard(opts) {
-        const msg = 'EbtCards.addCard()';
-        const dbg = DBG.ADD_CARD;
-        let { settings } = this;
-        switch (opts.context) {
-          case EbtCard.CONTEXT_PLAY: {
-            const DUMMY_SUTTAREFS = [
-              SuttaRef.create("thig1.1/en/soma"), 
-              SuttaRef.create("thig1.2/en/soma"), 
-              SuttaRef.create("thig1.3/en/soma"),
-              SuttaRef.create("thig1.4/en/soma"),
-              SuttaRef.create("thig1.5/en/soma"),
-            ];
-            let { location=[] } = opts;
-            let pattern = location[3];
-            let suttaRefs = DUMMY_SUTTAREFS;
-            let { author:docAuthor, lang:docLang } = suttaRefs[0];
-            let playlist = new Playlist({ 
-              pattern, suttaRefs, docLang, docAuthor });
-            opts.playlist = playlist;
-            dbg && console.log(msg, '[1]playlist', playlist);
-          } break;
-        }
-        return settings.addCard(opts);
-      },
     },
     computed: {
       cardsClass(ctx) {
@@ -215,12 +192,10 @@
       $route (to, from) {
         const msg = 'EbtCards.watch.$route';
         const dbg = DBG_ROUTE || DBG_OPEN_CARD;
-        let { volatile, settings, $route }  = this;
-        let { cards, } = settings;
-        let card = EbtCard.pathToCard({
+        let { cardFactory, volatile, settings, $route }  = this;
+        let card = cardFactory.pathToCard({
           path: to.fullPath, 
-          cards, 
-          addCard: (opts) => this.addCard(opts),
+          addCard: (opts) => cardFactory.addCard(opts),
           defaultLang: settings.langTrans,
         });
         let { activeElement } = document;

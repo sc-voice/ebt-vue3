@@ -124,8 +124,9 @@ export default class CardFactory {
   pathToCard(args) {
     const msg = 'CardFactory.pathToCard()';
     const dbg = DBG.CARD_PATH;
+    let { settings } = this;
     let {
-      path='/', cards=[], addCard, defaultLang, isOpen,
+      path='/', cards=settings.cards, addCard, defaultLang, isOpen,
     } = args;
     path = path.replace(/^.*\/#/, ''); // ignore non-hash part of path
     let [ ignored, context, ...location ] = path.split('/');
