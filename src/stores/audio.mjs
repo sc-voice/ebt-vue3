@@ -292,7 +292,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async syncPlaylist(playlist) {
       const msg = "audio.syncPlaylist()";
-      const dbg = DBG.TEST;
+      const dbg = DBG.PLAYLIST;
       let suttas = useSuttasStore();
       let settings = useSettingsStore();
       let volatile = useVolatileStore();
@@ -314,7 +314,10 @@ export const useAudioStore = defineStore('audio', {
         dbg && console.log(msg, 
           {audioSuid, index, nextSuttaRef, nextPath});
         let cardFactory = CardFactory.singleton;
-        let nextCard = cardFactory.pathToCard({path:nextPath});
+        let nextCard = cardFactory.pathToCard({
+          path:nextPath, 
+          addCard: opts=>cardFactory.addCard(opts),
+        });
         if (nextCard) {
           volatile.setRouteCard(nextCard);
           this.setAudioSutta(nextSutta);
