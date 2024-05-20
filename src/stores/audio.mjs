@@ -100,34 +100,6 @@ export const useAudioStore = defineStore('audio', {
   getters: {
   },
   actions: {
-    addCard(opts) {
-      const msg = 'settings.addCard()';
-      const dbg = DBG.ADD_CARD;
-      let { settings } = this;
-      switch (opts.context) {
-        case EbtCard.CONTEXT_PLAY: {
-          const DUMMY_SUTTAREFS = [
-            SuttaRef.create("thig1.1/en/soma"), 
-            SuttaRef.create("thig1.2/en/soma"), 
-            SuttaRef.create("thig1.3/en/soma"),
-            SuttaRef.create("thig1.4/en/soma"),
-            SuttaRef.create("thig1.5/en/soma"),
-          ];
-          let { location=[] } = opts;
-          let [ scid, lang, author, pattern ] = location;
-          let suttaRefs = DUMMY_SUTTAREFS;
-          let { author:docAuthor, lang:docLang } = suttaRefs[0];
-          let index = suttaRefs.findIndex(sr=>sr.scid===scid);
-          dbg && console.log(msg, '[1]index', index);
-          index = index < 0 ? 0 : index;
-          let playlist = new Playlist({ 
-            pattern, suttaRefs, docLang, docAuthor });
-          opts.playlist = playlist;
-          dbg && console.log(msg, '[2]playlist', playlist);
-        } break;
-      }
-      return settings.addCard(opts);
-    },
     keydown(evt) {
       const msg = `audio.keydown(${evt.code}) `;
       const dbg = DBG_KEY || DBG_AUDIO;

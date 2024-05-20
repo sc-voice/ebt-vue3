@@ -30,14 +30,6 @@
     DBG, DBG_VERBOSE, 
   } from '../defines.mjs';
 
-  const DUMMY_SUTTAREFS = [
-    "thig1.1/en/soma", 
-    "thig1.2/en/soma", 
-    "thig1.3/en/soma",
-    "thig1.4/en/soma",
-    "thig1.5/en/soma",
-  ];
-
   export default {
     inject: ['config'],
     props: {
