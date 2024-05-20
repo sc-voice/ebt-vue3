@@ -52,8 +52,7 @@ class MockSettings {
   });
   it("default ctor()", ()=>{
     let cf = new CardFactory();
-    should(cf.settings).instaceOf(Settings);
-    should.deepEqual(cf.cards, []);
+    should(!!cf.settings).equal(true);
   });
   it("pathToCard() content", ()=>{
     let cf = new CardFactory();

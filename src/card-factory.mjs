@@ -27,7 +27,6 @@ export default class CardFactory {
       settings = useSettingsStore();
       dbg && console.log(msg, '[1]settings');
     }
-    dbg && console.log(msg, {stetings});
 
     Object.assign(this, {
       config,
