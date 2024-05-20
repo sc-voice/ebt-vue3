@@ -88,24 +88,6 @@ export const useSettingsStore = defineStore('settings', {
       this.loaded = true;
       return this;
     },
-    pathToCard(fullPath, addCard) {
-      const msg = `settings.pathToCard() `;
-      const dbg = DBG.CARD_PATH;
-      let { cards } = this;
-      let card = EbtCard.pathToCard({
-        path:fullPath, 
-        cards, 
-        defaultLang: this.langTrans,
-        addCard: addCard || ((opts) => this.addCard(opts)),
-      });
-      if (card) {
-        dbg && console.log(msg, '[1]pathToCard', fullPath, 
-          card.debugString);
-      } else { 
-        dbg && console.log(msg, "[2]no card", {fullPath, cards});
-      }
-      return card;
-    },
     async saveSettings() {
       const msg = "settings.saveSettings() ";
       let dbg = DBG.SETTINGS;

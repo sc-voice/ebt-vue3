@@ -5,6 +5,7 @@ import { useSuttasStore } from './suttas.mjs';
 import { useSettingsStore } from './settings.mjs';
 import { useVolatileStore } from './volatile.mjs';
 import { default as EbtSettings } from '../ebt-settings.mjs';
+import { default as CardFactory } from '../card-factory.mjs';
 import { default as IdbAudio } from '../idb-audio.mjs';
 import { default as EbtConfig } from '../../ebt-config.mjs';
 import * as VOICES from "../auto/voices.mjs";
@@ -312,7 +313,8 @@ export const useAudioStore = defineStore('audio', {
         ].join('/');
         dbg && console.log(msg, 
           {audioSuid, index, nextSuttaRef, nextPath});
-        let nextCard = settings.pathToCard(nextPath);
+        let cardFactory = CardFactory.singleton;
+        let nextCard = cardFactory.pathToCard({path:nextPath});
         if (nextCard) {
           volatile.setRouteCard(nextCard);
           this.setAudioSutta(nextSutta);
@@ -344,7 +346,8 @@ export const useAudioStore = defineStore('audio', {
         let nextPath = [
           '/sutta', sutta_uid, lang, author
         ].join('/');
-        let nextCard = settings.pathToCard(nextPath);
+        let cardFactory = CardFactory.singleton;
+        let nextCard = cardFactory.pathToCard({path:nextPath});
         if (nextCard) {
           volatile.setRouteCard(nextCard);
           this.setAudioSutta(nextSutta);

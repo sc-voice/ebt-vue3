@@ -54,6 +54,11 @@ class MockSettings {
     let cf = new CardFactory();
     should(!!cf.settings).equal(true);
   });
+  it("TESTTESTsingleton", ()=>{
+    let cf1 = CardFactory.singleton;
+    should(cf1).instanceOf(CardFactory);
+    should(CardFactory.singleton).equal(cf1);
+  });
   it("pathToCard() content", ()=>{
     let cf = new CardFactory();
     let cards = [];

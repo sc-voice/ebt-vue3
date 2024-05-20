@@ -234,6 +234,7 @@
   import { default as HomeView } from './components/HomeView.vue';
   import Tutorial from './components/Tutorial.vue';
   import EbtCard from './ebt-card.mjs';
+  import CardFactory from './card-factory.mjs';
   import EbtCards from './components/EbtCards.vue';
   import EbtChips from './components/EbtChips.vue';
   import Settings from './components/Settings.vue';
@@ -435,7 +436,7 @@
       const dbg = DBG.MOUNTED || DBG_WIKI || DBG_AUDIO;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
-        $route
+        $route, 
       } = this;
       volatile.$t = $t;
       volatile.config = config;
@@ -458,9 +459,11 @@
 
       let wikiHash = hash.startsWith("#/wiki") ? hash : null;
       let homePath = settings.homePath(config);
+      let cardFactory = CardFactory.singleton;
+      let addCard = (opts=>cardFactory.addCard(opts));
       let wikiCard = wikiHash
-        ? settings.pathToCard(wikiHash)
-        : settings.pathToCard(homePath);
+        ? cardFactory.pathToCard({path:wikiHash, addCard})
+        : cardFactory.pathToCard({path:homePath, addCard});
       dbg && console.log(msg, '[3]wikiCard', wikiCard?.debugString);
 
       $vuetify.theme.global.name = settings.theme === 'dark' 

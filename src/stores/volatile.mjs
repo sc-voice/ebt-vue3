@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { SuttaRef } from "scv-esm/main.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
+import { default as CardFactory } from "../card-factory.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
 import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
@@ -339,7 +340,11 @@ export const useVolatileStore = defineStore('volatile', {
       }
       let isCard = !(typeof cardOrRoute === 'string');
       let route = isCard ? cardOrRoute.routeHash() : cardOrRoute;
-      let card = isCard ? cardOrRoute : settings.pathToCard(route);
+      let cardFactory = CardFactory.singleton;
+      let addCard = (opts=>cardFactory.addCard(opts));
+      let card = isCard 
+        ? cardOrRoute 
+        : cardFactory.pathToCard({path:route, addCard});
       if (card == null) {
         dbg && console.log(msg, '[1]no card', {route});
         return;

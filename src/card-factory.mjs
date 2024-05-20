@@ -15,6 +15,8 @@ import {
 import { DBG, } from './defines.mjs';
 
 export default class CardFactory {
+  static #singleton;
+
   constructor(opts = {}) {
     let { 
       config=EbtConfig,
@@ -32,6 +34,13 @@ export default class CardFactory {
       config,
       settings,
     });
+  }
+
+  static get singleton() { 
+    if (this.#singleton == null) {
+      this.#singleton = new CardFactory();
+    }
+    return this.#singleton; 
   }
 
   addCard(opts) {
