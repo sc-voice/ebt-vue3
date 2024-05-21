@@ -77,6 +77,10 @@ export default class CardFactory {
       SuttaRef.create("thig1.1/en/soma"), 
       SuttaRef.create("thig1.2/en/soma"), 
       SuttaRef.create("thig1.3/en/soma"),
+      SuttaRef.create("thig1.4/en/soma"),
+      SuttaRef.create("thig1.5/en/soma"),
+      SuttaRef.create("thig1.6/en/soma"),
+      SuttaRef.create("thig1.7/en/soma"),
     ];
     let { 
       location=[] 
@@ -136,6 +140,7 @@ export default class CardFactory {
     let { settings } = this;
     let {
       path='/', cards=settings.cards, addCard, defaultLang, isOpen,
+      playlist,
     } = args;
     path = path.replace(/^.*\/#/, ''); // ignore non-hash part of path
     let [ ignored, context, ...location ] = path.split('/');
@@ -149,7 +154,9 @@ export default class CardFactory {
       if (context) {
         dbg && console.log(msg, '[2]addCard', 
           {context,location,isOpen});
-        card = addCard ? addCard({context, location, isOpen}) : null;
+        let opts = { context, location, isOpen };
+        playlist && (opts.playlist = playlist);
+        card = addCard ? addCard(opts) : null;
       }
     } else {
       dbg && console.log(msg, '[3]existing', card.debugString);

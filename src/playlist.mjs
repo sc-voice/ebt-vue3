@@ -16,6 +16,7 @@ export default class Playlist {
   constructor(opts={}) {
     const msg = "playlist.ctor()";
     const dbg = DBG.PLAYLIST;
+    const dbgv = DBG.VERBOSE && dbg;
     let settings = useSettingsStore();
 
     let {
@@ -56,7 +57,19 @@ export default class Playlist {
       this.index = index;
     }
 
-    dbg && console.log(msg, this);
+    if (dbg) {
+      if (dbgv) {
+        console.log(msg, JSON.stringify(this, null, 2));
+      } else {
+        console.log(msg, 
+          this.suttaRefs.map((sr,i)=>{
+            return i === this.index
+              ? `<${sr.toString()}>`
+              : sr.toString();
+          }).join(', ')
+        );
+      }
+    }
   }
 
   static get tipitaka() {

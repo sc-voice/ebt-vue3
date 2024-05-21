@@ -2,17 +2,20 @@
   <v-sheet v-if="playlist">
     <v-pagination 
       v-model="playlist.page"
+      density="comfortable"
       :length="playlist.suttaRefs.length"
+      :total-visible="5"
       :aria-label="playlist.cursor.sutta_uid"
       :current-page-aria-label="playlist.cursor.sutta_uid"
       @click.stop.prevent="onClickPlaylist"
     ></v-pagination>
-    {{playlist.index}}/{{playlist.page}}
     <sutta-core :card="card" :routeCard="routeCard"
     ></sutta-core>
     <v-pagination 
       v-model="playlist.page"
+      density="comfortable"
       :length="playlist.suttaRefs.length"
+      :total-visible="5"
       :aria-label="playlist.cursor.sutta_uid"
       @click.stop.prevent="onClickPlaylist"
     ></v-pagination>

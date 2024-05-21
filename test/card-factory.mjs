@@ -203,16 +203,12 @@ class MockSettings {
     should.deepEqual(card.location, location);
     let { playlist } = card;
     should(playlist).instanceOf(Playlist);
-    should.deepEqual(playlist.suttaRefs.map(sr=>sr.toString()), [
-      "thig1.1/en/soma",
-      "thig1.2/en/soma",
-      "thig1.3/en/soma",
-    ]);
-    should.deepEqual(playlist.suttaRefs.map(sr=>sr.scid), [
-      "thig1.1",
-      "thig1.2:1.3",
-      "thig1.3",
-    ]);
+    should(playlist.suttaRefs[0].toString()).equal("thig1.1/en/soma");
+    should(playlist.suttaRefs[1].toString()).equal("thig1.2/en/soma");
+    should(playlist.suttaRefs[2].toString()).equal("thig1.3/en/soma");
+    should(playlist.suttaRefs[0].scid).equal("thig1.1");
+    should(playlist.suttaRefs[1].scid).equal("thig1.2:1.3");
+    should(playlist.suttaRefs[2].scid).equal("thig1.3");
     should(playlist.page).equal(2);
   });
   it("TESTTESTaddCard() SUTTA", ()=>{

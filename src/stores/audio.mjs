@@ -293,40 +293,44 @@ export const useAudioStore = defineStore('audio', {
     async syncPlaylist(playlist) {
       const msg = "audio.syncPlaylist()";
       const dbg = DBG.PLAYLIST;
+      if (!playlist) {
+        throw new Error(`${msg} playlist?`);
+      }
+
       let suttas = useSuttasStore();
       let settings = useSettingsStore();
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
-      let { audioSutta } = this;
+      let { audioScid, audioSutta } = this;
       let { sutta_uid:audioSuid, lang, author } = audioSutta;
-      let { index, cursor, pattern }  = playlist;
-      let { sutta_uid, scid }  = cursor;
+      let { index, cursor, pattern } = playlist;
+      let { sutta_uid, scid } = cursor;
       let incRes = null;
-      if (sutta_uid) {
-        let next = SuttaRef.create({sutta_uid, lang, author});
-        let nextSuttaRef = await suttas.getIdbSuttaRef(next);
-        routeCard.open(false);
-        settings.removeCard(routeCard, EbtConfig);
-        let nextSutta = nextSuttaRef.value;
-        let nextPath = [
-          '/play', sutta_uid, lang, author, pattern
-        ].join('/');
-        dbg && console.log(msg, 
-          {audioSuid, index, nextSuttaRef, nextPath});
-        let cardFactory = CardFactory.singleton;
-        let nextCard = cardFactory.pathToCard({
-          path:nextPath, 
-          addCard: opts=>cardFactory.addCard(opts),
-        });
-        if (nextCard) {
-          volatile.setRouteCard(nextCard);
-          this.setAudioSutta(nextSutta);
-          incRes = this.setLocation(0);
-          dbg && console.log(msg, '[2]nextCard', next, incRes );
-        } else {
-          dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
-        }
+      let next = SuttaRef.create({sutta_uid, lang, author});
+      let nextSuttaRef = await suttas.getIdbSuttaRef(next);
+      routeCard.open(false);
+      settings.removeCard(routeCard, EbtConfig);
+      let nextSutta = nextSuttaRef.value;
+      let nextPath = [
+        '/play', sutta_uid, lang, author, pattern
+      ].join('/');
+      dbg && console.log(msg, '[1]nextPath',
+        {audioSuid, audioScid, index, nextSuttaRef, nextPath});
+      let cardFactory = CardFactory.singleton;
+      let nextCard = cardFactory.pathToCard({
+        path:nextPath, 
+        addCard: opts=>cardFactory.addCard(opts),
+      });
+
+      if (nextCard) {
+        volatile.setRouteCard(nextCard);
+        this.setAudioSutta(nextSutta);
+        incRes = this.setLocation(0);
+        dbg && console.log(msg, '[2]nextCard', next, incRes );
+      } else {
+        dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
       }
+
       return incRes;
     },
     async nextTipitaka() {
