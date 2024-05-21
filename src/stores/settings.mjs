@@ -138,46 +138,6 @@ export const useSettingsStore = defineStore('settings', {
         window.location.hash = hash;
       }
     },
-    addCard(opts) {
-      const msg = "settings.addCard()";
-      let { cards, langTrans } = this;
-      let { isOpen, context, location } = opts;
-      let dbg = DBG.ADD_CARD || DBG_OPEN_CARD;
-      let card = null;
-      let loc = location ? location.join('/') : loc;
-      switch (context) {
-        case EbtCard.CONTEXT_WIKI: {
-          let homePath = this.homePath();
-          dbg && console.log(msg, `[1]${context}`, {isOpen, loc});
-          card = new EbtCard(Object.assign({
-            isOpen:false, // let user open card in tutorial
-            langTrans,
-          }, opts));
-          this.cards.push(card);
-        } break;
-        case EbtCard.CONTEXT_PLAY: {
-          let { playlist } = opts;
-          dbg && console.log(msg, `[2]${context}`, {
-            isOpen, loc, playlist});
-          card = new EbtCard(Object.assign({langTrans}, opts));
-          this.cards.push(card);
-          /* await */ this.saveSettings();
-        } break;
-        case EbtCard.CONTEXT_DEBUG:
-        case EbtCard.CONTEXT_SEARCH:
-        case EbtCard.CONTEXT_SUTTA:
-        case EbtCard.CONTEXT_GRAPH:
-          dbg && console.log(msg, `[3]${context}`, {isOpen, loc});
-          card = new EbtCard(Object.assign({langTrans}, opts));
-          this.cards.push(card);
-          /* await */ this.saveSettings();
-          break;
-        default:
-          dbg && console.warn(msg, `[4]${context}`, {isOpen, loc});
-          break;
-      }
-      return card;
-    },
     moveCard(srcIndex, dstIndex) {
       let { cards } = this;
       let srcCard = cards[srcIndex];
