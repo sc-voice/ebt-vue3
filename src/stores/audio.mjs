@@ -312,7 +312,7 @@ export const useAudioStore = defineStore('audio', {
       settings.removeCard(routeCard, EbtConfig);
       let nextSutta = nextSuttaRef.value;
       let nextPath = [
-        '/play', sutta_uid, lang, author, pattern
+        '/play', scid, lang, author, pattern
       ].join('/');
       dbg && console.log(msg, '[1]nextPath',
         {audioSuid, audioScid, index, nextSuttaRef, nextPath});
@@ -320,13 +320,19 @@ export const useAudioStore = defineStore('audio', {
       let nextCard = cardFactory.pathToCard({
         path:nextPath, 
         addCard: opts=>cardFactory.addCard(opts),
+        playlist,
       });
 
       if (nextCard) {
         volatile.setRouteCard(nextCard);
         this.setAudioSutta(nextSutta);
+        let { segments } = this.audioSutta;
         incRes = this.setLocation(0);
-        dbg && console.log(msg, '[2]nextCard', next, incRes );
+        let audioIndex = segments.findIndex(s=>s.scid===scid);
+        audioIndex = audioIndex < 0 ? 0 : audioIndex;
+        audioIndex && this.setLocation(audioIndex);
+        dbg && console.log(msg, '[2]nextCard', 
+          {next, audioIndex, segments} );
       } else {
         dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
       }
@@ -392,7 +398,7 @@ export const useAudioStore = defineStore('audio', {
     },
     setLocation(delta=0) {
       const msg = `audio.setLocation(${delta}) `;
-      const dbg = DBG.PLAY;
+      const dbg = DBG.PLAY || DBG.TEST;
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
       let { audioSutta, } = this;
@@ -406,7 +412,7 @@ export const useAudioStore = defineStore('audio', {
         dbg && console.log(msg, '[1]playSwoosh', incRes);
       } else {
         this.playBell();
-        dbg && console.log(msg, '[2]playBell');
+        dbg && console.log(msg, '[2]incRes?', delta);
       }
 
       return incRes;

@@ -8,8 +8,8 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG,
   DBG_OPEN_CARD, DBG_HOME, 
-  DBG_ROUTE, DBG_SCROLL, DBG_FOCUS, 
-  DBG_VERBOSE, DBG_REMOVE_CARD,
+  DBG_SCROLL, DBG_FOCUS, 
+  DBG_VERBOSE, 
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -110,7 +110,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     removeCard(card, config) {
       const msg = "settings.removeCard() ";
-      const dbg = DBG_REMOVE_CARD;
+      const dbg = DBG.REMOVE_CARD;
       const { window } = globalThis;
       if (window == null) {
         //console.trace(msg, "no window");

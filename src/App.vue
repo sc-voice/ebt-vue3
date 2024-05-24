@@ -36,7 +36,7 @@
                     {{volatile?.appFocus?.id||volatile?.appFocus}}
                   </div>
                 </div> 
-                <div  v-if="DBG_ROUTE" 
+                <div  v-if="DBG.ROUTE" 
                   class="app-dbg" title="routeCard.id">
                   {{volatile.routeCard?.id}}
                 </div >
@@ -201,7 +201,7 @@
     DBG,
     DBG_HOME, DBG_KEY, DBG_STARTUP, 
     DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
-    DBG_ROUTE, DBG_WAITING, 
+    DBG_WAITING, 
     DBG_GDPR, DBG_WIKI, DBG_AUDIO,
     DBG_VERBOSE,
 

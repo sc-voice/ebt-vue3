@@ -240,7 +240,6 @@
       },
       headerSeg(ctx) {
         const msg = "SuttaView.headerSeg()";
-        const dbg = DBG.TEST;
         let { $t, idbSuttaRef, settings } = ctx;
         let { showReference } = settings;
         let { 
@@ -252,7 +251,6 @@
         docAuthor = docAuthor || author;
         let docInfo = AuthorsV2.authorInfo(docAuthor, docLang);
         let docText = docInfo && docInfo.name.join(', ') || "–∅–";
-        dbg && console.log(msg, {docInfo, docText});
 
         refLang = refLang || settings.refLang;
         refAuthor = refAuthor || AuthorsV2.langAuthor(refLang);

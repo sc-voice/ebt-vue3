@@ -5,7 +5,7 @@ import { default as Playlist } from './playlist.mjs';
 import { 
   DBG,
   DBG_CLICK, DBG_FOCUS, 
-  DBG_OPEN_CARD, DBG_ROUTE, DBG_SCROLL, 
+  DBG_OPEN_CARD, DBG_SCROLL, 
   DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
 
@@ -72,15 +72,20 @@ export default class EbtCard {
       throw new Error('Expected location array');
     }
     let contextLoc = [context, ...location].join('/');
+    if (playlist && !(playlist instanceof Playlist)) {
+      playlist = new Playlist(playlist);
+      dbg && console.log(msg, '[1]playlist', playlist);
+    }
+
     switch (context) {
       case CONTEXT_WIKI:
         isOpen = isOpen === undefined ? false : isOpen;
-        dbg && console.log(msg, `[1]${context}`, {isOpen, contextLoc});
+        dbg && console.log(msg, `[2]${context}`, {isOpen, contextLoc});
         break;
       case CONTEXT_DEBUG: 
         if (location[0] == null) {
           location[0] = 'Debug';
-          dbg && console.log(msg, `[2]${context}`, location);
+          dbg && console.log(msg, `[3]${context}`, location);
         }
         break;
       case CONTEXT_SEARCH:
@@ -88,38 +93,32 @@ export default class EbtCard {
           location[0] = '';
         }
         if (location.length === 1) {
-          dbg && console.log(msg, `[3]${context}`, {langTrans});
+          dbg && console.log(msg, `[4]${context}`, {langTrans});
           langTrans && location.push(langTrans);
         }
         break;
       case CONTEXT_SUTTA:
-        dbg && console.log(msg, `[4]${context} before`, location);
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
-        dbg && console.log(msg, `[5]${context} after`, location);
+        dbg && console.log(msg, `[5]${context}`, location);
         titleHref = titleHref || 
           `https://suttacentral.net/${location[0]}`;
         break;
       case CONTEXT_GRAPH:
         location[0] = location[0] || 'mn44';
         location[1] = location[1] || langTrans;
-        dbg && console.log(msg, `[6]${context} after`, location);
+        dbg && console.log(msg, `[6]${context}`, location);
         break;
       case CONTEXT_PLAY:
-        dbg && console.log(msg, `[7]${context} before`, location);
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
-        dbg && console.log(msg, `[8]${context} after`, location);
         titleHref = titleHref || 
           `https://suttacentral.net/${location[0]}`;
+        dbg && console.log(msg, `[7]${context}`, 
+          {location, playlist});
         break;
-    }
-
-    if (playlist && !(playlist instanceof Playlist)) {
-      playlist = new Playlist(playlist);
-      dbg && console.log(msg, '[9]playlist', playlist);
     }
 
     Object.assign(this, {// primary properties
@@ -306,7 +305,7 @@ export default class EbtCard {
 
   onAfterMounted({settings, volatile}) {
     const msg = "ebt-card.onAfterMounted()";
-    const dbg = DBG_ROUTE || DBG.MOUNTED;
+    const dbg = DBG.ROUTE || DBG.MOUNTED;
     let { langTrans, } = settings;
     let { id } = this;
     let route = window.location.hash.split('#')[1] || '';
@@ -380,7 +379,7 @@ export default class EbtCard {
 
   matchPathSutta({opts, context, location, cardLocation, }) {
     const msg = "ebt-card.matchPathSutta()";
-    const dbg = DBG_ROUTE && DBG_VERBOSE;
+    const dbg = DBG.ROUTE && DBG_VERBOSE;
     let { path, defaultLang } = opts;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');

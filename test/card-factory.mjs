@@ -38,7 +38,6 @@ class MockSettings {
 
   saveSettings() {
     const msg = "MockSettings.saveSettings()";
-    DBG.TEST && console.log(msg, this.cards);
   }
 }
 

@@ -34,7 +34,7 @@
   import { logger } from "log-instance/index.mjs";
   import { 
     DBG,
-    DBG_HOME, DBG_ROUTE, DBG_STARTUP, DBG_FOCUS, DBG_SCROLL,
+    DBG_HOME, DBG_STARTUP, DBG_FOCUS, DBG_SCROLL,
     DBG_CLICK, DBG_OPEN_CARD, DBG_UPDATED, DBG_VISIBLE
   } from '../defines.mjs';
 
@@ -162,13 +162,17 @@
           case EbtCard.CONTEXT_SUTTA: {
             let suttaRef = EbtCard.routeSuttaRef(route, 
               settings.langTrans);
-            let idbSuttaRef = await suttas.getIdbSuttaRef(suttaRef);
-            let idbSutta = idbSuttaRef.value;
-            let { sutta_uid, segnum } = suttaRef;
-            let { segments } = idbSutta;
-            let incRes = routeCard.incrementLocation({segments, delta:0});
-            let { iSegment=0 } = incRes || {};
-            audio.setAudioSutta(idbSutta, iSegment);
+            if (suttaRef) {
+              let idbSuttaRef = await suttas.getIdbSuttaRef(suttaRef);
+              let idbSutta = idbSuttaRef.value;
+              let { sutta_uid, segnum } = suttaRef;
+              let { segments } = idbSutta;
+              let incRes = routeCard.incrementLocation({segments, delta:0});
+              let { iSegment=0 } = incRes || {};
+              audio.setAudioSutta(idbSutta, iSegment);
+            } else {
+              audio.setAudioSutta(null);
+            }
           } break;
           default: {
             audio.setAudioSutta(null);
@@ -191,7 +195,7 @@
     watch:{
       $route (to, from) {
         const msg = 'EbtCards.watch.$route';
-        const dbg = DBG_ROUTE || DBG_OPEN_CARD;
+        const dbg = DBG.ROUTE || DBG_OPEN_CARD;
         let { cardFactory, volatile, settings, $route }  = this;
         let card = cardFactory.pathToCard({
           path: to.fullPath, 

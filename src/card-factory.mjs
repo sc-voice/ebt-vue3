@@ -81,27 +81,33 @@ export default class CardFactory {
       SuttaRef.create("thig1.5/en/soma"),
       SuttaRef.create("thig1.6/en/soma"),
       SuttaRef.create("thig1.7/en/soma"),
-    ];
+    ].slice(0,3);
     let { 
-      location=[] 
+      location=[],
+      playlist,
     } = opts;
 
-    let suttaRefs = DUMMY_SUTTAREFS;
-    let sref = SuttaRef.create(location.slice(0,3).join('/'));
-    let index = 0;
-    suttaRefs.forEach((sr,i)=>{ // update scid
-      if (sr.sutta_uid === sref.sutta_uid) {
-        sr.scid = sref.scid;
-        index = i;
-      }
-    });
-    let pattern = location[3];
-    let { author:docAuthor, lang:docLang } = suttaRefs[0];
-    let playlist = new Playlist({ 
-      index, pattern, suttaRefs, docLang, docAuthor });
-    opts.playlist = playlist;
-    dbg && console.log(msg, '[1]playlist', 
-      JSON.stringify(playlist));
+    if (playlist) {
+      dbg && console.log(msg, '[1]playlist', 
+        JSON.stringify(playlist));
+    } else {
+      let suttaRefs = DUMMY_SUTTAREFS;
+      let sref = SuttaRef.create(location.slice(0,3).join('/'));
+      let index = 0;
+      suttaRefs.forEach((sr,i)=>{ // update scid
+        if (sr.sutta_uid === sref.sutta_uid) {
+          sr.scid = sref.scid;
+          index = i;
+        }
+      });
+      let pattern = location[3];
+      let { author:docAuthor, lang:docLang } = suttaRefs[0];
+      playlist = new Playlist({ 
+        index, pattern, suttaRefs, docLang, docAuthor });
+      opts.playlist = playlist;
+      dbg && console.log(msg, '[2]!playlist', 
+        JSON.stringify(playlist));
+    }
 
     return opts;
   }
@@ -137,6 +143,7 @@ export default class CardFactory {
   pathToCard(args) {
     const msg = 'CardFactory.pathToCard()';
     const dbg = DBG.CARD_PATH;
+    const dbgv = DBG.VERBOSE && dbg;
     let { settings } = this;
     let {
       path='/', cards=settings.cards, addCard, defaultLang, isOpen,
@@ -146,16 +153,15 @@ export default class CardFactory {
     let [ ignored, context, ...location ] = path.split('/');
     location = location.map(loc => decodeURIComponent(loc));
     let card = cards.find(card => card.matchPath({path, defaultLang}));
-    dbg && console.log(msg, '[1]find', {card, path});
+    dbgv && console.log(msg, '[1]find', {card, path});
     if (card == null) {
       if (addCard === undefined) {
         throw new Error(msg+"addCard is required");
       } 
       if (context) {
-        dbg && console.log(msg, '[2]addCard', 
-          {context,location,isOpen});
-        let opts = { context, location, isOpen };
+        let opts = { context, location, isOpen, };
         playlist && (opts.playlist = playlist);
+        dbg && console.log(msg, '[2]addCard', opts);
         card = addCard ? addCard(opts) : null;
       }
     } else {
@@ -168,14 +174,14 @@ export default class CardFactory {
           let newLocation = path.split('/').slice(2);
           if (newLocation.length) {
             card.location = newLocation;
-            dbg && console.log(msg, '[4]newLocation', card.debugString, 
+            dbgv && console.log(msg, '[4]newLocation', card.debugString, 
               newLocation);
           }
         } break;
         case CONTEXT_PLAY:
         case CONTEXT_SUTTA: {
           if (location[0].indexOf(':') >= 0) { // different scid
-            dbg && console.log(msg, '[5]location', card.debugString, 
+            dbgv && console.log(msg, '[5]location', card.debugString, 
               location[0]);
             card.location[0] = location[0];
           }

@@ -327,7 +327,7 @@ import { default as EbtSettings } from "../ebt-settings.mjs";
 import { default as languages } from "../languages.mjs";
 import { 
   DBG,
-  DBG_TBD, DBG_GDPR, DBG_ROUTE,
+  DBG_TBD, DBG_GDPR, 
 } from "../defines.mjs";
 import { logger } from "log-instance/index.mjs";
 import * as VOICES from "../auto/voices.json";
@@ -400,7 +400,7 @@ export default {
   methods: {
     onPrivacy(evt) {
       const msg = "Settings.onPrivacy()";
-      const dbg = DBG_ROUTE;
+      const dbg = DBG.ROUTE;
       let { config, volatile, } = this;
       let privacyLink = config.privacyLink || "#/wiki/privacy";
       console.log(msg, '[1]setRoute', privacyLink, evt);

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { Tipitaka, } from "scv-esm";
+  import { Tipitaka, SuttaRef, } from "scv-esm";
   import { ref } from "vue";
   import { default as SuttaCore } from './SuttaCore.vue';
   import { default as TipitakaNav } from './TipitakaNav.vue';
@@ -61,8 +61,16 @@
     methods: {
       onClickPlaylist(evt) {
         const msg = "PlayView.onClickPlaylist()";
-        let { playlist, audio } = this;
-        console.log(msg, `${playlist.cursor}`, playlist);
+        const dbg = DBG.PLAYLIST;
+        let { playlist, audio, card } = this;
+        let { suttaRefs, cursor } = playlist;
+        let { location } = card;
+        let srSave = SuttaRef.create(location.slice(0,3).join('/'));
+        let sr = suttaRefs.find(sr=>sr.sutta_uid===srSave.sutta_uid);
+        Object.assign(sr, srSave);
+
+        dbg && console.log(msg, '[1]playlist', playlist);
+
         audio.syncPlaylist(playlist);
       },
     },

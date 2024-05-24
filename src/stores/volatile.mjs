@@ -12,7 +12,7 @@ import { default as IdbSutta } from '../idb-sutta.mjs';
 import {
   DBG,
   DBG_CLICK, DBG_FOCUS, DBG_HOME, 
-  DBG_ROUTE, DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
+  DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
   DBG_FETCH, 
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
@@ -295,7 +295,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRouteCard(card) {
       const msg = 'volatile.setRouteCard()';
-      const dbg = DBG_ROUTE;
+      const dbg = DBG.ROUTE;
       let settings = useSettingsStore();
       dbg && console.log(msg, card?.debugString);
       routeCard.value = card;
@@ -325,7 +325,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      const dbg = DBG_ROUTE || DBG_SCROLL;
+      const dbg = DBG.ROUTE || DBG_SCROLL;
       let { config, } = this;
       let settings = useSettingsStore();
       if (!cardOrRoute) {
@@ -427,7 +427,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async updateWikiRoute(opts={}) {
       const msg = 'volatile.updateWikiRoute()';
-      const dbg = DBG_ROUTE;
+      const dbg = DBG.ROUTE;
       let { card, path } = opts;
       let settings = useSettingsStore();
       try {
