@@ -290,8 +290,8 @@ export const useAudioStore = defineStore('audio', {
     back() {
       return this.incrementSegment(-1);
     },
-    async syncPlaylist(playlist) {
-      const msg = "audio.syncPlaylist()";
+    async syncPlaylistSutta(playlist) {
+      const msg = "audio.syncPlaylistSutta()";
       const dbg = DBG.PLAYLIST;
       if (!playlist) {
         throw new Error(`${msg} playlist?`);
@@ -305,9 +305,8 @@ export const useAudioStore = defineStore('audio', {
       let { sutta_uid:audioSuid, lang, author } = audioSutta;
       let { index, cursor, pattern } = playlist;
       let { sutta_uid, scid } = cursor;
-      let incRes = null;
-      let next = SuttaRef.create({sutta_uid, lang, author});
-      let nextSuttaRef = await suttas.getIdbSuttaRef(next);
+      let srNext = SuttaRef.create({sutta_uid, lang, author});
+      let nextSuttaRef = await suttas.getIdbSuttaRef(srNext);
       routeCard.open(false);
       settings.removeCard(routeCard, EbtConfig);
       let nextSutta = nextSuttaRef.value;
@@ -325,19 +324,18 @@ export const useAudioStore = defineStore('audio', {
 
       if (nextCard) {
         volatile.setRouteCard(nextCard);
+        DBG.TEST && console.log(msg, 'T1 location', nextCard.location);
         this.setAudioSutta(nextSutta);
         let { segments } = this.audioSutta;
-        incRes = this.setLocation(0);
+        nextCard.location[0] = sutta_uid;
         let audioIndex = segments.findIndex(s=>s.scid===scid);
         audioIndex = audioIndex < 0 ? 0 : audioIndex;
-        audioIndex && this.setLocation(audioIndex);
+        let incRes = this.setLocation(audioIndex);
         dbg && console.log(msg, '[2]nextCard', 
-          {next, audioIndex, segments} );
+          {srNext, audioIndex, incRes} );
       } else {
         dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
       }
-
-      return incRes;
     },
     async nextTipitaka() {
       const msg = "audio.nextTipitaka()";
@@ -398,21 +396,23 @@ export const useAudioStore = defineStore('audio', {
     },
     setLocation(delta=0) {
       const msg = `audio.setLocation(${delta}) `;
-      const dbg = DBG.PLAY || DBG.TEST;
+      const dbg = DBG.PLAY || DBG.ROUTE;
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
       let { audioSutta, } = this;
       let { segments } = audioSutta;
       let incRes = routeCard.setLocation({ segments, delta, });
+      let { hash } = window.location;
+      let newHash = routeCard.routeHash();
       if (incRes) {
         let { iSegment } = incRes;
         this.audioScid = segments[iSegment].scid;
-        volatile.setRoute(routeCard.routeHash(), true, msg);
+        volatile.setRoute(newHash, true, msg);
         this.playSwoosh();
-        dbg && console.log(msg, '[1]playSwoosh', incRes);
+        dbg && console.log(msg, '[1]playSwoosh', {incRes,hash, newHash});
       } else {
         this.playBell();
-        dbg && console.log(msg, '[2]incRes?', delta);
+        dbg && console.log(msg, '[2]incRes?', {delta,hash, newHash});
       }
 
       return incRes;

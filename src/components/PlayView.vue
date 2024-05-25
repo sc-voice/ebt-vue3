@@ -56,7 +56,7 @@
       let { card } = this;
       let { playlist } = card;
       this.playlist = playlist;
-      console.log(msg, playlist);
+      dbg && console.log(msg, playlist);
     },
     methods: {
       onClickPlaylist(evt) {
@@ -71,7 +71,7 @@
 
         dbg && console.log(msg, '[1]playlist', playlist);
 
-        audio.syncPlaylist(playlist);
+        audio.syncPlaylistSutta(playlist);
       },
     },
     computed: {

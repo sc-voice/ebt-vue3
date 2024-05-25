@@ -135,6 +135,7 @@ export const useSettingsStore = defineStore('settings', {
           hash = ''; // this.homePath(config);
           dbg && console.log(msg, '[3]no open card', hash);
         }
+        DBG.ROUTE && console.log(msg, {hash});
         window.location.hash = hash;
       }
     },

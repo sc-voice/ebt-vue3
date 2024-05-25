@@ -377,7 +377,7 @@ export const useVolatileStore = defineStore('volatile', {
         let { document } = globalThis;
         let activeElement = document?.activeElement;
         this.debugText += `${msg}-${caller}-${route}`;
-        dbg && console.log(msg, "[6]route", route);
+        dbg && console.log(msg, "[6]route", {route});
         window.location.hash = route;
         let expected = activeElement;
         let actual = document?.activeElement;
