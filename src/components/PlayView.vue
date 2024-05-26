@@ -1,5 +1,8 @@
 <template>
-  <v-sheet v-if="playlist">
+  <v-sheet v-if="emptyPlaylist">
+    {{ $t('ebt.playlistLoading') }}
+  </v-sheet>
+  <v-sheet v-if="!emptyPlaylist">
     <v-pagination 
       v-model="playlist.page"
       density="comfortable"
@@ -75,6 +78,10 @@
       },
     },
     computed: {
+      emptyPlaylist(ctx) {
+        let { playlist } = this;
+        return playlist==null || playlist.length<=0;
+      },
     },
   }
 </script>

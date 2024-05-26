@@ -1,5 +1,4 @@
 
-import { logger } from 'log-instance/index.mjs';
 import { useSettingsStore } from './stores/settings.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
@@ -12,6 +11,7 @@ const tipitaka = new Tipitaka();
 
 export default class Playlist {
   #index = ref(0);
+  #suttaRefs = ref([]);
 
   constructor(opts={}) {
     const msg = "playlist.ctor()";
@@ -38,7 +38,6 @@ export default class Playlist {
       docAuthor,
       docLang,
       pattern,
-      suttaRefs,
     });
 
     Object.defineProperty(this, "index", {
@@ -53,6 +52,17 @@ export default class Playlist {
       },
       enumerable: true,
     });
+    Object.defineProperty(this, "suttaRefs", {
+      get: ()=>{
+        return this.#suttaRefs.value;
+      },
+      set: (value)=>{
+        this.#suttaRefs.value = value;
+      },
+      enumerable: true,
+    });
+    this.suttaRefs = suttaRefs;
+
     if (index) {
       this.index = index;
     }

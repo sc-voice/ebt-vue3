@@ -25,7 +25,7 @@ let settings;
     settings.docLang = TEST_LANG;
     settings.docAuthor = TEST_AUTHOR;
   });
-  it("default ctor()", ()=>{
+  it("TESTTESTdefault ctor()", ()=>{
     const msg = "test.playlist@25";
 
     let pl = new Playlist();

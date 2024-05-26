@@ -73,6 +73,7 @@ export default class CardFactory {
   #playOptions(opts) {
     const msg = 'CardFactory.#playOptions()';
     const dbg = DBG.ADD_CARD;
+    let { settings, } = this;
     const DUMMY_SUTTAREFS = [
       SuttaRef.create("thig1.1/en/soma"), 
       SuttaRef.create("thig1.2/en/soma"), 
@@ -91,22 +92,27 @@ export default class CardFactory {
       dbg && console.log(msg, '[1]playlist', 
         JSON.stringify(playlist));
     } else {
-      let suttaRefs = DUMMY_SUTTAREFS;
+      let suttaRefs = [];
       let sref = SuttaRef.create(location.slice(0,3).join('/'));
       let index = 0;
-      suttaRefs.forEach((sr,i)=>{ // update scid
-        if (sr.sutta_uid === sref.sutta_uid) {
-          sr.scid = sref.scid;
-          index = i;
-        }
-      });
       let pattern = location[3];
-      let { author:docAuthor, lang:docLang } = suttaRefs[0];
+      let { author:docAuthor, lang:docLang } = suttaRefs[0] || {};
       playlist = new Playlist({ 
         index, pattern, suttaRefs, docLang, docAuthor });
       opts.playlist = playlist;
       dbg && console.log(msg, '[2]!playlist', 
         JSON.stringify(playlist));
+      setTimeout(()=>{
+        playlist.suttaRefs = DUMMY_SUTTAREFS;
+        suttaRefs.forEach((sr,i)=>{ // update scid
+          if (sr.sutta_uid === sref.sutta_uid) {
+            sr.scid = sref.scid;
+            index = i;
+          }
+        });
+        console.log(msg, 'adding suttarefs', playlist, settings.cards);
+        /* await */ settings.saveSettings();
+      }, 3000);
     }
 
     return opts;
