@@ -222,6 +222,43 @@ export default class Playlist {
     this.index = 0;
   }
 
+  async resolveLocation(location) {
+    const msg = 'Playlist.resolvePlaylist()';
+    const dbg = DBG.PLAYLIST;
+    let sref = SuttaRef.create(location.slice(0,3).join('/'));
+    let pattern = location[3];
+
+    const DUMMY_SUTTAREFS = [
+      SuttaRef.create("thig1.1/en/soma"), 
+      SuttaRef.create("thig1.2/en/soma"), 
+      SuttaRef.create("thig1.3/en/soma"),
+      SuttaRef.create("thig1.4/en/soma"),
+      SuttaRef.create("thig1.5/en/soma"),
+      SuttaRef.create("thig1.6/en/soma"),
+      SuttaRef.create("thig1.7/en/soma"),
+    ].slice(0,3);
+
+    await new Promise(s=>setTimeout(()=>s(),1000));
+    dbg && console.log(msg, 'adding suttarefs', {
+      playlist:Object.assign({},this), 
+      sref,
+    });
+
+    this.suttaRefs = DUMMY_SUTTAREFS;
+    sref = sref || this.suttaRefs[0];
+    sref && this.suttaRefs.forEach((sr,i)=>{ // update scid
+      if (sr.sutta_uid === sref.sutta_uid) {
+        sr.scid = sref.scid;
+        sr.segnum = sref.segnum;
+        this.index = i;
+        this.docAuthor = sref.author;
+        this.docLang = sref.lang;
+      }
+    });
+
+    return this;
+  }
+
 }
 
 

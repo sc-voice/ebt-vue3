@@ -237,4 +237,30 @@ let settings;
     should.deepEqual(pl2.pattern, pl1.pattern);
     should(pl1.index).equal(pl2.index);
   });
+  it("TESTTESTresolvePlaylist() PLAY", async ()=>{
+    const msg = "test.playlist@241";
+    const dbg = 0;
+    let sutta_uid = 'thig1.2';
+    let scid = `${sutta_uid}:1.3`;
+    let lang = 'en';
+    let author = 'soma';
+    let pattern = 'thig1.1-5';
+    let location = [scid, lang, author, pattern];
+    let playlist = new Playlist({
+      pattern, 
+      docLang:lang, 
+      docAuthor:author,
+    });
+    let sref = SuttaRef.create(location.slice(0,3).join('/'));
+
+    let res = await playlist.resolveLocation(location);
+
+    dbg && console.log(msg, {res});
+    should(res).equal(playlist);
+    should(playlist.pattern).equal(pattern);
+    should(playlist.docLang).equal(lang);
+    should(playlist.docAuthor).equal(author);
+    should(playlist.index).equal(1);
+    should.deepEqual(playlist.cursor, sref);
+  });
 });

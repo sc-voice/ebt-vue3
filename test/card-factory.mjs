@@ -183,11 +183,7 @@ class MockSettings {
       path:'/#/sutta/sn42.11', cards, addCard, defaultLang});
     should.deepEqual(cards, [cardSN42_11]);
   });
-  it("TESTTESTaddCard() PLAY", ()=>{
-    if (!DBG.ADD_CARD) {
-      console.log("------ test.card-factory@187 TBD -----");
-      return;
-    }
+  it("TESTTESTaddCard() PLAY", async ()=>{
     let settings = new MockSettings();
     let cf = new CardFactory({settings});
     let isOpen = true;
@@ -200,19 +196,17 @@ class MockSettings {
     let location = [scid, lang, author, pattern];
     let opts = { isOpen, context, location };
     //DBG.ADD_CARD = true;
+
     let card = cf.addCard(opts);
     should(settings.cards[0]).equal(card);
     should(card.context).equal(context);
     should.deepEqual(card.location, location);
     let { playlist } = card;
     should(playlist).instanceOf(Playlist);
-    should(playlist.suttaRefs[0].toString()).equal("thig1.1/en/soma");
-    should(playlist.suttaRefs[1].toString()).equal("thig1.2/en/soma");
-    should(playlist.suttaRefs[2].toString()).equal("thig1.3/en/soma");
-    should(playlist.suttaRefs[0].scid).equal("thig1.1");
-    should(playlist.suttaRefs[1].scid).equal("thig1.2:1.3");
-    should(playlist.suttaRefs[2].scid).equal("thig1.3");
-    should(playlist.page).equal(2);
+    should(playlist.docAuthor).equal(author);
+    should(playlist.docLang).equal(lang);
+
+    should(playlist.suttaRefs.length).equal(0);
   });
   it("addCard() SUTTA", ()=>{
     let settings = new MockSettings();

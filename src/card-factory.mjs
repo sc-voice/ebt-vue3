@@ -3,6 +3,7 @@ import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { default as Playlist } from './playlist.mjs';
 import { default as EbtConfig } from "../ebt-config.mjs";
 import { useSettingsStore } from './stores/settings.mjs';
+import { useVolatileStore } from './stores/volatile.mjs';
 import { 
   default as EbtCard,
   CONTEXT_DEBUG,
@@ -70,35 +71,6 @@ export default class CardFactory {
     return this.#addCard(newOpts);
   }
 
-  async #resolvePlaylist(playlist, sref){
-    const msg = 'CardFactory.#resolvePlaylist()';
-    const dbg = DBG.ADD_CARD;
-    let { settings, } = this;
-
-    const DUMMY_SUTTAREFS = [
-      SuttaRef.create("thig1.1/en/soma"), 
-      SuttaRef.create("thig1.2/en/soma"), 
-      SuttaRef.create("thig1.3/en/soma"),
-      SuttaRef.create("thig1.4/en/soma"),
-      SuttaRef.create("thig1.5/en/soma"),
-      SuttaRef.create("thig1.6/en/soma"),
-      SuttaRef.create("thig1.7/en/soma"),
-    ].slice(0,3);
-
-    await new Promise(s=>setTimeout(()=>s(),1000));
-    console.log(msg, 'adding suttarefs', playlist, settings.cards);
-
-    playlist.suttaRefs = DUMMY_SUTTAREFS;
-    playlist.suttaRefs.forEach((sr,i)=>{ // update scid
-      if (sr.sutta_uid === sref.sutta_uid) {
-        sr.scid = sref.scid;
-        playlist.index = i;
-        playlist.docAuthor = sref.author;
-        playlist.docLang = sref.lang;
-      }
-    });
-  }
-
   #playOptions(opts) {
     const msg = 'CardFactory.#playOptions()';
     const dbg = DBG.ADD_CARD;
@@ -112,12 +84,12 @@ export default class CardFactory {
         JSON.stringify(playlist));
     } else {
       let suttaRefs = [];
-      let sref = SuttaRef.create(location.slice(0,3).join('/'));
-      let pattern = location[3];
-      playlist = new Playlist({ pattern, suttaRefs, });
-      opts.playlist = playlist;
-      dbg && console.log(msg, '[2]!playlist', JSON.stringify(playlist));
-      /* await */ this.#resolvePlaylist(playlist, sref);
+      let [ scid, docLang, docAuthor, pattern ] = location;
+      opts.playlist = playlist = new Playlist({
+        docLang, docAuthor, pattern,
+      });
+      dbg && console.log(msg, '[2]!playlist', location);
+      /* await */ playlist.resolveLocation(location);
     }
 
     return opts;
