@@ -15,7 +15,7 @@ const TEST_PATTERN = 'test-pattern';
 let settings;
 
 (typeof describe ==='function') && 
- describe("playlist.mjs", function () {
+ describe("TESTTESTplaylist.mjs", function () {
 
   beforeEach(() => {
     window.localStorage = global.localStorage;
@@ -25,14 +25,14 @@ let settings;
     settings.docLang = TEST_LANG;
     settings.docAuthor = TEST_AUTHOR;
   });
-  it("TESTTESTdefault ctor()", ()=>{
+  it("default ctor()", ()=>{
     const msg = "test.playlist@25";
 
     let pl = new Playlist();
     should(pl.pattern).equal(undefined);
     should(pl.docLang).equal(TEST_LANG);
     should(pl.docAuthor).equal(TEST_AUTHOR);
-    should.deepEqual(pl.suttaRefs, []);
+    should.deepEqual(pl.suttaRefs, undefined)
   });
   it("custom ctor()", ()=>{
     const msg = "test.playlist@33";

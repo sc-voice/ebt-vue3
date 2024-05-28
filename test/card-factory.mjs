@@ -42,7 +42,7 @@ class MockSettings {
 }
 
 (typeof describe === 'function') && 
-  describe("card-factory.mjs", function () 
+  describe("TESTTESTcard-factory.mjs", function () 
 {
   beforeEach(() => {
     window.localStorage = global.localStorage
@@ -206,7 +206,7 @@ class MockSettings {
     should(playlist.docAuthor).equal(author);
     should(playlist.docLang).equal(lang);
 
-    should(playlist.suttaRefs.length).equal(0);
+    should(playlist.suttaRefs).equal(undefined);
   });
   it("addCard() SUTTA", ()=>{
     let settings = new MockSettings();

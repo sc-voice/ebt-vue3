@@ -24,15 +24,17 @@ export default class Playlist {
       docAuthor = settings?.docAuthor,
       index,
       pattern,
-      suttaRefs = [],
+      suttaRefs,
     } = opts;
 
-    suttaRefs = suttaRefs.map(sr=>{
-      let suttaRef = SuttaRef.create(sr, docLang);
-      suttaRef.author = suttaRef.author || 
-        AuthorsV2.langAuthor(suttaRef.lang);
-      return suttaRef;
-    });
+    if (suttaRefs) {
+      suttaRefs = suttaRefs.map(sr=>{
+        let suttaRef = SuttaRef.create(sr, docLang);
+        suttaRef.author = suttaRef.author || 
+          AuthorsV2.langAuthor(suttaRef.lang);
+        return suttaRef;
+      });
+    }
 
     Object.assign(this, {
       docAuthor,
@@ -100,7 +102,7 @@ export default class Playlist {
 
   get cursor() {
     let { index, suttaRefs } = this;
-    let sr = suttaRefs[index];
+    let sr = suttaRefs && suttaRefs[index];
     return sr;
   }
 
@@ -195,6 +197,9 @@ export default class Playlist {
   advance(delta=1) {
     const msg = "Playlist.advance()";
     let { suttaRefs } = this;
+    if (suttaRefs==null) {
+      return false;
+    }
     let end = suttaRefs.length - 1;
     if (typeof this.index !== 'number') {
       this.index = 0;
@@ -228,7 +233,8 @@ export default class Playlist {
     let sref = SuttaRef.create(location.slice(0,3).join('/'));
     let pattern = location[3];
 
-    const DUMMY_SUTTAREFS = [
+    // Mock suttarefs
+    const MOCK_SUTTAREFS = [
       SuttaRef.create("thig1.1/en/soma"), 
       SuttaRef.create("thig1.2/en/soma"), 
       SuttaRef.create("thig1.3/en/soma"),
@@ -237,14 +243,13 @@ export default class Playlist {
       SuttaRef.create("thig1.6/en/soma"),
       SuttaRef.create("thig1.7/en/soma"),
     ].slice(0,3);
-
     await new Promise(s=>setTimeout(()=>s(),1000));
     dbg && console.log(msg, 'adding suttarefs', {
       playlist:Object.assign({},this), 
       sref,
     });
+    this.suttaRefs = MOCK_SUTTAREFS;
 
-    this.suttaRefs = DUMMY_SUTTAREFS;
     sref = sref || this.suttaRefs[0];
     sref && this.suttaRefs.forEach((sr,i)=>{ // update scid
       if (sr.sutta_uid === sref.sutta_uid) {
