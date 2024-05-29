@@ -23,6 +23,7 @@ export const DBG = {
   SUTTA_MOUNTED: 0,
   SETTINGS: 0,
   TEST: 0,
+  TEST_WITH_FETCH: 0,
   TUTORIAL: 0,
   VERBOSE: 0,
 };
