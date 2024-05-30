@@ -38,14 +38,23 @@ const MSDAY = 24*3600*MSSEC;
   });
   it("TESTTESTsearchResults() => search-thig.json", async ()=>{
     const msg = "test.searchResults()";
-    const dbg = DBG.TEST;
+    const dbg = DBG.TEST_WITH_FETCH;
     if (dbg) { // write out searchResults
       let volatile = useVolatileStore();
-      let search = "thig1.1-3 -dl en -da soma";
+      let author = 'soma';
+      let lang = 'en';
+      let search = `thig1.1-3 -dl ${lang} -da ${author}`;
       let opts = {cached: false};
       let res = await volatile.searchResults(search, opts);
+      let { docLang, docAuthor, suttaRefs } = res;
       let json = JSON.stringify(res, null, 2);
-      console.log(json);
+      should(docAuthor).equal(author);
+      should(docLang).equal(lang);
+      should.deepEqual(suttaRefs.map(sr=>sr.toString()), [
+        'thig1.1/en/soma',
+        'thig1.2/en/soma',
+        'thig1.3/en/soma',
+      ])
       let testPath = `${__dirname}/data/search-thig.json`;
       console.log(msg, 'writing out', testPath);
       await fs.promises.writeFile(testPath, json);
@@ -76,37 +85,12 @@ const MSDAY = 24*3600*MSSEC;
     console.log(msg, 'writing out', testPath);
     await fs.promises.writeFile(testPath, json);
 
-    let { res } = results;
-    should(res.author).equal(author);
-    should(res.lang).equal(lang);
-    should.deepEqual(res.suttaRefs, [
-      "thig1.1/de/sabbamitta",
+    let { res, docAuthor, docLang, suttaRefs } = results;
+    should(docAuthor).equal(author);
+    should(docLang).equal(lang);
+    should.deepEqual(suttaRefs.map(sr=>sr.toString()), [
       "thig1.16/de/sabbamitta",
-    ]);
-  });
-  it("TESTTESTsearchResults() thig1.1.3", async ()=>{
-    const msg = "test.volatila@80";
-    if (!DBG.TEST_WITH_FETCH) {
-      console.log(msg, "skipping test with fetch()...");
-      return;
-    }
-
-    let volatile = useVolatileStore();
-    let search = "thig1.1-3 -dl en -da soma";
-    let opts = {cached: false};
-    let results = await volatile.searchResults(search, opts);
-    let json = JSON.stringify(results, null, 2);
-    let testPath = `${__dirname}/data/search-thig.json`;
-    console.log(msg, 'writing out', testPath);
-    await fs.promises.writeFile(testPath, json);
-
-    let { res } = results;
-    should(res.author).equal('soma');
-    should(res.lang).equal('en');
-    should.deepEqual(res.suttaRefs, [
-      "thig1.1",
-      "thig1.2",
-      "thig1.3",
+      "thig1.1/de/sabbamitta",
     ]);
   });
 })

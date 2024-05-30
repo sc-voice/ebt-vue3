@@ -205,10 +205,22 @@ export const useVolatileStore = defineStore('volatile', {
           this.waitEnd();
         }
       }
+
+      let suttaRefs = cardData.map(d=>{
+        return SuttaRef.create({
+          sutta_uid:d.uid, 
+          lang:d.lang,
+          author: d.author_uid,
+        });
+      });
+
       searchResult = {
-        res,
-        mlDocs,
+        //res,
+        //mlDocs,
         cardData,
+        docLang: res.lang,
+        docAuthor: res.author,
+        suttaRefs,
       }
       searchResultMap.value[searchKey] = searchResult;
       return searchResult;
