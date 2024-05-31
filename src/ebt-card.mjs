@@ -22,6 +22,7 @@ const CONTEXTS = {
   },
   [CONTEXT_SEARCH]: {
     icon: "mdi-magnify",
+    alt1Icon: "mdi-account-voice",
   },
   [CONTEXT_PLAY]: {
     icon: "mdi-file-document-multiple-outline",
@@ -258,6 +259,21 @@ export default class EbtCard {
     }
 
     return false;
+  }
+
+  alt1Disabled() {
+    const msg = "EbtCard.alt1Disabled()";
+    let { context, data } = this;
+    let disabled = false;
+
+    switch (context) {
+      case CONTEXT_SEARCH:
+        disabled = !data || !data.length;
+      break;
+    }
+
+    //console.log(msg, {disabled, context});
+    return disabled;
   }
 
   get currentElementId() {

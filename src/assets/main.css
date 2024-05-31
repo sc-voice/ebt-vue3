@@ -33,6 +33,9 @@ div.v-theme--dark {
   border: var(--focus-border) var(--focus-color);
   border-radius: 8pt;
 }
+.v-btn__overlay {
+  background-color: rgba(0,0,0,0);
+}
 .v-expansion-panel {
   border: 2pt dashed rgb(0,0,0,0);
 }

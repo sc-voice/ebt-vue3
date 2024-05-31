@@ -31,6 +31,7 @@
             v-if="card.alt1Icon && routeCard===card"
             :icon="card.alt1Icon" flat
             :id="card.graphId"
+            :disabled="card.alt1Disabled()"
             @click.stop.prevent="clickAlt1"
           />
           <v-btn icon="mdi-window-minimize" flat 
@@ -222,6 +223,28 @@
           settings.removeCard(card, config);
         }, 500);
       },
+      async openPlaylist(pattern) {
+        const msg = "EbtCard.openPlaylist()";
+        const dbg = DBG.PLAYLIST;
+        let { volatile, card } = this;
+        let {
+          docLang, docAuthor, suttaRefs
+        } = await volatile.searchResults(pattern);
+        let sr0 = suttaRefs[0];
+        let fullPattern = `${pattern} -da ${docLang} -da ${docAuthor}`;
+        let hash = [
+          '#/play',
+          sr0.scid,
+          docLang,
+          docAuthor,
+          encodeURIComponent(fullPattern),
+        ].join('/');
+
+        dbg && console.log(msg, {
+          hash, docLang, docAuthor, suttaRefs, pattern
+        });
+        window.location.hash = hash;
+      },
       clickAlt1(evt) {
         const msg = "EbtCard.clickAlt1()";
         const dbg = DBG_CLICK;
@@ -229,9 +252,13 @@
         const { context, location } = card;
         dbg && console.log(msg, evt);
         switch (context) {
+          case EbtCard.CONTEXT_SEARCH: {
+            let [ pattern ] = location;
+            this.openPlaylist(pattern);
+          } break;
+          case EbtCard.CONTEXT_PLAY: 
           case EbtCard.CONTEXT_WIKI:
           case EbtCard.CONTEXT_GRAPH:
-          case EbtCard.CONTEXT_PLAY:
           case EbtCard.CONTEXT_SUTTA: {
             let { alt1Href } = this;
             volatile.setRoute(alt1Href);
@@ -332,6 +359,12 @@
       },
     },
     computed: {
+      CONTEXT_WIKI() { return EbtCard.CONTEXT_WIKI; },
+      CONTEXT_SEARCH() { return EbtCard.CONTEXT_SEARCH; },
+      CONTEXT_GRAPH() { return EbtCard.CONTEXT_GRAPH; },
+      CONTEXT_DEBUG() { return EbtCard.CONTEXT_DEBUG; },
+      CONTEXT_SUTTA() { return EbtCard.CONTEXT_SUTTA; },
+      CONTEXT_PLAY() { return EbtCard.CONTEXT_PLAY; },
       alt1Href(ctx) {
         const { config, card, volatile, settings } = this;
         const { docLang } = settings;
@@ -415,12 +448,6 @@
         let link = `/${context}/${location}`;
         return link;
       },
-      CONTEXT_DEBUG: (ctx)=>EbtCard.CONTEXT_DEBUG,
-      CONTEXT_WIKI: (ctx)=>EbtCard.CONTEXT_WIKI,
-      CONTEXT_SEARCH: (ctx)=>EbtCard.CONTEXT_SEARCH,
-      CONTEXT_PLAY: (ctx)=>EbtCard.CONTEXT_PLAY,
-      CONTEXT_SUTTA: (ctx)=>EbtCard.CONTEXT_SUTTA,
-      CONTEXT_GRAPH: (ctx)=>EbtCard.CONTEXT_GRAPH,
       contexts: (ctx) => {
         let { $t } = ctx;
         return [{
