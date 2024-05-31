@@ -42,7 +42,7 @@ class MockSettings {
 }
 
 (typeof describe === 'function') && 
-  describe("TESTTESTcard-factory.mjs", function () 
+  describe("card-factory.mjs", function () 
 {
   beforeEach(() => {
     window.localStorage = global.localStorage
@@ -184,6 +184,7 @@ class MockSettings {
     should.deepEqual(cards, [cardSN42_11]);
   });
   it("TESTTESTaddCard() PLAY", async ()=>{
+    const msg = 'test.card-factory@187';
     let settings = new MockSettings();
     let cf = new CardFactory({settings});
     let isOpen = true;
@@ -192,10 +193,11 @@ class MockSettings {
     let scid = `${sutta_uid}:1.3`;
     let lang = 'en';
     let author = 'soma';
-    let pattern = 'thig1.1-5';
+    let pattern = `thig1.1-5 -dl ${lang} -da ${author}`;
     let location = [scid, lang, author, pattern];
     let opts = { isOpen, context, location };
-    //DBG.ADD_CARD = true;
+    DBG.ADD_CARD = true;
+    settings.cards = [];
 
     let card = cf.addCard(opts);
     should(settings.cards[0]).equal(card);
@@ -205,8 +207,22 @@ class MockSettings {
     should(playlist).instanceOf(Playlist);
     should(playlist.docAuthor).equal(author);
     should(playlist.docLang).equal(lang);
-
     should(playlist.suttaRefs).equal(undefined);
+
+    if (DBG.TEST_WITH_FETCH) {
+      await new Promise(resolve=>setTimeout(()=>resolve(),1000));
+      should(playlist.docAuthor).equal(author);
+      should(playlist.docLang).equal(lang);
+      should(playlist.pattern).equal(pattern);
+      should(playlist.suttaRefs).instanceOf(Array);
+      should.deepEqual(playlist.suttaRefs.map(sr=>sr.toString()), [
+        'thig1.1/en/soma',
+        `${scid}/en/soma`,
+        'thig1.3/en/soma',
+        'thig1.4/en/soma',
+        'thig1.5/en/soma',
+      ]);
+    }
   });
   it("addCard() SUTTA", ()=>{
     let settings = new MockSettings();

@@ -74,6 +74,7 @@ export default class CardFactory {
   #playOptions(opts) {
     const msg = 'CardFactory.#playOptions()';
     const dbg = DBG.ADD_CARD;
+    const volatile = useVolatileStore();
     let { 
       location=[],
       playlist,
@@ -89,7 +90,18 @@ export default class CardFactory {
         docLang, docAuthor, pattern,
       });
       dbg && console.log(msg, '[2]!playlist', location);
-      /* await */ playlist.resolveLocation(location);
+      let searcher = async (pattern)=>{
+        let { 
+          docLang, docAuthor, suttaRefs 
+        } = await volatile.searchResults(pattern);
+        return {
+          docLang,
+          docAuthor,
+          pattern,
+          suttaRefs,
+        }
+      };
+      /* await */ playlist.resolveLocation(location, searcher);
     }
 
     return opts;

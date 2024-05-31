@@ -133,17 +133,17 @@ export const useVolatileStore = defineStore('volatile', {
         this.setRoute(homePath);
       }
     },
-    async searchResults(search, opts={}) {
+    async searchResults(pattern, opts={}) {
       let {
         cached=false,
       } = opts;
-      let searchKey = this.trilingualPattern(search);
+      let searchKey = this.trilingualPattern(pattern);
       let searchResult = searchResultMap.value[searchKey];
       if (cached && searchResult) {
         return searchResult;
       }
       const suttas = useSuttasStore();
-      let url = this.searchUrl(search);
+      let url = this.searchUrl(pattern);
       let res = await this.fetchJson(url);
       let resJson = res.ok
         ? await res.json()
@@ -215,11 +215,10 @@ export const useVolatileStore = defineStore('volatile', {
       });
 
       searchResult = {
-        //res,
-        //mlDocs,
         cardData,
         docLang: res.lang,
         docAuthor: res.author,
+        pattern,
         suttaRefs,
       }
       searchResultMap.value[searchKey] = searchResult;

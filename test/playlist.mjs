@@ -15,7 +15,7 @@ const TEST_PATTERN = 'test-pattern';
 let settings;
 
 (typeof describe ==='function') && 
- describe("TESTTESTplaylist.mjs", function () {
+ describe("playlist.mjs", function () {
 
   beforeEach(() => {
     window.localStorage = global.localStorage;
@@ -237,7 +237,7 @@ let settings;
     should.deepEqual(pl2.pattern, pl1.pattern);
     should(pl1.index).equal(pl2.index);
   });
-  it("TESTTESTresolvePlaylist() PLAY", async ()=>{
+  it("resolvePlaylist() PLAY", async ()=>{
     const msg = "test.playlist@241";
     const dbg = 0;
     let sutta_uid = 'thig1.2';

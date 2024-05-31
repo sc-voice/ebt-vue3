@@ -58,16 +58,16 @@ const MSDAY = 24*3600*MSSEC;
       'zz?maxResults=5', 
     ].join('/'));
   });
-  it("loadIdbSutta", async () => {
+  it("TESTTESTloadIdbSutta", async () => {
     //logger.logLevel = 'info';
     let suttas = useSuttasStore();
     let { nFetch, nGet, nSet } = suttas;
-    let suttaRef = SuttaRef.create(THIG1_1_SOMA);
+    let suttaRef = SuttaRef.create('thig1.11/en/soma');
 
     // Load sutta from cloud
     let idbSutta = await suttas.loadIdbSutta(suttaRef);
     should(idbSutta).properties({
-      sutta_uid: 'thig1.1',
+      sutta_uid: 'thig1.11',
       lang: 'en',
       author: 'soma',
     });
@@ -227,7 +227,7 @@ const MSDAY = 24*3600*MSSEC;
       stop();
     }
   });
-  it("getIdbSuttaRef()", async () => {
+  it("TESTTESTgetIdbSuttaRef()", async () => {
     let suttas = useSuttasStore();
     let suttaRef = SuttaRef.create("thig1.1/en/soma");
     let { sutta_uid, lang, author } = suttaRef;
@@ -245,7 +245,7 @@ const MSDAY = 24*3600*MSSEC;
 
     // refresh is true by default
     let noRefresh = await suttas
-      .getIdbSuttaRef("thig1.2/en/soma", {refresh:false});
+      .getIdbSuttaRef("thig1.10/en/soma", {refresh:false});
     should(noRefresh).equal(null);
   });
   it("getIdbSuttaRef() fails", async () => {

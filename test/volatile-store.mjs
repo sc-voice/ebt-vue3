@@ -36,7 +36,7 @@ const MSDAY = 24*3600*MSSEC;
   it("default state", ()=>{
     let volatile = useVolatileStore();
   });
-  it("TESTTESTsearchResults() => search-thig.json", async ()=>{
+  it("searchResults() => search-thig.json", async ()=>{
     const msg = "test.searchResults()";
     const dbg = DBG.TEST_WITH_FETCH;
     if (dbg) { // write out searchResults
@@ -46,10 +46,11 @@ const MSDAY = 24*3600*MSSEC;
       let search = `thig1.1-3 -dl ${lang} -da ${author}`;
       let opts = {cached: false};
       let res = await volatile.searchResults(search, opts);
-      let { docLang, docAuthor, suttaRefs } = res;
+      let { docLang, docAuthor, pattern, suttaRefs } = res;
       let json = JSON.stringify(res, null, 2);
       should(docAuthor).equal(author);
       should(docLang).equal(lang);
+      should(pattern).equal(search);
       should.deepEqual(suttaRefs.map(sr=>sr.toString()), [
         'thig1.1/en/soma',
         'thig1.2/en/soma',
@@ -60,7 +61,7 @@ const MSDAY = 24*3600*MSSEC;
       await fs.promises.writeFile(testPath, json);
     }
   });
-  it("TESTTESTsearchResults() schlafe sanft", async ()=>{
+  it("searchResults() schlafe sanft", async ()=>{
     const msg = "test.volatila@55";
     if (!DBG.TEST_WITH_FETCH) {
       console.log(msg, "skipping test with fetch()...");
@@ -85,9 +86,10 @@ const MSDAY = 24*3600*MSSEC;
     console.log(msg, 'writing out', testPath);
     await fs.promises.writeFile(testPath, json);
 
-    let { res, docAuthor, docLang, suttaRefs } = results;
+    let { res, docAuthor, docLang, pattern, suttaRefs } = results;
     should(docAuthor).equal(author);
     should(docLang).equal(lang);
+      should(pattern).equal(search);
     should.deepEqual(suttaRefs.map(sr=>sr.toString()), [
       "thig1.16/de/sabbamitta",
       "thig1.1/de/sabbamitta",

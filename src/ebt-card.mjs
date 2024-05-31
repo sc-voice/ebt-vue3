@@ -74,7 +74,8 @@ export default class EbtCard {
     let contextLoc = [context, ...location].join('/');
     if (playlist && !(playlist instanceof Playlist)) {
       playlist = new Playlist(playlist);
-      dbg && console.log(msg, '[1]playlist', playlist);
+      dbg && console.log(msg, '[1]playlist', 
+        JSON.stringify(playlist, null, 2));
     }
 
     switch (context) {
@@ -110,15 +111,21 @@ export default class EbtCard {
         location[1] = location[1] || langTrans;
         dbg && console.log(msg, `[6]${context}`, location);
         break;
-      case CONTEXT_PLAY:
+      case CONTEXT_PLAY: {
         location[1] == null && (location[1] = langTrans);
         location[2] == null && 
           (location[2] = AuthorsV2.langAuthor(location[1]));
         titleHref = titleHref || 
           `https://suttacentral.net/${location[0]}`;
-        dbg && console.log(msg, `[7]${context}`, 
-          {location, playlist});
-        break;
+        if (dbg) {
+          let { suttaRefs } = playlist || {};
+          console.log(msg, `[7]${context}`, {
+            location, 
+            playlist,
+            suttaRefs,
+          });
+        }
+      } break;
     }
 
     Object.assign(this, {// primary properties

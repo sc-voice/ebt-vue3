@@ -234,6 +234,7 @@ export default class Playlist {
     let pattern = location[3];
 
     if (searcher == null) {
+      console.log(msg, "MOCK");
       searcher = async (pattern)=>{
         // Mock suttarefs
         const MOCK_SUTTAREFS = [
@@ -251,11 +252,18 @@ export default class Playlist {
           sref,
         });
 
-        return MOCK_SUTTAREFS;
+        return {
+          docLang: 'en',
+          docAuthor: 'soma',
+          suttaRefs: MOCK_SUTTAREFS,
+        }
       }
     }
 
-    this.suttaRefs = await searcher(pattern);
+    let { docLang, docAuthor, suttaRefs } = await searcher(pattern);
+    this.suttaRefs = suttaRefs;
+    this.docLang = docLang;
+    this.docAuthor = docAuthor;
 
     sref = sref || this.suttaRefs[0];
     sref && this.suttaRefs.forEach((sr,i)=>{ // update scid
@@ -272,5 +280,3 @@ export default class Playlist {
   }
 
 }
-
-

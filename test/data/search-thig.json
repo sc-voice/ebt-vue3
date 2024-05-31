@@ -334,6 +334,7 @@
   ],
   "docLang": "en",
   "docAuthor": "soma",
+  "pattern": "thig1.1-3 -dl en -da soma",
   "suttaRefs": [
     {
       "sutta_uid": "thig1.1",
