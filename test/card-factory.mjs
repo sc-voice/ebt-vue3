@@ -196,7 +196,7 @@ class MockSettings {
     let pattern = `thig1.1-5 -dl ${lang} -da ${author}`;
     let location = [scid, lang, author, pattern];
     let opts = { isOpen, context, location };
-    DBG.ADD_CARD = true;
+    //DBG.ADD_CARD = true;
     settings.cards = [];
 
     let card = cf.addCard(opts);
