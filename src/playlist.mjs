@@ -72,7 +72,7 @@ export default class Playlist {
     if (dbg) {
       if (dbgv) {
         console.log(msg, JSON.stringify(this, null, 2));
-      } else {
+      } else if (suttaRefs) {
         console.log(msg, 
           this.suttaRefs.map((sr,i)=>{
             return i === this.index
@@ -80,6 +80,8 @@ export default class Playlist {
               : sr.toString();
           }).join(', ')
         );
+      } else {
+        console.log(msg, {suttaRefs});
       }
     }
   }
