@@ -297,6 +297,7 @@ export const useAudioStore = defineStore('audio', {
         throw new Error(`${msg} playlist?`);
       }
 
+      let incRes = null;
       let suttas = useSuttasStore();
       let settings = useSettingsStore();
       let volatile = useVolatileStore();
@@ -330,12 +331,14 @@ export const useAudioStore = defineStore('audio', {
         nextCard.location[0] = sutta_uid;
         let audioIndex = segments.findIndex(s=>s.scid===scid);
         audioIndex = audioIndex < 0 ? 0 : audioIndex;
-        let incRes = this.setLocation(audioIndex);
+        incRes = this.setLocation(audioIndex);
         dbg && console.log(msg, '[2]nextCard', 
           {srNext, audioIndex, incRes} );
       } else {
         dbg && console.log(msg, '[3]!nextCard', nextpath, incRes);
       }
+      
+      return incRes;
     },
     async nextTipitaka() {
       const msg = "audio.nextTipitaka()";
@@ -370,6 +373,33 @@ export const useAudioStore = defineStore('audio', {
       }
       return incRes;
     },
+    async nextPlaylist() {
+      const msg = "audio.nextPlaylist()";
+      const dbg = DBG.PLAY;
+      let settings = useSettingsStore();
+      let volatile = useVolatileStore();
+      let suttas = useSuttasStore();
+      let { audioSutta } = this;
+      let { routeCard } = volatile;
+      let { playlist } = routeCard;
+      let { pattern } = playlist;
+      let { cursor } = playlist;
+      let incRes = playlist && playlist.advance(1);
+      if (!incRes) {
+        dbg && console.log(msg, '[1]!advance', playlist, incRes);
+        return incRes;
+      }
+
+      dbg && console.log(msg, '[2]advance', cursor, incRes);
+
+      // start at top of next sutta
+      cursor.scid = cursor.sutta_uid;
+      cursor.segnum = undefined;
+
+      await this.syncPlaylistSutta(playlist);
+
+      return incRes;
+    },
     async next() {
       const msg = "audio.next()";
       const dbg = DBG.PLAY;
@@ -382,6 +412,9 @@ export const useAudioStore = defineStore('audio', {
             dbg && console.log(msg, '[1]repeat', incRes);
           case EbtSettings.END_TIPITAKA: 
             incRes = await this.nextTipitaka();
+            break;
+          case EbtSettings.END_PLAYLIST: 
+            incRes = await this.nextPlaylist();
             break;
           case EbtSettings.END_STOP:
             dbg && console.log(msg, '[3]stop', incRes);

@@ -171,8 +171,9 @@ export default class Playlist {
 
   #advanceTipitaka(delta=1) {
     const msg = 'Playlist.#advanceTipitaka()';
-    const dbg = DBG.PLAYLIST;
-    let sutta_uid = this.cursor.sutta_uid;
+    const dbg = DBG.PLAYLIST || DBG.PLAY;
+    let { cursor } = this;
+    let sutta_uid = cursor.sutta_uid;
     if (delta > 0) {
       while (sutta_uid && delta > 0) {
         sutta_uid = tipitaka.nextSuid(sutta_uid);
@@ -187,6 +188,7 @@ export default class Playlist {
       }
     }
     if (!sutta_uid) {
+      dbg && console.log(msg, "!", sutta_uid);
       return false;
     }
 

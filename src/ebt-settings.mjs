@@ -122,6 +122,7 @@ export default class EbtSettings {
   static get END_REPEAT() { return "⥀"; }
   static get END_STOP() { return "\u23f8"; }
   static get END_TIPITAKA() { return "🡺"; }
+  static get END_PLAYLIST() { return "P🡺"; }
 
   static get SERVERS() {
     return SERVERS;
@@ -489,6 +490,7 @@ export default class EbtSettings {
       case EbtSettings.END_STOP:
       case EbtSettings.END_REPEAT:
       case EbtSettings.END_TIPITAKA: 
+      case EbtSettings.END_PLAYLIST: 
         break; // OK
       default:
         playEnd = EbtSettings.END_STOP;

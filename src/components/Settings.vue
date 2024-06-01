@@ -537,6 +537,9 @@ export default {
       },{
         title: $t('ebt.playEndTipitaka'),
         value: EbtSettings.END_TIPITAKA,
+      },{
+        title: $t('ebt.playEndPlaylist'),
+        value: EbtSettings.END_PLAYLIST,
       }]
     },
     themes: (ctx)=>{
