@@ -383,18 +383,17 @@ export const useAudioStore = defineStore('audio', {
       let { routeCard } = volatile;
       let { playlist } = routeCard;
       let { pattern } = playlist;
-      let { cursor } = playlist;
       let incRes = playlist && playlist.advance(1);
       if (!incRes) {
         dbg && console.log(msg, '[1]!advance', playlist, incRes);
         return incRes;
       }
 
-      dbg && console.log(msg, '[2]advance', cursor, incRes);
+      dbg && console.log(msg, '[2]advance', playlist, incRes);
 
       // start at top of next sutta
-      cursor.scid = cursor.sutta_uid;
-      cursor.segnum = undefined;
+      playlist.cursor.scid = playlist.cursor.sutta_uid;
+      playlist.cursor.segnum = undefined;
 
       await this.syncPlaylistSutta(playlist);
 
