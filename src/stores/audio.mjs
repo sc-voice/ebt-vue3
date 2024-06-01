@@ -410,9 +410,9 @@ export const useAudioStore = defineStore('audio', {
           case EbtSettings.END_REPEAT:
             incRes = this.setLocation(0);
             dbg && console.log(msg, '[1]repeat', incRes);
-          case EbtSettings.END_TIPITAKA: 
-            incRes = await this.nextTipitaka();
-            break;
+          //case EbtSettings.END_TIPITAKA: 
+            //incRes = await this.nextTipitaka();
+            //break;
           case EbtSettings.END_PLAYLIST: 
             incRes = await this.nextPlaylist();
             break;

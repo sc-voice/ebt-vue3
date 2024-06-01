@@ -534,9 +534,9 @@ export default {
       },{
         title: $t('ebt.playEndRepeat'),
         value: EbtSettings.END_REPEAT,
-      },{
-        title: $t('ebt.playEndTipitaka'),
-        value: EbtSettings.END_TIPITAKA,
+      //},{
+        //title: $t('ebt.playEndTipitaka'),
+        //value: EbtSettings.END_TIPITAKA,
       },{
         title: $t('ebt.playEndPlaylist'),
         value: EbtSettings.END_PLAYLIST,
