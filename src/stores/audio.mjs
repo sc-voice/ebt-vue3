@@ -8,6 +8,8 @@ import { default as EbtSettings } from '../ebt-settings.mjs';
 import { default as CardFactory } from '../card-factory.mjs';
 import { default as IdbAudio } from '../idb-audio.mjs';
 import { default as EbtConfig } from '../../ebt-config.mjs';
+import { default as EbtCard } from '../ebt-card.mjs';
+import { default as Playlist } from '../playlist.mjs';
 import * as VOICES from "../auto/voices.mjs";
 import { Tipitaka } from 'scv-esm/main.mjs';
 import { ref, nextTick } from 'vue';
@@ -361,7 +363,13 @@ export const useAudioStore = defineStore('audio', {
           '/sutta', sutta_uid, lang, author
         ].join('/');
         let cardFactory = CardFactory.singleton;
-        let nextCard = cardFactory.pathToCard({path:nextPath});
+        let addCard = (opts=>{
+          return cardFactory.addCard(opts);
+        });
+        let nextCard = cardFactory.pathToCard({
+          path: nextPath, 
+          addCard,
+        });
         if (nextCard) {
           volatile.setRouteCard(nextCard);
           this.setAudioSutta(nextSutta);
@@ -405,15 +413,18 @@ export const useAudioStore = defineStore('audio', {
       let incRes = await this.incrementSegment(1);
       if (incRes==null && playMode.value === PLAY_END) {
         let settings = useSettingsStore();
+        let volatile = useVolatileStore();
+        let { routeCard } = volatile;
         switch (settings.playEnd) {
           case EbtSettings.END_REPEAT:
             incRes = this.setLocation(0);
             dbg && console.log(msg, '[1]repeat', incRes);
-          //case EbtSettings.END_TIPITAKA: 
-            //incRes = await this.nextTipitaka();
-            //break;
           case EbtSettings.END_PLAYLIST: 
-            incRes = await this.nextPlaylist();
+            if (routeCard.context === EbtCard.CONTEXT_PLAY) {
+              incRes = await this.nextPlaylist();
+            } else {
+              incRes = await this.nextTipitaka();
+            }
             break;
           case EbtSettings.END_STOP:
             dbg && console.log(msg, '[3]stop', incRes);
