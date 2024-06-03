@@ -19,7 +19,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { default as IdbAudio } from '../idb-audio.mjs';
   import { SuttaRef } from 'scv-esm';
-  import { DBG_GRAPH, DBG_VERBOSE } from '../defines.mjs';
+  import { DBG, DBG_GRAPH, } from '../defines.mjs';
   import { ref, computed, onMounted } from "vue";
 
   const selectedNode = ref(null);
@@ -176,7 +176,7 @@
   onMounted(async ()=>{
     const msg = "GraphView.onMounted()";
     const dbg = DBG_GRAPH;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
     let { docLang } = useSettingsStore();
     let { 
       sutta_uid, 

@@ -49,8 +49,7 @@
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
     DBG,
-    DBG_CLICK, DBG_KEY, DBG_FOCUS,
-    DBG_VERBOSE, 
+    DBG_CLICK, DBG_KEY, 
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;
 
@@ -117,7 +116,7 @@
       onKeyDownSutta(evt) {
         const msg = "SuttaView.onKeyDownSutta()";
         const dbg = DBG_KEY;
-        const dbgv = DBG_VERBOSE && dbg;
+        const dbgv = DBG.VERBOSE && dbg;
         const { audio, card, settings, volatile } = this;
         let { shiftKey, ctrlKey, code } = evt;
         switch (code) {
@@ -141,7 +140,7 @@
       },
       onFocusSutta(evt) {
         const msg = "SuttaView.onFocusSutta()";
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         let { volatile, settings, audio, card } = this;
         audio.audioFocused = true;
         let segmentElementId = card.segmentElementId();

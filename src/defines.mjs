@@ -12,6 +12,7 @@ export const DBG = {
   CARD_FACTORY: 0,
   CLICK_SEG: 0,
   COPY_SEG: 0,
+  FOCUS: 0,
   IDB_SUTTA: 0,
   LOG_HTML: 0,
   MOUNTED: 0,
@@ -19,7 +20,7 @@ export const DBG = {
   PLAYLIST: 0,
   REMOVE_CARD: 0,
   ROUTE: 0,
-  SCROLL: true,
+  SCROLL: 0,
   SEG_MOUNTED: 0,
   SUTTA_MOUNTED: 0,
   SETTINGS: 0,
@@ -36,7 +37,6 @@ export const DBG_CLICK        = 0;
 export const DBG_D3           = 0;
 export const DBG_HIGHLIGHT_EG = 0;
 export const DBG_FETCH        = 0;
-export const DBG_FOCUS        = 0;
 export const DBG_GDPR         = 0;
 export const DBG_GRAPH        = 0;
 export const DBG_HOME         = 0;
@@ -50,7 +50,6 @@ export const DBG_STARTUP      = 0;
 export const DBG_SUTTA        = 0;
 export const DBG_TBD          = 0; // experimental feature
 export const DBG_UPDATED      = 0;
-export const DBG_VERBOSE      = 0;  // trace non-mutative logic
 export const DBG_VIEWPORT     = 0;
 export const DBG_VISIBLE      = 0;  // card.isVisible scrolling
 export const DBG_WAITING      = 0;

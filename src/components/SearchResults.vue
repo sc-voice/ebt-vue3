@@ -39,7 +39,7 @@
   import { useAudioStore } from '../stores/audio.mjs';
   import { SuttaRef, Tipitaka } from 'scv-esm';
   import { nextTick, ref } from "vue";
-  import { DBG_FOCUS } from '../defines.mjs';
+  import { DBG } from '../defines.mjs';
 
   const tipitaka = new Tipitaka();
 
@@ -69,7 +69,7 @@
     methods: {
       onFocusIn(evt) {
         const msg = 'SearchResults.onFocusIn()';
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         const { volatile } = this;
         dbg && console.log(msg, '[1]appFocus', {evt});
         volatile.appFocus = evt.target;

@@ -26,7 +26,7 @@
                 {{config.appName}}
               </div>
               <div class="app-dbg-container">
-                <div v-if="DBG_FOCUS">
+                <div v-if="DBG.FOCUS">
                   {{docHasFocus}}
                   <div class="app-dbg" :title="'activeElt '+activeElt">
                     {{ activeElt||'activeElt?'}}
@@ -200,17 +200,16 @@
   import { 
     DBG,
     DBG_HOME, DBG_KEY, DBG_STARTUP, 
-    DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG.SCROLL,
+    DBG_LEGACY, DBG_CLICK, 
     DBG_WAITING, 
     DBG_GDPR, DBG_WIKI, DBG_AUDIO,
-    DBG_VERBOSE,
 
     APP_BAR_H,
   } from './defines.mjs';
 
   const msg = "App.setup"
-  const dbg = DBG_FOCUS;
-  const dbgv = DBG_VERBOSE && dbg;
+  const dbg = DBG.FOCUS;
+  const dbgv = DBG.VERBOSE && dbg;
 
   const activeElt = ref("loading...");
   const docHasFocus = ref("?");
@@ -285,7 +284,7 @@
       },
       onFocusIn(evt) {
         const msg = 'App.onFocusIn()';
-        const dbg = DBG_FOCUS || DBG_AUDIO;
+        const dbg = DBG.FOCUS || DBG_AUDIO;
         let { audio } = this;
         if (evt.target.id === 'ebt-chips') {
           dbg && console.log(msg, '[1]playBlock');
@@ -297,7 +296,7 @@
       },
       onFocusBtn(evt) {
         const msg = 'App.onFocusBtn()';
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         let { volatile } = this;
         let appFocus = evt.target;
         dbg && console.log(msg, '[1]appFocus', appFocus.id);
@@ -305,7 +304,7 @@
       },
       onClickAppBar(evt) {
         const msg = "App.onClickAppBar";
-        const dbg = DBG_CLICK || DBG_FOCUS;
+        const dbg = DBG_CLICK || DBG.FOCUS;
         let { volatile } = this;
         let { ebtChips } = volatile;
         if (ebtChips) {
@@ -317,7 +316,7 @@
       },
       onClickExtension(evt) {
         const msg = "App.onClickExtension";
-        const dbg = DBG_CLICK || DBG_FOCUS;
+        const dbg = DBG_CLICK || DBG.FOCUS;
         let { volatile } = this;
         let { ebtChips } = volatile;
         if (ebtChips) {
@@ -345,12 +344,15 @@
         window.location = location;
 
         volatile.ebtChips && nextTick(()=>{
-          dbg && console.log(msg, `[4]focusElement ebt-chips`);
+          dbg && console.log(msg, `[3]focusElement ebt-chips`);
           volatile.focusElement(volatile.ebtChips);
         });
 
         let ebtCards = document.getElementById("ebt-cards");
-        ebtCards && ebtCards.scrollIntoView(true);
+        if (ebtCards) {
+          DBG.SCROLL && console.log(msg, '[4]scrollIntoView' );
+          ebtCards.scrollIntoView(true);
+        }
       },
       onHome(evt) {
         let msg = 'App.onHome()';
@@ -378,7 +380,7 @@
       },
       onClickSettings(evt) {
         const msg = "App.onClickSettings()";
-        const dbg = DBG_FOCUS || DBG_CLICK;
+        const dbg = DBG.FOCUS || DBG_CLICK;
         let { settings, volatile, audio, config } = this;
         let btn = document.getElementById('btn-settings');
         btn && btn.blur();

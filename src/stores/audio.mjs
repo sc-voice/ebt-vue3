@@ -16,7 +16,7 @@ import { ref, nextTick } from 'vue';
 import * as Idb from 'idb-keyval';
 import {  
   DBG,
-  DBG_KEY, DBG_AUDIO, DBG_VERBOSE, DBG_HIGHLIGHT_EG,
+  DBG_KEY, DBG_AUDIO, DBG_HIGHLIGHT_EG,
   DBG_SOUND_STORE, DBG_IDB_AUDIO,
 } from '../defines.mjs';
 
@@ -196,7 +196,7 @@ export const useAudioStore = defineStore('audio', {
     registerClickElt(elt) {
       const msg = 'audio.registerClickElt()';
       const dbg = DBG_AUDIO;
-      const dbgv = dbg && DBG_VERBOSE && !DBG.LOG_HTML;
+      const dbgv = dbg && DBG.VERBOSE && !DBG.LOG_HTML;
       if (clickElt.value === elt) { // no change
         dbgv && console.log(V+msg, '[1]n/a');
         return elt;
@@ -484,7 +484,7 @@ export const useAudioStore = defineStore('audio', {
     async playSegment() {
       const msg = `audio.playSegment() `;
       const dbg = DBG_AUDIO;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       let settings = useSettingsStore();
       let audio = this;
       let { idbAudio, audioScid } = audio;
@@ -574,7 +574,7 @@ export const useAudioStore = defineStore('audio', {
     async incrementSegment(delta) {
       const msg = `audio.incrementSegment(${delta}) `;
       const dbg = DBG.PLAY || DBG_AUDIO;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       let volatile = useVolatileStore();
       let { routeCard } = volatile;
       let { audioSutta, } = this;
@@ -753,7 +753,7 @@ export const useAudioStore = defineStore('audio', {
     async getSegmentAudio(idOrRef, settings=useSettingsStore()) {
       const msg = 'audio.getSegmentAudio() ';
       const dbg = DBG_AUDIO;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       let segAudioKey = this.segAudioKey(idOrRef, settings);
       dbgv && console.log(msg, "[1]Idb.get", segAudioKey);
       let segAudio = await Idb.get(segAudioKey, SEG_AUDIO_STORE());
@@ -824,7 +824,7 @@ export const useAudioStore = defineStore('audio', {
     async playUrlAsync(url, opts) {
       const msg = 'audio.playUrlAsync() ';
       const dbg = DBG_AUDIO;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       if (url == null) {
         return null;
       }
@@ -844,7 +844,7 @@ export const useAudioStore = defineStore('audio', {
     async fetchArrayBuffer(url, opts={}) {
       const msg = `audio.fetchArrayBuffer()`;
       const dbg = DBG_AUDIO || DBG_SOUND_STORE;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       const volatile = useVolatileStore();
       let { headers=HEADERS_MPEG } = opts;
       try {
@@ -918,7 +918,7 @@ export const useAudioStore = defineStore('audio', {
     async createAudioBuffer({audioContext, arrayBuffer}) {
       const msg = 'audio.createAudioBuffer()';
       const dbg = DBG_AUDIO;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       const volatile = useVolatileStore();
       try {
         if (arrayBuffer.byteLength < 500) {
@@ -995,7 +995,7 @@ export const useAudioStore = defineStore('audio', {
     async bindSegmentAudio(args={}) {
       const msg = 'audio.bindSegmentAudio() ';
       const dbg = DBG_AUDIO;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       let { 
         volatile=useVolatileStore(),
         settings=useSettingsStore(),

@@ -11,8 +11,8 @@ import { useSuttasStore } from './suttas.mjs';
 import { default as IdbSutta } from '../idb-sutta.mjs';
 import {
   DBG,
-  DBG_CLICK, DBG_FOCUS, DBG_HOME, 
-  DBG_VERBOSE, DBG_WIKI,
+  DBG_CLICK, DBG_HOME, 
+  DBG_WIKI,
   DBG_FETCH, 
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
@@ -230,8 +230,8 @@ export const useVolatileStore = defineStore('volatile', {
     },
     focusCardElementId(card, eltId=card.autofocusId) {
       const msg = 'volatile.focusCardElementId()';
-      const dbg = DBG_FOCUS;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbg = DBG.FOCUS;
+      const dbgv = DBG.VERBOSE && dbg;
       let { tab1Id, } = card;
       let elt = document.getElementById(eltId);
       let ae = document.activeElement;
@@ -280,8 +280,8 @@ export const useVolatileStore = defineStore('volatile', {
     },
     focusElement(elt) {
       const msg = 'volatile.focusElement()';
-      const dbg = DBG_FOCUS;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbg = DBG.FOCUS;
+      const dbgv = DBG.VERBOSE && dbg;
       let ae = document?.activeElement;
       let af = appFocus.value;
       if (af === elt && ae === elt) {
@@ -336,7 +336,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      const dbg = DBG.ROUTE || DBG.SCROLL;
+      const dbg = DBG.ROUTE;
       let { config, } = this;
       let settings = useSettingsStore();
       if (!cardOrRoute) {
@@ -590,7 +590,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     onClickCard(evt, card) {
       const msg = "volatile.onClickCard() ";
-      const dbg = DBG_CLICK || DBG_FOCUS;
+      const dbg = DBG_CLICK || DBG.FOCUS;
       let { appFocus} = this;
       let { target } = evt || {};
       let { localName, href, hash } = target;
@@ -611,7 +611,7 @@ export const useVolatileStore = defineStore('volatile', {
     async scrollToCard(card) {
       const msg = 'volatile.scrollToCard()';
       const dbg = DBG.SCROLL;
-      const dbgv = DBG_VERBOSE; 
+      const dbgv = dbg && DBG.VERBOSE; 
       let { appFocus } = this;
       let settings = useSettingsStore();
       let { tab1Id, deleteId } = card;
@@ -635,7 +635,7 @@ export const useVolatileStore = defineStore('volatile', {
       if (curId === card.titleAnchor) {
         let eltScroll = settings.scrollableElement(curId, topId);
         if (eltScroll) {
-          dbg && console.log(msg, "[1]scrollToElement", eltScroll.id);
+          dbgv && console.log(msg, "[1]scrollToElement", eltScroll.id);
           await settings.scrollToElementId(curId, topId);
         }
         return !!eltScroll;
@@ -643,7 +643,7 @@ export const useVolatileStore = defineStore('volatile', {
 
       scrolled = await settings.scrollToElementId(curId);
       if (!scrolled) {
-        dbg && console.log(msg, "[2]n/a", curId);
+        dbgv && console.log(msg, "[2]n/a", curId);
       }
       return scrolled;
     },

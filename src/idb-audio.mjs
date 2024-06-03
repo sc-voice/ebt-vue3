@@ -2,7 +2,8 @@ import { logger } from 'log-instance/index.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { useAudioStore } from './stores/audio.mjs';
 import {
-  DBG_AUDIO, DBG_VERBOSE, DBG_IDB_AUDIO
+  DBG,
+  DBG_AUDIO, DBG_IDB_AUDIO
 } from './defines.mjs'
 
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
@@ -57,7 +58,7 @@ export default class IdbAudio {
   set src(value) {
     const msg = `IdbAudio.src.set()`;
     const dbg = DBG_AUDIO;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
 
     let { preload } = this;
 
@@ -95,7 +96,7 @@ export default class IdbAudio {
   set currentTime(value) {
     const msg = 'IdbAudio.set.currentTime()';
     const dbg = DBG_AUDIO;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
     if (value !== 0) {
       let msg = `IdbAudio.currentTime(${value}) expected zero`;
       logger.warn(msg);
@@ -153,7 +154,7 @@ export default class IdbAudio {
   async fetchAudioBuffer() {
     const msgPfx = 'IdbAudio.fetchAudioBuffer()';
     const dbg = DBG_AUDIO;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
     try {
       let { audioContext, audio, src } = this;
 
@@ -176,7 +177,7 @@ export default class IdbAudio {
   async play() {
     const msg = 'IdbAudio.play()';
     const dbg = DBG_AUDIO || DBG_IDB_AUDIO;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
     try {
       let { audioContext, src, msStart, audio } = this;
 

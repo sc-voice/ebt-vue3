@@ -4,9 +4,9 @@ import { AuthorsV2, SuttaRef } from 'scv-esm/main.mjs';
 import { default as Playlist } from './playlist.mjs';
 import { 
   DBG,
-  DBG_CLICK, DBG_FOCUS, 
+  DBG_CLICK, 
   DBG_OPEN_CARD, 
-  DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
+  DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
 
 export const CONTEXT_WIKI = "wiki";
@@ -298,7 +298,7 @@ export default class EbtCard {
 
   hasFocus(appFocus) {
     const msg = "ebt-card.hasFocus()";
-    const dbg = DBG_FOCUS && DBG_VERBOSE;
+    const dbg = DBG.FOCUS && DBG.VERBOSE;
     let { containerId } = this;
     let hasFocus = false;
     for (let elt=appFocus; elt; elt=elt.parentElement) {
@@ -402,7 +402,7 @@ export default class EbtCard {
 
   matchPathSutta({opts, context, location, cardLocation, }) {
     const msg = "ebt-card.matchPathSutta()";
-    const dbg = DBG.ROUTE && DBG_VERBOSE;
+    const dbg = DBG.ROUTE && DBG.VERBOSE;
     let { path, defaultLang } = opts;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
@@ -447,7 +447,7 @@ export default class EbtCard {
   matchPath(strOrObj) {
     const msg = 'ebt-card.matchPath() ';
     const dbg = DBG.CARD_PATH;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
     let opts = typeof strOrObj === 'string'
       ? { path: strOrObj }
       : strOrObj;

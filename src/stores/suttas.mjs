@@ -7,7 +7,7 @@ import { default as IdbSutta } from '../idb-sutta.mjs';
 import { ref, shallowRef } from 'vue';
 import * as Idb from 'idb-keyval';
 import { 
-  DBG, DBG_LOAD, DBG_VERBOSE,
+  DBG, DBG_LOAD, 
 } from '../defines.mjs';
 
 const MSDAY = 24 * 3600 * 1000;
@@ -103,7 +103,7 @@ export const useSuttasStore = defineStore('suttas', {
     async getIdbSuttaRef(suttaRef, opts={refresh:true}) { // get/post API
       const msg = `suttas.getIdbSuttaRef()`;
       const dbg = DBG_LOAD || DBG.IDB_SUTTA;
-      const dbgv = DBG_VERBOSE && dbg;
+      const dbgv = DBG.VERBOSE && dbg;
       let settings = useSettingsStore();
       try {
         let idbKey = IdbSutta.suttaRefToIdbKey(suttaRef, settings);

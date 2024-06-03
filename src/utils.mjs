@@ -1,5 +1,6 @@
 import {
-  DBG_VIEWPORT, DBG_VERBOSE, DBG_KEY,
+  DBG,
+  DBG_VIEWPORT, DBG_KEY,
   APP_BAR_H,
 } from './defines.mjs';
 
@@ -49,7 +50,7 @@ export default class Utils {
   static elementInViewport(elt, opts={}) {
     const msg = "Utils.elementInViewport()";
     const dbg = DBG_VIEWPORT;
-    const dbgv = dbg && DBG_VERBOSE;
+    const dbgv = dbg && DBG.VERBOSE;
     const { 
       root = document.documentElement,
       zone = 80,

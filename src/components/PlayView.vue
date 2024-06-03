@@ -32,9 +32,7 @@
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { default as Playlist } from '../playlist.mjs';
   import { useAudioStore } from '../stores/audio.mjs';
-  import { 
-    DBG, DBG_VERBOSE, 
-  } from '../defines.mjs';
+  import { DBG, } from '../defines.mjs';
 
   export default {
     inject: ['config'],

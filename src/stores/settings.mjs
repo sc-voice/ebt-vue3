@@ -8,8 +8,6 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG,
   DBG_OPEN_CARD, DBG_HOME, 
-  DBG_FOCUS, 
-  DBG_VERBOSE, 
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
 
@@ -148,9 +146,10 @@ export const useSettingsStore = defineStore('settings', {
     scrollableElement(idShow, idScroll) {
       const msg = 'settings.scrollableElement() ';
       const dbg = DBG.SCROLL;
+      const dbgv = dbg && DBG.VERBOSE;
       let eltShow = document.getElementById(idShow);
       if (eltShow == null) {
-        //dbg && console.log(msg, `[1]eltShow? ${idShow}`);
+        dbgv && console.log(msg, `[1]eltShow? ${idShow}`);
         return null;
       }
 
@@ -158,7 +157,7 @@ export const useSettingsStore = defineStore('settings', {
         ? document.getElementById(idScroll) 
         : eltShow;
       if (eltScroll == null) {
-        //dbg && console.log(msg, `[2]eltScroll? ${idScroll}`);
+        dbgv && console.log(msg, `[2]eltScroll? ${idScroll}`);
         return null;
       }
 
@@ -167,30 +166,30 @@ export const useSettingsStore = defineStore('settings', {
         ? idShowInView
         : Utils.elementInViewport(eltScroll);
       if (idShowInView && idScrollInView) {
-        //dbg && console.log(msg, `[3]inView`, {idShow, idScroll} );
+        dbgv && console.log(msg, `[3]inView`, {idShow, idScroll} );
         return null; // element already visible (no scrolling)
       }
 
-      //dbg && console.log(msg, `[4]scrollable`, eltScroll.id);
+      dbgv && console.log(msg, `[4]scrollable`, eltScroll.id);
       return eltScroll;
     },
-    scrollToElement(eltScroll) {
+    scrollToElement(eltScroll, opts) {
       const msg = 'settings.scrollToElement()';
       const dbg = DBG.SCROLL;
 
-      let opts = {
-        block: "center",
+      opts = Object.assign({
+        block: "start",
         inline: "nearest",
         behavior: "smooth",
-      }
-      dbg && console.log(msg, `[4]scrollToElement`, 
+      }, opts);
+      dbg && console.log(msg, `[1]scrollIntoView`, 
         eltScroll.id || eltScroll);
       eltScroll.scrollIntoView(opts);
     },
     async scrollToElementId(idShow, idScroll) {
       const msg = 'settings.scrollToElementId()';
       const dbg = DBG.SCROLL;
-      const dbgv = dbg && DBG_VERBOSE;
+      const dbgv = dbg && DBG.VERBOSE;
 
       // HACK: scroll after Vue is done refreshing
       await new Promise(resolve => setTimeout(()=>resolve(), 300));

@@ -14,7 +14,7 @@
   import { 
     DBG,
     DBG_HOME, DBG_WIKI, 
-    DBG_FOCUS, DBG_CLICK, DBG_VERBOSE,
+    DBG_CLICK, 
   } from '../defines.mjs';
   import { ref } from "vue";
 
@@ -34,7 +34,7 @@
     methods: {
       onFocusIn(evt) {
         const msg = "HomeView.onFocusIn()";
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         let { settings, volatile, card } = this;
         let { target } = evt;
         let viewportElt = card.viewportElement(target);
@@ -42,7 +42,8 @@
           dbg && console.log(msg, '[1]appFocus', {evt});
           volatile.appFocus = target;
           if (!Utils.elementInViewport(viewportElt)) {
-            dbg && console.log(msg, '[1]scrollToElement', viewportElt);
+            DBG.SCROLL && DBG.VERBOSE &&
+              console.log(msg, '[1]scrollToElement', viewportElt);
             settings.scrollToElement(viewportElt);
           }
         }

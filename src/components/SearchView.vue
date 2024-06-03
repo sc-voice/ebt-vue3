@@ -41,7 +41,8 @@
   import { Examples } from "scv-esm";
   import { ref, nextTick } from "vue";
   import { 
-    DBG_FOCUS, DBG_SEARCH 
+    DBG,
+    DBG_SEARCH 
   } from '../defines.mjs';
   const msg = "SearchView.";
 
@@ -73,7 +74,7 @@
     methods: {
       onFocus(evt) {
         const msg = "SearchView.onFocus()";
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         let { volatile } = this;
         let appFocus = evt.target;
         dbg && console.log(msg, '[1]appFocus', appFocus.id);

@@ -1,6 +1,6 @@
 import { AuthorsV2 } from 'scv-esm/main.mjs';
 import { 
-  DBG_VERBOSE, DBG_D3, 
+  DBG, DBG_D3, 
 } from './defines.mjs';
 
 
@@ -75,7 +75,7 @@ export default class EbtD3 {
   slice(opts={}) {
     const msg = 'EbtD3.slice()';
     const dbg = DBG_D3;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
     let { graph } = this;
     let { nodeMatch, idPat, depth=1 } = opts;
     if (nodeMatch == null) {

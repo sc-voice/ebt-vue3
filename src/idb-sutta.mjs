@@ -3,9 +3,7 @@ import { useVolatileStore } from './stores/volatile.mjs';
 import { 
   Examples, AuthorsV2, SuttaRef, SuttaCentralId 
 } from 'scv-esm/main.mjs';
-import {
-  DBG, DBG_VERBOSE,
-} from './defines.mjs';
+import { DBG } from './defines.mjs';
 import * as Idb from "idb-keyval";
 
 const OPTIONAL_PROPS = ['saved', 'refAuthor', 'refLang'];
@@ -97,7 +95,7 @@ export default class IdbSutta {
   }) {
     const msg = 'IdbSutta.idbKey()';
     const dbg = DBG.IDB_SUTTA;
-    const dbgv = DBG_VERBOSE && dbg;
+    const dbgv = DBG.VERBOSE && dbg;
 
     let idbKey = [
       sutta_uid,

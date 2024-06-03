@@ -3,10 +3,7 @@ import { default as EbtCard } from './ebt-card.mjs';
 import { default as VOICES } from './auto/voices.mjs';
 import { SuttaRef, AuthorsV2 } from 'scv-esm/main.mjs';
 import { default as EbtConfig } from "../ebt-config.mjs";
-import {
-  DBG,
-  DBG_VERBOSE, 
-} from './defines.mjs';
+import { DBG, } from './defines.mjs';
 
 const AUDIO = { MP3: 'mp3', OGG: 'ogg', OPUS: 'opus', };
 
@@ -380,7 +377,7 @@ export default class EbtSettings {
 
   static validate(state) {
     const msg = "EbtSettings.validate() ";
-    const dbg = DBG_VERBOSE;
+    const dbg = DBG.VERBOSE;
     let isValid = true;
     let changed = null;
     let error = null;

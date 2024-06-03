@@ -94,8 +94,8 @@
   import { nextTick, ref } from "vue";
   import { 
     DBG,
-    DBG_CLICK, DBG_FOCUS, 
-    DBG_UPDATED, DBG_VISIBLE, DBG_BLUR, DBG_VERBOSE,
+    DBG_CLICK, 
+    DBG_UPDATED, DBG_VISIBLE, DBG_BLUR, 
     DBG_VIEWPORT,
   } from '../defines.mjs';
 
@@ -174,7 +174,8 @@
       },
       onFocusLastTab(evt) {
         const msg = 'EbtCard.onFocusLastTab() ';
-        const dbg = DBG_FOCUS; let { volatile, audio } = this;
+        const dbg = DBG.FOCUS; 
+        let { volatile, audio } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, {ebtChips});
         ebtChips && volatile.focusElement(ebtChips);
@@ -183,7 +184,7 @@
       onClickCard(evt) {
         const msg = "EbtCard.onClickCard() ";
         const dbg = DBG_CLICK;
-        const dbgv = dbg && DBG_VERBOSE;
+        const dbgv = dbg && DBG.VERBOSE;
         let { volatile, settings, card } = this;
         let { appFocus } = volatile;
         dbg && console.log(msg, card.debugString, evt);
@@ -207,7 +208,7 @@
       },
       onBackTabOut(evt) {
         const msg = 'EbtCard.onBackTabOut()';
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         let { volatile } = this;
         let { ebtChips } = volatile;
         dbg && console.log(msg, 'focus', {ebtChips});
@@ -277,12 +278,12 @@
       },
       blurTop(evt) {
         const msg = "EbtCard.blurTop()";
-        const dbg = DBG_BLUR && DBG_VERBOSE;
+        const dbg = DBG_BLUR && DBG.VERBOSE;
         dbg && console.log(msg, evt);
       },
       focusTop(evt) {
         const msg = "EbtCard.focusTop()";
-        const dbg = DBG_FOCUS;
+        const dbg = DBG.FOCUS;
         let { volatile, settings, card } = this;
         let topId = card.topAnchor;
         dbg && console.log(msg, 'scrollToElementId', topId, evt);
@@ -291,7 +292,7 @@
       },
       closeCard: (card, settings) => {
         const msg = 'EbtCard.closeCard()';
-        const dbg = DBG_CLICK || DBG_FOCUS;
+        const dbg = DBG_CLICK || DBG.FOCUS;
         card.open(false);
         let volatile = useVolatileStore();
         let { ebtChips } = volatile;
@@ -427,7 +428,7 @@
       cardClass(ctx) {
         const msg = 'EbtCard.cardClass';
         let { settings, volatile, card } = ctx;
-        let dbg = settings.development && DBG_FOCUS;
+        let dbg = settings.development && DBG.FOCUS;
         let cardClass = `ebt-card ebt-card-${card.context}`;
         let { routeCard } = volatile;
 

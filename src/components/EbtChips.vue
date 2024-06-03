@@ -36,7 +36,8 @@
   import { ref, nextTick } from "vue";
   import { logger } from "log-instance/index.mjs";
   import {
-    DBG_FOCUS, DBG_CLICK, DBG_OPEN_CARD, DBG_KEY,
+    DBG,
+    DBG_CLICK, DBG_OPEN_CARD, DBG_KEY,
   } from "../defines.mjs";
 
   export default {
@@ -126,7 +127,7 @@
       },
       async onClickChip(card, cards) {
         const msg = `EbtChips.onClickChip() ${card?.id} `;
-        const dbg = DBG_CLICK || DBG_FOCUS;
+        const dbg = DBG_CLICK || DBG.FOCUS;
         const settings = await useSettingsStore();
         const volatile = await useVolatileStore();
         let { ebtChips } = volatile;
