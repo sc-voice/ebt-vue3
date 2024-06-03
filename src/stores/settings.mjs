@@ -8,7 +8,7 @@ import { default as EbtCard } from "../ebt-card.mjs";
 import { 
   DBG,
   DBG_OPEN_CARD, DBG_HOME, 
-  DBG_SCROLL, DBG_FOCUS, 
+  DBG_FOCUS, 
   DBG_VERBOSE, 
 } from '../defines.mjs';
 import * as Idb from "idb-keyval"; 
@@ -147,7 +147,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     scrollableElement(idShow, idScroll) {
       const msg = 'settings.scrollableElement() ';
-      const dbg = DBG_SCROLL;
+      const dbg = DBG.SCROLL;
       let eltShow = document.getElementById(idShow);
       if (eltShow == null) {
         //dbg && console.log(msg, `[1]eltShow? ${idShow}`);
@@ -176,7 +176,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     scrollToElement(eltScroll) {
       const msg = 'settings.scrollToElement()';
-      const dbg = DBG_SCROLL;
+      const dbg = DBG.SCROLL;
 
       let opts = {
         block: "center",
@@ -189,7 +189,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     async scrollToElementId(idShow, idScroll) {
       const msg = 'settings.scrollToElementId()';
-      const dbg = DBG_SCROLL;
+      const dbg = DBG.SCROLL;
       const dbgv = dbg && DBG_VERBOSE;
 
       // HACK: scroll after Vue is done refreshing

@@ -5,7 +5,7 @@ import { default as Playlist } from './playlist.mjs';
 import { 
   DBG,
   DBG_CLICK, DBG_FOCUS, 
-  DBG_OPEN_CARD, DBG_SCROLL, 
+  DBG_OPEN_CARD, 
   DBG_VERBOSE, DBG_VIEWPORT, DBG_GRAPH,
 } from './defines.mjs';
 

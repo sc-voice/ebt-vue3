@@ -34,7 +34,7 @@
   import { logger } from "log-instance/index.mjs";
   import { 
     DBG,
-    DBG_HOME, DBG_STARTUP, DBG_FOCUS, DBG_SCROLL,
+    DBG_HOME, DBG_STARTUP, DBG_FOCUS, 
     DBG_CLICK, DBG_OPEN_CARD, DBG_UPDATED, DBG_VISIBLE
   } from '../defines.mjs';
 
@@ -132,7 +132,7 @@
       },
       onFocusIn(evt, card) {
         const msg = "EbtCards.onFocusIn() ";
-        const dbg = DBG_FOCUS || DBG_SCROLL;
+        const dbg = DBG_FOCUS || DBG.SCROLL;
         dbg && console.log(msg, '[0]', card.debugString, evt);
         let { cardFactory, volatile, settings } = this;
         let { appFocus } = volatile;

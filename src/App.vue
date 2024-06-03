@@ -40,7 +40,7 @@
                   class="app-dbg" title="routeCard.id">
                   {{volatile.routeCard?.id}}
                 </div >
-                <div v-if="DBG_SCROLL" 
+                <div v-if="DBG.SCROLL" 
                   class="app-dbg" 
                   title="viewWidth x viewHeight">
                   {{viewWidth}}x{{viewHeight}}
@@ -200,7 +200,7 @@
   import { 
     DBG,
     DBG_HOME, DBG_KEY, DBG_STARTUP, 
-    DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
+    DBG_LEGACY, DBG_CLICK, DBG_FOCUS, DBG.SCROLL,
     DBG_WAITING, 
     DBG_GDPR, DBG_WIKI, DBG_AUDIO,
     DBG_VERBOSE,

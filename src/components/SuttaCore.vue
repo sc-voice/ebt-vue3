@@ -47,7 +47,7 @@
   import { default as TipitakaNav } from './TipitakaNav.vue';
   import { 
     DBG,
-    DBG_CLICK, DBG_KEY, DBG_SCROLL, DBG_FOCUS,
+    DBG_CLICK, DBG_KEY, DBG_FOCUS,
     DBG_VERBOSE, 
   } from '../defines.mjs';
   const EXAMPLE_TEMPLATE = IdbSutta.EXAMPLE_TEMPLATE;

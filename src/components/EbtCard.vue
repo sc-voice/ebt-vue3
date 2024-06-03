@@ -94,7 +94,7 @@
   import { nextTick, ref } from "vue";
   import { 
     DBG,
-    DBG_CLICK, DBG_FOCUS, DBG_SCROLL,
+    DBG_CLICK, DBG_FOCUS, 
     DBG_UPDATED, DBG_VISIBLE, DBG_BLUR, DBG_VERBOSE,
     DBG_VIEWPORT,
   } from '../defines.mjs';

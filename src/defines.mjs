@@ -19,6 +19,7 @@ export const DBG = {
   PLAYLIST: 0,
   REMOVE_CARD: 0,
   ROUTE: 0,
+  SCROLL: true,
   SEG_MOUNTED: 0,
   SUTTA_MOUNTED: 0,
   SETTINGS: 0,
@@ -43,7 +44,6 @@ export const DBG_KEY          = 0;
 export const DBG_LEGACY       = 0;
 export const DBG_LOAD         = 0;
 export const DBG_ML_DOC       = 0;
-export const DBG_SCROLL       = 0;
 export const DBG_SEARCH       = 0;
 export const DBG_SOUND_STORE  = 0;
 export const DBG_STARTUP      = 0;

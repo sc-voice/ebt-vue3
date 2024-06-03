@@ -12,7 +12,7 @@ import { default as IdbSutta } from '../idb-sutta.mjs';
 import {
   DBG,
   DBG_CLICK, DBG_FOCUS, DBG_HOME, 
-  DBG_SCROLL, DBG_VERBOSE, DBG_WIKI,
+  DBG_VERBOSE, DBG_WIKI,
   DBG_FETCH, 
 } from "../defines.mjs";
 import Utils from "../utils.mjs";
@@ -336,7 +336,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      const dbg = DBG.ROUTE || DBG_SCROLL;
+      const dbg = DBG.ROUTE || DBG.SCROLL;
       let { config, } = this;
       let settings = useSettingsStore();
       if (!cardOrRoute) {
@@ -610,7 +610,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     async scrollToCard(card) {
       const msg = 'volatile.scrollToCard()';
-      const dbg = DBG_SCROLL;
+      const dbg = DBG.SCROLL;
       const dbgv = DBG_VERBOSE; 
       let { appFocus } = this;
       let settings = useSettingsStore();
