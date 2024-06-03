@@ -108,8 +108,7 @@
     },
     methods: {
       segKey(card, seg) {
-        let rawId = `${seg.scid}_CARD${card.id.substring(0,8)}`;
-        return rawId.replaceAll('.',"_").replaceAll(/:/g,"__");
+        return card.segmentCardId(seg.scid);
       },
       onKeyDownSutta(evt) {
         const msg = "SuttaCore.onKeyDownSutta()";

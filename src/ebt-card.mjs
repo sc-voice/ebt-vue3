@@ -745,6 +745,12 @@ export default class EbtCard {
     return `seg-${scid}/${lang}/${author}`;
   }
 
+  segmentCardId(scid) {
+    let { id } = this;
+    let rawId = `${scid}_CARD${id.substring(0,8)}`;
+    return rawId.replaceAll('.',"_").replaceAll(/:/g,"__");
+  }
+
   /* HACK:
    * The viewport element is obscurable by the app bar
    * and is above the viewed element by the height of the app bar.

@@ -26,6 +26,10 @@
                 {{config.appName}}
               </div>
               <div class="app-dbg-container">
+                <div class="app-dbg" v-if="DBG.AUDIO_SCID"
+                  title="audioScid">
+                  {{ `${audio.audioScid}@${audio.audioIndex}` }}
+                </div>
                 <div class="app-dbg" v-if="DBG.FOCUS_ELT"
                   :title="'activeElt '+activeElt">
                   {{ activeElt||'activeElt?'}}

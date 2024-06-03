@@ -294,7 +294,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async syncPlaylistSutta(playlist) {
       const msg = "audio.syncPlaylistSutta()";
-      const dbg = DBG.PLAYLIST;
+      const dbg = DBG.PLAYLIST || DBG.AUDIO_SCID;
       if (!playlist) {
         throw new Error(`${msg} playlist?`);
       }
@@ -486,8 +486,18 @@ export const useAudioStore = defineStore('audio', {
       const dbg = DBG_AUDIO;
       const dbgv = DBG.VERBOSE && dbg;
       let settings = useSettingsStore();
+      let volatile = useVolatileStore();
+      let { routeCard } = volatile;
       let audio = this;
       let { idbAudio, audioScid } = audio;
+
+      // Scroll segment into view
+      let scrollId = routeCard.segmentElementId(audioScid);
+      let showId = routeCard.segmentCardId(audioScid);
+      DBG.SCROLL && console.log(msg, `[1]audioScid`, {
+        audioScid, scrollId, showId});
+      settings.scrollToElementId(showId, scrollId);
+
       let segAudio = await audio.bindSegmentAudio();
       let { segment:seg, langTrans } = segAudio;
       let lastCurrentTime = 0;
@@ -650,7 +660,7 @@ export const useAudioStore = defineStore('audio', {
     },
     async setAudioSutta(audioSutta, audioIndex=0) {
       const msg = 'audio.setAudioSutta() '
-      const dbg = DBG_AUDIO;
+      const dbg = DBG_AUDIO || DBG.AUDIO_SCID;
       this.audioSutta = audioSutta;
       this.audioIndex = audioIndex;
 
@@ -658,10 +668,11 @@ export const useAudioStore = defineStore('audio', {
       let audioScid = segments
         ? segments[audioIndex].scid
         : null;
-      dbg && console.log(msg, `[1]audioScid:`, audioScid);
       this.audioScid = audioScid;
       if (audioScid) {
         this.updateAudioExamples();
+      } else {
+        dbg && console.log(msg, `[2]audioScid:`, audioScid);
       }
     },
     updateAudioExamples() {
