@@ -280,7 +280,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     focusElement(elt) {
       const msg = 'volatile.focusElement()';
-      const dbg = DBG.FOCUS;
+      const dbg = DBG.FOCUS || DBG.FOCUS_ELT;
       const dbgv = DBG.VERBOSE && dbg;
       let ae = document?.activeElement;
       let af = appFocus.value;
@@ -621,6 +621,7 @@ export const useVolatileStore = defineStore('volatile', {
         Utils.elementInViewport(viewportElt, {zone:80});
 
       if (eltInViewport && card.hasFocus(appFocus)) {
+        DBG.FOCUS_ELT && console.log(msg, '[1]focus', appFocus);
         appFocus.focus();
         return; 
       }

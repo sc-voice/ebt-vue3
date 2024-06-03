@@ -26,11 +26,12 @@
                 {{config.appName}}
               </div>
               <div class="app-dbg-container">
+                <div class="app-dbg" v-if="DBG.FOCUS_ELT"
+                  :title="'activeElt '+activeElt">
+                  {{ activeElt||'activeElt?'}}
+                </div>
                 <div v-if="DBG.FOCUS">
                   {{docHasFocus}}
-                  <div class="app-dbg" :title="'activeElt '+activeElt">
-                    {{ activeElt||'activeElt?'}}
-                  </div>
                   <div class="app-dbg" 
                     :title="'appFocus '+volatile.appFocus?.id">
                     {{volatile?.appFocus?.id||volatile?.appFocus}}
