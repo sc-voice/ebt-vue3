@@ -196,14 +196,14 @@
           if (nodeName === 'A') {
             dbg && console.log(msg, '[1]n/a', target);
           } else {
-            dbg && console.log(msg, '[2]focusElement', appFocus.id, evt);
-            volatile.focusElement(appFocus);
+            dbg && console.log(msg, '[2]n/a', appFocus.id, evt, nodeName);
+            //volatile.focusElement(appFocus);
           }
         } else {
            volatile.setRoute(card, undefined, msg);
            let elt = document.getElementById(card.tab1Id);
            dbg && console.log(msg, '[3]focusElement', elt.id);
-           volatile.focusElement(elt);
+           //volatile.focusElement(elt);
         }
       },
       onBackTabOut(evt) {
