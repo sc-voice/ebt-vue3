@@ -268,7 +268,7 @@ export default class EbtCard {
 
     switch (context) {
       case CONTEXT_SEARCH:
-        disabled = !data || !data.length;
+        disabled = !data || data.length<2;
       break;
     }
 

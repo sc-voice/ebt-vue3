@@ -50,7 +50,9 @@ export default class CardFactory {
     let { context } = opts;
     let { settings, } = this;
     let { langTrans } = settings;
-    let newOpts = Object.assign({}, opts);
+    let newOpts = Object.assign({
+      langTrans,
+    }, opts);
 
     switch (context) {
       case CONTEXT_WIKI:
@@ -68,6 +70,7 @@ export default class CardFactory {
         throw new Error(`${msg} invalid context:${context}`);
     }
 
+    dbg && console.log(msg, newOpts);
     return this.#addCard(newOpts);
   }
 
@@ -121,8 +124,8 @@ export default class CardFactory {
 
   #addCard(opts) {
     const msg = "CardFactory.#addCard()";
-    let { settings, config, langTrans } = this;
-    let { isOpen, context, location } = opts;
+    let { settings, config, } = this;
+    let { isOpen, context, location, langTrans } = opts;
     let dbg = DBG.ADD_CARD;
     let card = null;
     let loc = location ? location.join('/') : loc;

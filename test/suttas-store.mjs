@@ -58,7 +58,7 @@ const MSDAY = 24*3600*MSSEC;
       'zz?maxResults=5', 
     ].join('/'));
   });
-  it("TESTTESTloadIdbSutta", async () => {
+  it("loadIdbSutta", async () => {
     //logger.logLevel = 'info';
     let suttas = useSuttasStore();
     let { nFetch, nGet, nSet } = suttas;
@@ -227,7 +227,7 @@ const MSDAY = 24*3600*MSSEC;
       stop();
     }
   });
-  it("TESTTESTgetIdbSuttaRef()", async () => {
+  it("getIdbSuttaRef()", async () => {
     let suttas = useSuttasStore();
     let suttaRef = SuttaRef.create("thig1.1/en/soma");
     let { sutta_uid, lang, author } = suttaRef;

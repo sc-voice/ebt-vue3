@@ -30,6 +30,7 @@ import 'mock-local-storage'
 class MockSettings {
   constructor() {
     this.cards = [];
+    this.langTrans =  'en';
   }
 
   homePath() { 
@@ -183,7 +184,7 @@ class MockSettings {
       path:'/#/sutta/sn42.11', cards, addCard, defaultLang});
     should.deepEqual(cards, [cardSN42_11]);
   });
-  it("TESTTESTaddCard() PLAY", async ()=>{
+  it("addCard() PLAY", async ()=>{
     const msg = 'test.card-factory@187';
     let settings = new MockSettings();
     let cf = new CardFactory({settings});
@@ -224,7 +225,25 @@ class MockSettings {
       ]);
     }
   });
-  it("addCard() SUTTA", ()=>{
+  it("TESTTESTaddCard() SUTTA thig1.2", ()=>{
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
+    let isOpen = true;
+    let context = CONTEXT_SUTTA;
+    let sutta_uid = 'thig1.2';
+    let scid = `${sutta_uid}:1.3`;
+    let lang = 'en';
+    let author = 'sujato';
+    let location = [scid ];
+    let opts = { isOpen, context, location };
+    let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
+    should(card.context).equal(context);
+    should.deepEqual(card.location, [ scid, lang, author]);
+    should(card.isOpen).equal(isOpen);
+    should(card.playlist).equal(undefined);
+  });
+  it("addCard() SUTTA thig1.2:1.3/en/soma", ()=>{
     let settings = new MockSettings();
     let cf = new CardFactory({settings});
     let isOpen = true;
