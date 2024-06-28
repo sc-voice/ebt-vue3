@@ -7,6 +7,7 @@ import {
   CONTEXT_WIKI,
   CONTEXT_GRAPH,
   CONTEXT_DEBUG,
+  CONTEXT_PALI,
 } from "../src/ebt-card.mjs";
 import { default as CardFactory } from "../src/card-factory.mjs";
 import { default as EbtConfig } from "../ebt-config.mjs";
@@ -295,6 +296,20 @@ class MockSettings {
     let isOpen = true;
     let context = CONTEXT_DEBUG;
     let location = [ 'root of suffering' ];
+    let opts = { isOpen, context, location };
+    let card = cf.addCard(opts);
+    should(settings.cards[0]).equal(card);
+    should(card.context).equal(context);
+    should.deepEqual(card.location, location);
+    should(card.isOpen).equal(true);
+    should(card.playlist).equal(undefined);
+  });
+  it("addCard() PALI", ()=>{
+    let settings = new MockSettings();
+    let cf = new CardFactory({settings});
+    let isOpen = true;
+    let context = CONTEXT_PALI;
+    let location = [ 'dhamma' ];
     let opts = { isOpen, context, location };
     let card = cf.addCard(opts);
     should(settings.cards[0]).equal(card);

@@ -15,7 +15,12 @@ export const CONTEXT_SUTTA = "sutta";
 export const CONTEXT_DEBUG = "debug";
 export const CONTEXT_GRAPH = "graph";
 export const CONTEXT_PLAY = "play";
+export const CONTEXT_PALI = "pali";
 const CONTEXTS = {
+  [CONTEXT_PALI]: {
+    icon: "mdi-book-information-variant",
+    alt1Icon: "mdi-magnify",
+  },
   [CONTEXT_WIKI]: {
     icon: "mdi-wikipedia",
     alt1Icon: "mdi-home",
@@ -127,6 +132,12 @@ export default class EbtCard {
           });
         }
       } break;
+      case CONTEXT_PALI: 
+        if (location[0] == null) {
+          location[0] = 'pāli';
+        }
+        dbg && console.log(msg, `[8]${context}`, location);
+        break;
     }
 
     Object.assign(this, {// primary properties
@@ -150,6 +161,7 @@ export default class EbtCard {
   static get CONTEXT_PLAY() { return CONTEXT_PLAY; }
   static get CONTEXT_DEBUG() { return CONTEXT_DEBUG; }
   static get CONTEXT_GRAPH() { return CONTEXT_GRAPH; }
+  static get CONTEXT_PALI() { return CONTEXT_PALI; }
 
   static routeSuttaRef(route, langTrans='en') {
     const msg = 'ebt-card.routeSuttaRef()';

@@ -6,6 +6,7 @@ import { useSettingsStore } from './stores/settings.mjs';
 import { useVolatileStore } from './stores/volatile.mjs';
 import { 
   default as EbtCard,
+  CONTEXT_PALI,
   CONTEXT_DEBUG,
   CONTEXT_WIKI,
   CONTEXT_PLAY,
@@ -61,6 +62,7 @@ export default class CardFactory {
       case CONTEXT_PLAY: 
         this.#playOptions(newOpts);
         break;
+      case CONTEXT_PALI:
       case CONTEXT_DEBUG:
       case CONTEXT_SEARCH:
       case CONTEXT_SUTTA:

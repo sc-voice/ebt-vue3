@@ -30,6 +30,7 @@ logger.logLevel = 'warn';
     should(card2).properties(defaultProps);
   });
   it("constants", ()=>{
+    should(EbtCard.CONTEXT_PALI).equal('pali');
     should(EbtCard.CONTEXT_DEBUG).equal('debug');
     should(EbtCard.CONTEXT_WIKI).equal('wiki');
     should(EbtCard.CONTEXT_SEARCH).equal('search');

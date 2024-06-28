@@ -18,6 +18,7 @@ export const DBG = {
   IDB_SUTTA: 0,
   LOG_HTML: 0,
   MOUNTED: 0,
+  PALI_VIEW: true,
   PLAY: 0,
   PLAYLIST: 0,
   REMOVE_CARD: 0,

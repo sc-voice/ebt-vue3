@@ -64,8 +64,10 @@
           ></play-view>
           <graph-view v-if="card.context===CONTEXT_GRAPH"
             :card="card"
-          >
-          </graph-view>
+          ></graph-view>
+          <pali-view v-if="card.context===CONTEXT_PALI"
+            :card="card"
+          ></pali-view>
         </v-card-text>
         <div class="last-tab" tabindex=0 
           @click='onClickLastTab'
@@ -85,6 +87,7 @@
   import { default as SearchView } from './SearchView.vue';
   import { default as SuttaView } from './SuttaView.vue';
   import { default as PlayView } from './PlayView.vue';
+  import { default as PaliView } from './PaliView.vue';
   import { default as EbtCard } from '../ebt-card.mjs';
   import { useSettingsStore } from '../stores/settings.mjs';
   import { useVolatileStore } from '../stores/volatile.mjs';
@@ -120,6 +123,7 @@
       PlayView,
       SearchView,
       SuttaView,
+      PaliView,
     },
     beforeMount() {
       const msg = 'EbtCard.beforeMount() ';
@@ -257,6 +261,9 @@
             let [ pattern ] = location;
             this.openPlaylist(pattern);
           } break;
+          case EbtCard.CONTEXT_PALI: {
+            console.log(msg, "TBD CONTEXT_PALI");
+          } break;
           case EbtCard.CONTEXT_PLAY: 
           case EbtCard.CONTEXT_WIKI:
           case EbtCard.CONTEXT_GRAPH:
@@ -366,6 +373,7 @@
       CONTEXT_DEBUG() { return EbtCard.CONTEXT_DEBUG; },
       CONTEXT_SUTTA() { return EbtCard.CONTEXT_SUTTA; },
       CONTEXT_PLAY() { return EbtCard.CONTEXT_PLAY; },
+      CONTEXT_PALI() { return EbtCard.CONTEXT_PALI; },
       alt1Href(ctx) {
         const { config, card, volatile, settings } = this;
         const { docLang } = settings;

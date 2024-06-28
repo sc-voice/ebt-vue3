@@ -3,6 +3,10 @@ import { SuttaRef } from "scv-esm/main.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { default as CardFactory } from "../card-factory.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
+import {
+  Pali,
+  Dictionary,
+} from "@sc-voice/pali/main.mjs";
 import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";
@@ -40,6 +44,7 @@ const showHtmlLog = ref(false);
 const waitingContext = ref('...');
 const searchResultMap = ref({});
 const config = ref(undefined);
+var dictionary = ref(undefined);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -50,6 +55,7 @@ const INITIAL_STATE = {
   config,
   debugText: ref('debugText:'),
   delayedWaiting: 0,
+  dictionary,
   ebtChips: ref(undefined),
   homeHtml,
   logHtml,
