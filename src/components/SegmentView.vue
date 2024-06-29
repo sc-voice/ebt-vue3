@@ -55,13 +55,17 @@
     <div :class="textClass()" >
       <div :class="langClass('root')" 
         v-if="settings.showPali"
-        v-html="segment.pli" />
+        @click="clickPali"
+        v-html="paliText(segment)" />
       <div :class="langClass('trans')" 
         v-if="settings.showTrans"
         v-html="langText" />
       <div :class="langClass('ref')" 
         v-if="settings.showReference"
         v-html="refText" />
+    </div>
+    <div v-if="cardScid===segment.scid && paliWord">
+      {{paliWord}}
     </div>
   </div>
 </template>
@@ -96,6 +100,7 @@
         settings: useSettingsStore(),
         volatile: useVolatileStore(),
         suttas: useSuttasStore(),
+        paliWord: ref(),
         logger,
       }
     },
@@ -203,6 +208,18 @@
             break;
         }
       },
+      paliText(seg) {
+        let { cardScid } = this;
+        let { pli } = seg;
+        if (pli==null || cardScid!==seg.scid) {
+          return pli;
+        } 
+        let words = pli.trim()
+          .split(' ')
+          .map(w=>`<span class="pli-word">${w}</span>`);
+        ;
+        return words.join(' ');
+      },
       segMatchedClass(seg) {
         let { displayBox, card, cardScid, audio, routeCard } = this;
         let { audioFocused } = audio;
@@ -230,6 +247,15 @@
       },
       hrefSuttaCentral(sutta_uid) {
         return `https://suttacentral.net/${sutta_uid}`;
+      },
+      clickPali(evt) {
+        const msg = "SegmentView.clickPali()";
+        let { target } = evt;
+        if (target?.className === "pli-word") {
+          let text = target.firstChild.nodeValue;
+          this.paliWord = text;
+          console.log(msg, text, evt);
+        }
       },
     },
     computed: {
@@ -330,6 +356,9 @@
   display: flex; 
   justify-content: flex-end;
   align-items: flex-end;
+}
+.pli-word:hover {
+  color: rgb(var(--v-theme-link));
 }
 </style>
 

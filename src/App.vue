@@ -245,6 +245,10 @@
   import EbtProcessing from './components/EbtProcessing.vue';
   import { useSettingsStore } from './stores/settings.mjs';
   import { useAudioStore } from './stores/audio.mjs';
+  import { 
+    Dictionary,
+    Pali,
+  } from "@sc-voice/pali";
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
 
@@ -440,13 +444,16 @@
     },
     async mounted() {
       const msg = 'App.mounted()';
-      const dbg = DBG.MOUNTED || DBG_WIKI || DBG_AUDIO;
+      const dbg = DBG.APP_MOUNTED;
       let { 
         $t, audio, config, $vuetify, settings, $i18n, volatile, 
         $route, 
       } = this;
       volatile.$t = $t;
       volatile.config = config;
+      let dictionary = await Dictionary.create(); // < 30ms
+      dbg && console.log(msg, '[1]dictionary', dictionary);
+      volatile.dictionary = dictionary;
 
       let { hash } = window.location;
 
@@ -456,13 +463,12 @@
         let { clickElt } = audio;
         if (clickElt) {
           let { audioVolume } = settings;
-          dbg && console.log(msg, '[1]volume', audioVolume);
+          dbg && console.log(msg, '[2]volume', audioVolume);
           clickElt.volume = audioVolume;
         } else {
-          console.warn(msg, '[2]clickElt?', clickElt);
+          console.warn(msg, '[3]clickElt?', clickElt);
         }
       }, 2000);
-
 
       let wikiHash = hash.startsWith("#/wiki") ? hash : null;
       let homePath = settings.homePath(config);
@@ -471,7 +477,7 @@
       let wikiCard = wikiHash
         ? cardFactory.pathToCard({path:wikiHash, addCard})
         : cardFactory.pathToCard({path:homePath, addCard});
-      dbg && console.log(msg, '[3]wikiCard', wikiCard?.debugString);
+      dbg && console.log(msg, '[4]wikiCard', wikiCard?.debugString);
 
       $vuetify.theme.global.name = settings.theme === 'dark' 
         ? 'dark' : 'light';;

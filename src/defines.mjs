@@ -7,6 +7,7 @@ export const ACTION = {
 
 export const DBG = {
   ADD_CARD: 0,
+  APP_MOUNTED: true,
   AUDIO_SCID: 0,
   CARD: 0,
   CARD_PATH: 0,
