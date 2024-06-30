@@ -64,10 +64,11 @@
         v-if="settings.showReference"
         v-html="refText" />
     </div>
-    <div v-if="cardScid===segment.scid && paliWord">
-      {{paliWord}}
-    </div>
-  </div>
+  <div v-if="showPaliWord"
+    v-html="paliDefinition"
+    class="pli-summary"
+  ></div><!-- showPaliWord -->
+  </div><!-- segMatchedClass -->
 </template>
 
 <script>
@@ -179,6 +180,7 @@
           //console.log(msg, 'segment', scid);
           volatile.setRoute(hash, undefined, msg);
           //idbSuttaRef.highlightExamples({segment});
+          this.paliWord = null;
         }
       },
       langClass(langType) {
@@ -250,11 +252,13 @@
       },
       clickPali(evt) {
         const msg = "SegmentView.clickPali()";
+        const dbg = DBG.CLICK_SEG;
         let { target } = evt;
         if (target?.className === "pli-word") {
           let text = target.firstChild.nodeValue;
           this.paliWord = text;
-          console.log(msg, text, evt);
+          dbg && console.log(msg, text, evt);
+          evt.stopPropagation();
         }
       },
     },
@@ -347,6 +351,29 @@
         let { segment, audio, } = ctx;
         return segment.scid === audio.audioScid;
       },
+      showPaliWord(ctx) {
+        let { volatile, cardScid, paliWord, segment } = this;
+        let { dictionary } = volatile;
+        return dictionary && cardScid===segment.scid && paliWord;
+      },
+      paliDefinition(ctx) {
+        let { volatile, cardScid, paliWord, segment } = this;
+        let { dictionary } = volatile;
+        let entry = dictionary.entryOf(paliWord);
+        let { definition=['?|?||'] } = entry || {};
+        let paliLink = entry && entry.definition
+          ? `<a href="#/pali/${paliWord}">${paliWord}</a>`
+          : `<b>${paliWord}</b>`;
+        return [
+          paliLink,
+          ...definition.map((d,i)=>{
+            let [ type, meaning, literal, construction ] = d.split('|');
+            let code = '①'.charCodeAt(0) + i;
+            literal = literal ? `; <i>lit. ${literal}</i>` : '';
+            return `${String.fromCharCode(code)}&nbsp;${meaning}${literal}`
+          }),
+        ].join(' ');
+      },
     },
   }
 </script>
@@ -359,6 +386,13 @@
 }
 .pli-word:hover {
   color: rgb(var(--v-theme-link));
+}
+.pli-summary {
+  padding: 0.5em;
+  padding-top: 0em;
+  padding-left: 1em;
+  min-height: 3em;
+  background-color: rgb(var(--v-theme-currentbg));
 }
 </style>
 

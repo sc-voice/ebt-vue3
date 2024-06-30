@@ -9,14 +9,16 @@
         <tr>
           <th>Type</th>
           <th>Definition</th>
-          <th>Construction</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="(def,i) in definitions">
-          <td>{{i+1}}&nbsp;{{def[0]}}</td>
+      <tbody v-for="(group,ig) in defGroups">
+        <tr>
+          <th colspan=3>{{word}} {{ig+1}} [{{group}}]</th>
+        </tr>
+        <tr v-for="(def,i) in groupDefinitions(group)">
+          <td>&nbsp;{{ig+1}}.{{i+1}}&nbsp;{{def[0]}}</td>
           <td>{{def[1]}}</td>
-          <td>{{def[2]}}</td>
+          <td>{{def[2] && ('lit.'+def[2]) || '\u00a0'}}</td>
         </tr>
       </tbody>
     </v-table>
@@ -57,6 +59,28 @@
     components: {
     },
     methods: {
+      groupDefinitions(group) {
+        let { card, volatile } = this;
+        let { dictionary } = volatile;
+        if (dictionary == null) {
+          return [ '...', '...', '...', '...' ];
+        }
+
+        let word = card.location[0].toLowerCase();
+        let entry = dictionary.entryOf(word);
+        let definitions = ['nothing'];
+        if (entry) {
+          definitions = entry.definition;
+          definitions = entry.definition.map(def=>def.split('|'));
+        } else {
+          let type = '--';
+          let meaning = `${word} not found`;
+          let literal = '--';
+          let construction = '--';
+          definitions = [ type, meaning, literal, construction ];
+        }
+        return definitions.filter(d=>d[3] === group);
+      },
     },
     async mounted() {
       const msg = 'PaliView.mounted()';
@@ -74,11 +98,24 @@
       card.onAfterMounted({settings, volatile});
     },
     computed: {
+      word() {
+        return this.card.location[0];
+      },
+      defGroups() {
+        let {definitions} = this;
+        return definitions.reduce((a,d)=>{
+          let [ type, meaning, literal, construction ] = d;
+          if (construction != a[a.length-1]) {
+            a.push(construction);
+          }
+          return a;
+        }, []);
+      },
       definitions() {
         let { card, volatile } = this;
         let { dictionary } = volatile;
         if (dictionary == null) {
-          return [ '...', '...', '...' ];
+          return [ '...', '...', '...', '...' ];
         }
 
         let word = card.location[0].toLowerCase();
@@ -86,18 +123,13 @@
         let definitions = ['nothing'];
         if (entry) {
           definitions = entry.definition;
-          definitions = entry.definition.map(def=>{
-            let [ gender, text, derivation ] = def.split(/<.?b>/);
-            derivation = derivation
-              .replace(/[\[\]√]/g, '')
-              .replace(/ \+ /, '\u02D6');
-            return [ gender.trim(), text.trim(), derivation.trim() ];
-          });
+          definitions = entry.definition.map(def=>def.split('|'));
         } else {
-          let gender = '--';
-          let text = `${word} not found`;
-          let derivation = '--';
-          definitions = [ gender, text, derivation ];
+          let type = '--';
+          let meaning = `${word} not found`;
+          let literal = '--';
+          let construction = '--';
+          definitions = [ type, meaning, literal, construction ];
         }
         return definitions;
       },
@@ -114,9 +146,13 @@
   padding-right: 8px !important;
   max-width: 300px;
 }
-.dict th {
+.dict thead th {
   font-size: smaller;
 }
-.dict tr:hover > td{
+.dict tbody tr:hover > td{
+}
+.dict tbody th {
+  font-weight: 600;
+  font-size: larger;
 }
 </style>
