@@ -64,11 +64,11 @@
         v-if="settings.showReference"
         v-html="refText" />
     </div>
+  </div><!-- segMatchedClass -->
   <div v-if="showPaliWord"
     v-html="paliDefinition"
     class="pli-summary"
   ></div><!-- showPaliWord -->
-  </div><!-- segMatchedClass -->
 </template>
 
 <script>
