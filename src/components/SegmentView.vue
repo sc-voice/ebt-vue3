@@ -370,7 +370,7 @@
             let [ type, meaning, literal, construction ] = d.split('|');
             let code = '①'.charCodeAt(0) + i;
             literal = literal ? `; <i>lit. ${literal}</i>` : '';
-            return `${String.fromCharCode(code)}&nbsp;${meaning}${literal}`
+            return `${String.fromCharCode(code)}\u202f${meaning}${literal}`
           }),
         ].join(' ');
       },
