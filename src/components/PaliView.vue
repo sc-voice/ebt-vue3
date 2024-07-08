@@ -1,27 +1,36 @@
 <template>
-  <v-sheet v-if="volatile.dictionary" class="">
+  <v-sheet v-if="findResult" class="">
+    <div>find: {{findResult.pattern}}</div>
+    <div>method: {{findResult.method}}</div>
     <v-table 
       density="compact" 
       hover
       class="dict"
     >
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Definition</th>
-        </tr>
-      </thead>
       <tbody v-for="(group,ig) in defGroups">
         <tr>
-          <th colspan=3>{{word}} {{ig+1}} [{{group}}]</th>
+          <th colspan=3>
+            {{ig+1}} 
+            <a :href="`#/pali/${group.word}`">
+              {{group.word}} 
+            </a>
+            <span v-if="group.construction" class="dict-construction">
+              {{group.construction}}
+            </span>
+          </th>
         </tr>
         <tr v-for="(def,i) in groupDefinitions(group)">
-          <td>&nbsp;{{ig+1}}.{{i+1}}&nbsp;{{def[0]}}</td>
-          <td>{{def[1]}}</td>
-          <td>{{def[2] && ('lit.'+def[2]) || '\u00a0'}}</td>
+          <td :title="typeTitle(def.type)">
+            &nbsp;{{ig+1}}.{{i+1}}&nbsp;{{def.type}}
+          </td>
+          <td title="Meaning">{{def.meaning}} 
+            <i v-if="def.literal">lit. {{def.literal}}</i>
+          </td>
         </tr>
       </tbody>
     </v-table>
+  <!--
+  -->
   </v-sheet>
 </template>
 
@@ -34,8 +43,6 @@
     Dictionary,
     Pali,
   } from "@sc-voice/pali";
-  const msg = "PaliView.";
-  const entry = ref();
 
   export default {
     inject: ['config'],
@@ -53,33 +60,32 @@
       }
     },
     data: () => {
+      const findResult = ref();
       return {
+        findResult,
       }
     },
     components: {
     },
     methods: {
       groupDefinitions(group) {
-        let { card, volatile } = this;
-        let { dictionary } = volatile;
-        if (dictionary == null) {
-          return [ '...', '...', '...', '...' ];
+        const msg = "PaliView.groupDefinitions()";
+        let { word, construction } = group;
+        let { findResult } = this;
+        let { method, pattern, data } = findResult;
+        return data.filter(d=>{
+          return d.word === group.word && 
+            d.construction===group.construction;
+        });
+      },
+      typeTitle(type) {
+        switch (type) {
+          case 'masc': return 'masculine';
+          case 'fem': return 'feminine';
+          case 'adj': return 'adjective';
+          case 'nt': return 'neuter';
+          default: return type;
         }
-
-        let word = card.location[0].toLowerCase();
-        let entry = dictionary.entryOf(word);
-        let definitions = ['nothing'];
-        if (entry) {
-          definitions = entry.definition;
-          definitions = entry.definition.map(def=>def.split('|'));
-        } else {
-          let type = '--';
-          let meaning = `${word} not found`;
-          let literal = '--';
-          let construction = '--';
-          definitions = [ type, meaning, literal, construction ];
-        }
-        return definitions.filter(d=>d[3] === group);
       },
     },
     async mounted() {
@@ -95,6 +101,10 @@
         volatile.dictionary = dictionary;
       }
 
+      let word = card.location[0].toLowerCase();
+      let res = dictionary.find(word);
+      this.findResult = res;
+
       card.onAfterMounted({settings, volatile});
     },
     computed: {
@@ -102,16 +112,25 @@
         return this.card.location[0];
       },
       defGroups() {
-        let {definitions} = this;
-        return definitions.reduce((a,d)=>{
-          let [ type, meaning, literal, construction ] = d;
-          if (construction != a[a.length-1]) {
-            a.push(construction);
+        const msg = "PaliView.defGroups()";
+        let { definition, findResult } = this;
+        let { data } = findResult;
+        let dPrev = null;
+
+        return data.reduce((a,d) => {
+          let { word, construction } = d;
+          word = word.toLowerCase();
+          construction = construction.toLowerCase();
+          if (word !== dPrev?.word ||
+              construction !== dPrev?.construction) 
+          {
+            a.push({word, construction});
           }
+          dPrev = d;
           return a;
         }, []);
       },
-      definitions() {
+      definition() {
         let { card, volatile } = this;
         let { dictionary } = volatile;
         if (dictionary == null) {
@@ -120,6 +139,7 @@
 
         let word = card.location[0].toLowerCase();
         let entry = dictionary.entryOf(word);
+        let res = dictionary.find(word);
         let definitions = ['nothing'];
         if (entry) {
           definitions = entry.definition;
@@ -153,6 +173,10 @@
 }
 .dict tbody th {
   font-weight: 600;
-  font-size: larger;
+}
+.dict-construction {
+  padding-left: 1em;
+  font-size: smaller;
+  font-style: italic;
 }
 </style>
