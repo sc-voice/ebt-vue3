@@ -1,5 +1,27 @@
 <template>
   <v-sheet v-if="findResult" class="">
+    <v-autocomplete 
+      v-model="search" 
+      :append-icon="search ? 'mdi-magnify' : ''"
+
+      :id="`${card.id}-search`"
+      variant="underlined"
+      :items="history"
+      :label="$t('ebt.searchPaliDictionary')"
+      :placeholder="$t('ebt.enterPaliWordOrDefinition')"
+      class="search-field"
+      clearable
+      @update:search="updateSearch"
+      @keyup.enter="onEnter($event)"
+      hide-no-data
+    />
+    <!--
+      @focus="onFocus"
+      @click:append="onSearch"
+      @click:clear="onSearchCleared($event, card)"
+      :hint="$t('auth.required')"
+      :filter="searchFilter"
+    -->
     <div>find: {{findResult.pattern}}</div>
     <div>method: {{findResult.method}}</div>
     <v-table 
@@ -43,6 +65,12 @@
     Dictionary,
     Pali,
   } from "@sc-voice/pali";
+  const MAX_HISTORY = 7;
+  const history = ref([
+    "dhamma",
+    "saṁvega",
+    "moral virtue",
+  ]);
 
   export default {
     inject: ['config'],
@@ -63,11 +91,55 @@
       const findResult = ref();
       return {
         findResult,
+        search: ref(),
+        items: ref([...history.value]),
+        history,
       }
     },
     components: {
     },
     methods: {
+      updateHistory(value) {
+        const msg = "PaliView.updateHistory()";
+        const dbg = DBG.PALI_SEARCH;
+        let iExisting = history.value.indexOf(value);
+        if (iExisting < 0) {
+          msg && console.log(msg, '[1]add', value);
+          history.value.unshift(value);
+          while (history.value.length > MAX_HISTORY) {
+            msg && console.log(msg, '[2]pop', value);
+            history.value.pop();
+          }
+        } else {
+          msg && console.log(msg, '[3]existing', value);
+        }
+      },
+      onEnter(evt) {
+        const msg = "PaliView.onEnter()";
+        const dbg = DBG.PALI_SEARCH;
+        let { search, volatile } = this;
+        let { dictionary:dict } = volatile;
+        let entry = search && dict.entryOf(search);
+        if (!entry) {
+          msg && console.log(msg, '[1]search?', search);
+          return;
+        }
+        msg && console.log(msg, '[2]entry', search, entry);
+        this.updateHistory(search);
+      },
+      updateSearch(value) {
+        const msg = "PaliView.updateSearch()";
+        const dbg = DBG.PALI_SEARCH;
+        let { search, volatile } = this;
+        let { dictionary:dict } = volatile;
+        let entry = value && dict.entryOf(value);
+        if (entry && history.value.indexOf(value)<0) {
+          history.value.unshift(value);
+        }
+        this.items.value = [value, ...history.value];
+        dbg && console.log(msg, this.items.value, entry);
+        return value;
+      },
       groupDefinitions(group) {
         const msg = "PaliView.groupDefinitions()";
         let { word, construction } = group;
