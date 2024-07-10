@@ -231,6 +231,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Descărcare întreruptă:",
     "downloading": "Se descarcă:",
+    "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Explorează învățăturile budiste",
     "findSutta": "Find a sutta",

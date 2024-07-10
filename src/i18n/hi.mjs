@@ -230,6 +230,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "डाउनलोड मध्यांतर:",
     "downloading": "डाउनलोड हो रहा है:",
+    "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "बुद्ध की शिक्षा खोजे",
     "findSutta": "Find a sutta",

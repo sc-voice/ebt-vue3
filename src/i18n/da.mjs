@@ -232,6 +232,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Overførsel mislykkedes:",
     "downloading": "Overfører:",
+    "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Udforsk Buddhas undervisning",
     "findSutta": "Find a sutta",

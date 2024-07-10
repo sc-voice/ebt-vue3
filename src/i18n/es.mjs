@@ -83,6 +83,7 @@ export default {
     "downloadPlaylist": "Descargar lista de reproducción",
     "downloadTimeout": "Tiempo de espera de descarga:",
     "downloading": "Descargando:",
+    "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Ejemplos",
     "exploreBuddhasTeaching": "Explore las enseñanzas de Buda",
     "findSutta": "Buscar un sutta",

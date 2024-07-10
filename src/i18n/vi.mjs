@@ -234,6 +234,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Thời gian chờ download:",
     "downloading": "Đang download:",
+    "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Khám phá giáo lí Phật pháp",
     "findSutta": "Find a sutta",
