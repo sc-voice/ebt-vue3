@@ -18,13 +18,6 @@
       @update:modelValue="updateModelValue"
       @keyup.enter="onEnter($event)"
     />
-    <!--
-      @focus="onFocus"
-      @click:append="onSearch"
-      @click:clear="onSearchCleared($event, card)"
-      :hint="$t('auth.required')"
-      :filter="searchFilter"
-    -->
     <div>find: {{findResult.pattern}}</div>
     <div>method: {{findResult.method}}</div>
     <v-table 
