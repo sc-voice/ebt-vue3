@@ -1,19 +1,22 @@
 <template>
   <v-sheet v-if="findResult" class="">
+    search:{{search}}
     <v-autocomplete 
       v-model="search" 
       :append-icon="search ? 'mdi-magnify' : ''"
 
       :id="`${card.id}-search`"
       variant="underlined"
-      :items="history"
       :label="$t('ebt.searchPaliDictionary')"
       :placeholder="$t('ebt.enterPaliWordOrDefinition')"
       class="search-field"
-      clearable
-      @update:search="updateSearch"
-      @keyup.enter="onEnter($event)"
       hide-no-data
+      clearable
+      :items="history"
+
+      @update:search="updateSearch"
+      @update:modelValue="updateModelValue"
+      @keyup.enter="onEnter($event)"
     />
     <!--
       @focus="onFocus"
@@ -91,27 +94,50 @@
       const findResult = ref();
       return {
         findResult,
-        search: ref(),
-        items: ref([...history.value]),
+        search: null,
         history,
       }
     },
     components: {
     },
     methods: {
-      updateHistory(value) {
-        const msg = "PaliView.updateHistory()";
+      runSearch(value) {
+        const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let iExisting = history.value.indexOf(value);
+        let { search } = this;
+        if (search !== value) {
+          this.search = search = value;
+          dbg && console.log(msg, '[1]search', search);
+        }
+
+        let iExisting = history.value.indexOf(search);
         if (iExisting < 0) {
-          msg && console.log(msg, '[1]add', value);
-          history.value.unshift(value);
+          msg && console.log(msg, '[2]history+', search);
+          history.value.unshift(search);
           while (history.value.length > MAX_HISTORY) {
-            msg && console.log(msg, '[2]pop', value);
-            history.value.pop();
+            let discard = history.value.pop();
+            msg && console.log(msg, '[3]history-', discard);
           }
-        } else {
-          msg && console.log(msg, '[3]existing', value);
+        }
+
+        // TODO update results
+      },
+      updateModelValue(value) { // dropdown update
+        const msg = "PaliView.updateModelValue()";
+        const dbg = DBG.PALI_SEARCH;
+        dbg && console.log(msg, value);
+        this.runSearch(value);
+      },
+      updateSearch(value) { // keyboard update
+        const msg = "PaliView.updateSearch()";
+        const dbg = DBG.PALI_SEARCH;
+        let { search, volatile } = this;
+        let { dictionary:dict } = volatile;
+        let entry = value && dict.entryOf(value);
+        this.search = value;
+
+        if (entry && history.value.indexOf(value)<0) {
+          dbg && console.log(msg, '[1]valid', {search, value, entry});
         }
       },
       onEnter(evt) {
@@ -125,20 +151,7 @@
           return;
         }
         msg && console.log(msg, '[2]entry', search, entry);
-        this.updateHistory(search);
-      },
-      updateSearch(value) {
-        const msg = "PaliView.updateSearch()";
-        const dbg = DBG.PALI_SEARCH;
-        let { search, volatile } = this;
-        let { dictionary:dict } = volatile;
-        let entry = value && dict.entryOf(value);
-        if (entry && history.value.indexOf(value)<0) {
-          history.value.unshift(value);
-        }
-        this.items.value = [value, ...history.value];
-        dbg && console.log(msg, this.items.value, entry);
-        return value;
+        this.runSearch(search);
       },
       groupDefinitions(group) {
         const msg = "PaliView.groupDefinitions()";
