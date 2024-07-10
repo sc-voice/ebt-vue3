@@ -283,6 +283,7 @@ export default {
     "returnSearchResults": "Căutarea a găsit A_COUNT rezultate",
     "rootLanguage": "Limbă de bază",
     "search": "Căutare",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Rezultate",
     "searching": "Searching...",

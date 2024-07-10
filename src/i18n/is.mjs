@@ -287,6 +287,7 @@ export default {
     "returnSearchResults": "A_COUNT Leitarniðurstöður sem fengust",
     "rootLanguage": "Rótarmál",
     "search": "Leita",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Leitarniðurstöður",
     "searching": "Searching...",

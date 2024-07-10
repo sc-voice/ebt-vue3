@@ -287,6 +287,7 @@ export default {
     "returnSearchResults": "zobrazeno A_COUNT výsledků hledání",
     "rootLanguage": "Základní jazyk",
     "search": "Hledat",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Výsledky hledání",
     "searching": "Searching...",

@@ -288,6 +288,7 @@ export default {
     "returnSearchResults": "Risultati della ricerca A_COUNT restituiti",
     "rootLanguage": "Lingua radice",
     "search": "Ricerca",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Inserisca l'id del sutta o il testo della ricerca",
     "searchResults": "Risultati della ricerca",
     "searching": "Ricerca...",

@@ -286,6 +286,7 @@ export default {
     "returnSearchResults": "tìm thấy A_COUNT kết quả",
     "rootLanguage": "Ngôn ngữ gốc",
     "search": "Tìm kiếm",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Kết quả tìm kiếm",
     "searching": "Searching...",

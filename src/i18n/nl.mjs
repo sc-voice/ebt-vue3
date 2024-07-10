@@ -288,6 +288,7 @@ export default {
     "returnSearchResults": "A_COUNT zoekresultaten geretourneerd",
     "rootLanguage": "Hoofdtaal",
     "search": "Zoek",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Zoekresultaten",
     "searching": "Searching...",

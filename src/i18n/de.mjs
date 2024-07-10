@@ -285,6 +285,7 @@ export default {
     "returnSearchResults": "A_COUNT Suchergebnisse anzeigen",
     "rootLanguage": "Quellsprache",
     "search": "Suche",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Sutta-ID oder Suchtext eingeben",
     "searchResults": "Suchergebnisse",
     "searching": "Suchen...",

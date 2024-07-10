@@ -286,6 +286,7 @@ export default {
     "returnSearchResults": "A_COUNT zwrócone wyniki wyszukiwania",
     "rootLanguage": "Język podstawowy",
     "search": "Wyszukuj",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Wyniki wyszukiwania",
     "searching": "Searching...",

@@ -136,6 +136,7 @@ export default {
     "returnSearchResults": "A_COUNT résultats de recherche retournés",
     "rootLanguage": "Langue racine",
     "search": "Recherche",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Saisissez l'identifiant du sutta ou le texte de recherche",
     "searchResults": "Résultats de la recherche",
     "searching": "Recherche...",

@@ -285,6 +285,7 @@ export default {
     "returnSearchResults": "A_COUNT ක් සෙවුම් ප්‍රතිඵල ලැබුණි",
     "rootLanguage": "මූල භාෂාව",
     "search": "සොයන්න",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "සෙවුම් ප්‍රතිඵල",
     "searching": "Searching...",

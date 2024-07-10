@@ -281,6 +281,7 @@ export default {
     "returnSearchResults": "A_COUNT ख़ोज परिणाम आए",
     "rootLanguage": "मूल भाषा",
     "search": "खोजे",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "परिणाम खोजे",
     "searching": "Searching...",

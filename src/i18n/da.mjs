@@ -285,6 +285,7 @@ export default {
     "returnSearchResults": "Din søgning gav A_COUNT resultater",
     "rootLanguage": "Stamsprog",
     "search": "Søgning",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Søgeresultater",
     "searching": "Searching...",

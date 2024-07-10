@@ -284,6 +284,7 @@ export default {
     "returnSearchResults": "A_COUNT søkeresultater",
     "rootLanguage": "Rotspråk",
     "search": "Søk",
+    "searchPaliDictionary": "Search Pāli dictionary",
     "searchPrompt": "Enter sutta id or search text",
     "searchResults": "Søkeresultater",
     "searching": "Searching...",
