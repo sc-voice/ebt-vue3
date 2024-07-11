@@ -11,6 +11,7 @@ const EbtConfig = {
   },
   "homePath": "#/wiki/welcome",
   //"license": "https://ebt-vue3.sc-voice.net/#/wiki/license/toc",
+  //"maxDefinitions": 100,
   //"maxPlayMinutes": 30,
   //"monolingual": "en",
   "privacyLink": "#/wiki/privacy",

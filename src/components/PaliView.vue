@@ -1,25 +1,20 @@
 <template>
   <v-sheet v-if="findResult" class="">
-    search:{{search}}
     <v-autocomplete 
       v-model="search" 
       :append-icon="search ? 'mdi-magnify' : ''"
 
       :id="`${card.id}-search`"
       variant="underlined"
-      :label="$t('ebt.searchPaliDictionary')"
       :placeholder="$t('ebt.enterPaliWordOrDefinition')"
       class="search-field"
       hide-no-data
-      clearable
       :items="history"
 
       @update:search="updateSearch"
       @update:modelValue="updateModelValue"
       @keyup.enter="onEnter($event)"
     />
-    <div>find: {{findResult.pattern}}</div>
-    <div>method: {{findResult.method}}</div>
     <v-table 
       density="compact" 
       hover
@@ -39,7 +34,7 @@
         </tr>
         <tr v-for="(def,i) in groupDefinitions(group)">
           <td :title="typeTitle(def.type)">
-            &nbsp;{{ig+1}}.{{i+1}}&nbsp;{{def.type}}
+            &nbsp;{{String.fromCharCode(0x2460+i)}}&nbsp;{{def.type}}
           </td>
           <td title="Meaning">{{def.meaning}} 
             <i v-if="def.literal">lit. {{def.literal}}</i>
@@ -62,6 +57,7 @@
     Pali,
   } from "@sc-voice/pali";
   const MAX_HISTORY = 7;
+  const MAX_DEFINITIONS = 100;
   const history = ref([
     "dhamma",
     "saṁvega",
@@ -97,7 +93,8 @@
       runSearch(search=this.search) {
         const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let { dict } = this;
+        let { dict, config } = this;
+        let { maxDefinitions=MAX_DEFINITIONS } = config;
         let res = search && dict.find(search);
         if (!res) {
           dbg && console.log(msg, '[2]search?', search);
@@ -115,7 +112,15 @@
           dbg && console.log(msg, '[4]res', res);
         }
 
-        // TODO update results
+        if (maxDefinitions && res.data.length>maxDefinitions) {
+          res.data = res.data.slice(0,maxDefinitions);
+          Object.assign(res.data[maxDefinitions-1], {
+            meaning:"\u2026",
+          });
+        }
+        this.findResult = res;
+        this.search = search;
+        this.card.location[0] = search;
       },
       updateModelValue(value) { // dropdown update
         const msg = "PaliView.updateModelValue()";
@@ -195,7 +200,7 @@
         return data.reduce((a,d) => {
           let { word, construction } = d;
           word = word.toLowerCase();
-          construction = construction.toLowerCase();
+          construction = construction && construction.toLowerCase();
           if (word !== dPrev?.word ||
               construction !== dPrev?.construction) 
           {
@@ -239,6 +244,7 @@
   padding-left: 8px !important;
   padding-right: 8px !important;
   max-width: 300px;
+  vertical-align: top;
 }
 .dict thead th {
   font-size: smaller;
