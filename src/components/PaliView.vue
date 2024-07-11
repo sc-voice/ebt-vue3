@@ -94,23 +94,25 @@
     components: {
     },
     methods: {
-      runSearch(value) {
+      runSearch(search=this.search) {
         const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let { search } = this;
-        if (search !== value) {
-          this.search = search = value;
-          dbg && console.log(msg, '[1]search', search);
+        let { dict } = this;
+        let res = search && dict.find(search);
+        if (!res) {
+          dbg && console.log(msg, '[2]search?', search);
+          return;
         }
 
         let iExisting = history.value.indexOf(search);
         if (iExisting < 0) {
-          msg && console.log(msg, '[2]history+', search);
+          dbg && console.log(msg, '[2]history+', search);
           history.value.unshift(search);
           while (history.value.length > MAX_HISTORY) {
             let discard = history.value.pop();
-            msg && console.log(msg, '[3]history-', discard);
+            dbg && console.log(msg, '[3]history-', discard);
           }
+          dbg && console.log(msg, '[4]res', res);
         }
 
         // TODO update results
@@ -124,8 +126,7 @@
       updateSearch(value) { // keyboard update
         const msg = "PaliView.updateSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let { search, volatile } = this;
-        let { dictionary:dict } = volatile;
+        let { search, dict } = this;
         let entry = value && dict.entryOf(value);
         this.search = value;
 
@@ -136,14 +137,13 @@
       onEnter(evt) {
         const msg = "PaliView.onEnter()";
         const dbg = DBG.PALI_SEARCH;
-        let { search, volatile } = this;
-        let { dictionary:dict } = volatile;
-        let entry = search && dict.entryOf(search);
-        if (!entry) {
+        let { dict, search, volatile } = this;
+        let res = search && dict.find(search);
+        if (!res) {
           msg && console.log(msg, '[1]search?', search);
           return;
         }
-        msg && console.log(msg, '[2]entry', search, entry);
+        msg && console.log(msg, '[2]entry', search, res);
         this.runSearch(search);
       },
       groupDefinitions(group) {
@@ -157,35 +157,32 @@
         });
       },
       typeTitle(type) {
-        switch (type) {
-          case 'masc': return 'masculine';
-          case 'fem': return 'feminine';
-          case 'adj': return 'adjective';
-          case 'nt': return 'neuter';
-          default: return type;
-        }
+        let info = Dictionary.ABBREVIATIONS[type];
+        return info && info.meaning || type;
       },
     },
     async mounted() {
       const msg = 'PaliView.mounted()';
       let dbg = DBG.PALI_VIEW;
-      let { card, $route, settings, volatile} = this;
+      let { dict, card, $route, settings, volatile} = this;
 
       dbg && console.log(msg, '[1]');
-      let { dictionary } = volatile;
-      if (dictionary == null) {
-        dictionary = await Dictionary.create();
-        dbg && console.log(msg, '[2]dictionary', dictionary);
-        volatile.dictionary = dictionary;
+      if (dict == null) {
+        dict = await Dictionary.create();
+        dbg && console.log(msg, '[2]dictionary', dict);
+        volatile.dictionary = dict;
       }
 
       let word = card.location[0].toLowerCase();
-      let res = dictionary.find(word);
+      let res = dict.find(word);
       this.findResult = res;
 
       card.onAfterMounted({settings, volatile});
     },
     computed: {
+      dict() {
+        return this.volatile.dictionary;
+      },
       word() {
         return this.card.location[0];
       },
@@ -209,15 +206,14 @@
         }, []);
       },
       definition() {
-        let { card, volatile } = this;
-        let { dictionary } = volatile;
-        if (dictionary == null) {
+        let { card, dict } = this;
+        if (dict == null) {
           return [ '...', '...', '...', '...' ];
         }
 
         let word = card.location[0].toLowerCase();
-        let entry = dictionary.entryOf(word);
-        let res = dictionary.find(word);
+        let entry = dict.entryOf(word);
+        let res = dict.find(word);
         let definitions = ['nothing'];
         if (entry) {
           definitions = entry.definition;
