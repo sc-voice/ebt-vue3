@@ -36,9 +36,7 @@
           <td :title="typeTitle(def.type)">
             &nbsp;{{String.fromCharCode(0x2460+i)}}&nbsp;{{def.type}}
           </td>
-          <td title="Meaning">{{def.meaning}} 
-            <i v-if="def.literal">lit. {{def.literal}}</i>
-          </td>
+          <td title="Meaning" v-html="meaningHtml(def)"></td>
         </tr>
       </tbody>
     </v-table>
@@ -91,6 +89,29 @@
     components: {
     },
     methods: {
+      meaningHtml(def) {
+        const msg = "PaliView.meaningHtml()";
+        const dbg = 1;
+        let { literal, meaning } = def;
+        let { findResult } = this;
+        if (findResult) {
+          let { method, pattern } = findResult;
+          if (method === 'definition') {
+            let re = new RegExp(pattern, 'ig');
+            meaning = meaning && meaning.replace(re, 
+              `<span class="dict-pat">${pattern}</span>`
+            );
+            literal = literal && literal.replace(re, 
+              `<span class="dict-pat">${pattern}</span>`
+            );
+          }
+        }
+        let result = meaning;
+        if (literal) {
+          result += `<i>lit. ${literal}</i>`;
+        }
+        return result;
+      },
       runSearch(search=this.search) {
         const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
@@ -267,6 +288,9 @@
 }
 .dict tbody th {
   font-weight: 600;
+}
+.dict-pat {
+  color: rgb(var(--v-theme-matched));
 }
 .dict-construction {
   padding-left: 1em;

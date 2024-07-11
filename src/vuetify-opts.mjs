@@ -55,7 +55,7 @@ export default class VuetifyOpts {
         surface: "#222222",
         chip: COLOR_SAFFRON,
         link: COLOR_SAFFRON,
-        matched: COLOR_SAFFRON,
+        matched: colors.yellow.lighten1,
         appbar: COLOR_SAFFRON,
         toolbar: colors.brown.darken2,
         placeholder: "#00FFFF",
