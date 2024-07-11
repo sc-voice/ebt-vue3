@@ -52,6 +52,7 @@
   import { useVolatileStore } from '../stores/volatile.mjs';
   import { ref, nextTick } from "vue";
   import { DBG, } from '../defines.mjs';
+  import { default as EbtCard } from '../ebt-card.mjs';
   import { 
     Dictionary,
     Pali,
@@ -93,7 +94,7 @@
       runSearch(search=this.search) {
         const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let { dict, config } = this;
+        let { card, dict, config, settings } = this;
         let { maxDefinitions=MAX_DEFINITIONS } = config;
         let res = search && dict.find(search);
         if (!res) {
@@ -121,6 +122,19 @@
         this.findResult = res;
         this.search = search;
         this.card.location[0] = search;
+        for (let i=settings.cards.length; i-->0;) {
+          let c = settings.cards[i];
+          if (c.context !== EbtCard.CONTEXT_PALI) {
+            continue;
+          }
+          if (c.id === card.id || c.location[0] !== search) {
+            continue;
+          }
+          dbg && console.log(msg, '[5]removeCard', c);
+          settings.removeCard(c, config);
+        }
+        settings.saveSettings();
+        window.location.hash = `#/${card.context}/${search}`;
       },
       updateModelValue(value) { // dropdown update
         const msg = "PaliView.updateModelValue()";
