@@ -78,6 +78,7 @@
               <v-icon icon="mdi-magnify"/>
             </v-btn>
             <v-btn id='btn-settings' icon 
+              :title="$t('ebt.openSettings')"
               @click="onClickSettings"
               @focus="onFocusBtn"
               class="pr-1"
