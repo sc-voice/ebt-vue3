@@ -44,6 +44,7 @@ const showHtmlLog = ref(false);
 const waitingContext = ref('...');
 const searchResultMap = ref({});
 const config = ref(undefined);
+const paliSearchCard = ref(undefined);
 var dictionary = ref(undefined);
 const INITIAL_STATE = {
   $t: t=>t,
@@ -59,6 +60,7 @@ const INITIAL_STATE = {
   ebtChips: ref(undefined),
   homeHtml,
   logHtml,
+  paliSearchCard,
   routeCard,
   searchResultMap,
   showAlertMsg: ref(false),

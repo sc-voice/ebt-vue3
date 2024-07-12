@@ -28,13 +28,21 @@
         </template>
         <template v-slot:append>
           <v-btn 
-            v-if="card.alt1Icon && routeCard===card"
+            v-if="showAlt1"
             :icon="card.alt1Icon" flat
             :id="card.graphId"
             :disabled="card.alt1Disabled()"
             @click.stop.prevent="clickAlt1"
           />
           <v-btn icon="mdi-window-minimize" flat 
+            v-if="showAlt1"
+            :id="card.tab1Id"
+            @click.stop.prevent="clickMinimize"
+            @focus="focusTop"
+            @blur="blurTop"
+          />
+          <v-btn icon="mdi-window-minimize" flat 
+            v-if="!showAlt1"
             :id="card.tab1Id"
             @click.stop.prevent="clickMinimize"
             @focus="focusTop"
@@ -262,7 +270,9 @@
             this.openPlaylist(pattern);
           } break;
           case EbtCard.CONTEXT_PALI: {
-            console.log(msg, "TBD CONTEXT_PALI");
+            volatile.paliSearchCard = volatile.paliSearchCard === card
+              ? null : card;
+            console.log(msg, "TBD CONTEXT_PALI", volatile.paliSearchCard);
           } break;
           case EbtCard.CONTEXT_PLAY: 
           case EbtCard.CONTEXT_WIKI:
@@ -374,6 +384,10 @@
       CONTEXT_SUTTA() { return EbtCard.CONTEXT_SUTTA; },
       CONTEXT_PLAY() { return EbtCard.CONTEXT_PLAY; },
       CONTEXT_PALI() { return EbtCard.CONTEXT_PALI; },
+      showAlt1(context) {
+        let { card, routeCard } = context;
+        return card.alt1Icon && routeCard===card;
+      },
       alt1Href(ctx) {
         const { config, card, volatile, settings } = this;
         const { docLang } = settings;

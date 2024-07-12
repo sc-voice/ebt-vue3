@@ -1,20 +1,26 @@
 <template>
   <v-sheet v-if="findResult" class="">
-    <v-autocomplete 
-      v-model="search" 
-      :append-icon="search ? 'mdi-magnify' : ''"
+    <v-expand-x-transition >
+      <v-autocomplete  v-if="showSearch"
+        v-model="search" 
+        transition="expand-x-transition"
+        :appendInner-icon="search ? 'mdi-open-in-new' : ''"
 
-      :id="`${card.id}-search`"
-      variant="underlined"
-      :placeholder="$t('ebt.enterPaliWordOrDefinition')"
-      class="search-field"
-      hide-no-data
-      :items="history"
+        :id="`${card.id}-search`"
+        variant="underlined"
+        :placeholder="$t('ebt.enterPaliWordOrDefinition')"
+        class="search-field"
+        hide-no-data
+        :items="history"
+        min-width="350px"
+        autofocus
 
-      @update:search="updateSearch"
-      @update:modelValue="updateModelValue"
-      @keyup.enter="onEnter($event)"
-    />
+        @update:search="updateSearch"
+        @update:modelValue="updateModelValue"
+        @keyup.enter="onEnter"
+        @click:appendInner="clickAppend"
+      />
+    </v-expand-x-transition>
     <v-table 
       density="compact" 
       hover
@@ -40,8 +46,6 @@
         </tr>
       </tbody>
     </v-table>
-  <!--
-  -->
   </v-sheet>
 </template>
 
@@ -57,11 +61,7 @@
   } from "@sc-voice/pali";
   const MAX_HISTORY = 7;
   const MAX_DEFINITIONS = 100;
-  const history = ref([
-    "dhamma",
-    "saṁvega",
-    "moral virtue",
-  ]);
+  const history = ref([]);
 
   export default {
     inject: ['config'],
@@ -82,13 +82,20 @@
       const findResult = ref();
       return {
         findResult,
-        search: null,
+        search: undefined,
+        showInNewCard: false,
         history,
       }
     },
     components: {
     },
     methods: {
+      clickAppend(evt) {
+        const msg = "PaliView.clickAppend()";
+        const dbg = DBG;
+        let { search } = this;
+        dbg && console.log(msg, search);
+      },
       meaningHtml(def) {
         const msg = "PaliView.meaningHtml()";
         const dbg = 1;
@@ -112,9 +119,12 @@
         }
         return result;
       },
-      runSearch(search=this.search) {
+      runSearch(opts={}) {
         const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
+        let { 
+          search=this.search, openNew
+        } = opts;
         let { card, dict, config, settings } = this;
         let { maxDefinitions=MAX_DEFINITIONS } = config;
         let res = search && dict.find(search);
@@ -140,28 +150,30 @@
             meaning:"\u2026",
           });
         }
-        this.findResult = res;
-        this.search = search;
-        this.card.location[0] = search;
-        for (let i=settings.cards.length; i-->0;) {
-          let c = settings.cards[i];
-          if (c.context !== EbtCard.CONTEXT_PALI) {
-            continue;
+        if (!openNew) {
+          this.findResult = res;
+          this.search = search;
+          this.card.location[0] = search;
+          for (let i=settings.cards.length; i-->0;) {
+            let c = settings.cards[i];
+            if (c.context !== EbtCard.CONTEXT_PALI) {
+              continue;
+            }
+            if (c.id === card.id || c.location[0] !== search) {
+              continue;
+            }
+            dbg && console.log(msg, '[5]removeCard', c);
+            settings.removeCard(c, config);
           }
-          if (c.id === card.id || c.location[0] !== search) {
-            continue;
-          }
-          dbg && console.log(msg, '[5]removeCard', c);
-          settings.removeCard(c, config);
+          settings.saveSettings();
         }
-        settings.saveSettings();
         window.location.hash = `#/${card.context}/${search}`;
       },
       updateModelValue(value) { // dropdown update
         const msg = "PaliView.updateModelValue()";
         const dbg = DBG.PALI_SEARCH;
         dbg && console.log(msg, value);
-        this.runSearch(value);
+        this.runSearch({search:value});
       },
       updateSearch(value) { // keyboard update
         const msg = "PaliView.updateSearch()";
@@ -180,11 +192,14 @@
         let { dict, search, volatile } = this;
         let res = search && dict.find(search);
         if (!res) {
-          msg && console.log(msg, '[1]search?', search);
+          msg && console.log(msg, '[1]search?', search, evt);
           return;
         }
-        msg && console.log(msg, '[2]entry', search, res);
-        this.runSearch(search);
+        let { ctrlKey } = evt;
+        let openNew = ctrlKey;
+        msg && console.log(msg, '[2]entry', search, res, evt);
+        this.runSearch({search, openNew});
+        volatile.paliSearchCard = null;
       },
       groupDefinitions(group) {
         const msg = "PaliView.groupDefinitions()";
@@ -220,6 +235,10 @@
       card.onAfterMounted({settings, volatile});
     },
     computed: {
+      showSearch() {
+        let { card, volatile } = this;
+        return card === volatile.paliSearchCard;
+      },
       dict() {
         return this.volatile.dictionary;
       },
@@ -296,5 +315,11 @@
   padding-left: 1em;
   font-size: smaller;
   font-style: italic;
+}
+.dict-search {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 100%;
 }
 </style>
