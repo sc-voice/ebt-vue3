@@ -263,6 +263,7 @@ export default {
     "noNewContent": "No new content",
     "noTranslationAvailable": "(ingen oversættelse tilgængelig)",
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
+    "openPaliCard": "Open Pāli card",
     "openWiki": "Open Wiki card",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",

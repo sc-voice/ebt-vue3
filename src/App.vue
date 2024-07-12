@@ -64,14 +64,14 @@
           </v-app-bar-title>
           <div :class="startupClass('app-btns')">
             <v-btn id='btn-pali' icon 
-              :title="$t('ebt.openPaliTitle')"
+              :title="$t('ebt.openPaliCard')"
               @click="onClickPali" 
               @focus="onFocusBtn"
             >
               <v-icon icon="mdi-book-information-variant"/>
             </v-btn>
             <v-btn id='btn-search' icon 
-              :title="$t('ebt.openSearchTitle')"
+              :title="$t('ebt.openSearchCard')"
               @click="onClickSearch" 
               @focus="onFocusBtn"
             >

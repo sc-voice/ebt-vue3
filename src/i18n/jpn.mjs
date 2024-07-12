@@ -266,6 +266,7 @@ export default {
     "noTranslationAvailable": "(翻訳はありません)",
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
     "ok": "OK",
+    "openPaliCard": "Open Pāli card",
     "openWiki": "wikiカードを開く",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
