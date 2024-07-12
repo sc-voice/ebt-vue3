@@ -116,6 +116,7 @@ export default {
     "notFound": "\"A_PATTERN\" n'a pas été trouvé. Essayez Voice.suttacentral.net",
     "openPaliCard": "Open Pāli card",
     "openSearchCard": "Open Search card",
+    "openSettings": "Open Settings",
     "openWiki": "Carte Wiki ouverte",
     "pageNotFound": "Page non trouvée",
     "pinned": "Épinglé A_DATE",

@@ -268,6 +268,7 @@ export default {
     "notFound": "\"A_PATTERN\" non trovato. Provi con Voice.suttacentral.net",
     "openPaliCard": "Open Pāli card",
     "openSearchCard": "Open Search card",
+    "openSettings": "Open Settings",
     "openWiki": "Aprire la scheda Wiki",
     "pageNotFound": "Pagina non trovata",
     "pinned": "Appuntato A_DATE",

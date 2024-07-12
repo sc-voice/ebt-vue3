@@ -268,6 +268,7 @@ export default {
     "ok": "OK",
     "openPaliCard": "Open Pāli card",
     "openSearchCard": "Open Search card",
+    "openSettings": "Open Settings",
     "openWiki": "wikiカードを開く",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
