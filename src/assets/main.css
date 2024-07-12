@@ -73,6 +73,9 @@ a:focus {
   color: rgb(var(--v-theme-matched));
   font-weight: 600;
 }
+a.scv-matched {
+  color: green;
+}
 .debug {
   color: aqua;
 }
@@ -442,7 +445,6 @@ code {
 
 :is(
   .result a,
-  .result .scv-matched,
   .ebt-card:hover .result a 
 ){
   color: rgb(var(--v-theme-on-surface));
@@ -451,7 +453,7 @@ code {
   .ebt-card:hover .result:hover .scv-matched,
   .ebt-card:hover .result:hover a 
 ){
-  color: rgb(var(--v-theme-matched));
+  color: rgb(var(--v-theme-link));
 }
 
 /************** SearchResults (END) *************/
