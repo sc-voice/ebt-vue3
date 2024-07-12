@@ -115,6 +115,7 @@ export default {
     "noTranslationAvailable": "(não existe tradução disponível)",
     "notFound": "\"A_PATTERN\" não foi encontrado. Tente Voice.suttacentral.net",
     "openPaliCard": "Open Pāli card",
+    "openSearchCard": "Open Search card",
     "openWiki": "Abra o cartão Wiki",
     "pageNotFound": "Página não encontrada",
     "pinned": "Fixado A_DATE",

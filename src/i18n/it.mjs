@@ -267,6 +267,7 @@ export default {
     "noTranslationAvailable": "(nessuna traduzione disponibile)",
     "notFound": "\"A_PATTERN\" non trovato. Provi con Voice.suttacentral.net",
     "openPaliCard": "Open Pāli card",
+    "openSearchCard": "Open Search card",
     "openWiki": "Aprire la scheda Wiki",
     "pageNotFound": "Pagina non trovata",
     "pinned": "Appuntato A_DATE",

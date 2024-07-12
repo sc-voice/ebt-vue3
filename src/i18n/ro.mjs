@@ -263,6 +263,7 @@ export default {
     "noTranslationAvailable": "(nici o traducere disponibilă)",
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
     "openPaliCard": "Open Pāli card",
+    "openSearchCard": "Open Search card",
     "openWiki": "Open Wiki card",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",

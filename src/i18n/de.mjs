@@ -263,6 +263,7 @@ export default {
     "noTranslationAvailable": "(keine Übersetzung verfügbar)",
     "notFound": "„A_PATTERN“ nicht gefunden. Versuchen Sie es auf Voice.suttacentral.net",
     "openPaliCard": "Open Pāli card",
+    "openSearchCard": "Open Search card",
     "openWiki": "Karte öffnen",
     "pageNotFound": "Seite nicht gefunden",
     "pinned": "Gepinnt A_DATE",

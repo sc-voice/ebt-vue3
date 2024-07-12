@@ -267,6 +267,7 @@ export default {
     "notFound": "\"A_PATTERN\" not found. Try Voice.suttacentral.net",
     "ok": "OK",
     "openPaliCard": "Open Pāli card",
+    "openSearchCard": "Open Search card",
     "openWiki": "wikiカードを開く",
     "pageNotFound": "Page Not Found",
     "pinned": "Pinned A_DATE",
