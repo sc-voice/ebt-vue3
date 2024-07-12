@@ -1,5 +1,5 @@
 <template>
-  <v-sheet v-if="findResult" class="">
+  <v-sheet class="">
     <v-expand-x-transition >
       <v-autocomplete  v-if="showSearch"
         v-model="search" 
@@ -22,6 +22,7 @@
       />
     </v-expand-x-transition>
     <v-table 
+      v-if="findResult"
       density="compact" 
       hover
       class="dict"
@@ -228,9 +229,16 @@
         volatile.dictionary = dict;
       }
 
-      let word = card.location[0].toLowerCase();
-      let res = dict.find(word);
-      this.findResult = res;
+      let word = card.location[0];
+      if (word) {
+        word = word.toLowerCase();
+        let res = dict.find(word);
+        dbg && console.log(msg, '[3]find', word);
+        this.findResult = res;
+      } else {
+        dbg && console.log(msg, '[4]search');
+        volatile.paliSearchCard = card;
+      }
 
       card.onAfterMounted({settings, volatile});
     },

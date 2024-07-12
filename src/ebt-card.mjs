@@ -20,14 +20,17 @@ const CONTEXTS = {
   [CONTEXT_PALI]: {
     icon: "mdi-book-information-variant",
     alt1Icon: "mdi-magnify",
+    iconTitle: "Pāli",
   },
   [CONTEXT_WIKI]: {
     icon: "mdi-wikipedia",
     alt1Icon: "mdi-home",
+    iconTitle: "Wiki",
   },
   [CONTEXT_SEARCH]: {
     icon: "mdi-magnify",
     alt1Icon: "mdi-account-voice",
+    iconTitle: "Search",
   },
   [CONTEXT_PLAY]: {
     icon: "mdi-file-document-multiple-outline",
@@ -35,13 +38,16 @@ const CONTEXTS = {
   [CONTEXT_SUTTA]: {
     icon: "mdi-file-document-outline",
     alt1Icon: "mdi-graph-outline",
+    iconTitle: "Dhamma",
   },
   [CONTEXT_DEBUG]: {
     icon: "mdi-tools",
+    iconTitle: "Debug",
   },
   [CONTEXT_GRAPH]: {
     icon: "mdi-graph-outline",
     alt1Icon: "mdi-file-document-outline",
+    iconTitle: "Graph",
   },
 }
 const API_ENDPOINT = 'https://www.api.sc-voice.net/scv/ebt-site';
@@ -133,9 +139,6 @@ export default class EbtCard {
         }
       } break;
       case CONTEXT_PALI: 
-        if (location[0] == null) {
-          location[0] = 'pāli';
-        }
         dbg && console.log(msg, `[8]${context}`, location);
         break;
     }
@@ -247,6 +250,13 @@ export default class EbtCard {
 
   get icon() {
     return CONTEXTS[this.context]?.icon || "mdi-alert-icon";
+  }
+
+  get iconTitle() {
+    let { context, id } = this;
+
+    let title = CONTEXTS[context]?.iconTitle || `${context}?`;
+    return `${title} card #${id.substring(0,4)}\u2026`;
   }
 
   get alt1Icon() {

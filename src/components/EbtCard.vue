@@ -11,7 +11,7 @@
       <v-card :id="card.id" variant="flat" >
         <template v-slot:title>
           <div v-if="card.titleHref">
-            <v-icon class="card-icon" :title="`${card.id}`">
+            <v-icon class="card-icon" :title="`${card.iconTitle}`">
               {{card.icon}}
             </v-icon>
             <a :href="card.titleHref" target="_blank" 
@@ -20,7 +20,7 @@
             </a>
           </div>
           <div v-if="!card.titleHref">
-            <v-icon class="card-icon" :title="`${card.id}`">
+            <v-icon class="card-icon" :title="`${card.iconTitle}`">
               {{card.icon}}
             </v-icon>
             <span :id="card.titleAnchor">{{card.chipTitle($t)}}</span>

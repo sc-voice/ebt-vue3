@@ -63,7 +63,15 @@
             </div>
           </v-app-bar-title>
           <div :class="startupClass('app-btns')">
+            <v-btn id='btn-pali' icon 
+              :title="$t('ebt.openPaliTitle')"
+              @click="onClickPali" 
+              @focus="onFocusBtn"
+            >
+              <v-icon icon="mdi-book-information-variant"/>
+            </v-btn>
             <v-btn id='btn-search' icon 
+              :title="$t('ebt.openSearchTitle')"
               @click="onClickSearch" 
               @focus="onFocusBtn"
             >
@@ -386,6 +394,10 @@
         let { settings } = this;
         window.location = "#/search";
         settings.tutorSearch = false;
+      },
+      onClickPali(evt) {
+        let { settings } = this;
+        window.location = "#/pali";
       },
       onClickSettings(evt) {
         const msg = "App.onClickSettings()";
