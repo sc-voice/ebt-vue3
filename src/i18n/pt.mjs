@@ -105,6 +105,7 @@ export default {
     "narration": "Narração",
     "no-location-debug": "Depurar",
     "no-location-home": "",
+    "no-location-pali": "Pāli",
     "no-location-search": "Busque...",
     "no-location-sutta": "Sutta...",
     "no-location-wiki": "Localização wiki desconhecida",

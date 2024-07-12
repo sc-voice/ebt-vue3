@@ -253,6 +253,7 @@ export default {
     "narration": "Wiedergabe",
     "no-location-debug": "Fehlersuche",
     "no-location-home": "",
+    "no-location-pali": "Pāli",
     "no-location-search": "Suche...",
     "no-location-sutta": "Sutta...",
     "no-location-wiki": "Unbekannte Wiki-Seite",

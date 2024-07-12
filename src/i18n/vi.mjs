@@ -255,6 +255,7 @@ export default {
     "maxPlayMinutes": "Play time: {A_MINUTES} minutes",
     "narration": "Narration",
     "no-location-home": "",
+    "no-location-pali": "Pāli",
     "no-location-sutta": "Sutta...",
     "no-location-wiki": "Unknown wiki location",
     "noBell": "Đọc kinh ngay",

@@ -257,6 +257,7 @@ export default {
     "narration": "Narration",
     "no-location-debug": "Debug",
     "no-location-home": "Home",
+    "no-location-pali": "Pāli",
     "no-location-sutta": "Sutta...",
     "no-location-wiki": "Unknown wiki location",
     "noBell": "すぐに経典を再生",

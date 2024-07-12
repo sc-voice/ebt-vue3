@@ -257,6 +257,7 @@ export default {
     "narration": "Narrazione",
     "no-location-debug": "Debug",
     "no-location-home": "",
+    "no-location-pali": "Pāli",
     "no-location-search": "Cerca...",
     "no-location-sutta": "Sutta...",
     "no-location-wiki": "Posizione wiki sconosciuta",
