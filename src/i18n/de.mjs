@@ -231,7 +231,7 @@ export default {
     "downloadPlaylist": "Wiedergabeliste herunterladen",
     "downloadTimeout": "Herunterladen Zeitüberschreitung:",
     "downloading": "Herunterladen:",
-    "enterPaliWordOrDefinition": "Enter Pāli word or definition",
+    "enterPaliWordOrDefinition": "Paliwort oder Definition eingeben",
     "examples": "Beispiele",
     "exploreBuddhasTeaching": "Die Lehren des Buddha erkunden",
     "findSutta": "Ein Sutta finden",
