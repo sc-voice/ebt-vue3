@@ -21,32 +21,40 @@
         @click:appendInner="clickAppend"
       />
     </v-expand-x-transition>
-    <v-table 
-      v-if="findResult"
-      density="compact" 
-      hover
-      class="dict"
-    >
-      <tbody v-for="(group,ig) in defGroups">
-        <tr>
-          <th colspan=3>
-            {{ig+1}} 
-            <a :href="`#/pali/${group.word}`">
+    <div v-if="findResult" class="dict" >
+      <div v-for="(group,ig) in defGroups">
+        <div class="dict-group">
+          <div class="dict-group-title">
+            {{ig+1}}
+            <a :href="`#/pali/${group.word}`" tabindex=-1>
               {{group.word}} 
             </a>
             <span v-if="group.construction" class="dict-construction">
               {{group.construction}}
             </span>
-          </th>
-        </tr>
-        <tr v-for="(def,i) in groupDefinitions(group)">
-          <td :title="typeTitle(def.type)">
-            &nbsp;{{String.fromCharCode(0x2460+i)}}&nbsp;{{def.type}}
-          </td>
-          <td title="Meaning" v-html="meaningHtml(def)"></td>
-        </tr>
-      </tbody>
-    </v-table>
+          </div>
+          <div class="dict-menu">
+            <v-btn icon="mdi-play"
+              @click="clickPlay(group)"
+            ></v-btn>
+          </div>
+        </div><!-- dict-group -->
+        <audio v-if="showAudio(group)"
+          :id="`${group}-audio`"
+          controls :src="urlPaliAudio"
+          autoplay
+        ></audio>
+        <table>
+          <tr v-for="(def,i) in groupDefinitions(group)">
+            <td :title="typeTitle(def.type)">
+              {{String.fromCharCode(0x2460+i)}}&nbsp;{{def.type}}
+            </td>
+            <td title="Meaning" v-html="meaningHtml(def)"
+            ></td>
+          </tr>
+        </table>
+      </div><!-- group -->
+    </div><!-- dict -->
   </v-sheet>
 </template>
 
@@ -86,14 +94,61 @@
         search: undefined,
         showInNewCard: false,
         history,
+        urlPaliAudio: undefined,
+        playGroup: undefined,
       }
     },
     components: {
     },
     methods: {
+      showAudio(group) {
+        const msg = "PaliView.showAudio";
+        const dbg = DBG.PALI_VIEW;
+        let { playGroup } = this;
+        dbg && console.log(msg, group, playGroup);
+        return playGroup &&
+          group.word===playGroup.word && 
+          group.construction===playGroup.construction;
+      },
+      async clickPlay(group) {
+        const msg = "PaliView.clickPlay()";
+        const dbg = DBG.PALI_VIEW;
+        let { settings } = this;
+        let { word } = group;
+        let urlPlay = [
+          settings.serverUrl,
+          'dictionary',
+          'en',
+          'dpd',
+          word,
+          'Aditi',
+          'Amy',
+        ].join('/');
+        this.urlPaliAudio = null;
+        this.playGroup = null;
+        let res = await fetch(urlPlay);
+        if (!res.ok) {
+          console.err(msg, res);
+          return;
+        }
+        let json = await res.json();
+        let { paliGuid } = json;
+        let urlPaliAudio = [
+          settings.serverUrl,
+          'audio',
+          'dpd',
+          'pli',
+          'dpd',
+          'Aditi',
+          paliGuid,
+        ].join('/')
+        this.urlPaliAudio = urlPaliAudio;
+        this.playGroup = group;
+        dbg && console.log(msg, word, urlPlay, paliGuid, urlPaliAudio);
+      },
       clickAppend(evt) {
         const msg = "PaliView.clickAppend()";
-        const dbg = DBG;
+        const dbg = DBG.PALI_VIEW;
         let { search } = this;
         dbg && console.log(msg, search);
       },
@@ -116,7 +171,7 @@
         }
         let result = meaning;
         if (literal) {
-          result += `<i>lit. ${literal}</i>`;
+          result += `; <i>lit. ${literal}</i>`;
         }
         return result;
       },
@@ -299,22 +354,21 @@
 </script>
 
 <style>
-.dict td,
-.dict th {
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
-  padding-left: 8px !important;
-  padding-right: 8px !important;
-  max-width: 300px;
-  vertical-align: top;
+.dict td {
+  padding: 0.2em;
+  padding-left: 0.5em;
 }
-.dict thead th {
-  font-size: smaller;
-}
-.dict tbody tr:hover > td{
-}
-.dict tbody th {
+.dict tr .dict-menu {
+  opacity: 0.1;
   font-weight: 600;
+}
+.dict tr:hover .dict-menu {
+  opacity: 1;
+}
+@media (max-width: 600px) {
+  .dict tr .dict-menu {
+    opacity: 1;
+  }
 }
 .dict-pat {
   color: rgb(var(--v-theme-matched));
@@ -329,5 +383,17 @@
   flex-flow: column;
   align-items: center;
   width: 100%;
+}
+.dict-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.7em;
+  border-bottom: 1pt solid rgba(var(--v-theme-on-surface),0.3);
+}
+.dict-group-title {
+}
+.dict-group:hover .dict-menu {
+  color: rgb(var(--v-theme-link));
 }
 </style>
