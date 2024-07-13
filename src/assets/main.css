@@ -514,7 +514,7 @@ code {
   border-left: 2pt solid rgba(0,0,0,0);
 }
 .seg-matched {
-  border-left-color: rgba(var(--v-theme-matched), 0.5);
+  border-left-color: rgba(var(--v-theme-link), 0.5);
 }
 .seg-id-col {
   flex-flow: column;
@@ -607,7 +607,7 @@ code {
   font-size: larger;
 }
 .seg-audio {
-  border: 2px dashed rgba(var(--v-theme-matched), 1);
+  border: 2px dashed rgba(var(--v-theme-link), 1);
 }
 .seg-audio .ebt-example:hover {
   text-decoration: underline;
