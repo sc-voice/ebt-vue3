@@ -240,7 +240,7 @@ export const useVolatileStore = defineStore('volatile', {
       const msg = 'volatile.focusCardElementId()';
       const dbg = DBG.FOCUS;
       const dbgv = DBG.VERBOSE && dbg;
-      let { tab1Id, } = card;
+      let { firstTabId } = card;
       let elt = document.getElementById(eltId);
       let ae = document.activeElement;
       let aeId = ae?.id;
@@ -251,7 +251,7 @@ export const useVolatileStore = defineStore('volatile', {
         } else {
           dbgv && console.log(msg, '[2]nochange', aeId);
         }
-      } else if ((elt = document.getElementById(tab1Id))) {
+      } else if ((elt = document.getElementById(firstTabId))) {
         if (ae !== elt) {
           dbg && console.log(msg, '[3]focus alt', eltId);
           this.focusElement(elt);
@@ -260,7 +260,7 @@ export const useVolatileStore = defineStore('volatile', {
         }
       } else {
         dbgv && console.log(msg, '[5] element not found', { 
-          eltId, tab1Id, elt});
+          eltId, firstTabId, elt});
       }
       return elt;
     },
@@ -605,7 +605,7 @@ export const useVolatileStore = defineStore('volatile', {
       dbg && console.log(msg, '[1]setRoute', card.debugString, evt);
       this.setRoute(card, undefined, msg);
       if (!card.hasFocus(appFocus)) {
-         let elt = document.getElementById(card.tab1Id);
+         let elt = document.getElementById(card.firstTabId);
          dbg && console.log(msg, '[2]focusElement', elt);
          this.focusElement(elt);
       }
@@ -622,7 +622,7 @@ export const useVolatileStore = defineStore('volatile', {
       const dbgv = dbg && DBG.VERBOSE; 
       let { appFocus } = this;
       let settings = useSettingsStore();
-      let { tab1Id, deleteId } = card;
+      let { deleteId } = card;
       let afId = appFocus?.id;
       let viewportElt = card.viewportElement(appFocus);
       let eltInViewport = viewportElt &&

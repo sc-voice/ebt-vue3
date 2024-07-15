@@ -30,8 +30,8 @@
           <v-btn 
             v-if="showAlt1"
             :icon="card.alt1Icon" flat
-            :id="card.graphId"
-            :disabled="card.alt1Disabled()"
+            :id="card.alt1Id"
+            :disabled="alt1Disabled()"
             @click.stop.prevent="clickAlt1"
           />
           <v-btn icon="mdi-window-minimize" flat 
@@ -179,6 +179,12 @@
       }     
     },
     methods: {
+      alt1Disabled() {
+        const msg = 'EbtCard.alt1Disabled() ';
+        let { card, volatile } = this;
+        let { routeCard } = volatile;
+        return card.alt1Disabled() || card!==routeCard;
+      },
       onClickLastTab(evt) {
         const msg = 'EbtCard.onClickLastTab() ';
         let dbg = DBG_CLICK;
@@ -272,7 +278,6 @@
           case EbtCard.CONTEXT_PALI: {
             volatile.paliSearchCard = volatile.paliSearchCard === card
               ? null : card;
-            console.log(msg, "TBD CONTEXT_PALI", volatile.paliSearchCard);
           } break;
           case EbtCard.CONTEXT_PLAY: 
           case EbtCard.CONTEXT_WIKI:
@@ -386,7 +391,7 @@
       CONTEXT_PALI() { return EbtCard.CONTEXT_PALI; },
       showAlt1(context) {
         let { card, routeCard } = context;
-        return card.alt1Icon && routeCard===card;
+        return card.alt1Icon;
       },
       alt1Href(ctx) {
         const { config, card, volatile, settings } = this;

@@ -236,6 +236,12 @@ export default class EbtCard {
     return `${this.id}-tab1`;
   }
 
+  get firstTabId() {
+    return this.alt1Icon
+      ? this.alt1Id
+      : this.tab1Id;
+  }
+
   get containerId() {
     return `${this.id}-container`;
   }

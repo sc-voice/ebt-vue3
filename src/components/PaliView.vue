@@ -4,21 +4,21 @@
       <v-autocomplete  v-if="showSearch"
         v-model="search" 
         transition="expand-x-transition"
-        :appendInner-icon="search ? 'mdi-open-in-new' : ''"
 
         :id="`${card.id}-search`"
         variant="underlined"
         :placeholder="$t('ebt.enterPaliWordOrDefinition')"
         class="search-field"
         hide-no-data
-        :items="history"
+        menu
+        :items="items"
         min-width="350px"
         autofocus
+        :custom-filter="customFilter"
 
         @update:search="updateSearch"
         @update:modelValue="updateModelValue"
         @keyup.enter="onEnter"
-        @click:appendInner="clickAppend"
       />
     </v-expand-x-transition>
     <div v-if="findResult" class="dict" >
@@ -68,9 +68,10 @@
     Dictionary,
     Pali,
   } from "@sc-voice/pali";
-  const MAX_HISTORY = 7;
+  const MAX_HISTORY = 100;
   const MAX_DEFINITIONS = 100;
-  const history = ref([]);
+  const history = [];
+  const items = ref(['x','y','z']);
 
   export default {
     inject: ['config'],
@@ -94,6 +95,7 @@
         search: undefined,
         showInNewCard: false,
         history,
+        items,
         urlPaliAudio: undefined,
         playGroup: undefined,
       }
@@ -101,11 +103,35 @@
     components: {
     },
     methods: {
+      customFilter(value, search, internal) {
+        const msg = "PaliView.customFilter";
+        const dbg = DBG.PALI_SEARCH;
+        const dbgv = DBG.VERBOSE && dbg;
+        if (search == null || value==null) {
+          dbgv && console.log(msg, '[1]null', {search, value});
+          return true;
+        }
+
+        if (value.startsWith(search)) {
+          dbgv && console.log(msg, '[2]startsWith', {search, value});
+          return true;
+        }
+
+        let pat = `^${Dictionary.unaccentedPattern(search)}`;
+        let re = new RegExp(pat, 'i');
+        if (re.test(value)) {
+          dbgv && console.log(msg, '[3]unaccented', {search, value});
+          return true;
+        }
+
+        return false;
+      },
       showAudio(group) {
         const msg = "PaliView.showAudio";
         const dbg = DBG.PALI_VIEW;
+        const dbgv = dbg && DBG.VERBOSE;
         let { playGroup } = this;
-        dbg && console.log(msg, group, playGroup);
+        dbgv && console.log(msg, group, playGroup);
         return playGroup &&
           group.word===playGroup.word && 
           group.construction===playGroup.construction;
@@ -146,12 +172,6 @@
         this.playGroup = group;
         dbg && console.log(msg, word, urlPlay, paliGuid, urlPaliAudio);
       },
-      clickAppend(evt) {
-        const msg = "PaliView.clickAppend()";
-        const dbg = DBG.PALI_VIEW;
-        let { search } = this;
-        dbg && console.log(msg, search);
-      },
       meaningHtml(def) {
         const msg = "PaliView.meaningHtml()";
         const dbg = 1;
@@ -179,7 +199,7 @@
         const msg = "PaliView.runSearch()";
         const dbg = DBG.PALI_SEARCH;
         let { 
-          search=this.search, openNew
+          search=this.search?.value, openNew
         } = opts;
         let { card, dict, config, settings } = this;
         let { maxDefinitions=MAX_DEFINITIONS } = config;
@@ -189,12 +209,12 @@
           return;
         }
 
-        let iExisting = history.value.indexOf(search);
+        let iExisting = history.indexOf(search);
         if (iExisting < 0) {
           dbg && console.log(msg, '[2]history+', search);
-          history.value.unshift(search);
-          while (history.value.length > MAX_HISTORY) {
-            let discard = history.value.pop();
+          history.unshift(search);
+          while (history.length > MAX_HISTORY) {
+            let discard = history.pop();
             dbg && console.log(msg, '[3]history-', discard);
           }
           dbg && console.log(msg, '[4]res', res);
@@ -228,19 +248,41 @@
       updateModelValue(value) { // dropdown update
         const msg = "PaliView.updateModelValue()";
         const dbg = DBG.PALI_SEARCH;
-        dbg && console.log(msg, value);
-        this.runSearch({search:value});
+        let { card, search, } = this;
+
+        if (!value) {
+          return;
+        }
+
+        if (value.endsWith('\u2026')) {
+          nextTick(()=>{
+            this.search = search = search.replace('\u2026', '');
+            dbg && console.log(msg, '[1]\u2026', {value, search, });
+          });
+        } else {
+          dbg && console.log(msg, '[2]value', value);
+          this.runSearch({search});
+        }
       },
-      updateSearch(value) { // keyboard update
+      updateSearch(search) { // keyboard update
         const msg = "PaliView.updateSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let { search, dict } = this;
-        let entry = value && dict.entryOf(value);
-        this.search = value;
-
-        if (entry && history.value.indexOf(value)<0) {
-          dbg && console.log(msg, '[1]valid', {search, value, entry});
+        let { dict } = this;
+        this.search = search;
+        if (!search) {
+          this.setItems(history);
+          return;
         }
+
+        let words = dict.wordsWithPrefix(search) || [];
+        this.setItems([ ...history, ...words ]);
+      },
+      setItems(strings) {
+        const msg = "PaliView.setItems()";
+        const dbgv = DBG.VERBOSE && DBG.PALI_SEARCH;
+        let newItems = [...strings];
+        dbgv && console.log(msg, newItems);
+        items.value = newItems;
       },
       onEnter(evt) {
         const msg = "PaliView.onEnter()";
@@ -295,6 +337,20 @@
         volatile.paliSearchCard = card;
       }
 
+      if (history.length === 0) {
+        let { cards } = settings;
+        for (let i=0; i<cards.length; i++) {
+          let ci = cards[i]
+          if (ci.context === EbtCard.CONTEXT_PALI) {
+            history.push(ci.location[0]);
+          }
+        }
+        dbg && console.log(msg, '[5]history', history);
+        this.setItems(history);
+      } else {
+        dbg && console.log(msg, '[6]history!!!', history);
+      }
+      
       card.onAfterMounted({settings, volatile});
     },
     computed: {
