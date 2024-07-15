@@ -280,7 +280,16 @@
       setItems(strings) {
         const msg = "PaliView.setItems()";
         const dbgv = DBG.VERBOSE && DBG.PALI_SEARCH;
-        let newItems = [...strings];
+        let map = {};
+        let newItems = strings.reverse()
+          .filter(s=>{
+            if (map[s]) {
+              return false;
+            }
+            map[s] = true;
+            return true;
+          })
+          .reverse();
         dbgv && console.log(msg, newItems);
         items.value = newItems;
       },
