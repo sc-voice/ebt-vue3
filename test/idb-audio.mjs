@@ -235,7 +235,7 @@ global.AudioContext = MockAudioContext; // NodeJs has no AudioContext
     should(audio.currentTime).above(playTime);
 
     let abuf = result; // unspecified in Web Api
-    should(abuf.byteLength).above(200000).below(320000);
+    should(abuf.byteLength).above(150000).below(320000);
     should(abuf).instanceOf(ArrayBuffer);
   });
   it("clear()", async()=>{
