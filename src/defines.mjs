@@ -19,6 +19,7 @@ export const DBG = {
   IDB_SUTTA: 0,
   LOG_HTML: 0,
   MOUNTED: 0,
+  PALI_DEFINITION: 0,
   PALI_VIEW: 0,
   PALI_SEARCH: 0,
   PLAY: 0,

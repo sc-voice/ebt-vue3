@@ -64,10 +64,7 @@
   import { ref, nextTick } from "vue";
   import { DBG, } from '../defines.mjs';
   import { default as EbtCard } from '../ebt-card.mjs';
-  import { 
-    Dictionary,
-    Pali,
-  } from "@sc-voice/pali";
+  import { Dictionary } from "@sc-voice/ms-dpd";
   const MAX_HISTORY = 100;
   const MAX_DEFINITIONS = 100;
   const history = [];
@@ -319,7 +316,8 @@
         });
       },
       typeTitle(type) {
-        let info = Dictionary.ABBREVIATIONS[type];
+        let { dict } = this;
+        let info = dict.abbreviationInfo(type);
         return info && info.meaning || type;
       },
     },
@@ -378,6 +376,7 @@
         let { definition, findResult } = this;
         let { data } = findResult;
         let dPrev = null;
+        console.log(msg);
 
         return data.reduce((a,d) => {
           let { word, construction } = d;
@@ -393,13 +392,14 @@
         }, []);
       },
       definition() {
+        const msg = "PaliView.definition";
         let { card, dict } = this;
         if (dict == null) {
           return [ '...', '...', '...', '...' ];
         }
 
         let word = card.location[0].toLowerCase();
-        let entry = dict.entryOf(word);
+        let entry = dict.entryOf(msg, word);
         let res = dict.find(word);
         let definitions = ['nothing'];
         if (entry) {

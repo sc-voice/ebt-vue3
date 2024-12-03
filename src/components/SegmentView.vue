@@ -357,17 +357,22 @@
         return dictionary && cardScid===segment.scid && paliWord;
       },
       paliDefinition(ctx) {
+        const msg = "SegmentView.paliDefinition";
+        let dbg = DBG.PALI_DEFINITION;
         let { volatile, cardScid, paliWord, segment } = this;
         let { dictionary } = volatile;
         let entry = dictionary.entryOf(paliWord);
+        dbg && console.log(msg, `[1]${paliWord}`, entry);
         let { definition=['?|?||'] } = entry || {};
         let paliLink = entry && entry.definition
-          ? `<a href="#/pali/${paliWord}">${paliWord}</a>`
+          ? `<a href="#/pali/${paliWord}">${entry.word}</a>`
           : `<b>${paliWord}</b>`;
         return [
           paliLink,
           ...definition.map((d,i)=>{
-            let [ type, meaning, literal, construction ] = d.split('|');
+            let def = dictionary.parseDefinition(d);
+            let { type, meaning, literal, construction } = def;
+            //let [ type, meaning, literal, construction ] = d.split('|');
             let code = '①'.charCodeAt(0) + i;
             literal = literal ? `; <i>lit. ${literal}</i>` : '';
             return `${String.fromCharCode(code)}\u202f${meaning}${literal}`
@@ -379,20 +384,5 @@
 </script>
 
 <style >
-.segment-menu {
-  display: flex; 
-  justify-content: flex-end;
-  align-items: flex-end;
-}
-.pli-word:hover {
-  color: rgb(var(--v-theme-link));
-}
-.pli-summary {
-  padding: 0.5em;
-  padding-top: 0em;
-  padding-left: 1em;
-  min-height: 3em;
-  background-color: rgb(var(--v-theme-currentbg));
-}
 </style>
 

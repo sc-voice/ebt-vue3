@@ -623,8 +623,24 @@ code {
 .seg-body:focus {
   border: 2px dotted rgba(var(--v-theme-matched), 1);
 }
+.segment-menu {
+  display: flex; 
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.pli-word:hover {
+  color: rgb(var(--v-theme-link));
+}
+.pli-summary {
+  padding: 0.5em;
+  padding-top: 0em;
+  padding-left: 1em;
+  min-height: 3em;
+  width: 340px;
+  background-color: rgb(var(--v-theme-currentbg));
+}
 
-/************** SegmentView (BEGIN) ***************/
+/************** SegmentView (END) ***************/
 
 /************** SuttaView (BEGIN) ***************/
 .sutta {

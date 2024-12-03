@@ -3,10 +3,7 @@ import { SuttaRef } from "scv-esm/main.mjs";
 import { default as EbtCard } from "../ebt-card.mjs";
 import { default as CardFactory } from "../card-factory.mjs";
 import { default as EbtSettings } from "../ebt-settings.mjs";
-import {
-  Pali,
-  Dictionary,
-} from "@sc-voice/pali/main.mjs";
+import { Dictionary } from "@sc-voice/ms-dpd/main.mjs";
 import { logger } from "log-instance/index.mjs";
 import { ref, nextTick } from "vue";
 import { useSettingsStore } from "./settings.mjs";

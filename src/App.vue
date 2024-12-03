@@ -256,8 +256,7 @@
   import { useAudioStore } from './stores/audio.mjs';
   import { 
     Dictionary,
-    Pali,
-  } from "@sc-voice/pali";
+  } from "@sc-voice/ms-dpd";
   import { logger } from "log-instance/index.mjs";
   import { nextTick, ref } from "vue";
 
