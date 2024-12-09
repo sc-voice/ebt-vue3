@@ -361,13 +361,12 @@
         let dbg = DBG.PALI_DEFINITION;
         let { volatile, cardScid, paliWord, segment } = this;
         let { dictionary, docLang } = volatile;
-        dictionary.lang = docLang;
         let entry = dictionary.entryOf(paliWord);
-        dbg && console.log(msg, `[1]${paliWord}`, entry);
+        dbg && console.log(msg, `[1]${paliWord}`, docLang, entry);
         let { definition=['?|?||'] } = entry || {};
         let paliLink = entry && entry.definition
-          ? `<a href="#/pali/${paliWord}">${entry.word}</a>`
-          : `<b>${paliWord}</b>`;
+          ? `<a href="#/pali/${entry.word}">${entry.word}</a>`
+          : `<b>${entry.word}</b>`;
         return [
           paliLink,
           ...definition.map((d,i)=>{
