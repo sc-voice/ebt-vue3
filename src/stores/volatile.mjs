@@ -42,7 +42,7 @@ const waitingContext = ref('...');
 const searchResultMap = ref({});
 const config = ref(undefined);
 const paliSearchCard = ref(undefined);
-var dictionary = ref(undefined);
+const dictionary = ref(undefined);
 const INITIAL_STATE = {
   $t: t=>t,
   alertHtml: ref("hello<br>there"),
@@ -117,6 +117,22 @@ export const useVolatileStore = defineStore('volatile', {
     },
   },
   actions: {
+    async verifyState() {
+      const msg = "Volatile.verifyState";
+      let dbg = DBG.DICTIONARY;
+      let settings = useSettingsStore();
+      let { docLang:lang } = settings;
+      let curLang = dictionary?.lang;
+
+      if (dictionary==null || dictionary.lang!==lang) {
+        await Dictionary.create({lang}).then(aDict=>{
+          dictionary.value = aDict;
+          dbg && console.log(msg, '[1]dictionary', curLang, lang,
+            this.dictionary.lang);
+        });
+      }
+      return this;
+    },
     showTutorials(show) {
       const msg = "volatile.showTutorials()";
       const dbg = DBG.TUTORIAL;

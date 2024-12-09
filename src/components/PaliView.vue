@@ -44,11 +44,13 @@
           controls :src="urlPaliAudio"
           autoplay
         ></audio>
-        <table>
+        <table v-if="volatile.dictionary">
           <tr v-for="(def,i) in groupDefinitions(group)">
-            <td :title="typeTitle(def.type)">
-              {{String.fromCharCode(0x2460+i)}}&nbsp;{{def.type}}
-            </td>
+            <td v-html="lemmaHtml(def,i)"
+            ></td>
+            <td :title="grammarTitle(def.pos)"
+              v-html="grammarHtml(def,i)"
+            ></td>
             <td title="Meaning" v-html="meaningHtml(def)"
             ></td>
           </tr>
@@ -169,9 +171,30 @@
         this.playGroup = group;
         dbg && console.log(msg, word, urlPlay, paliGuid, urlPaliAudio);
       },
+      grammarHtml(def, i) {
+        let num = String.fromCharCode(0x2460+i);
+        let { pos, } = def; // part of speech
+        let { volatile } = this;
+        let { dictionary } = volatile;
+        let info = dictionary.abbreviationInfo(pos);
+        let abbr = info && info.abbreviation || 
+          `<span style="opacity:0.5">${pos}?</span>`;
+        return `${abbr}`
+      },
+      lemmaHtml(def, i) {
+        let num = String.fromCharCode(0x2460+i);
+        let { 
+          pos,
+          lemma_1='<span style="opacity:0.5">lemma_1?</span>' 
+        } = def; // part of speech
+        let { volatile } = this;
+        let { dictionary } = volatile;
+        let info = dictionary.abbreviationInfo(pos);
+        return `${num}&nbsp;${lemma_1}`
+      },
       meaningHtml(def) {
         const msg = "PaliView.meaningHtml()";
-        const dbg = 1;
+        const dbg = 0;
         let { literal, meaning } = def;
         let { findResult } = this;
         if (findResult) {
@@ -198,9 +221,10 @@
         let { 
           search=this.search?.value, openNew
         } = opts;
-        let { card, dict, config, settings } = this;
+        let { card, config, volatile, settings } = this;
+        let { dictionary } = volatile;
         let { maxDefinitions=MAX_DEFINITIONS } = config;
-        let res = search && dict.find(search);
+        let res = search && dictionary && dictionary.find(search);
         if (!res) {
           dbg && console.log(msg, '[2]search?', search);
           return;
@@ -264,15 +288,18 @@
       updateSearch(search) { // keyboard update
         const msg = "PaliView.updateSearch()";
         const dbg = DBG.PALI_SEARCH;
-        let { dict } = this;
+        let { volatile } = this;
+        let { dictionary } = volatile;
         this.search = search;
         if (!search) {
           this.setItems(history);
           return;
         }
 
-        let words = dict.wordsWithPrefix(search) || [];
-        this.setItems([ ...history, ...words ]);
+        if (dictionary) {
+          let words = dictionary.wordsWithPrefix(search) || [];
+          this.setItems([ ...history, ...words ]);
+        }
       },
       setItems(strings) {
         const msg = "PaliView.setItems()";
@@ -293,8 +320,9 @@
       onEnter(evt) {
         const msg = "PaliView.onEnter()";
         const dbg = DBG.PALI_SEARCH;
-        let { dict, search, volatile } = this;
-        let res = search && dict.find(search);
+        let { search, volatile } = this;
+        let { dictionary } = volatile;
+        let res = search && dictionary && dictionary.find(search);
         if (!res) {
           msg && console.log(msg, '[1]search?', search, evt);
           return;
@@ -315,28 +343,28 @@
             d.construction===group.construction;
         });
       },
-      typeTitle(type) {
-        let { dict } = this;
-        let info = dict.abbreviationInfo(type);
-        return info && info.meaning || type;
+      grammarTitle(pos) {
+        let { settings, volatile } = this;
+        let { docLang } = settings;
+        let { dictionary } = volatile;
+        let info = dictionary.abbreviationInfo(pos) || {};
+        let { meaning=pos, explanation } = info;
+        return explanation 
+          ? `${docLang} ${meaning}: ${explanation}` 
+          : meaning;
       },
     },
     async mounted() {
       const msg = 'PaliView.mounted()';
       let dbg = DBG.PALI_VIEW;
-      let { dict, card, $route, settings, volatile} = this;
+      let { card, $route, settings, volatile} = this;
+      let { dictionary } = await volatile.verifyState();
 
-      dbg && console.log(msg, '[1]');
-      if (dict == null) {
-        dict = await Dictionary.create();
-        dbg && console.log(msg, '[2]dictionary', dict);
-        volatile.dictionary = dict;
-      }
-
+      dbg && console.log(msg, '[1]dictionary', !!dictionary);
       let word = card.location[0];
       if (word) {
         word = word.toLowerCase();
-        let res = dict.find(word);
+        let res = dictionary.find(word);
         dbg && console.log(msg, '[3]find', word);
         this.findResult = res;
       } else {
@@ -365,9 +393,6 @@
         let { card, volatile } = this;
         return card === volatile.paliSearchCard;
       },
-      dict() {
-        return this.volatile.dictionary;
-      },
       word() {
         return this.card.location[0];
       },
@@ -376,7 +401,6 @@
         let { definition, findResult } = this;
         let { data } = findResult;
         let dPrev = null;
-        console.log(msg);
 
         return data.reduce((a,d) => {
           let { word, construction } = d;
@@ -391,16 +415,17 @@
           return a;
         }, []);
       },
-      definition() {
+      async definition() {
         const msg = "PaliView.definition";
-        let { card, dict } = this;
-        if (dict == null) {
+        let { card, volatile } = this;
+        let { dictionary } = await volatile.verifyState();
+        if (dictionary == null) {
           return [ '...', '...', '...', '...' ];
         }
 
         let word = card.location[0].toLowerCase();
-        let entry = dict.entryOf(msg, word);
-        let res = dict.find(word);
+        let entry = dictionary.entryOf(msg, word);
+        let res = dictionary.find(word);
         let definitions = ['nothing'];
         if (entry) {
           definitions = entry.definition;

@@ -102,7 +102,7 @@
         <div>
           <ebt-processing />
           <Settings />
-          <EbtCards v-if="settings?.cards?.length" />
+          <EbtCards v-if="isReady"/>
           <div v-if="volatile.showHtmlLog" class="app-log">
             <v-icon icon="mdi-trash-can" @click="volatile.clearLog" />
             <div v-for="item in volatile.logHtml" class="app-log-item">
@@ -463,9 +463,6 @@
       } = this;
       volatile.$t = $t;
       volatile.config = config;
-      let dictionary = await Dictionary.create(); // < 30ms
-      dbg && console.log(msg, '[1]dictionary', dictionary);
-      volatile.dictionary = dictionary;
 
       let { hash } = window.location;
 
@@ -502,6 +499,26 @@
       window.addEventListener('focusin', evt=>this.onFocusIn(evt));
     },
     computed: {
+      async isReady(ctx) {
+        const msg = "App.isReady";
+        const dbg = DBG.IS_READY;
+        let { volatile, settings } = this;
+
+        if (!settings.loaded) {
+          dbg && console.log(msg, '[1]settings.loaded', false);
+          return false;
+        }
+        if (!settings?.cards?.length) {
+          dbg && console.log(msg, '[2]cards', false);
+          return result;
+        }
+
+        dbg && console.log(msg, '[3]volatile.verifyState');
+        await volatile.verifyState();
+
+        dbg && console.log(msg, '[4]ok', true);
+        return true;
+      },
       docLang(ctx) {
         let { settings, } = ctx;
         return settings.docLang.toUpperCase();

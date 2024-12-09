@@ -30,7 +30,7 @@
   "module": "index.mjs",
   "dependencies": {
     "@mdi/font": "7.0.96",
-    "@sc-voice/ms-dpd": "^2.23.0",
+    "@sc-voice/ms-dpd": "^2.35.0",
     "compression": "^1.7.4",
     "idb-keyval": "^6.2.0",
     "log-instance": "^1.6.0",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
     "ebt-deepl": "^1.29.1",
-    "eslint": "^8.56.0",
+    "eslint": "^9.16.0",
     "esm": "^3.2.25",
     "execa": "^6.1.0",
     "fake-indexeddb": "^4.0.0",

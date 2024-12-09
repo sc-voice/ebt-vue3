@@ -360,7 +360,8 @@
         const msg = "SegmentView.paliDefinition";
         let dbg = DBG.PALI_DEFINITION;
         let { volatile, cardScid, paliWord, segment } = this;
-        let { dictionary } = volatile;
+        let { dictionary, docLang } = volatile;
+        dictionary.lang = docLang;
         let entry = dictionary.entryOf(paliWord);
         dbg && console.log(msg, `[1]${paliWord}`, entry);
         let { definition=['?|?||'] } = entry || {};
