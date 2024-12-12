@@ -357,6 +357,32 @@ code {
   outline: 1pt solid green;
 }
 
+.dpd-grammar {
+  color: white;
+  border-left: solid 1px gray;
+  border-top: solid 1px gray;
+  background: linear-gradient(1600deg, 
+    rgba(255,255,255,0.3), 
+    rgba(255,255,255,0.1) 
+    ) !important;
+  border-radius: 4px;
+  margin-left: 5px;
+  padding-top: 1px;
+  padding-left: 3px;
+  padding-right: 4px;
+  margin-right: 2px;
+}
+
+div[title]:hover::before {
+  content: attr(title);
+  background-color: #000000;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+}
+
 /******************** CORE CSS (END) ********************/
 
 /**************** Search Results (BEGIN)  ***************/
@@ -633,11 +659,14 @@ code {
 }
 .pli-summary {
   padding: 0.5em;
-  padding-top: 0em;
+  padding-top: 3px;
   padding-left: 1em;
   min-height: 3em;
   width: 340px;
   background-color: rgb(var(--v-theme-currentbg));
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+  border-bottom: 1px solid rgba(var(--v-theme-focus), 0.8);
 }
 
 /************** SegmentView (END) ***************/

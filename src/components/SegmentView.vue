@@ -372,12 +372,15 @@
           ...definition.map((d,i)=>{
             let def = dictionary.parseDefinition(d);
             let { type, meaning, literal, construction } = def;
-            //let [ type, meaning, literal, construction ] = d.split('|');
-            let code = '①'.charCodeAt(0) + i;
             literal = literal ? `; <i>lit. ${literal}</i>` : '';
-            return `${String.fromCharCode(code)}\u202f${meaning}${literal}`
+            let cartouche = volatile.dpdCartoucheHtml(def,i);
+            return [
+              cartouche,
+              meaning,
+              literal,
+            ].join("");
           }),
-        ].join(' ');
+        ].join('');
       },
     },
   }

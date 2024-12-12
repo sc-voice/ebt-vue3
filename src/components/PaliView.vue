@@ -46,10 +46,7 @@
         ></audio>
         <table v-if="volatile.dictionary">
           <tr v-for="(def,i) in groupDefinitions(group)">
-            <td v-html="lemmaHtml(def,i)"
-            ></td>
-            <td :title="grammarTitle(def.pos)"
-              v-html="grammarHtml(def,i)"
+            <td v-html="dpdCartoucheHtml(def,i)"
             ></td>
             <td title="Meaning" v-html="meaningHtml(def)"
             ></td>
@@ -171,26 +168,9 @@
         this.playGroup = group;
         dbg && console.log(msg, word, urlPlay, paliGuid, urlPaliAudio);
       },
-      grammarHtml(def, i) {
-        let num = String.fromCharCode(0x2460+i);
-        let { pos, } = def; // part of speech
+      dpdCartoucheHtml(def, i) {
         let { volatile } = this;
-        let { dictionary } = volatile;
-        let info = dictionary.abbreviationInfo(pos);
-        let abbr = info && info.abbreviation || 
-          `<span style="opacity:0.5">${pos}?</span>`;
-        return `${abbr}`
-      },
-      lemmaHtml(def, i) {
-        let num = String.fromCharCode(0x2460+i);
-        let { 
-          pos,
-          lemma_1='<span style="opacity:0.5">lemma_1?</span>' 
-        } = def; // part of speech
-        let { volatile } = this;
-        let { dictionary } = volatile;
-        let info = dictionary.abbreviationInfo(pos);
-        return `${num}&nbsp;${lemma_1}`
+        return volatile.dpdCartoucheHtml(def,i, {showLemma:true});
       },
       meaningHtml(def) {
         const msg = "PaliView.meaningHtml()";
@@ -342,16 +322,6 @@
           return d.word === group.word && 
             d.construction===group.construction;
         });
-      },
-      grammarTitle(pos) {
-        let { settings, volatile } = this;
-        let { docLang } = settings;
-        let { dictionary } = volatile;
-        let info = dictionary.abbreviationInfo(pos) || {};
-        let { meaning=pos, explanation } = info;
-        return explanation 
-          ? `${docLang} ${meaning}: ${explanation}` 
-          : meaning;
       },
     },
     async mounted() {

@@ -704,5 +704,52 @@ export const useVolatileStore = defineStore('volatile', {
 
       return segment;
     },
+    dpdCartoucheHtml(def, i, opts={}) {
+      let { showLemma=false } = opts;
+      let bullet = this.dpdBullet(i);
+      let grammar = this.dpdGrammarHtml(def);
+      let lemma = showLemma 
+        ? `${this.dpdLemmaHtml(def)}&nbsp;`
+        : bullet;
+      let title = this.dpdCartoucheTitle(def);
+      return [
+        `<span title="${title}" class="dpd-grammar">`,
+        lemma,
+        grammar,
+        '</span>',
+      ].join('');
+    },
+    dpdBullet(i) {
+      return String.fromCharCode(0x2460+i);
+    },
+    dpdCartoucheTitle(def) {
+      const msg = "volatile.dpdCartoucheTitle";
+      let { dictionary } = this;
+      let info = dictionary.abbreviationInfo(def.pos) || {};
+      let { meaning=pos, explanation='' } = info;
+      console.log(msg, info);
+      return explanation.length
+        ? `${meaning}: ${explanation}` 
+        : meaning;
+    },
+    dpdGrammarHtml(def) {
+      let { dictionary }= this;
+      if (dictionary == null) {
+        return "(loading)";
+      }
+      let { pos, } = def; // part of speech
+      let info = dictionary.abbreviationInfo(pos);
+      return info && info.abbreviation || pos || "abbr/pos?";
+    },
+    dpdLemmaHtml(def, i) {
+      let { dictionary }= this;
+      if (dictionary == null) {
+        return "(loading)";
+      }
+      let { 
+        lemma_1='<span style="opacity:0.5">lemma_1?</span>' 
+      } = def; // part of speech
+      return lemma_1;
+    },
   },
 })
