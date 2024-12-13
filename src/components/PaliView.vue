@@ -44,16 +44,28 @@
           controls :src="urlPaliAudio"
           autoplay
         ></audio>
-        <table v-if="volatile.dictionary">
-          <tr v-for="(def,i) in groupDefinitions(group)">
-            <td v-html="dpdCartoucheHtml(def,i)"
-            ></td>
-            <td title="Meaning" v-html="meaningHtml(def)"
-            ></td>
-          </tr>
-        </table>
+        <div v-if="volatile.dictionary" >
+          <div v-for="(def,i) in groupDefinitions(group)" 
+            class="pali-group">
+            <div v-html="dpdCartoucheHtml(def,i)" 
+              class="pali-cartouche">
+            </div>
+            <div>&nbsp;</div>
+            <div class="pali-meaning"
+              v-html="meaningHtml(def)"
+            ></div>
+          </div>
+        </div>
       </div><!-- group -->
     </div><!-- dict -->
+    <div class="dpd-link">
+      <div>
+        <a :href="dpdUrl()" target="_blank">
+          Digital Pali Dictionary
+          <v-icon>mdi-open-in-new</v-icon>
+        </a>
+      </div>
+    </div>
   </v-sheet>
 </template>
 
@@ -99,6 +111,12 @@
     components: {
     },
     methods: {
+      dpdUrl() {
+        const msg = "PaliView.dpdUrl";
+        let ebtWord = this.card.location[0];
+        let link = Dictionary.dpdLink(ebtWord);
+        return link?.url;
+      },
       customFilter(value, search, internal) {
         const msg = "PaliView.customFilter";
         const dbg = DBG.PALI_SEARCH;
@@ -449,9 +467,15 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 0.7em;
-  border-bottom: 1pt solid rgba(var(--v-theme-on-surface),0.3);
 }
 .dict-group-title {
+}
+.dict-group:hover {
+  border-radius: 10px;
+  background: linear-gradient(160deg, 
+    rgb(var(--v-theme-currentbg)), 
+    rgb(var(--v-theme-toolbar))
+    ) !important;
 }
 .dict-group:hover .dict-menu {
   color: rgb(var(--v-theme-link));

@@ -47,7 +47,6 @@
   <div :class="segMatchedClass(segment)"
     :id="id"
     @click.left='onClickSegBody'
-    :title="segment.scid"
   >
     <div class="seg-id" v-if="settings.showId"> 
       {{segment.scid}} 

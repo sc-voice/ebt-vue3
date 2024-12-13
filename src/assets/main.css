@@ -352,9 +352,23 @@ code {
   opacity: 0.0;
   justify-content: center;
   cursor: pointer;
+  height: 1px;
 }
 .last-tab:focus {
   outline: 1pt solid green;
+}
+
+.pali-meaning {
+  max-width: 30em;
+}
+.pali-group {
+  margin-top: 0.4em;
+  display: flex;
+}
+.pali-cartouche {
+  text-wrap: nowrap;
+  min-width: 7em;
+  margin-left: 0.5em;
 }
 
 .dpd-grammar {
@@ -381,6 +395,18 @@ div[title]:hover::before {
   border-radius: 5px;
   position: absolute;
   z-index: 1;
+}
+
+.dpd-link {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+.dpd-link div {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 0.5em;
+  padding-left: 0.7em;
+  padding-right: 0.7em;
 }
 
 /******************** CORE CSS (END) ********************/

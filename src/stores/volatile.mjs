@@ -727,7 +727,6 @@ export const useVolatileStore = defineStore('volatile', {
       let { dictionary } = this;
       let info = dictionary.abbreviationInfo(def.pos) || {};
       let { meaning=pos, explanation='' } = info;
-      console.log(msg, info);
       return explanation.length
         ? `${meaning}: ${explanation}` 
         : meaning;
