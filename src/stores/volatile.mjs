@@ -357,7 +357,7 @@ export const useVolatileStore = defineStore('volatile', {
     },
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
-      const dbg = DBG.ROUTE;
+      const dbg = DBG.SET_ROUTE;
       let { config, } = this;
       let settings = useSettingsStore();
       if (!cardOrRoute) {

@@ -373,13 +373,17 @@ export default class EbtCard {
   }
 
   routeHash(dstPath) {
+    const msg = "EbtCard.routeHash";
+    const dbg = DBG.ROUTE_HASH;
     let { context, location } = this;
+    let hash;
     switch (context) {
-      case CONTEXT_SEARCH:
-        return location.reduce((a,v) => {
+      case CONTEXT_SEARCH:{
+        hash = location.reduce((a,v) => {
           return `${a}/${encodeURIComponent(v)}`;
         }, `#/${context}`);
-        
+        dbg && console.log(msg, '[1]search', hash);
+      } break;
       case CONTEXT_SUTTA: {
         if (dstPath) {
           let [ 
@@ -389,7 +393,8 @@ export default class EbtCard {
         }
         let [ suttaSeg, lang, author ] = location;
         // NOTE: See segmentElementId()
-        return `#/sutta/${suttaSeg}/${lang}/${author}`;
+        hash = `#/sutta/${suttaSeg}/${lang}/${author}`;
+        dbg && console.log(msg, '[2]sutta', hash);
       } break;
       case CONTEXT_PLAY:  {
         if (dstPath) {
@@ -400,13 +405,18 @@ export default class EbtCard {
         }
         let [ suttaSeg, lang, author, pattern ] = location;
         // NOTE: See segmentElementId()
-        return `#/play/${suttaSeg}/${lang}/${author}/${pattern}`;
+        hash = `#/play/${suttaSeg}/${lang}/${author}/${pattern}`;
+        dbg && console.log(msg, '[3]play', hash);
       } break;
-      default:
-        return location.reduce((a,v) => {
+      default: {
+        hash = location.reduce((a,v) => {
           return `${a}/${encodeURIComponent(v)}`;
         }, `#/${context}`);
+        dbg && console.log(msg, '[4]other', hash);
+        return hash;
+      }
     }
+    return hash;
   }
 
   chipTitle($t=((k)=>k)) {

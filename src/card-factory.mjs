@@ -142,7 +142,7 @@ export default class CardFactory {
 
   pathToCard(args) {
     const msg = 'CardFactory.pathToCard()';
-    const dbg = DBG.CARD_PATH;
+    const dbg = DBG.PATH_TO_CARD;
     const dbgv = DBG.VERBOSE && dbg;
     let { settings } = this;
     let {

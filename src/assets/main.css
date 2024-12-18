@@ -65,7 +65,8 @@ a > img:hover {
 a .ebt-thumbnail:hover {
   border: 2px solid rgb(var(--v-theme-link));
 }
-a:focus {
+a:focus,
+a:focus div {
   color: rgb(var(--v-theme-link));
   outline: 2pt dashed rgba(var(--v-theme-link),0.5);
 }
@@ -404,7 +405,7 @@ div[title]:hover::before {
 }
 .dpd-link div {
   border-top: 1px solid rgba(255,255,255,0.1);
-  padding-top: 0.5em;
+  text-align: center;
   padding-left: 0.7em;
   padding-right: 0.7em;
 }

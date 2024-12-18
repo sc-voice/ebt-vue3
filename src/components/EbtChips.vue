@@ -127,7 +127,7 @@
       },
       async onClickChip(card, cards) {
         const msg = `EbtChips.onClickChip() ${card?.id} `;
-        const dbg = DBG_CLICK || DBG.FOCUS;
+        const dbg = DBG.CLICK_CHIP || DBG_CLICK || DBG.FOCUS;
         const settings = await useSettingsStore();
         const volatile = await useVolatileStore();
         let { ebtChips } = volatile;

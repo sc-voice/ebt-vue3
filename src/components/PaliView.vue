@@ -59,12 +59,14 @@
       </div><!-- group -->
     </div><!-- dict -->
     <div class="dpd-link">
-      <div>
-        <a :href="dpdUrl()" target="_blank">
-          Digital Pali Dictionary
+      <a :id="idDpdLink" :href="dpdUrl()" target="_blank">
+        <div>
+          <span style="font-size:smaller">Digital Pali Dictionary</span>
+          <br>
+          {{search}} 
           <v-icon>mdi-open-in-new</v-icon>
-        </a>
-      </div>
+        </div>
+      </a>
     </div>
   </v-sheet>
 </template>
@@ -79,7 +81,7 @@
   const MAX_HISTORY = 100;
   const MAX_DEFINITIONS = 100;
   const history = [];
-  const items = ref(['x','y','z']);
+  const items = ref();
 
   export default {
     inject: ['config'],
@@ -111,10 +113,14 @@
     components: {
     },
     methods: {
+      dpdLink(word) {
+        let link = Dictionary.dpdLink(word);
+        return link;
+      },
       dpdUrl() {
         const msg = "PaliView.dpdUrl";
         let ebtWord = this.card.location[0];
-        let link = Dictionary.dpdLink(ebtWord);
+        let link = this.dpdLink(ebtWord);
         return link?.url;
       },
       customFilter(value, search, internal) {
@@ -318,16 +324,22 @@
       onEnter(evt) {
         const msg = "PaliView.onEnter()";
         const dbg = DBG.PALI_SEARCH;
-        let { search, volatile } = this;
+        let { card, search, volatile } = this;
         let { dictionary } = volatile;
         let res = search && dictionary && dictionary.find(search);
         if (!res) {
-          msg && console.log(msg, '[1]search?', search, evt);
+          dbg && console.log(msg, '[1]search?', search, evt);
+          this.findResult = undefined;
+          nextTick(()=>{
+            let id = this.idDpdLink;
+            console.log(msg, '[1.1]id', id);
+            volatile.focusCardElementId(card, id);
+          });
           return;
         }
         let { ctrlKey } = evt;
         let openNew = ctrlKey;
-        msg && console.log(msg, '[2]entry', search, res, evt);
+        dbg && console.log(msg, '[2]entry', search, res, evt);
         this.runSearch({search, openNew});
         volatile.paliSearchCard = null;
       },
@@ -349,7 +361,7 @@
       let { dictionary } = await volatile.verifyState();
 
       dbg && console.log(msg, '[1]dictionary', !!dictionary);
-      let word = card.location[0];
+      let word = card.location[0] || '';
       if (word) {
         word = word.toLowerCase();
         let res = dictionary.find(word);
@@ -377,6 +389,10 @@
       card.onAfterMounted({settings, volatile});
     },
     computed: {
+      idDpdLink() {
+        let { card, volatile } = this;
+        return `${card.id}-dpd-link`;
+      },
       showSearch() {
         let { card, volatile } = this;
         return card === volatile.paliSearchCard;
