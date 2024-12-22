@@ -24,6 +24,7 @@
     <div v-if="dictResult && groups" class="dict" >
       <v-expansion-panels v-model="panels" 
         variant="popout"
+        @update:modelValue="onPanelUpdate"
       >
         <v-expansion-panel v-for="(group,ig) in groups" key="ig"
           :value="ig"
@@ -40,14 +41,27 @@
             </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text>
-            <audio 
-              :id="`${group}-audio`"
+            <audio v-if="group.audioUrl"
+              :id="`${card.id}-${ig}-audio`"
               controls :src="group.audioUrl"
             ></audio>
             <template v-if="volatile.dictionary"
               v-for="(def,i) in groupDefinitions(group)">
               <div class="pali-group">
-                <span v-html="dpdCartoucheHtml(def,i)"></span>
+                <v-tooltip location="top" 
+                  :text="dpdCartoucheTitle(def)"
+                  content-class="dpd-tooltip"
+                  max-width="350px"
+                  open-on-click
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" density="compact"
+                      class="tooltip-button"
+                    >
+                      <span v-html="dpdCartoucheHtml(def,i)"></span>
+                    </v-btn>
+                  </template>
+                </v-tooltip>
                 <span v-html="meaningHtml(def)" class="ml-1"></span>
               </div>
             </template>
@@ -107,13 +121,27 @@
         showInNewCard: false,
         history,
         items,
-        playGroup: undefined,
         groups,
       }
     },
     components: {
     },
     methods: {
+      async onPanelUpdate(iPanel) {
+        const msg = "PaliView.onPanelUpdate:";
+        let { groups } = this;
+        let group = groups[iPanel];
+        if (group) {
+          if (!group.audioUrl) {
+            group.audioUrl = await this.groupAudioUrl(group);
+            console.log(msg, '[1]audioUrl', group.audioUrl);
+          } else {
+            console.log(msg, '[2]audioUrl', group.audioUrl);
+          }
+        } else {
+          console.warn(msg, '[3]group?', iPanel);
+        }
+      },
       async lemmaGroups() {
         const msg = "PaliView.lemmaGroups()";
         let { definition, dictResult } = this;
@@ -126,7 +154,12 @@
           word = word.toLowerCase();
           construction = construction && construction.toLowerCase();
           if (word !== dPrev?.word || lemma !== dPrev?.lemma) {
-            let group = {word, construction, lemma};
+            let group = {
+              word, 
+              lemma, 
+              construction, 
+              audioUrl:ref(),
+            };
             if (lemmaTail.length) {
               group.lemmaTail = lemmaTail.join(' ');
             }
@@ -136,11 +169,6 @@
           dPrev = d;
           return a;
         }, []);
-
-        for (let ig=0; ig<groups.length; ig++) {
-          let group = groups[ig];
-          group.audioUrl = await this.groupAudioUrl(group);
-        }
 
         return groups;
       },
@@ -177,17 +205,6 @@
 
         return false;
       },
-      showAudio(group) {
-        const msg = "PaliView.showAudio";
-        const dbg = DBG.PALI_VIEW;
-        const dbgv = dbg && DBG.VERBOSE;
-        let { playGroup } = this;
-        dbgv && console.log(msg, group, playGroup);
-        return playGroup &&
-          group.word===playGroup.word && 
-          group.construction===playGroup.construction;
-      },
-
       async groupAudioUrl(group) {
         const msg = "PaliView.groupAudioUrl()";
         const dbg = DBG.PALI_VIEW;
@@ -202,11 +219,10 @@
           'Aditi',
           'Amy',
         ].join('/');
-        this.playGroup = null;
         let res = await fetch(urlPlay);
         if (!res.ok) {
           console.err(msg, res);
-          return;
+          return undefined;
         }
         let json = await res.json();
         let { paliGuid } = json;
@@ -220,9 +236,13 @@
           paliGuid,
         ].join('/')
         group.audioUrl = urlPaliAudio;
-        this.playGroup = group;
+        console.log(msg, group);
         dbg && console.log(msg, word, urlPlay, paliGuid, urlPaliAudio);
         return urlPaliAudio;
+      },
+      dpdCartoucheTitle(def) {
+        let { volatile } = this;
+        return volatile.dpdCartoucheTitle(def);
       },
       dpdCartoucheHtml(def, i) {
         let { volatile } = this;

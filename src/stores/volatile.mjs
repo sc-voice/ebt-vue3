@@ -715,9 +715,8 @@ export const useVolatileStore = defineStore('volatile', {
         prefix += iList+1;
       }
       let grammar = this.dpdGrammarHtml(def);
-      let title = this.dpdCartoucheTitle(def);
       return [
-        `<div title="${title}" class="dpd-cartouche">`,
+        `<div class="dpd-cartouche">`,
         prefix,
         '<div class="dpd-grammar">',
         grammar,

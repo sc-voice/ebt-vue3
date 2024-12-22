@@ -87,7 +87,7 @@
           </div>
         </template>
         <template v-slot:extension >
-          <ebt-chips v-if="0&&!collapsed" />
+          <ebt-chips v-if="!collapsed" />
         </template> <!-- !collapsed -->
         <template v-if="settings.loaded">
           <audio id="audio-click"

@@ -378,6 +378,14 @@ code {
   max-width: 35em;
 }
 
+.tooltip-button {
+  padding: 0px;
+}
+.dpd-tooltip {
+  color: white !important;
+  background-color: black !important;
+  border: 1pt solid rgba(255,255,255,0.4);
+}
 .dpd-cartouche {
   display: inline-block;
   color: white;
@@ -708,7 +716,7 @@ div[title]:hover::before {
   background-color: rgb(var(--v-theme-currentbg));
   border-bottom-left-radius: 1em;
   border-bottom-right-radius: 1em;
-  border-bottom: 1px solid rgba(var(--v-theme-focus), 0.8);
+  border-left: 1px solid rgba(var(--v-theme-focus), 0.8);
 }
 .pli-summary-link {
   display: inline-block;
