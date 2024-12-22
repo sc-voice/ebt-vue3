@@ -704,19 +704,25 @@ export const useVolatileStore = defineStore('volatile', {
 
       return segment;
     },
-    dpdCartoucheHtml(def, i, opts={}) {
+    dpdCartoucheHtml(def, iList, opts={}) {
       let { showLemma=false } = opts;
-      let bullet = this.dpdBullet(i);
+      let { lemma_1, word } = def;
+      let [ lemmaHead, ...lemmaTail ] = lemma_1.split(' ');
+      let prefix = showLemma ? lemmaHead+' ' : '';
+      if (lemmaTail && lemmaTail.length) {
+        prefix += lemmaTail.join('&nbsp;');
+      } else {
+        prefix += iList+1;
+      }
       let grammar = this.dpdGrammarHtml(def);
-      let lemma = showLemma 
-        ? `${this.dpdLemmaHtml(def)}&nbsp;`
-        : bullet;
       let title = this.dpdCartoucheTitle(def);
       return [
-        `<span title="${title}" class="dpd-grammar">`,
-        lemma,
+        `<div title="${title}" class="dpd-cartouche">`,
+        prefix,
+        '<div class="dpd-grammar">',
         grammar,
-        '</span>',
+        '</div>',
+        '</div>',
       ].join('');
     },
     dpdBullet(i) {
@@ -725,7 +731,8 @@ export const useVolatileStore = defineStore('volatile', {
     dpdCartoucheTitle(def) {
       const msg = "volatile.dpdCartoucheTitle";
       let { dictionary } = this;
-      let info = dictionary.abbreviationInfo(def.pos) || {};
+      let { pos } = def;
+      let info = dictionary.abbreviationInfo(pos) || {};
       let { meaning=pos, explanation='' } = info;
       return explanation.length
         ? `${meaning}: ${explanation}` 
@@ -745,10 +752,17 @@ export const useVolatileStore = defineStore('volatile', {
       if (dictionary == null) {
         return "(loading)";
       }
-      let { 
-        lemma_1='<span style="opacity:0.5">lemma_1?</span>' 
-      } = def; // part of speech
-      return lemma_1;
+      let { lemma_1 } = def; 
+      let lemma = lemma_1
+        ? lemma_1.split(' ')
+        : '<span style="opacity:0.5">lemma_1?</span>' 
+      let result = lemma_1.split(' ');
+      let parts = dictionary.hyphenate(result[0]);
+      if (parts) {
+        result[0] = parts.join('-');
+      }
+      
+      return result.join(' ');
     },
   },
 })

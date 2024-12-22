@@ -21,42 +21,39 @@
         @keyup.enter="onEnter"
       />
     </v-expand-x-transition>
-    <div v-if="findResult" class="dict" >
-      <div v-for="(group,ig) in defGroups">
-        <div class="dict-group">
-          <div class="dict-group-title">
-            {{ig+1}}
-            <a :href="`#/pali/${group.word}`" tabindex=-1>
-              {{group.word}} 
-            </a>
-            <span v-if="group.construction" class="dict-construction">
-              {{group.construction}}
-            </span>
-          </div>
-          <div class="dict-menu">
-            <v-btn icon="mdi-play"
-              @click="clickPlay(group)"
-            ></v-btn>
-          </div>
-        </div><!-- dict-group -->
-        <audio v-if="showAudio(group)"
-          :id="`${group}-audio`"
-          controls :src="urlPaliAudio"
-          autoplay
-        ></audio>
-        <div v-if="volatile.dictionary" >
-          <div v-for="(def,i) in groupDefinitions(group)" 
-            class="pali-group">
-            <div v-html="dpdCartoucheHtml(def,i)" 
-              class="pali-cartouche">
+    <div v-if="dictResult && groups" class="dict" >
+      <v-expansion-panels v-model="panels" 
+        variant="popout"
+      >
+        <v-expansion-panel v-for="(group,ig) in groups" key="ig"
+          :value="ig"
+          collapse-icon="mdi-format-list-bulleted"
+          expand-icon="mdi-format-list-bulleted"
+        >
+          <v-expansion-panel-title class="pali-panel-title">
+            <div class="pali-panel-title-text"
+              :title="group.construction"
+            >
+              <a :href="`#/pali/${group.word}`" tabindex=-1>
+                {{group.lemma}}
+              </a>
             </div>
-            <div>&nbsp;</div>
-            <div class="pali-meaning"
-              v-html="meaningHtml(def)"
-            ></div>
-          </div>
-        </div>
-      </div><!-- group -->
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <audio 
+              :id="`${group}-audio`"
+              controls :src="group.audioUrl"
+            ></audio>
+            <template v-if="volatile.dictionary"
+              v-for="(def,i) in groupDefinitions(group)">
+              <div class="pali-group">
+                <span v-html="dpdCartoucheHtml(def,i)"></span>
+                <span v-html="meaningHtml(def)" class="ml-1"></span>
+              </div>
+            </template>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </div><!-- dict -->
     <div class="dpd-link">
       <a :id="idDpdLink" :href="dpdUrl()" target="_blank">
@@ -82,6 +79,7 @@
   const MAX_DEFINITIONS = 100;
   const history = [];
   const items = ref();
+  const panels = ref();
 
   export default {
     inject: ['config'],
@@ -93,26 +91,59 @@
     setup() {
       const settings = useSettingsStore();
       const volatile = useVolatileStore();
+
       return {
         settings,
         volatile,
       }
     },
     data: () => {
-      const findResult = ref();
+      const dictResult = ref();
+      const groups = ref();
       return {
-        findResult,
+        dictResult,
+        panels,
         search: undefined,
         showInNewCard: false,
         history,
         items,
-        urlPaliAudio: undefined,
         playGroup: undefined,
+        groups,
       }
     },
     components: {
     },
     methods: {
+      async lemmaGroups() {
+        const msg = "PaliView.lemmaGroups()";
+        let { definition, dictResult } = this;
+        let { data } = dictResult;
+        let dPrev = null;
+
+        let groups = data.reduce((a,d) => {
+          let { word, construction, lemma_1 } = d;
+          let [ lemma, ...lemmaTail ]  = lemma_1.split(' ');
+          word = word.toLowerCase();
+          construction = construction && construction.toLowerCase();
+          if (word !== dPrev?.word || lemma !== dPrev?.lemma) {
+            let group = {word, construction, lemma};
+            if (lemmaTail.length) {
+              group.lemmaTail = lemmaTail.join(' ');
+            }
+            a.push(group);
+          }
+          d.lemma = lemma;
+          dPrev = d;
+          return a;
+        }, []);
+
+        for (let ig=0; ig<groups.length; ig++) {
+          let group = groups[ig];
+          group.audioUrl = await this.groupAudioUrl(group);
+        }
+
+        return groups;
+      },
       dpdLink(word) {
         let link = Dictionary.dpdLink(word);
         return link;
@@ -156,21 +187,21 @@
           group.word===playGroup.word && 
           group.construction===playGroup.construction;
       },
-      async clickPlay(group) {
-        const msg = "PaliView.clickPlay()";
+
+      async groupAudioUrl(group) {
+        const msg = "PaliView.groupAudioUrl()";
         const dbg = DBG.PALI_VIEW;
         let { settings } = this;
-        let { word } = group;
+        let { word, lemma } = group;
         let urlPlay = [
           settings.serverUrl,
           'dictionary',
           'en',
           'dpd',
-          word,
+          lemma,
           'Aditi',
           'Amy',
         ].join('/');
-        this.urlPaliAudio = null;
         this.playGroup = null;
         let res = await fetch(urlPlay);
         if (!res.ok) {
@@ -188,22 +219,23 @@
           'Aditi',
           paliGuid,
         ].join('/')
-        this.urlPaliAudio = urlPaliAudio;
+        group.audioUrl = urlPaliAudio;
         this.playGroup = group;
         dbg && console.log(msg, word, urlPlay, paliGuid, urlPaliAudio);
+        return urlPaliAudio;
       },
       dpdCartoucheHtml(def, i) {
         let { volatile } = this;
-        return volatile.dpdCartoucheHtml(def,i, {showLemma:true});
+        return volatile.dpdCartoucheHtml(def,i, {showLemma:false});
       },
       meaningHtml(def) {
         const msg = "PaliView.meaningHtml()";
         const dbg = 0;
         let { literal, meaning } = def;
-        let { findResult } = this;
-        if (findResult) {
-          let { method, pattern } = findResult;
-          if (method === 'definition') {
+        let { dictResult } = this;
+        if (dictResult) {
+          let { method, pattern } = dictResult;
+          if (method === 'entry') {
             let re = new RegExp(pattern, 'ig');
             meaning = meaning && meaning.replace(re, 
               `<span class="dict-pat">${pattern}</span>`
@@ -252,7 +284,7 @@
           });
         }
         if (!openNew) {
-          this.findResult = res;
+          this.dictResult = res;
           this.search = search;
           this.card.location[0] = search;
           for (let i=settings.cards.length; i-->0;) {
@@ -329,7 +361,7 @@
         let res = search && dictionary && dictionary.find(search);
         if (!res) {
           dbg && console.log(msg, '[1]search?', search, evt);
-          this.findResult = undefined;
+          this.dictResult = undefined;
           nextTick(()=>{
             let id = this.idDpdLink;
             console.log(msg, '[1.1]id', id);
@@ -345,12 +377,11 @@
       },
       groupDefinitions(group) {
         const msg = "PaliView.groupDefinitions()";
-        let { word, construction } = group;
-        let { findResult } = this;
-        let { method, pattern, data } = findResult;
+        let { word, construction, lemma } = group;
+        let { dictResult } = this;
+        let { method, pattern, data } = dictResult;
         return data.filter(d=>{
-          return d.word === group.word && 
-            d.construction===group.construction;
+          return d.lemma === group.lemma;
         });
       },
     },
@@ -366,7 +397,7 @@
         word = word.toLowerCase();
         let res = dictionary.find(word);
         dbg && console.log(msg, '[3]find', word);
-        this.findResult = res;
+        this.dictResult = res;
       } else {
         dbg && console.log(msg, '[4]search');
         volatile.paliSearchCard = card;
@@ -386,6 +417,7 @@
         dbg && console.log(msg, '[6]history!!!', history);
       }
       
+      this.groups = await this.lemmaGroups();
       card.onAfterMounted({settings, volatile});
     },
     computed: {
@@ -399,25 +431,6 @@
       },
       word() {
         return this.card.location[0];
-      },
-      defGroups() {
-        const msg = "PaliView.defGroups()";
-        let { definition, findResult } = this;
-        let { data } = findResult;
-        let dPrev = null;
-
-        return data.reduce((a,d) => {
-          let { word, construction } = d;
-          word = word.toLowerCase();
-          construction = construction && construction.toLowerCase();
-          if (word !== dPrev?.word ||
-              construction !== dPrev?.construction) 
-          {
-            a.push({word, construction});
-          }
-          dPrev = d;
-          return a;
-        }, []);
       },
       async definition() {
         const msg = "PaliView.definition";
@@ -483,6 +496,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 0.7em;
+  max-width: 40em;
 }
 .dict-group-title {
 }

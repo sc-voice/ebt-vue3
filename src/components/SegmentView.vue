@@ -367,13 +367,16 @@
           ? `<a href="#/pali/${entry.word}">${entry.word}</a>`
           : `<b>${entry.word}</b>`;
         return [
+          '<div class="pli-summary-link">',
           paliLink,
+          '</div>',
           ...definition.map((d,i)=>{
             let def = dictionary.parseDefinition(d);
             let { type, meaning, literal, construction } = def;
             literal = literal ? `; <i>lit. ${literal}</i>` : '';
             let cartouche = volatile.dpdCartoucheHtml(def,i);
             return [
+              '<div class="pli-summary-item">&nbsp;</div>',
               cartouche,
               meaning,
               literal,

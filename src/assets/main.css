@@ -299,6 +299,10 @@ code {
   color: rgba(var(--v-theme-debug), 1);
   width: 100%;
 }
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .card-title-anchor {
   position: relative;
 }
@@ -359,33 +363,44 @@ code {
   outline: 1pt solid green;
 }
 
-.pali-meaning {
-  max-width: 30em;
+.pali-panel-title {
+  max-height: 48px;
+  background: linear-gradient(160deg, 
+    rgb(var(--v-theme-currentbg)), 
+    rgb(var(--v-theme-toolbar))
+    ) !important;
+}
+.pali-panel-title-text {
+  max-width: 100%;
 }
 .pali-group {
   margin-top: 0.4em;
-  display: flex;
-}
-.pali-cartouche {
-  text-wrap: nowrap;
-  min-width: 7em;
-  margin-left: 0.5em;
+  max-width: 35em;
 }
 
-.dpd-grammar {
+.dpd-cartouche {
+  display: inline-block;
   color: white;
+  max-width: 23em;
+  hyphens: manual;
   border-left: solid 1px gray;
   border-top: solid 1px gray;
   background: linear-gradient(1600deg, 
     rgba(255,255,255,0.3), 
     rgba(255,255,255,0.1) 
     ) !important;
-  border-radius: 4px;
-  margin-left: 5px;
-  padding-top: 1px;
+  border-radius: 6px;
+  padding-top: 0px;
   padding-left: 3px;
-  padding-right: 4px;
+  padding-right: 6px;
   margin-right: 2px;
+}
+
+.dpd-grammar {
+  display: inline-block;
+  opacity: 0.8;
+  font-style: italic;
+  margin-left: 0.2em;
 }
 
 div[title]:hover::before {
@@ -694,6 +709,14 @@ div[title]:hover::before {
   border-bottom-left-radius: 1em;
   border-bottom-right-radius: 1em;
   border-bottom: 1px solid rgba(var(--v-theme-focus), 0.8);
+}
+.pli-summary-link {
+  display: inline-block;
+  margin-right: 1em;
+}
+.pli-summary-item {
+  display: inline-block;
+  margin-right: 0.3em;
 }
 
 /************** SegmentView (END) ***************/

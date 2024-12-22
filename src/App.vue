@@ -58,8 +58,7 @@
               </div>
             </div><!-- ebt-title -->
             <div :class="startupClass('sc-voice')">
-              SUTTACENTRAL
-              VOICE/{{docLang}}
+              sc-voice.net/{{docLang.toLowerCase()}}
             </div>
           </v-app-bar-title>
           <div :class="startupClass('app-btns')">
@@ -87,8 +86,8 @@
             </v-btn>
           </div>
         </template>
-        <template v-if="!collapsed" v-slot:extension >
-          <ebt-chips />
+        <template v-slot:extension >
+          <ebt-chips v-if="0&&!collapsed" />
         </template> <!-- !collapsed -->
         <template v-if="settings.loaded">
           <audio id="audio-click"
