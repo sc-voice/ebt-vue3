@@ -389,6 +389,7 @@ code {
 .dpd-cartouche {
   display: inline-block;
   color: white;
+  text-transform: none;
   max-width: 23em;
   hyphens: manual;
   border-left: solid 1px gray;
