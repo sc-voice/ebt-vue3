@@ -83,6 +83,7 @@ export default {
     "downloadPlaylist": "Descarregue a lista de reprodução",
     "downloadTimeout": "Tempo limite de descarregamento:",
     "downloading": "Descarregar:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Exemplos",
     "exploreBuddhasTeaching": "Explore os ensinamentos de Buda",

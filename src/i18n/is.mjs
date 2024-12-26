@@ -234,6 +234,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Tímamörk niðurhals:",
     "downloading": "Að hala niður:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Kynntu þér kennslu Búdda",

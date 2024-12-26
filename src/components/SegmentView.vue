@@ -366,6 +366,9 @@
         let paliLink = entry && entry.definition
           ? `<a href="#/pali/${entry.word}">${entry.word}</a>`
           : `<b>${entry.word}</b>`;
+
+        let { $t } = ctx;
+        let dpdLit = $t('ebt.dpdLit');
         return [
           '<div class="pli-summary-link">',
           paliLink,
@@ -373,7 +376,7 @@
           ...definition.map((d,i)=>{
             let def = dictionary.parseDefinition(d);
             let { type, meaning, literal, construction } = def;
-            literal = literal ? `; <i>lit. ${literal}</i>` : '';
+            literal = literal ? `; <i>${dpdLit} ${literal}</i>` : '';
             let cartouche = volatile.dpdCartoucheHtml(def,i);
             return [
               '<div class="pli-summary-item">&nbsp;</div>',

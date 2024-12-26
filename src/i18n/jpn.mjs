@@ -235,6 +235,7 @@ export default {
     "downloadPlaylist": "再生リストをダウンロード",
     "downloadTimeout": "ダウンロード　タイムアウト:",
     "downloading": "ダウンロード中...:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "ブッダの教えを探求する",

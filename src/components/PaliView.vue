@@ -252,7 +252,7 @@
         const msg = "PaliView.meaningHtml()";
         const dbg = 0;
         let { literal, meaning } = def;
-        let { dictResult } = this;
+        let { $t, dictResult } = this;
         if (dictResult) {
           let { method, pattern } = dictResult;
           if (method === 'entry') {
@@ -266,8 +266,10 @@
           }
         }
         let result = meaning;
+        let dpdLit = $t('ebt.dpdLit');
+
         if (literal) {
-          result += `; <i>lit. ${literal}</i>`;
+          result += `; <i>${dpdLit} ${literal}</i>`;
         }
         return result;
       },
