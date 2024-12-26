@@ -233,6 +233,7 @@ export default {
     "downloadPlaylist": "Stáhni seznam zvukových záznamů",
     "downloadTimeout": "Přerušení stahování:",
     "downloading": "Stahuji:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Prozkoumat Učení Buddhy",

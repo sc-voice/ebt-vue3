@@ -83,6 +83,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Download timeout:",
     "downloading": "Downloading:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Explore the Buddha's Teaching",

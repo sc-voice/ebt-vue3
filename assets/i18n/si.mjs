@@ -232,6 +232,7 @@ export default {
     "downloadPlaylist": "වාදන ලැයිස්තුව බාගන්න",
     "downloadTimeout": "බාගතකරනය කල් ඉකුත් වීම:",
     "downloading": "බාගත කරමින්:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "බුද්ධ දේශනාව ගවේෂණයට",

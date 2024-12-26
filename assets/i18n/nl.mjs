@@ -235,6 +235,7 @@ export default {
     "downloadPlaylist": "Download playlist",
     "downloadTimeout": "Download time-out:",
     "downloading": "Downloaden:",
+    "dpdLit": "lit.",
     "enterPaliWordOrDefinition": "Enter Pāli word or definition",
     "examples": "Examples",
     "exploreBuddhasTeaching": "Ontdek de Boeddha's leer",
