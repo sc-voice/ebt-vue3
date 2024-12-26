@@ -910,7 +910,7 @@ const messages =  {
       "downloadPlaylist": "Wiedergabeliste herunterladen",
       "downloadTimeout": "Herunterladen Zeitüberschreitung:",
       "downloading": "Herunterladen:",
-      "dpdLit": "lit.",
+      "dpdLit": "wtl.",
       "enterPaliWordOrDefinition": "Paliwort oder Definition eingeben",
       "examples": "Beispiele",
       "exploreBuddhasTeaching": "Die Lehren des Buddha erkunden",
