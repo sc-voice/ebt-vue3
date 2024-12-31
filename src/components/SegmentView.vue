@@ -79,6 +79,7 @@
   import { Examples, SuttaRef } from "scv-esm";
   import { getCurrentInstance, nextTick, ref } from "vue";
   import { default as IdbSutta } from '../idb-sutta.mjs';
+  import { Dictionary } from "@sc-voice/ms-dpd/main.mjs";
   import { ACTION, DBG, } from '../defines.mjs';
   import Utils from "../utils.mjs";
   import * as Idb from "idb-keyval";
@@ -361,11 +362,23 @@
         let { volatile, cardScid, paliWord, segment } = this;
         let { dictionary, docLang } = volatile;
         let entry = dictionary.entryOf(paliWord);
+        if (!entry) {
+          let resLink = Dictionary.dpdLink(paliWord);
+          let { url, ebtWord, dpdWord } = resLink;
+          return [
+            `<a href="${url}" target="_blank">`,
+            dpdWord,
+            '(DPD)',
+            '</a>',
+          ].join(' ');
+        }
+
         dbg && console.log(msg, `[1]${paliWord}`, docLang, entry);
         let { definition=['?|?||'] } = entry || {};
-        let paliLink = entry && entry.definition
-          ? `<a href="#/pali/${entry.word}">${entry.word}</a>`
-          : `<b>${entry.word}</b>`;
+        let paliLink;
+        paliLink = entry.definition
+        ? `<a href="#/pali/${entry.word}">${entry.word}</a>`
+        : `<b>${entry.word}</b>`;
 
         let { $t } = ctx;
         let dpdLit = $t('ebt.dpdLit');

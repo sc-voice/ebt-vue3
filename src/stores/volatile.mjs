@@ -704,6 +704,10 @@ export const useVolatileStore = defineStore('volatile', {
 
       return segment;
     },
+    dpdLink(paliWord) {
+      let { url } = Dictionary.dpdLink(paliWord);
+      return url;
+    },
     dpdCartoucheHtml(def, iList, opts={}) {
       let { showLemma=false } = opts;
       let { lemma_1, word } = def;
