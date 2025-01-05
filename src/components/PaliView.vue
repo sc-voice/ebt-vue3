@@ -148,6 +148,9 @@
         let { data } = dictResult;
         let dPrev = null;
 
+        data.sort((a,b)=>{
+          return a.lemma_1.localeCompare(b.lemma_1);
+        });
         let groups = data.reduce((a,d) => {
           let { word, construction, lemma_1 } = d;
           let [ lemma, ...lemmaTail ]  = lemma_1.split(' ');
