@@ -254,27 +254,38 @@
       meaningHtml(def) {
         const msg = "PaliView.meaningHtml()";
         const dbg = 0;
-        let { literal, meaning } = def;
+        let { meaning_lit, meaning_1, meaning_raw } = def;
         let { $t, dictResult } = this;
         if (dictResult) {
           let { method, pattern } = dictResult;
           if (method === 'entry') {
             let re = new RegExp(pattern, 'ig');
-            meaning = meaning && meaning.replace(re, 
+            meaning_1 = meaning_1 && meaning_1.replace(re, 
               `<span class="dict-pat">${pattern}</span>`
             );
-            literal = literal && literal.replace(re, 
+            meaning_raw = meaning_raw && meaning_raw.replace(re, 
+              `<span class="dict-pat">${pattern}</span>`
+            );
+            meaning_lit = meaning_lit && meaning_lit.replace(re, 
               `<span class="dict-pat">${pattern}</span>`
             );
           }
         }
-        let result = meaning;
-        let dpdLit = $t('ebt.dpdLit');
-
-        if (literal) {
-          result += `; <i>${dpdLit} ${literal}</i>`;
+        let result = [];
+        if (meaning_1) {
+          result.push(meaning_1);
         }
-        return result;
+        if (meaning_raw) {
+          result.push(`<span class="dpd-raw">${meaning_raw}</span>`);
+        }
+
+        if (meaning_lit) {
+          let dpdLit = $t('ebt.dpdLit');
+          result.push(
+            `<span class="dpd-lit">${dpdLit} ${meaning_lit}</span>`
+          );
+        }
+        return result.join('; ');
       },
       runSearch(opts={}) {
         const msg = "PaliView.runSearch()";
@@ -305,7 +316,7 @@
         if (maxDefinitions && res.data.length>maxDefinitions) {
           res.data = res.data.slice(0,maxDefinitions);
           Object.assign(res.data[maxDefinitions-1], {
-            meaning:"\u2026",
+            meaning_1:"\u2026",
           });
         }
         if (!openNew) {
@@ -474,10 +485,10 @@
           definitions = entry.definition.map(def=>def.split('|'));
         } else {
           let type = '--';
-          let meaning = `${word} not found`;
+          let meaning_1 = `${word} not found`;
           let literal = '--';
           let construction = '--';
-          definitions = [ type, meaning, literal, construction ];
+          definitions = [ type, meaning_1, literal, construction ];
         }
         return definitions;
       },

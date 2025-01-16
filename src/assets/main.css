@@ -381,6 +381,12 @@ code {
 .tooltip-button {
   padding: 0px;
 }
+.dpd-raw {
+  opacity: 0.6;
+}
+.dpd-lit {
+  text-style: italic;
+}
 .dpd-tooltip {
   color: white !important;
   background-color: black !important;

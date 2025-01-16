@@ -381,21 +381,35 @@
         : `<b>${entry.word}</b>`;
 
         let { $t } = ctx;
-        let dpdLit = $t('ebt.dpdLit');
         return [
           '<div class="pli-summary-link">',
           paliLink,
           '</div>',
           ...definition.map((d,i)=>{
             let def = dictionary.parseDefinition(d);
-            let { type, meaning, literal, construction } = def;
-            literal = literal ? `; <i>${dpdLit} ${literal}</i>` : '';
+            let { 
+              type, meaning_1, meaning_raw, meaning_lit, construction 
+            } = def;
+            let meaning = [];
+            if (meaning_1) {
+              meaning.push(meaning_1);
+            }
+            if (meaning_raw) {
+              meaning.push(
+                `<span class="dpd-raw">${meaning_raw}</span>`
+              );
+            }
+            if (meaning_lit) {
+              let dpdLit = $t('ebt.dpdLit');
+              meaning.push(
+                `<span class="dpd-lit">${dpdLit} ${meaning_lit}</span>`
+              );
+            }
             let cartouche = volatile.dpdCartoucheHtml(def,i);
             return [
               '<div class="pli-summary-item">&nbsp;</div>',
               cartouche,
-              meaning,
-              literal,
+              meaning.join('; '),
             ].join("");
           }),
         ].join('');
