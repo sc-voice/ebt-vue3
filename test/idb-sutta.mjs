@@ -98,14 +98,32 @@ const TESTMLDOC_EN = {
     let author = 'test-author';
     let segMap = TESTMAP;
     let title = 'test-title';
-    let mlDoc = { sutta_uid, lang, author_uid:author, title, segMap, }
+    let docLang = 'test-doc-lang';
+    let docAuthor = 'test-doc-author';
+    let docAuthorName = 'test-doc-author-name';
+    let docFooter = 'test-doc-footer';
+    let refLang = 'test-ref-lang';
+    let refAuthor = 'test-ref-author';
+    let refAuthorName = 'test-ref-author-name';
+    let refFooter = 'test-ref-footer';
+    let trilingual = true;
+    let mlDoc = { 
+      sutta_uid, lang, author_uid:author, title, segMap, 
+      docLang, docAuthor, docAuthorName, docFooter,
+      refLang, refAuthor, refAuthorName, refFooter,
+      trilingual
+    }
     let sutta = IdbSutta.create(mlDoc);
-    should(sutta).properties({
-      sutta_uid,
-      lang, 
-      author,
-      title,
-    });
+    should(sutta.trilingual).equal(true);
+    should(sutta.docLang).equal(docLang);
+    should(sutta.docAuthor).equal(docAuthor);
+    should(sutta.docAuthorName).equal(docAuthorName);
+    should(sutta.docFooter).equal(docFooter);
+    should(sutta.refLang).equal(refLang);
+    should(sutta.refAuthor).equal(refAuthor);
+    should(sutta.refAuthorName).equal(refAuthorName);
+    should(sutta.refFooter).equal(refFooter);
+    should(sutta).properties({ sutta_uid, title, });
     should.deepEqual(sutta.segments, TESTSEGS);
   });
   it("create(mlDoc) segment order", ()=>{
@@ -172,13 +190,26 @@ const TESTMLDOC_EN = {
     .equal('thig1.1/en/soma/en/sujato');
   });
   it("suttaRefToIdbKey settings", ()=>{
-    let sref = 'thig1.1/de';
     let settings = {
+      docLang: 'de',
+      docAuthor: 'sabbamitta',
       refLang: 'en',
       refAuthor: 'soma',
     }
-    should(IdbSutta.suttaRefToIdbKey(sref, settings))
+    should(IdbSutta.suttaRefToIdbKey('thig1.1', settings))
     .equal('thig1.1/de/sabbamitta/en/soma');
+    should(IdbSutta.suttaRefToIdbKey('thig1.1/de', settings))
+    .equal('thig1.1/de/sabbamitta/en/soma');
+    should(IdbSutta.suttaRefToIdbKey('thig1.1/de/sabbamitta', settings))
+    .equal('thig1.1/de/sabbamitta/en/soma');
+    should(IdbSutta.suttaRefToIdbKey('thig1.1/en', settings))
+    .equal('thig1.1/en/sujato/en/soma');
+    should(IdbSutta.suttaRefToIdbKey('thig1.1/en/sujato', settings))
+    .equal('thig1.1/en/sujato/en/soma');
+    should(IdbSutta.suttaRefToIdbKey('thig1.1/fr', settings))
+    .equal('thig1.1/fr/noeismet/en/soma');
+    should(IdbSutta.suttaRefToIdbKey('thig1.1/fr/wijayaratna', settings))
+    .equal('thig1.1/fr/wijayaratna/en/soma');
   });
   it("suttaRefToIdbKey an1.1-10", ()=>{
     let sref = 'an1.1-10:1.2'; 
@@ -191,13 +222,24 @@ const TESTMLDOC_EN = {
     .equal('an1.1-10/de/sabbamitta/en/soma');
   });
   it("idbKey", ()=>{
-    let args = {
-      sutta_uid: 'thig1.1',
-      docLang: 'en',
-      docAuthor: 'soma',
-    }
-    should(IdbSutta.idbKey(args))
-    .equal('thig1.1/en/soma/en/sujato');
+    let sutta_uid = 'test-sutta-uid';
+    let docLang = 'test-doc-lang';
+    let docAuthor = 'test-doc-author';
+    let refLang = 'test-ref-lang';
+    let refAuthor = 'test-ref-author';
+    should(IdbSutta.idbKey({ 
+      sutta_uid, docLang, docAuthor, refLang, refAuthor 
+    })).equal([ 
+      sutta_uid, docLang, docAuthor, refLang, refAuthor 
+    ].join('/'));
+
+    should(IdbSutta.idbKey({ sutta_uid, docLang, docAuthor })).equal([ 
+      sutta_uid, docLang, docAuthor, 'en', 'sujato',
+    ].join('/'));
+
+    should(IdbSutta.idbKey({ sutta_uid })).equal([ 
+      sutta_uid, 'en', 'sujato', 'en', 'sujato',
+    ].join('/'));
   });
   it("idbKey settings", ()=>{
     let args = {

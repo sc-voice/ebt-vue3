@@ -313,7 +313,7 @@ code {
 .ebt-card {
   background: rgb(var(--v-theme-surface)) !important;
   margin-left: 2px;
-  margin-right: 2px;
+  margin-right: 1em;
   border-radius: 4px;
 }
 .ebt-card-current {
@@ -329,9 +329,6 @@ code {
 }
 .ebt-card-current > .v-card--variant-flat {
   opacity: 1 !important;
-}
-.ebt-card {
-  margin-right: 1em;
 }
 .ebt-card-search {
   max-width: 600px;
@@ -592,6 +589,10 @@ div[title]:hover::before {
 /************** EbtCards (END) ***************/
 
 /************** SegmentView (BEGIN) ***************/
+.seg-footer {
+  font-size: smaller;
+  padding-top: 1em;
+}
 .seg-match {
   display: flex;
   border-left: 2pt solid rgba(0,0,0,0);

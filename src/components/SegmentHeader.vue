@@ -1,7 +1,7 @@
 <template>
   <div :class="segMatchedClass(segment)">
     <div class="seg-text seg-header" 
-      :title="$t('ebt.author')"
+      :title="title"
       style="text-align: center"
     >
       <div :class="langClass('root')" 
@@ -35,6 +35,7 @@
       idbSuttaRef: { type: Object, required:true },
       card: { type: Object, required:true },
       routeCard: { type: Object, required:true },
+      title: { type: String, required:true },
     },
     setup() {
       const settings = useSettingsStore();

@@ -6,7 +6,10 @@ import {
 import { DBG } from './defines.mjs';
 import * as Idb from "idb-keyval";
 
-const OPTIONAL_PROPS = ['saved', 'refAuthor', 'refLang'];
+const OPTIONAL_PROPS = ['saved', 
+  'refLang', 'refAuthor', 'refAuthorName', 'refFooter',
+  'docLang', 'docAuthor', 'docAuthorName', 'docFooter',
+];
 const EXAMPLE_CLASS = 'ebt-example';
 const RE_EXAMPLE_CLASS = new RegExp(EXAMPLE_CLASS);
 const EXAMPLE_TEMPLATE = `<span class="${EXAMPLE_CLASS}">\$&</span>`;
@@ -40,17 +43,15 @@ export default class IdbSutta {
   }
 
   static create(opts = {}) {
-    const msg = 'IdbSutta.create()';
-    const dbg = DBG.IDB_SUTTA;
+    const msg = 'I6a.create()';
+    const dbg = DBG.IDB_SUTTA || DBG.I6A_CREATE;
     let { 
       sutta_uid, 
       lang, 
       author = opts.author_uid,
       title,
-      docLang,
-      docAuthor,
-      refLang,
-      refAuthor,
+      docLang, docAuthor, docAuthorName, docFooter,
+      refLang, refAuthor, refAuthorName, refFooter,
       trilingual,
       segments,
     } = opts;
@@ -61,8 +62,9 @@ export default class IdbSutta {
       if (segments) { // opts is IdbSutta-like
         let idbSutta = {
           sutta_uid, lang, author, title, 
-          docLang, docAuthor, refLang, refAuthor, trilingual,
-          segments,
+          docLang, docAuthor, docAuthorName, docFooter,
+          refLang, refAuthor, refAuthorName, refFooter,
+          trilingual, segments,
         };
         IdbSutta.#copyOptional(opts, idbSutta);
         return new IdbSutta(idbSutta);
@@ -76,12 +78,16 @@ export default class IdbSutta {
       }
       let idbSutta = new IdbSutta({
         sutta_uid, lang, author, title, 
-        docLang, docAuthor, refLang, refAuthor, trilingual,
+        docLang, docAuthor, docAuthorName, docFooter,
+        refLang, refAuthor, refAuthorName, refFooter,
+        trilingual,
         segments:[],
       });
       let mlDoc = {
         sutta_uid, lang, author_uid:author, title, segMap,
-        docLang, docAuthor, refLang, refAuthor, trilingual,
+        docLang, docAuthor, docAuthorName, docFooter,
+        refLang, refAuthor, refAuthorName, refFooter,
+        trilingual,
       };
       idbSutta.merge({mlDoc});
       return idbSutta;
@@ -93,9 +99,8 @@ export default class IdbSutta {
   static idbKey({
     sutta_uid, docLang='en', docAuthor, refLang='en', refAuthor,
   }) {
-    const msg = 'IdbSutta.idbKey()';
-    const dbg = DBG.IDB_SUTTA;
-    const dbgv = DBG.VERBOSE && dbg;
+    const msg = 'I6a.idbKey()';
+    const dbg = DBG.I6A_IDB_KEY;
 
     let idbKey = [
       sutta_uid,
@@ -105,11 +110,13 @@ export default class IdbSutta {
       refAuthor || AuthorsV2.langAuthor(refLang),
     ].join('/');
 
+    dbg && console.log(msg, '[1]', idbKey);
+
     return idbKey;
   }
 
   static suttaRefToIdbKey(suttaRef, settings={}) {
-    const msg = 'IdbSutta.suttaRefToIdbKey()';
+    const msg = 'I6a.suttaRefToIdbKey()';
     let { docLang = 'en', refLang = 'en', } = settings;
     let {
       docAuthor = AuthorsV2.langAuthor(docLang),
@@ -122,10 +129,16 @@ export default class IdbSutta {
         lang=docLang, 
         author,
       } = SuttaRef.create(suttaRef, docLang);
+      if (author == null) {
+        author = AuthorsV2.langAuthor(lang);
+      }
+      if (author == null && docLang === lang) {
+        author = docAuthor;
+      }
       return IdbSutta.idbKey({
         sutta_uid,
         docLang: lang,
-        docAuthor: author || AuthorsV2.langAuthor(lang),
+        docAuthor: author,
         refLang,
         refAuthor,
       });
@@ -140,10 +153,15 @@ export default class IdbSutta {
     return IdbSutta.idbKey(this);
   }
 
-  merge(opts={}) {
+  // Merge new information from srcNew
+  merge(srcNew={}) {
     const msg = 'IdbSutta.merge()';
-    const dbg = DBG.IDB_SUTTA;
-    let { mlDoc, refLang:refLangOpts, highlightExamples=false } = opts;
+    const dbg = DBG.IDB_SUTTA || DBG.IDB_SUTTA_MERGE;
+    let { 
+      mlDoc, 
+      refLang:refLangOpts, // WHY?
+      highlightExamples=false,
+    } = srcNew;
     if (mlDoc == null) {
       let emsg = `${msg} [1]mlDoc?`;
       console.warn(emsg);
@@ -155,8 +173,12 @@ export default class IdbSutta {
       return a;
     }, {});
     let { 
-      lang, author_uid, title, segMap:srcSegMap,
-      refLang, refAuthor, docLang, docAuthor, trilingual,
+      segMap:srcSegMap,
+      sutta_uid, lang, author_uid, 
+      title, 
+      refLang, refAuthor, refAuthorName, refFooter,
+      docLang, docAuthor, docAuthorName, docFooter,
+      trilingual,
     } = mlDoc;
     if (srcSegMap == null) {
       let emsg = `${msg} [2]srcSegMap?`;
@@ -165,20 +187,38 @@ export default class IdbSutta {
     }
     this.trilingual = trilingual;
     if (trilingual) {
-      dbg && console.log(msg, '[3]trilingual', opts);
+      if (dbg) {
+        let dbgOut = dbg > 1 ? srcNew : {
+          sutta_uid,
+          docLang,
+          docAuthor,
+          docAuthorName,
+          docFooter,
+          refLang,
+          refAuthor,
+          refAuthorName,
+          refFooter,
+          title,
+        };
+        console.log(msg, '[3]trilingual', dbgOut);
+      }
       this.author = docAuthor;
       this.lang = docLang;
-      this.docAuthor = docAuthor;
-      this.docLang = docLang;
-      this.refLang = refLang;
-      this.refAuthor = refAuthor;
+      this.docAuthor = docAuthor || this.docAuthor;
+      this.docAuthorName = docAuthorName || this.docAuthorName;
+      this.docLang = docLang || this.docLang;
+      this.docFooter = docFooter || this.docFooter;
+      this.refLang = refLang || this.refLang || refLang;
+      this.refAuthor = refAuthor || this.refAuthor;
+      this.refAuthorName = refAuthorName || this.refAuthorName;
+      this.refFooter = refFooter || this.refFooter;
     } else {
       if (refLangOpts) {
-        dbg && console.warn(msg, '[4]legacy', opts);
+        dbg && console.warn(msg, '[4]legacy', srcNew);
         this.refAuthor = author_uid;
         this.refLang = refLangOpts;
       } else {
-        dbg && console.warn(msg, '[5]legacy', opts);
+        dbg && console.warn(msg, '[5]legacy', srcNew);
         this.author = author_uid;
         this.lang = lang;
         this.title = title;
@@ -208,7 +248,7 @@ export default class IdbSutta {
       }, []);
     if (highlightExamples) {
       dbg && console.log(msg, '[6]highlightExamples');
-      this.highlightExamples(opts);
+      this.highlightExamples(srcNew);
     }
   }
 

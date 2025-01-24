@@ -226,7 +226,7 @@ class MockSettings {
       ]);
     }
   });
-  it("TESTTESTaddCard() SUTTA thig1.2", ()=>{
+  it("addCard() SUTTA thig1.2", ()=>{
     let settings = new MockSettings();
     let cf = new CardFactory({settings});
     let isOpen = true;

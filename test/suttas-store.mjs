@@ -58,14 +58,16 @@ const MSDAY = 24*3600*MSSEC;
       'zz?maxResults=5', 
     ].join('/'));
   });
-  it("loadIdbSutta", async () => {
-    //logger.logLevel = 'info';
+  it("TESTTESTloadIdbSutta", async () => {
+    const msg = 'ts4s.loadIdbSutta';
+    const dbg = 0;
     let suttas = useSuttasStore();
     let { nFetch, nGet, nSet } = suttas;
     let suttaRef = SuttaRef.create('thig1.11/en/soma');
 
     // Load sutta from cloud
     let idbSutta = await suttas.loadIdbSutta(suttaRef);
+    let { idbKey } = idbSutta;
     should(idbSutta).properties({
       sutta_uid: 'thig1.11',
       lang: 'en',
@@ -82,6 +84,9 @@ const MSDAY = 24*3600*MSSEC;
 
     // Load cached sutta
     let idbSutta2 = await suttas.loadIdbSutta(suttaRef);
+    should.deepEqual(
+      Object.keys(idbSutta2).sort(), 
+      Object.keys(idbSutta).sort());
     should.deepEqual(idbSutta2, idbSutta);
     should(suttas.nGet).equal(nGet+2);
     should(suttas.nSet).equal(nSet+1);
@@ -89,7 +94,7 @@ const MSDAY = 24*3600*MSSEC;
 
     // Don't refresh almost stale data
     let freshSaved = Date.now() - MSDAY + MSSEC;
-    Idb.set(idbSutta.idbKey, 
+    Idb.set(idbKey, 
       Object.assign({}, idbSutta, {saved:freshSaved}));
     let idbSutta3 = await suttas.loadIdbSutta(suttaRef);
     should(idbSutta3.saved).equal(freshSaved);
@@ -98,40 +103,88 @@ const MSDAY = 24*3600*MSSEC;
     should(suttas.nFetch).equal(nFetch+1);
 
     // Re-fetch stale sutta
-    let staleSaved = Date.now() - MSDAY - 1;
-    Idb.set(idbSutta.idbKey, 
+    let now = Date.now();
+    let staleSaved = now - MSDAY - 1;
+    dbg && console.log(msg, {staleSaved});
+    Idb.set(idbKey, 
       Object.assign({}, idbSutta, {saved:staleSaved}));
     let idbSutta4 = await suttas.loadIdbSutta(suttaRef);
-    let age = Date.now() - idbSutta4.saved;
+    let age = now - idbSutta4.saved;
+    should(idbSutta4.saved).not.equal(staleSaved);
+    dbg && console.log(msg, {age, now, MSDAY});
     should(age).below(MSSEC);
   });
   it("saveIdbSutta()", async () => {
+    const msg = 'TS14e.saveIdbSutta:';
+    const dbg = 0;
     let suttas = useSuttasStore();
     let { nFetch, nGet, nSet } = suttas;
-    let author = 'test-author';
-    let lang = 'test-lang';
-    let docLang = lang;
-    let docAuthor = author;
-    let refLang = 'en';
-    let refAuthor = 'sujato';
+    let author = 't-author';
+    let lang = 't-lang';
+    let docLang = 't-doc-lang';
+    let docAuthor = 't-doc-author';
+    let docAuthorName = 't-doc-author-name';
+    let docFooter = 't-doc-footer';
+    let refLang = 't-ref-lang';
+    let refAuthor = 't-ref-author';
+    let refAuthorName = 't-ref-author-name';
+    let refFooter = 't-ref-footer';
+    let trilingual = true;
     let sutta_uid = "thig1.1";
+    let sref = `${sutta_uid}/${docLang}/${docAuthor}`;
     let segments = [{
-      "testsuid:0.1": "TEST-SEGMENT",
+      "t-suid:0.1": "T-SEGMENT",
     }];
+    let mockSettings = { docLang, docAuthor, refLang, refAuthor };
     let idbSutta = IdbSutta.create({ 
       author, lang, sutta_uid, segments, 
-      docLang, docAuthor, refLang, refAuthor,
+      docLang, docAuthor, docAuthorName, docFooter,
+      refLang, refAuthor, refAuthorName, refFooter,
+      trilingual,
     });
+    dbg>1 && console.log(msg, 'idbSutta', idbSutta);
 
     let idbSuttaSaved = await suttas.saveIdbSutta(idbSutta);
-    should(idbSuttaSaved.value).properties(idbSutta);
+    let saved = idbSuttaSaved.value;
+    dbg>1 && console.log(msg, 'idbSuttaSaved', idbSuttaSaved);
+    should(saved.docLang).equal(docLang);
+    should(saved.docAuthor).equal(docAuthor);
+    should(saved.docAuthorName).equal(docAuthorName);
+    should(saved.docFooter).equal(docFooter);
+    should(saved.refLang).equal(refLang);
+    should(saved.refAuthor).equal(refAuthor);
+    should(saved.refAuthorName).equal(refAuthorName);
+    should(saved.refFooter).equal(refFooter);
+    should(saved).properties(idbSutta);
     let now = Date.now();
     should(now - idbSuttaSaved.value.saved).above(-1).below(MSSEC);
     should(suttas.nGet).equal(nGet);
     should(suttas.nSet).equal(nSet+1);
 
-    let idbSuttaLoaded = await suttas.loadIdbSutta({author, lang, sutta_uid});
-    should.deepEqual(idbSuttaLoaded, idbSuttaSaved.value);
+    dbg && console.log(msg, 'settings', mockSettings);
+    let loaded = await suttas.loadIdbSutta(sref, {
+      settings: mockSettings
+    });
+    saved = idbSuttaSaved.value;
+    //should(loaded.author).equal(saved.author);
+    should(loaded.docLang).equal(saved.docLang);
+    should(loaded.docAuthor).equal(saved.docAuthor);
+    should(loaded.docAuthorName).equal(saved.docAuthorName);
+    should(loaded.docFooter).equal(saved.docFooter);
+    should(loaded.refLang).equal(saved.refLang);
+    should(loaded.refAuthor).equal(saved.refAuthor);
+    should(loaded.refAuthorName).equal(saved.refAuthorName);
+    should(loaded.refFooter).equal(saved.refFooter);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should(loaded.author).equal(saved.author);
+    should.deepEqual(loaded, idbSuttaSaved.value);
     should(suttas.nGet).equal(nGet+1);
     should(suttas.nSet).equal(nSet+1);
   });

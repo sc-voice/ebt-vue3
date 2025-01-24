@@ -7,7 +7,7 @@ import {
 } from './defines.mjs'
 
 const HEADERS_MPEG = { ["Accept"]: "audio/mpeg", };
-const URL_NO_AUDIO = "https://github.com/ebt-site/ebt-vue3/blob/04a335368ebd751d1caf56312d6599f367eaa21f/public/audio/no_audio.mp3";
+const URL_NO_AUDIO = "https://www.sc-voice.net/audio/no_audio.mp3";
 
 const dbg = DBG_IDB_AUDIO;
 

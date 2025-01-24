@@ -17,6 +17,7 @@
         :idbSuttaRef="idbSuttaRef"
         :card="card"
         :routeCard="routeCard"
+        :title="$t('ebt.author')"
       />
     </template>
     <template v-for="seg in idbSuttaSegments" 
@@ -27,6 +28,16 @@
         :idbSuttaRef="idbSuttaRef"
         :card="card"
         :routeCard="routeCard"
+      />
+    </template>
+    <template v-if="idbSuttaRef">
+      <segment-header 
+        :segment="footerSeg"
+        :idbSuttaRef="idbSuttaRef"
+        :card="card"
+        :routeCard="routeCard"
+        title=""
+        class="seg-footer"
       />
     </template>
     <tipitaka-nav :card="card" class="mt-3"/>
@@ -242,25 +253,46 @@
         let { $t, idbSuttaRef, settings } = ctx;
         let { showReference } = settings;
         let { 
-          author, lang,
-          docLang, docAuthor, refAuthor, refLang, trilingual,
+          author, lang, trilingual,
+          docLang, docAuthor, docAuthorName,
+          refAuthor, refLang, refAuthorName,
         } = idbSuttaRef;
 
         docLang = docLang || lang;
         docAuthor = docAuthor || author;
         let docInfo = AuthorsV2.authorInfo(docAuthor, docLang);
-        let docText = docInfo && docInfo.name.join(', ') || "–∅–";
+        let docText = docInfo && docInfo.name.join(', ') ||
+          docAuthorName || "–∅–";
 
         refLang = refLang || settings.refLang;
         refAuthor = refAuthor || AuthorsV2.langAuthor(refLang);
         let refInfo = AuthorsV2.authorInfo(refAuthor);
-        let refText = refInfo?.name.join(', ');
+        let refText = refInfo?.name.join(', ') || refAuthorName;
         let refKey = trilingual ? "ref" : refLang;
         let seg =  Object.assign({}, {
           scid: $t('ebt.author'),
           pli: 'Mahāsaṅgīti',
           [docLang]: docText,
           [refKey]: refText,
+        });
+        return seg;
+      },
+      footerSeg(ctx) {
+        const msg = "SuttaView.footerSeg()";
+        let { $t, idbSuttaRef, settings } = ctx;
+        let { showReference } = settings;
+        let { 
+          trilingual, docLang, lang, docFooter = 'df?', refFooter='rf?', 
+        } = idbSuttaRef;
+
+        let msInfo = AuthorsV2.authorInfo('ms', 'pli');
+        let refKey = trilingual ? "ref" : refLang;
+
+        let seg =  Object.assign({}, {
+          scid: $t('ebt.footer'),
+          pli: msInfo.name,
+          [docLang||lang]: docFooter,
+          [refKey]: refFooter,
         });
         return seg;
       },

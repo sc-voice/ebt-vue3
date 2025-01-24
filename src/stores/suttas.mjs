@@ -38,22 +38,37 @@ export const useSuttasStore = defineStore('suttas', {
       return url;
     },
     async loadIdbSutta(suttaRef, opts={}) { // low-level API
-      const msg = `suttas.loadIdbSutta(${suttaRef})`;
-      const dbg = DBG_LOAD;
-      let { maxAge } = this;
-      let { refresh=false } = opts;
-      let settings = useSettingsStore();
+      const msg = 's4s.loadIdbSutta:';
+      const dbg = DBG_LOAD || DBG.S4S_LOAD_IDB_SUTTA;
+      suttaRef = SuttaRef.create(suttaRef);
+      let { 
+        settings = useSettingsStore(), 
+        refresh=false,
+      } = opts;
+      let sref = suttaRef.toString();
       let idbKey = IdbSutta.suttaRefToIdbKey(suttaRef, settings);
+      dbg && console.log(msg, '[1.0]idbKey', suttaRef, idbKey);
+      let { maxAge } = this;
       let idbData = await Idb.get(idbKey);
       this.nGet++;
       let age = idbData?.saved ? Date.now()-idbData.saved : maxAge+1;
       let idbSutta;
+      let fetchSutta = false;
 
-      if (refresh || !idbData || maxAge < age) {
+      if (!idbData) {
+        fetchSutta = true;
+        dbg && console.log(msg, '[1.1]!cached', idbKey);
+      } else if (refresh) {
+        fetchSutta = true;
+        dbg && console.log(msg, '[1.2]refersh', idbKey);
+      } else if (maxAge < age) {
+        fetchSutta = true;
+        dbg && console.log(msg, `[1.3]maxAge:${maxAge}<age${age}`);
+      }
+      if (fetchSutta) {
         let volatile = useVolatileStore();
         let url = this.suttaUrl(suttaRef);
-        dbg && console.log(msg, '[1]fetchJson', url);
-        volatile.waitBegin('ebt.loadingSutta', undefined, suttaRef.toString());
+        volatile.waitBegin('ebt.loadingSutta', undefined, sref);
         let json = await volatile.fetchJson(url);
         volatile.waitEnd('ebt.loadingSutta', undefined, msg);
         this.nFetch++;
@@ -64,26 +79,33 @@ export const useSuttasStore = defineStore('suttas', {
           return null;
         }
         idbSutta = IdbSutta.create(mlDocs[0]);
-        dbg && console.log(msg, `${url} => `,
+        dbg && console.log(msg, `[2]${url}=>`,
           `segments:${idbSutta.segments.length}`);
         await this.saveIdbSutta(idbSutta);
       } else {
-        dbg && console.log(msg, `[2]cached idb(${idbKey})`);
+        dbg && console.log(msg, '[3]cached', idbKey);
         idbSutta = IdbSutta.create(idbData);
       } 
 
       return idbSutta;
     },
     async saveIdbSutta(idbSutta) { // low-level API
-      const msg = 'suttas.saveIdbSutta()';
-      const dbg = DBG_LOAD || DBG.IDB_SUTTA;
+      const msg = 'S4s.saveIdbSutta()';
+      const dbg = DBG_LOAD || DBG.IDB_SUTTA || DBG.S4S_SAVE_IDB_SUTTA;
       let { idbKey } = idbSutta;
       let vueRef = VUEREFS.get(idbKey);
       if (vueRef == null) {
         vueRef = ref(idbSutta);
-        dbg && console.log(msg, '[1]VUEREFS.set', {idbKey, vueRef});
+        let saved = Date.now();
+        idbSutta.saved = saved;
+        if (dbg) {
+          if (dbg === 1) {
+            console.log(msg, '[1.1]VUEREFS.set', {idbKey, saved});
+          } else {
+            console.log(msg, '[1.2]VUEREFS.set', {idbKey, idbSutta});
+          }
+        }
         VUEREFS.set(idbKey, vueRef);
-        idbSutta.saved = Date.now();
       } else if (vueRef.value !== idbSutta) {
         dbg && console.log(msg, '[2]vueRef <=', {
           idbKey, vueRef, idbSutta});
