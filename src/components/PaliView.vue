@@ -24,6 +24,7 @@
     <div v-if="dictResult && groups" class="dict" >
       <v-expansion-panels v-model="panels" 
         variant="popout"
+        model-value="0"
         @update:modelValue="onPanelUpdate"
       >
         <v-expansion-panel v-for="(group,ig) in groups" key="ig"
@@ -127,8 +128,27 @@
     components: {
     },
     methods: {
+      findWord(aWord) {
+        const msg = "P6w.findWord:";
+        const dbg = DBG.PALI_SEARCH;
+        let { volatile } = this;
+        let { dictionary } =  volatile;
+        let word = aWord.toLowerCase();
+
+        let dictResult = dictionary.find(word);
+
+        dbg && console.log(msg, '[3]find', word, dictResult);
+        this.dictResult = dictResult;
+
+        // Strange that "this" doesn't work here...
+        let that = this;
+        nextTick(()=>{
+          that.groups = dictResult && that.lemmaGroups();
+        });
+        return dictResult;
+      },
       async onPanelUpdate(iPanel) {
-        const msg = "PaliView.onPanelUpdate:";
+        const msg = "P6w.onPanelUpdate:";
         let { groups } = this;
         let group = groups[iPanel];
         if (group) {
@@ -139,12 +159,12 @@
             console.log(msg, '[2]audioUrl', group.audioUrl);
           }
         } else {
-          console.warn(msg, '[3]group?', iPanel);
+          console.warn(msg, '[3]group?', iPanel, groups);
         }
       },
-      async lemmaGroups() {
-        const msg = "PaliView.lemmaGroups()";
-        let { definition, dictResult } = this;
+      lemmaGroups() {
+        const msg = "P6w.lemmaGroups()";
+        let { dictResult } = this;
         let { data } = dictResult;
         let dPrev = null;
 
@@ -180,13 +200,13 @@
         return link;
       },
       dpdUrl() {
-        const msg = "PaliView.dpdUrl";
+        const msg = "P6w.dpdUrl";
         let ebtWord = this.card.location[0];
         let link = this.dpdLink(ebtWord);
         return link?.url;
       },
       customFilter(value, search, internal) {
-        const msg = "PaliView.customFilter";
+        const msg = "P6w.customFilter";
         const dbg = DBG.PALI_SEARCH;
         const dbgv = DBG.VERBOSE && dbg;
         if (search == null || value==null) {
@@ -209,7 +229,7 @@
         return false;
       },
       async groupAudioUrl(group) {
-        const msg = "PaliView.groupAudioUrl()";
+        const msg = "P6w.groupAudioUrl()";
         const dbg = DBG.PALI_VIEW;
         let { settings } = this;
         let { word, lemma } = group;
@@ -252,7 +272,7 @@
         return volatile.dpdCartoucheHtml(def,i, {showLemma:false});
       },
       meaningHtml(def) {
-        const msg = "PaliView.meaningHtml()";
+        const msg = "P6w.meaningHtml()";
         const dbg = 0;
         let { meaning_lit, meaning_1, meaning_raw } = def;
         let { $t, dictResult } = this;
@@ -288,7 +308,7 @@
         return result.join('; ');
       },
       runSearch(opts={}) {
-        const msg = "PaliView.runSearch()";
+        const msg = "P6w.runSearch()";
         const dbg = DBG.PALI_SEARCH;
         let { 
           search=this.search?.value, openNew
@@ -339,7 +359,7 @@
         window.location.hash = `#/${card.context}/${search}`;
       },
       updateModelValue(value) { // dropdown update
-        const msg = "PaliView.updateModelValue()";
+        const msg = "P6w.updateModelValue()";
         const dbg = DBG.PALI_SEARCH;
         let { card, search, } = this;
 
@@ -358,11 +378,12 @@
         }
       },
       updateSearch(search) { // keyboard update
-        const msg = "PaliView.updateSearch()";
+        const msg = "P6w.updateSearch()";
         const dbg = DBG.PALI_SEARCH;
         let { volatile } = this;
         let { dictionary } = volatile;
         this.search = search;
+        this.groups = undefined;
         if (!search) {
           this.setItems(history);
           return;
@@ -374,7 +395,7 @@
         }
       },
       setItems(strings) {
-        const msg = "PaliView.setItems()";
+        const msg = "P6w.setItems()";
         const dbgv = DBG.VERBOSE && DBG.PALI_SEARCH;
         let map = {};
         let newItems = strings.reverse()
@@ -389,12 +410,13 @@
         dbgv && console.log(msg, newItems);
         items.value = newItems;
       },
-      onEnter(evt) {
-        const msg = "PaliView.onEnter()";
+      async onEnter(evt) {
+        const msg = "P6w.onEnter()";
         const dbg = DBG.PALI_SEARCH;
         let { card, search, volatile } = this;
         let { dictionary } = volatile;
-        let res = search && dictionary && dictionary.find(search);
+        //let res = search && dictionary && dictionary.find(search);
+        let res = search && await this.findWord(search);
         if (!res) {
           dbg && console.log(msg, '[1]search?', search, evt);
           this.dictResult = undefined;
@@ -412,7 +434,7 @@
         volatile.paliSearchCard = null;
       },
       groupDefinitions(group) {
-        const msg = "PaliView.groupDefinitions()";
+        const msg = "P6w.groupDefinitions()";
         let { word, construction, lemma } = group;
         let { dictResult } = this;
         let { method, pattern, data } = dictResult;
@@ -422,7 +444,7 @@
       },
     },
     async mounted() {
-      const msg = 'PaliView.mounted()';
+      const msg = 'P6w.mounted()';
       let dbg = DBG.PALI_VIEW;
       let { card, $route, settings, volatile} = this;
       let { dictionary } = await volatile.verifyState();
@@ -430,12 +452,9 @@
       dbg && console.log(msg, '[1]dictionary', !!dictionary);
       let word = card.location[0] || '';
       if (word) {
-        word = word.toLowerCase();
-        let res = dictionary.find(word);
-        dbg && console.log(msg, '[3]find', word);
-        this.dictResult = res;
+        this.findWord(word);
       } else {
-        dbg && console.log(msg, '[4]search');
+        dbg && console.log(msg, '[2]search');
         volatile.paliSearchCard = card;
       }
 
@@ -447,13 +466,12 @@
             history.push(ci.location[0]);
           }
         }
-        dbg && console.log(msg, '[5]history', history);
+        dbg && console.log(msg, '[3]history', history);
         this.setItems(history);
       } else {
-        dbg && console.log(msg, '[6]history!!!', history);
+        dbg && console.log(msg, '[4]history!!!', history);
       }
       
-      this.groups = await this.lemmaGroups();
       card.onAfterMounted({settings, volatile});
     },
     computed: {
@@ -467,30 +485,6 @@
       },
       word() {
         return this.card.location[0];
-      },
-      async definition() {
-        const msg = "PaliView.definition";
-        let { card, volatile } = this;
-        let { dictionary } = await volatile.verifyState();
-        if (dictionary == null) {
-          return [ '...', '...', '...', '...' ];
-        }
-
-        let word = card.location[0].toLowerCase();
-        let entry = dictionary.entryOf(msg, word);
-        let res = dictionary.find(word);
-        let definitions = ['nothing'];
-        if (entry) {
-          definitions = entry.definition;
-          definitions = entry.definition.map(def=>def.split('|'));
-        } else {
-          let type = '--';
-          let meaning_1 = `${word} not found`;
-          let literal = '--';
-          let construction = '--';
-          definitions = [ type, meaning_1, literal, construction ];
-        }
-        return definitions;
       },
     },
   }
