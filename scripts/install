@@ -11,9 +11,9 @@ sudo apt upgrade -y
 
 set -e
 
-${DIR}/install-node16.sh
-${DIR}/install-npm.sh
-${DIR}/install-ripgrep.sh
+${DIR}/install-node 20 &&
+${DIR}/update-npm 10 &&
+${DIR}/install-ripgrep &&
 npm install
 
 echo -e "${SCRIPT}: END `date` (OK)"
