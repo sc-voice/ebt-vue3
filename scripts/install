@@ -13,7 +13,6 @@ set -e
 
 ${DIR}/install-node 20 &&
 ${DIR}/update-npm 10 &&
-${DIR}/install-ripgrep &&
 npm install
 
 echo -e "${SCRIPT}: END `date` (OK)"
