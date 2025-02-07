@@ -175,6 +175,24 @@ const VOICES= [
     "iVoice": 23,
     "locale": "it-IT",
     "service": "aws-polly"
+  },
+  {
+    "name": "Maxim",
+    "label": "🤖 Tatyana-robot (veloce)",
+    "langTrans": "ru",
+    "gender": "male",
+    "iVoice": 24,
+    "locale": "ru-RU",
+    "service": "aws-polly"
+  },
+  {
+    "name": "Tatyana",
+    "label": "🤖 Tatyana-robot (slower)",
+    "langTrans": "ru",
+    "gender": "female",
+    "iVoice": 25,
+    "locale": "ru-RU",
+    "service": "aws-polly"
   }
 ]
 export default VOICES
