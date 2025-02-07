@@ -1,6 +1,7 @@
 dist
 *.deb
 *.wiki
+.cache
 local
 archive
 .eslint*

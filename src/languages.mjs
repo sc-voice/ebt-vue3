@@ -3,124 +3,134 @@
 const VOICE_LANGS = [
   {
     "value": "de",
-    "title": "Deutsch / DE",
+    "title": "DE / Deutsch",
     "voice": true
   },
   {
     "value": "en",
-    "title": "English / EN",
+    "title": "EN / English",
     "voice": true
   },
   {
     "value": "es",
-    "title": "Español / ES",
+    "title": "ES / Español",
     "voice": true
   },
   {
     "value": "fr",
-    "title": "Français / FR",
+    "title": "FR / Français",
     "voice": true
   },
   {
     "value": "it",
-    "title": "Italiano / IT",
+    "title": "IT / Italiano",
     "voice": true
   },
   {
     "value": "jpn",
-    "title": "日本語 / JPN",
+    "title": "JPN / 日本語",
     "voice": true
   },
   {
     "value": "pt",
-    "title": "Português / PT",
+    "title": "PT / Português",
+    "voice": true
+  },
+  {
+    "value": "ru",
+    "title": "RU / Русский",
     "voice": true
   }
 ];
 const UI_LANGS = [
   {
     "value": "cs",
-    "title": "Čeština / CS",
+    "title": "CS / Čeština",
     "voice": false
   },
   {
     "value": "da",
-    "title": "Dansk / DA",
+    "title": "DA / Dansk",
     "voice": false
   },
   {
     "value": "de",
-    "title": "Deutsch / DE",
+    "title": "DE / Deutsch",
     "voice": true
   },
   {
     "value": "en",
-    "title": "English / EN",
+    "title": "EN / English",
     "voice": true
   },
   {
     "value": "es",
-    "title": "Español / ES",
+    "title": "ES / Español",
     "voice": true
   },
   {
     "value": "fr",
-    "title": "Français / FR",
+    "title": "FR / Français",
     "voice": true
   },
   {
     "value": "hi",
-    "title": "हिंदी / HI",
+    "title": "HI / हिंदी",
     "voice": false
   },
   {
     "value": "is",
-    "title": "Íslenska / IS",
+    "title": "IS / Íslenska",
     "voice": false
   },
   {
     "value": "it",
-    "title": "Italiano / IT",
+    "title": "IT / Italiano",
     "voice": true
   },
   {
     "value": "jpn",
-    "title": "日本語 / JPN",
+    "title": "JPN / 日本語",
     "voice": true
   },
   {
     "value": "nb",
-    "title": "Norsk / NB",
+    "title": "NB / Norsk",
     "voice": false
   },
   {
     "value": "nl",
-    "title": "Nederlands / NL",
+    "title": "NL / Nederlands",
     "voice": false
   },
   {
     "value": "pl",
-    "title": "Polski / PL",
+    "title": "PL / Polski",
     "voice": false
   },
   {
     "value": "pt",
-    "title": "Português / PT",
+    "title": "PT / Português",
     "voice": true
   },
   {
     "value": "ro",
-    "title": "Română / RO",
+    "title": "RO / Română",
     "voice": false
   },
   {
+    "value": "ru",
+    "title": "RU / Русский",
+    "voice": true
+  },
+  {
     "value": "si",
-    "title": "සිංහල / SI",
+    "title": "SI / සිංහල",
     "voice": false
   },
   {
     "value": "vi",
-    "title": "Tiếng Việt / VI",
+    "title": "VI / Tiếng Việt",
     "voice": false
   }
 ];

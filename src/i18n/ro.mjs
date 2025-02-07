@@ -243,7 +243,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Vreau o sugestie!",
-    "languageCode": "Română / RO",
+    "languageCode": "RO / Română",
     "languages": "Limbi",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

@@ -244,7 +244,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "සොයන්න!",
-    "languageCode": "සිංහල / SI",
+    "languageCode": "SI / සිංහල",
     "languages": "භාෂා",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

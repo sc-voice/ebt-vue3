@@ -40,6 +40,9 @@ let outPath = path.join(scriptPath, '../../src/i18n', `${dstLang}.mjs`);
           case 'es':
             dst[key] = "Español / ES";
             break;
+          case 'ru':
+            dst[key] = "Русский / RU";
+            break;
         }
       } else if (typeof srcVal === 'object') {
         console.warn(msg, '[2]object', key);

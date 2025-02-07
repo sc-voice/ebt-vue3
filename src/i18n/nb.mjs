@@ -243,7 +243,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Inspirer meg!",
-    "languageCode": "Norsk / NB",
+    "languageCode": "NB / Norsk",
     "languages": "Språk",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

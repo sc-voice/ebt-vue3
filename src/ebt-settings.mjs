@@ -190,120 +190,124 @@ export default class EbtSettings {
   static get REF_LANGUAGES() {
     return [{
       code: 'de',
-      label: 'Sabbamitta / DE',
+      label: 'DE / Sabbamitta',
     }, {
       code: 'en',
-      label: 'Sujato / EN',
+      label: 'EN / Sujato',
     }];
   }
 
   static get TRANS_LANGUAGES() {
     return [{
       code: 'cs',
-      label: 'Čeština / CS',
+      label: 'CS / Čeština ',
       //}, {
       //code: 'da',
-      //label: 'Dansk / DA',
+      //label: 'DA / Dansk',
     }, {
       code: 'de',
-      label: 'Deutsch / DE',
+      label: 'DE / Deutsch',
     }, {
       code: 'en',
-      label: 'English / EN',
+      label: 'EN / English',
     }, {
       code: 'es',
-      label: 'Español / ES',
+      label: 'ES / Español',
     }, {
       code: 'fr',
-      label: 'Français / FR',
+      label: 'FR / Français',
       //}, {
       //code: 'hi',
-      //label: 'हिंदी / HI',
+      //label: 'HI / हिंदी',
       //}, {
       //code: 'is',
-      //label: 'Íslenska / IS',
+      //label: 'IS / Íslenska',
     }, {
       code: 'it',
-      label: 'Italiano / IT',
+      label: 'IT / Italiano',
     }, {
       code: 'ja',
-      label: '日本語 / JA',
+      label: 'JA / 日本語',
       //}, {
       //code: 'nb',
-      //label: 'Norsk / NB',
-      //}, {
-      //code: 'nl',
-      //label: 'Nederlands / NL',
+      //label: 'NB / Norsk',
+      //}, { //code: 'nl', //label: 'NL / Nederlands',
       //}, {
       //code: 'pl',
-      //label: 'Polski / PL',
+      //label: 'PL / Polski',
     }, {
       code: 'pt',
-      label: 'Português / PT',
+      label: 'PT / Português ',
       //}, {
       //code: 'ro',
-      //label: 'Română / RO',
+      //label: 'RO / Română',
       //}, {
       //code: 'si',
-      //label: 'සිංහල / SI',
+      //label: 'SI / සිංහල',
       //}, {
       //code: 'vi',
-      //label: 'Tiếng Việt / VI',
+      //label: 'VI / Tiếng Việt',
+    }, {
+      code: 'ru',
+      label: 'RU / Русский',
     }];
   }
 
   static get WEB_LANGUAGES() {
     return [{
       code: 'cs',
-      label: 'Čeština / CS',
+      label: 'CS / Čeština',
     }, {
       code: 'da',
-      label: 'Dansk / DA',
+      label: 'DA / Dansk',
     }, {
       code: 'de',
-      label: 'Deutsch / DE',
+      label: 'DE / Deutsch',
     }, {
       code: 'en',
-      label: 'English / EN',
+      label: 'EN / English',
     }, {
       code: 'es',
-      label: 'Español / ES',
+      label: 'ES / Español',
     }, {
       code: 'fr',
-      label: 'Français / FR',
+      label: 'FR / Français',
     }, {
       code: 'hi',
-      label: 'हिंदी / HI',
+      label: 'HI / हिंदी',
     }, {
       code: 'is',
-      label: 'Íslenska / IS',
+      label: 'IS / Íslenska',
     }, {
       code: 'it',
-      label: 'Italiano / IT',
+      label: 'IT / Italiano',
     }, {
       code: 'jpn',
-      label: '日本語 / JPN',
+      label: 'JPN / 日本語',
     }, {
       code: 'nb',
-      label: 'Norsk / NB',
+      label: 'NB / Norsk',
     }, {
       code: 'nl',
-      label: 'Nederlands / NL',
+      label: 'NL / Nederlands',
     }, {
       code: 'pl',
-      label: 'Polski / PL',
+      label: 'PL / Polski',
     }, {
       code: 'pt',
-      label: 'Português / PT',
+      label: 'PT / Português',
     }, {
       code: 'ro',
-      label: 'Română / RO',
+      label: 'RO / Română',
+    }, {
+      code: 'ru',
+      label: 'RU / Русский',
     }, {
       code: 'si',
-      label: 'සිංහල / SI',
+      label: 'SI / සිංහල',
     }, {
       code: 'vi',
-      label: 'Tiếng Việt / VI',
+      label: 'VI / Tiếng Việt',
     }];
   }
 

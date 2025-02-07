@@ -244,7 +244,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Inspirer Mig!",
-    "languageCode": "Dansk / DA",
+    "languageCode": "DA / Dansk",
     "languages": "Sprog",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

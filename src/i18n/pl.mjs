@@ -245,7 +245,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Zainspiruj mnie!",
-    "languageCode": "Polski / PL",
+    "languageCode": "PL / Polski",
     "languages": "Języki",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

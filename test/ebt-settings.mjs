@@ -157,6 +157,7 @@ import should from "should";
       'it',
       'ja',
       'pt',
+      'ru',
     ]);
   });
   it("segmentRef()", ()=>{
