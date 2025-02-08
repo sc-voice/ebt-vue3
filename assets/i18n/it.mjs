@@ -247,7 +247,7 @@ export default {
     "highlightExamples": "Mostra tutti i link di esempio (lento)",
     "homeSound": "Casa",
     "inspireMe": "Ispirami!",
-    "languageCode": "Italiano / IT",
+    "languageCode": "IT / Italiano",
     "languages": "Lingue",
     "latestContent": "Visualizza gli ultimi contenuti di sutta/vinaya",
     "license": "License",

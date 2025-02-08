@@ -243,7 +243,7 @@ export default {
     "highlightExamples": "Zeige Beispiel-Links (langsam)",
     "homeSound": "Startseitenton",
     "inspireMe": "Such mir etwas aus!",
-    "languageCode": "Deutsch / DE",
+    "languageCode": "DE / Deutsch",
     "languages": "Sprachen",
     "latestContent": "Neuester Text für Sutta/Vinaya",
     "license": "Copyright",

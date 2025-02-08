@@ -241,7 +241,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "मुझे प्रेरित करे!",
-    "languageCode": "हिंदी / HI",
+    "languageCode": "HI / हिंदी",
     "languages": "भाषाएँ",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

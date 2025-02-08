@@ -247,7 +247,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Inspireer mij!",
-    "languageCode": "Nederlands / NL",
+    "languageCode": "NL / Nederlands",
     "languages": "Talen",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

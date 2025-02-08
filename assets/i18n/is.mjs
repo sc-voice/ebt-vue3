@@ -246,7 +246,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Hvetja mig",
-    "languageCode": "Íslenska / IS",
+    "languageCode": "IS / Íslenska",
     "languages": "Tungumál",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

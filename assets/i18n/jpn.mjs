@@ -247,7 +247,7 @@ export default {
     "highlightExamples": "リンクの例を表示する（遅い）",
     "homeSound": "ホーム",
     "inspireMe": "心に響く経典を！",
-    "languageCode": "日本語 / JPN",
+    "languageCode": "JPN / 日本語N",
     "languages": "言語",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

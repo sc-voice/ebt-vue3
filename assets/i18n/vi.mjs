@@ -246,7 +246,7 @@ export default {
     "highlightExamples": "Show example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Truyền linh cảm cho tôi!",
-    "languageCode": "Tiếng Việt / VI",
+    "languageCode": "VI / Tiếng Việt",
     "languages": "Ngôn ngữ",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",

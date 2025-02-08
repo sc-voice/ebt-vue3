@@ -95,7 +95,7 @@ export default {
     "highlightExamples": "Show all example links (slow)",
     "homeSound": "Home",
     "inspireMe": "Inspire Me!",
-    "languageCode": "English / EN",
+    "languageCode": "EN / English",
     "languages": "Languages",
     "latestContent": "View latest sutta/vinaya content",
     "license": "License",
