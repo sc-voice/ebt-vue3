@@ -25,7 +25,7 @@ fi
 . ~/.nvm/nvm.sh  
 type node > /dev/null
 RC=$?; if [ "$RC" == "0" ]; then
-    NODEVER=`/usr/bin/node --version | sed -e 's/\..*//'`
+    NODEVER=`node --version | sed -e 's/\..*//'`
     if [ "$NODEVER" == "v${RQDVER}" ]; then
         echo -e "${SCRIPT}: node ${NODEVER} found (OK)"
     else
