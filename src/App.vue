@@ -750,7 +750,7 @@
       },
       titlePopup(ctx) {
         let { settings } = this;
-        return `SuttaCentral Voice / ${settings.langTrans}`;
+        return `SC-Voice.net / ${settings.langTrans.toUpperCase()}`;
       },
       privacyLink(ctx) {
         let { config } = ctx;

@@ -2854,7 +2854,7 @@ const messages =  {
       "highlightExamples": "リンクの例を表示する（遅い）",
       "homeSound": "ホーム",
       "inspireMe": "心に響く経典を！",
-      "languageCode": "JPN / 日本語N",
+      "languageCode": "JPN / 日本語",
       "languages": "言語",
       "latestContent": "View latest sutta/vinaya content",
       "license": "License",
