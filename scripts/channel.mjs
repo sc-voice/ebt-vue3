@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-//import { default as CmarkGfmRenderer } from './cmark-gfm-renderer.mjs';
 import { default as MarkdownItRenderer } from './markdown-it-renderer.mjs';
 import { default as EbtMarkdown } from '../src/ebt-markdown.mjs';
 import { default as EbtCard } from '../src/ebt-card.mjs';

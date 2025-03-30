@@ -1,12 +1,10 @@
 import { default as EbtMarkdown } from '../src/ebt-markdown.mjs'
-//import { default as CmarkGfmRenderer } from '../scripts/cmark-gfm-renderer.mjs';
 import { default as MarkdownItRenderer } from '../scripts/markdown-it-renderer.mjs';
 import { logger } from 'log-instance/index.mjs';
 import should from "should";
 
 logger.logLevel = 'warn';
 
-//const renderer = new CmarkGfmRenderer();
 const renderer = new MarkdownItRenderer();
 
 (typeof describe === 'function') && describe("ebt-markdown.mjs", function () {
