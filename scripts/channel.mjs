@@ -108,6 +108,10 @@ export default class Channel {
     }
     let lastCategory = "lastCategory";
     let htmlKids = kids.reduce((a,kid,i)=>{
+      if (kid.metadata == null) {
+        console.log('channel.mjs@112: kid?', kid);
+        return a;
+      }
       let { 
         title, 
         img, 

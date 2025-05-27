@@ -29,7 +29,7 @@ export default class EbtMarkdown {
   static get HTML_HEAD() { return HTML_HEAD; }
   static get HTML_TAIL() { return HTML_TAIL; }
 
-  static compareMetadata(a,b) {
+  static compareMetadata(a={},b={}) {
     let acategory = a.category || '';
     let bcategory = b.category || '';
     let cmp = acategory.localeCompare(bcategory);
