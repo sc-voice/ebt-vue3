@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "2.26.126",
+  "version": "2.26.127",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
