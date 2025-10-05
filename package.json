@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "ebt-deepl": "^1.29.1",
+    "ebt-deepl": "^1.58.0",
     "eslint": "^9.16.0",
     "esm": "^3.2.25",
     "execa": "^6.1.0",
