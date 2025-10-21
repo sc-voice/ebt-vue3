@@ -24,8 +24,10 @@ export default class IdbAudio {
       created=Date.now(),
     } = opts;
     if (audioContext == null) {
+      // Safari-specific fix: use default AudioContext without forcing sample rate
       audioContext = new AudioContext();
-      dbg && console.log(msg, '[1]new AudioContext', audioContext.state);
+      dbg && console.log(msg, '[1]new AudioContext', audioContext.state, 
+        'sampleRate:', audioContext.sampleRate);
       audioContext.onstatechange = val=>{
         dbg && console.log(msg, '[2]onstatechange', 
           audioContext.state, val);
