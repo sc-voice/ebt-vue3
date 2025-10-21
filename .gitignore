@@ -5,6 +5,9 @@ dist
 local
 archive
 .eslint*
+.prettiercache
+.vscode/settings.json
+.cursor/settings.json
 
 # Logs
 logs

@@ -1,0 +1,33 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "emmet.includeLanguages": {
+    "vue-html": "html"
+  },
+  "vetur.validation.template": false,
+  "vetur.validation.script": false,
+  "vetur.validation.style": false,
+  "vue.codeActions.enabled": true,
+  "vue.complete.casing.tags": "kebab",
+  "vue.complete.casing.props": "camel",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/local": true,
+    "**/.git": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/local/**": true
+  }
+}

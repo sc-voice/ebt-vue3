@@ -1,10 +1,11 @@
 import { default as EbtSettings } from "../src/ebt-settings.mjs";
 import { default as EbtCard } from "../src/ebt-card.mjs";
 import should from "should";
+import { mockNavigator } from "./test-utils.mjs";
 
 (typeof describe === 'function') && describe("ebt-settings.mjs", function () {
   it("default ctor en", async () => {
-    global.navigator = { languages: ['en-US'] };
+    mockNavigator(['en-US']);
     var ebt = new EbtSettings();
     should(ebt).properties({
       audio: EbtSettings.AUDIO.OGG,
@@ -42,7 +43,7 @@ import should from "should";
   });
   it("default ctor de-de", async () => {
     try {
-      global.navigator = { languages: ['de-de'] };
+      mockNavigator(['de-de']);
       should(global.navigator.languages[0]).equal('de-de');
       let ebt = new EbtSettings();
       should(ebt).properties({
@@ -65,7 +66,7 @@ import should from "should";
         vnameTrans: 'Vicki',
       });
     } finally {
-      global.navigator = { languages: ['en-us'] };
+      mockNavigator(['en-us']);
     }
   });
   it("INITIAL_STATE", async () => {

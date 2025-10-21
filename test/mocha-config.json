@@ -8,5 +8,8 @@
     "node_modules",
     ".git",
     "local"
+  ],
+  "require": [
+    "test/test-setup.mjs"
   ]
 }

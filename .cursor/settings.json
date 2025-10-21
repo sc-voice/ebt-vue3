@@ -1,0 +1,8 @@
+{
+  "cursor.general.enableCodeActions": true,
+  "cursor.general.enableAutoImport": true,
+  "cursor.general.enableInlineCompletion": true,
+  "cursor.chat.enableCodebaseIndexing": true,
+  "cursor.cpp.disabledLanguages": [],
+  "cursor.general.enableCodebaseIndexing": true
+}
