@@ -339,5 +339,6 @@ export default {
   },
   "input": {
     "clear": "Leeren {0}"
-  }
+  },
+  "test": {}
 }

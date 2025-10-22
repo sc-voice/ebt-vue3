@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const fs = require("fs");
-const path = require( "path");
-const tsImport = require("ts-import");
+const path = require("path");
 
 const I18NDIR = path.join(__dirname, '../src/i18n');
 
@@ -26,17 +25,20 @@ if (key == null) {
   key = groupKey;
   groupKey = 'ebt';
 }
-console.log({key, keyPath, groupKey});
+console.log({ key, keyPath, groupKey });
 
-let WRITE=1;
+let WRITE = 1;
 
-(async ()=>{
+(async () => {
   let [...files] = await fs.promises.readdir(I18NDIR);
   for (f of files) {
     let fpath = path.join(I18NDIR, f);
-    let srcJson = await tsImport.load(fpath)
+    let srcJson = await import(fpath)
     let dstJson = JSON.parse(JSON.stringify(srcJson.default));
     let groupObj = dstJson[groupKey];
+    if (!groupObj) {
+      groupObj = dstJson[groupKey] = {};
+    }
 
     if (value === "DELETE") {
       delete groupObj[key];
@@ -46,12 +48,12 @@ let WRITE=1;
     } else if (value != null) {
       groupObj[key] = value;
       let groupKeys = Object.keys(groupObj).sort();
-      let groupSorted = groupKeys.reduce((a,k,i)=>{
+      let groupSorted = groupKeys.reduce((a, k, i) => {
         a[k] = groupObj[k];
         return a;
       }, {});
       dstJson[groupKey] = groupSorted;
-      console.log('keys', 
+      console.log('keys',
         Object.keys(groupObj).length,
         Object.keys(groupSorted).length,
         groupKeys.length);

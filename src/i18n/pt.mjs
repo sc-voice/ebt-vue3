@@ -187,5 +187,6 @@ export default {
     "viewHearUntranslated": "Veja/ouça textos Pali não traduzidos",
     "weeks": "Semanas A_WEEKS",
     "wikiAria": "Home-EN.md"
-  }
+  },
+  "test": {}
 }
