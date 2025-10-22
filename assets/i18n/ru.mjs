@@ -187,5 +187,6 @@ export default {
     "viewHearUntranslated": "Просмотр/прослушивание непереведенных текстов на языке пали",
     "weeks": "A_недели",
     "wikiAria": "Home-EN.md"
-  }
+  },
+  "test": {}
 }

@@ -339,5 +339,6 @@ export default {
     "viewHearUntranslated": "Vedere/ascoltare testi paliani non tradotti",
     "weeks": "Settimane A",
     "wikiAria": "Home-EN.md"
-  }
+  },
+  "test": {}
 }
