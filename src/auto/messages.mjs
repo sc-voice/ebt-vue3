@@ -338,7 +338,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "da": {
     "close": "Luk",
@@ -675,7 +676,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "de": {
     "close": "Schließen",
@@ -1018,7 +1020,8 @@ const messages =  {
     },
     "input": {
       "clear": "Leeren {0}"
-    }
+    },
+    "test": {}
   },
   "en": {
     "close": "Close",
@@ -1209,7 +1212,8 @@ const messages =  {
       "viewHearUntranslated": "View/hear untranslated Pali texts",
       "weeks": "A_WEEKS weeks",
       "wikiAria": "Home-EN.md"
-    }
+    },
+    "test": {}
   },
   "es": {
     "close": "Cerrar",
@@ -1400,7 +1404,8 @@ const messages =  {
       "viewHearUntranslated": "Ver/escuchar textos pali sin traducir",
       "weeks": "A_WEEKS semanas",
       "wikiAria": "Inicio-ES.md"
-    }
+    },
+    "test": {}
   },
   "fr": {
     "close": "Fermer",
@@ -1591,7 +1596,8 @@ const messages =  {
       "viewHearUntranslated": "Voir/entendre des textes pali non traduits",
       "weeks": "A_WEEKS semaines",
       "wikiAria": "Accueil-FR.md"
-    }
+    },
+    "test": {}
   },
   "hi": {
     "close": "बंद करें",
@@ -1923,7 +1929,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "is": {
     "close": "Loka",
@@ -2260,7 +2267,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "it": {
     "close": "Chiudere",
@@ -2603,7 +2611,8 @@ const messages =  {
       "viewHearUntranslated": "Vedere/ascoltare testi paliani non tradotti",
       "weeks": "Settimane A",
       "wikiAria": "Home-EN.md"
-    }
+    },
+    "test": {}
   },
   "jpn": {
     "close": "閉じる",
@@ -2945,7 +2954,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "nb": {
     "close": "Lukk",
@@ -3280,7 +3290,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "nl": {
     "close": "Sluit",
@@ -3621,7 +3632,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "pl": {
     "close": "Close",
@@ -3959,7 +3971,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "pt": {
     "close": "Fechar",
@@ -4150,7 +4163,8 @@ const messages =  {
       "viewHearUntranslated": "Veja/ouça textos Pali não traduzidos",
       "weeks": "Semanas A_WEEKS",
       "wikiAria": "Home-EN.md"
-    }
+    },
+    "test": {}
   },
   "ro": {
     "close": "Închide",
@@ -4486,7 +4500,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "ru": {
     "close": "Закрыть",
@@ -4677,7 +4692,8 @@ const messages =  {
       "viewHearUntranslated": "Просмотр/прослушивание непереведенных текстов на языке пали",
       "weeks": "A_недели",
       "wikiAria": "Home-EN.md"
-    }
+    },
+    "test": {}
   },
   "si": {
     "close": "වසන්න",
@@ -5015,7 +5031,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   },
   "vi": {
     "close": "Đóng",
@@ -5352,7 +5369,8 @@ const messages =  {
     },
     "input": {
       "clear": "Clear {0}"
-    }
+    },
+    "test": {}
   }
 }
 export default messages
