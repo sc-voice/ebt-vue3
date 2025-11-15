@@ -1,0 +1,16 @@
+Build: 2.36.75
+
+Changes:
+1. Created Makefile with test, install, build, dev, and help targets
+   - test target calls `npm run test`
+   - install, build, dev targets for development workflow
+2. Fixed TESTTESThighlightExamples test timeout failure
+   - Increased timeout from 2000ms to 5000ms in test/idb-sutta.mjs
+   - Examples.replaceAll() requires time to load/process example data
+   - Test now passes with 4353ms execution time
+
+All 133 tests passing.
+
+🤖 Generated with Claude Code
+
+Co-Authored-By: Claude <noreply@anthropic.com>

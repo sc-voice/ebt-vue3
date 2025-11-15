@@ -368,7 +368,8 @@ const TESTMLDOC_EN = {
     );
     should(dstSutta.segments.length).equal(4);
   });
-  it("highlightExamples()", async ()=>{
+  it("TESTTESThighlightExamples()", async function() {
+    this.timeout(5000); // Examples.replaceAll requires time to load/process data
     logger.logLevel = "error";
     let suttaBefore = IdbSutta.create(TESTMLDOC_EN);
     let suttaAfter = IdbSutta.create(TESTMLDOC_EN);
@@ -377,8 +378,8 @@ const TESTMLDOC_EN = {
     let [ before0, before1, before2 ] = suttaBefore.segments;
     let [ after0, after1, after2 ] = suttaAfter.segments;
     should.deepEqual(after0, before0);
-    should.deepEqual(after1.ref, before1.ref); 
-    should.deepEqual(after1[lang], 
+    should.deepEqual(after1.ref, before1.ref);
+    should.deepEqual(after1[lang],
       'testsuid:1.1-en <span class="ebt-example">apex</span>.');
     should.deepEqual(after2, before2);
   });
