@@ -46,7 +46,7 @@
     "merkle-json": "^2.11.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.116.0",
+    "scv-esm": "^1.117.0",
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
     "vite-plugin-vuetify": "^2.0.3",
