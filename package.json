@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "2.39.1",
+  "version": "2.40.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
@@ -39,14 +39,14 @@
   "module": "index.mjs",
   "dependencies": {
     "@mdi/font": "7.0.96",
-    "@sc-voice/ms-dpd": "^2.53.0",
+    "@sc-voice/ms-dpd": "^2.54.0",
     "compression": "^1.7.4",
     "idb-keyval": "^6.2.0",
-    "log-instance": "^1.6.0",
-    "merkle-json": "^2.11.0",
+    "log-instance": "^1.8.0",
+    "merkle-json": "^2.12.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.117.0",
+    "scv-esm": "^1.127.0",
     "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0",
     "vite-plugin-vuetify": "^2.0.3",
@@ -71,7 +71,7 @@
     "json": "^11.0.0",
     "markdown-it": "^13.0.1",
     "markdown-it-footnote": "^3.0.3",
-    "memo-again": "^0.10.0",
+    "memo-again": "^0.11.0",
     "mocha": "^10.0.0",
     "mock-local-storage": "^1.0.4",
     "node-fetch": "^3.2.10",
@@ -97,6 +97,7 @@
   ],
   "license": "MIT",
   "repository": {
-    "tag": "git"
+    "type": "git",
+    "url": "https://github.com/sc-voice/ebt-vue3"
   }
 }
