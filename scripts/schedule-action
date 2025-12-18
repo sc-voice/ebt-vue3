@@ -12,6 +12,7 @@ echo -e "${SCRIPT}: updating dependencies..."
 npm install --save \
   scv-esm@latest \
   log-instance@latest \
+  @sc-voice/ms-dpd@latest \
   merkle-json@latest 
 
 npm install --save-dev \
