@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "2.40.0",
+  "version": "2.41.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
@@ -64,7 +64,6 @@
     "ebt-deepl": "^1.58.0",
     "eslint": "^9.16.0",
     "eslint-plugin-vue": "^9.28.0",
-    "esm": "^3.2.25",
     "execa": "^6.1.0",
     "fake-indexeddb": "^4.0.0",
     "globals": "^15.12.0",
