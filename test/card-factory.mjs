@@ -164,6 +164,84 @@ class MockSettings {
 
     should(nAdd).equal(1);
   });
+  it("pathToCard() creates new card for different sutta", () => {
+    // Bug test: navigating from mn1 to mn3 should create separate cards
+    let cf = new CardFactory();
+    let cards = [];
+    let langTrans = "en";
+    let defaultLang = langTrans;
+    let addCard = (opts) => {
+      let card = new EbtCard(Object.assign({langTrans}, opts));
+      cards.push(card);
+      return card;
+    };
+
+    // Create card for mn1
+    let cardMN1 = cf.pathToCard({
+      path: '/sutta/mn1/en/sujato',
+      cards,
+      addCard,
+      defaultLang
+    });
+    should(cards.length).equal(1);
+    should(cardMN1.location[0]).match(/mn1/);
+
+    // Navigate to mn3 - should create NEW card (different sutta_uid)
+    let cardMN3 = cf.pathToCard({
+      path: '/sutta/mn3/en/sujato',
+      cards,
+      addCard,
+      defaultLang
+    });
+
+    // Bug check: If mn3 card !== mn1 card, new card was created (correct)
+    // If mn3 card === mn1 card with location still mn1, bug exists
+    should(cards.length).equal(2); // Two separate cards
+    should(cardMN3.location[0]).match(/mn3/);
+    should(cardMN3).not.equal(cardMN1);
+  });
+  it("pathToCard() handles path with query params before hash", () => {
+    // Test: URL like ?src=sc#/sutta/mn3/en/sujato
+    let cf = new CardFactory();
+    let cards = [];
+    let langTrans = "en";
+    let defaultLang = langTrans;
+    let addCard = (opts) => {
+      let card = new EbtCard(Object.assign({langTrans}, opts));
+      cards.push(card);
+      return card;
+    };
+
+    // Test various path formats that might come from Vue Router
+    let card1 = cf.pathToCard({
+      path: '/sutta/mn3/en/sujato',  // Normal path
+      cards,
+      addCard,
+      defaultLang
+    });
+    should(cards.length).equal(1);
+    should(card1.location[0]).match(/mn3/);
+
+    // Test with hash prefix (shouldn't happen from Vue Router, but test anyway)
+    let card2 = cf.pathToCard({
+      path: '#/sutta/mn4/en/sujato',
+      cards,
+      addCard,
+      defaultLang
+    });
+    should(cards.length).equal(2);
+    should(card2.location[0]).match(/mn4/);
+
+    // Test with full URL format including query string (edge case)
+    let card3 = cf.pathToCard({
+      path: '?src=sc#/sutta/mn5/en/sujato',
+      cards,
+      addCard,
+      defaultLang
+    });
+    should(cards.length).equal(3);
+    should(card3.location[0]).match(/mn5/);
+  });
   it("pathToCard() /#", ()=>{
     let cf = new CardFactory();
     let cards = [];

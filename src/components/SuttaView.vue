@@ -119,6 +119,46 @@
 
       card.onAfterMounted({settings, volatile});
     },
+    watch: {
+      'card.location': {
+        async handler(newLoc, oldLoc) {
+          const msg = 'SuttaView.watch.card.location()';
+          const dbg = DBG.MOUNTED;
+
+          // Skip if no previous location (initial mount handles this)
+          if (!oldLoc || !newLoc) return;
+
+          // Skip if same sutta_uid (just segment change)
+          if (newLoc[0] === oldLoc[0]) return;
+
+          dbg && console.log(msg, '[1]location changed', {newLoc, oldLoc});
+
+          // Reload sutta data for new location
+          let { suttas, settings, volatile, card, config } = this;
+          let ref = {
+            sutta_uid: newLoc[0],
+            lang: newLoc[1],
+            author: newLoc[2],
+          };
+          let suttaRef = SuttaRef.create(ref);
+          if (suttaRef == null) {
+            let eMsg = `Invalid SuttaRef ${JSON.stringify(ref)}`;
+            console.log(msg, eMsg);
+            volatile.alert(eMsg);
+            return;
+          }
+          let { sutta_uid, lang, author } = suttaRef;
+          dbg && console.log(msg, `[2]reloading suttaRef:${suttaRef}`);
+          let idbSuttaRef = await suttas.getIdbSuttaRef({
+            sutta_uid, lang, author
+          });
+          this.idbSuttaRef = idbSuttaRef?.value;
+
+          card.onAfterMounted({settings, volatile});
+        },
+        deep: true,
+      },
+    },
     methods: {
       segKey(card, seg) {
         let rawId = `${seg.scid}_CARD${card.id.substring(0,8)}`;
