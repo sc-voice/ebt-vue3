@@ -91,10 +91,16 @@
       const dbg = DBG.MOUNTED;
       let { $route, suttas, settings, volatile, card, config, } = this;
       let { fullPath } = $route;
-      let { 
-        development, langTrans, docLang, docAuthor, refLang, refAuthor 
+      let {
+        development, langTrans, docLang, docAuthor, refLang, refAuthor
       } = settings;
       let { id, location, data } = card;
+      console.log('[URL-DEBUG] SuttaView.mounted()', {
+        cardId: id,
+        location,
+        routeFullPath: fullPath,
+        hash: window.location.hash,
+      });
       let ref = {
         sutta_uid:location[0], 
         lang:location[1], 
@@ -125,12 +131,25 @@
           const msg = 'SuttaView.watch.card.location()';
           const dbg = DBG.MOUNTED;
 
+          console.log('[URL-DEBUG] SuttaView watch.card.location fired', {
+            newLoc,
+            oldLoc,
+            hash: window.location.hash,
+          });
+
           // Skip if no previous location (initial mount handles this)
-          if (!oldLoc || !newLoc) return;
+          if (!oldLoc || !newLoc) {
+            console.log('[URL-DEBUG] SuttaView watch skipped (no old/new loc)');
+            return;
+          }
 
           // Skip if same sutta_uid (just segment change)
-          if (newLoc[0] === oldLoc[0]) return;
+          if (newLoc[0] === oldLoc[0]) {
+            console.log('[URL-DEBUG] SuttaView watch skipped (same sutta_uid)');
+            return;
+          }
 
+          console.log('[URL-DEBUG] SuttaView watch proceeding to reload');
           dbg && console.log(msg, '[1]location changed', {newLoc, oldLoc});
 
           // Reload sutta data for new location

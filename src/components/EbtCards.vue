@@ -196,11 +196,22 @@
       $route (to, from) {
         const msg = 'EbtCards.watch.$route';
         const dbg = DBG.ROUTE || DBG_OPEN_CARD;
+        console.log('[URL-DEBUG] EbtCards.$route watcher fired', {
+          from: from?.fullPath,
+          to: to?.fullPath,
+          hash: window.location.hash,
+        });
         let { cardFactory, volatile, settings, $route }  = this;
         let card = cardFactory.pathToCard({
-          path: to.fullPath, 
+          path: to.fullPath,
           addCard: (opts) => cardFactory.addCard(opts),
           defaultLang: settings.langTrans,
+        });
+        console.log('[URL-DEBUG] EbtCards pathToCard result', {
+          cardId: card?.id,
+          cardContext: card?.context,
+          cardLocation: card?.location,
+          cardIsOpen: card?.isOpen,
         });
         let { activeElement } = document;
 
