@@ -1,0 +1,78 @@
+{
+  "id": "0Pt4Lwr7004e2GXovkeA7W",
+  "name": "Replace mocha with vitest",
+  "summary": "",
+  "rawActions": [
+    {
+      "id": "0Pt4NH8W004e2GXovkeA7W",
+      "name": "Install vitest and update package.json",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: vitest installed, npm scripts updated, all 134 tests passing"
+    },
+    {
+      "id": "0Pt4NH9L004e2GXovkeA7W",
+      "name": "Create vitest config (vitest.config.js or inline in vite.config.js)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: vitest.config.js created with setupFiles for fake-indexeddb"
+    },
+    {
+      "id": "0Pt4NHAC004e2GXovkeA7W",
+      "name": "Update test/test-setup.mjs for vitest (setupFiles config)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: mocha this.timeout() syntax replaced with vitest timeout options"
+    },
+    {
+      "id": "0Pt4NHB4004e2GXovkeA7W",
+      "name": "Update npm test scripts in package.json",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: npm test scripts using vitest"
+    },
+    {
+      "id": "0Pt4NHBx004e2GXovkeA7W",
+      "name": "Run full test suite to verify compatibility",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: full test suite runs, 134 tests passing"
+    },
+    {
+      "id": "0Pt4NHCn004e2GXovkeA7W",
+      "name": "Remove mocha and vulnerable dependencies (diff, serialize-javascript)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: mocha and vulnerable dependencies removed, 0 vulnerabilities"
+    },
+    {
+      "id": "0Pt4QO6z004e2GXovkeA7W",
+      "name": "Fix test/audio-store.mjs (6 failing tests - indexedDB environment)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: test/audio-store.mjs all 9 tests passing"
+    },
+    {
+      "id": "0Pt4QO7q004e2GXovkeA7W",
+      "name": "Fix test/suttas-store.mjs (3 failing tests - indexedDB environment)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: test/suttas-store.mjs all 8 tests passing"
+    },
+    {
+      "id": "0Pt4QO8i004e2GXovkeA7W",
+      "name": "Fix test/idb-audio.mjs (3 failing tests - indexedDB environment)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: test/idb-audio.mjs all 8 tests passing"
+    },
+    {
+      "id": "0Pt4QO9Y004e2GXovkeA7W",
+      "name": "Fix unhandled rejection errors (indexedDB, document)",
+      "summary": "",
+      "status": "done",
+      "statusNote": "done: document mock resolves unhandled rejection errors"
+    }
+  ],
+  "rawReferences": []
+}

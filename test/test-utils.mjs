@@ -42,13 +42,31 @@ export const mockLocalStorage = () => {
 };
 
 /**
+ * Mock document object for Node.js environment
+ */
+export const mockDocument = () => {
+  if (global.document) {
+    return;
+  }
+
+  global.document = {
+    getElementById: () => null,
+    getElementsByClassName: () => [],
+    querySelector: () => null,
+    querySelectorAll: () => [],
+    createElement: () => ({}),
+    createTextNode: () => ({}),
+  };
+};
+
+/**
  * Mock window object for Node.js environment
  */
 export const mockWindow = () => {
   if (!global.window) {
     global.window = {};
   }
-  
+
   // Add localStorage to window if not present
   if (!global.window.localStorage && global.localStorage) {
     global.window.localStorage = global.localStorage;
@@ -62,8 +80,9 @@ export const mockWindow = () => {
  */
 export const setupTestEnvironment = (options = {}) => {
   const { navigatorLanguages = ['en-US'] } = options;
-  
+
   mockNavigator(navigatorLanguages);
   mockLocalStorage();
+  mockDocument();
   mockWindow();
 };

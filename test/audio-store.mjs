@@ -31,8 +31,7 @@ const MSDAY = 24*3600*MSSEC;
 const SERVER_ROOT = 'https://www.api.sc-voice.net/scv';
 
 
-(typeof describe === 'function') && describe("stores/audio.mjs", function () {
-  this.timeout(5*1000);
+(typeof describe === 'function') && describe("stores/audio.mjs", { timeout: 5*1000 }, function () {
   beforeEach(() => {
     window.localStorage = global.localStorage
     setActivePinia(createPinia());

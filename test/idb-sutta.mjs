@@ -368,8 +368,8 @@ const TESTMLDOC_EN = {
     );
     should(dstSutta.segments.length).equal(4);
   });
-  it("TESTTESThighlightExamples()", async function() {
-    this.timeout(5000); // Examples.replaceAll requires time to load/process data
+  it("TESTTESThighlightExamples()", { timeout: 5000 }, async function() {
+    // Examples.replaceAll requires time to load/process data
     logger.logLevel = "error";
     let suttaBefore = IdbSutta.create(TESTMLDOC_EN);
     let suttaAfter = IdbSutta.create(TESTMLDOC_EN);
