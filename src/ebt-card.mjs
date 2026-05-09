@@ -444,11 +444,11 @@ export default class EbtCard {
     let { path, defaultLang } = opts;
     let loc = location.join('/');
     let cardLoc = cardLocation.join('/');
-    console.log('[URL-DEBUG] matchPathSutta', {
-      pathLocation: loc,
-      cardLocation: cardLoc,
-      path,
-    });
+    // console.log('[URL-DEBUG] matchPathSutta', {
+    //   pathLocation: loc,
+    //   cardLocation: cardLoc,
+    //   path,
+    // });
     if (loc === '') {
       let result = cardLoc === loc;
       dbg && console.log(msg, `[1]true ${path} => ${result}`,
@@ -462,16 +462,16 @@ export default class EbtCard {
     let msStart = Date.now();
     let pathRef = SuttaRef.create(loc, defaultLang);
     if (pathRef == null) {
-      console.log('[URL-DEBUG] matchPathSutta: pathRef is null', {loc});
+      // console.log('[URL-DEBUG] matchPathSutta: pathRef is null', {loc});
       dbg && console.log(msg, `[3]false (${path})`, {loc});
       return false;
     }
     let cardRef = SuttaRef.create(cardLoc, defaultLang);
-    console.log('[URL-DEBUG] matchPathSutta comparing', {
-      pathSuttaUid: pathRef.sutta_uid,
-      cardSuttaUid: cardRef.sutta_uid,
-      match: pathRef.sutta_uid === cardRef.sutta_uid,
-    });
+    // console.log('[URL-DEBUG] matchPathSutta comparing', {
+    //   pathSuttaUid: pathRef.sutta_uid,
+    //   cardSuttaUid: cardRef.sutta_uid,
+    //   match: pathRef.sutta_uid === cardRef.sutta_uid,
+    // });
     if (pathRef.sutta_uid !== cardRef.sutta_uid) {
       dbg && console.log(msg, `[4]false (${path})`,
         pathRef.suid, cardRef.suid);

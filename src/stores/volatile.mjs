@@ -358,11 +358,11 @@ export const useVolatileStore = defineStore('volatile', {
     setRoute(cardOrRoute, keepFocus, caller) {
       const msg = 'volatile.setRoute()';
       const dbg = DBG.SET_ROUTE;
-      console.log('[URL-DEBUG] volatile.setRoute() called', {
-        caller,
-        cardOrRoute: typeof cardOrRoute === 'string' ? cardOrRoute : cardOrRoute?.debugString,
-        currentHash: globalThis.window?.location?.hash,
-      });
+      // console.log('[URL-DEBUG] volatile.setRoute() called', {
+      //   caller,
+      //   cardOrRoute: typeof cardOrRoute === 'string' ? cardOrRoute : cardOrRoute?.debugString,
+      //   currentHash: globalThis.window?.location?.hash,
+      // });
       let { config, } = this;
       let settings = useSettingsStore();
       if (!cardOrRoute) {
@@ -383,15 +383,15 @@ export const useVolatileStore = defineStore('volatile', {
         ? cardOrRoute
         : cardFactory.pathToCard({path:route, addCard});
       if (card == null) {
-        console.log('[URL-DEBUG] volatile.setRoute() no card found', {route});
+        // console.log('[URL-DEBUG] volatile.setRoute() no card found', {route});
         dbg && console.log(msg, '[1]no card', {route});
         return;
       }
-      console.log('[URL-DEBUG] volatile.setRoute() card found', {
-        cardId: card.id,
-        cardLocation: card.location,
-        route,
-      });
+      // console.log('[URL-DEBUG] volatile.setRoute() card found', {
+      //   cardId: card.id,
+      //   cardLocation: card.location,
+      //   route,
+      // });
       let { visible } = card;
 
       const { window } = globalThis;

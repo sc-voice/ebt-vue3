@@ -149,21 +149,21 @@ export default class CardFactory {
       path='/', cards=settings.cards, addCard, defaultLang, isOpen,
       playlist,
     } = args;
-    console.log('[URL-DEBUG] CardFactory.pathToCard called', {
-      path,
-      cardsCount: cards?.length,
-      cardContexts: cards?.map(c => c.context),
-    });
+    // console.log('[URL-DEBUG] CardFactory.pathToCard called', {
+    //   path,
+    //   cardsCount: cards?.length,
+    //   cardContexts: cards?.map(c => c.context),
+    // });
     path = path.replace(/^.*\/#/, ''); // ignore non-hash part of path
     let [ ignored, context, ...location ] = path.split('/');
     location = location.map(loc => decodeURIComponent(loc));
     let card = cards.find(card => card.matchPath({path, defaultLang}));
-    console.log('[URL-DEBUG] CardFactory.pathToCard find result', {
-      foundCard: !!card,
-      cardId: card?.id,
-      context,
-      location,
-    });
+    // console.log('[URL-DEBUG] CardFactory.pathToCard find result', {
+    //   foundCard: !!card,
+    //   cardId: card?.id,
+    //   context,
+    //   location,
+    // });
     dbgv && console.log(msg, '[1]find', {card, path});
     if (card == null) {
       if (addCard === undefined) {
