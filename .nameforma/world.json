@@ -1,13 +1,8 @@
 {
-  "focusStack": [
-    {
-      "id": "0Pt4Of2C004e2GXovkeA7W",
-      "formaId": "0Pt4Lwr7004e2GXovkeA7W",
-      "formaType": "task",
-      "name": "Replace mocha with vitest",
-      "summary": ""
-    }
-  ],
+  "focusStack": [],
   "id": "0PsrA-7i00A9MM2kN4G4dW",
-  "numeronym": {}
+  "numeronym": {},
+  "watermark": {
+    "Karl Lew": "0PvjKXim00Wg1DyAaYW87W"
+  }
 }
