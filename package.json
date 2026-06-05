@@ -46,7 +46,7 @@
     "merkle-json": "^2.15.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.139.6",
+    "scv-esm": "^1.139.7",
     "serve-favicon": "^2.5.0",
     "tmp": "^0.2.6",
     "uuid": "^14.0.0",
