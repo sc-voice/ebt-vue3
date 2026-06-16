@@ -1,6 +1,6 @@
 {
   "name": "ebt-vue3",
-  "version": "2.59.0",
+  "version": "2.60.0",
   "description": "Vue3 Library for SuttaCentral Voice EBT-Sites",
   "author": "Karl Lew",
   "scripts": {
@@ -22,13 +22,8 @@
     "push-action": "scripts/push-action",
     "schedule-action": "scripts/schedule-action",
     "update:vuetify": "scripts/update-vuetify",
-    "test": "npm run test:verbose",
-    "test:one": "vitest -t TESTTEST",
-    "test:test": "vitest -t TESTTEST",
-    "test:verbose": "vitest",
-    "test:watch": "vitest --watch",
-    "test:debug": "vitest --inspect-brk --inspect --no-coverage",
-    "test:coverage": "echo 'Coverage not configured yet'",
+    "test": "vitest --config test/vitest.config.mjs run ",
+    "test:test": "vitest --config test/vitest.config.mjs watch ",
     "version": "scripts/version.sh",
     "vite": "vite",
     "vite:build": "vite build",
@@ -46,7 +41,7 @@
     "merkle-json": "^2.15.0",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
-    "scv-esm": "^1.139.25",
+    "scv-esm": "^1.139.32",
     "serve-favicon": "^2.5.0",
     "tmp": "^0.2.6",
     "uuid": "^14.0.0",
@@ -59,6 +54,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.0",
     "@eslint/js": "^9.16.0",
+    "@sc-voice/vitest": "^4.1.7",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vitest/ui": "^4.1.5",
     "@vue/tsconfig": "^0.5.1",
@@ -80,7 +76,6 @@
     "typescript": "^5.9.3",
     "vite": "^8.0.16",
     "vite-plugin-vuetify": "^2.0.3",
-    "vitest": "^4.1.5",
     "vue-cli-plugin-vuetify": "^2.5.1",
     "vue-tsc": "^2.1.10"
   },
