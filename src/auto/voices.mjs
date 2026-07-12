@@ -193,6 +193,15 @@ const VOICES= [
     "iVoice": 25,
     "locale": "ru-RU",
     "service": "aws-polly"
+  },
+  {
+    "name": "Ewa",
+    "label": "🤖 Ewa-robot (wolniejsza)",
+    "langTrans": "pl",
+    "gender": "female",
+    "iVoice": 26,
+    "locale": "pl-PL",
+    "service": "aws-polly"
   }
 ]
 export default VOICES
