@@ -32,6 +32,11 @@ const VOICE_LANGS = [
     "voice": true
   },
   {
+    "value": "pl",
+    "title": "PL / Polski",
+    "voice": true
+  },
+  {
     "value": "pt",
     "title": "PT / Português",
     "voice": true
@@ -106,7 +111,7 @@ const UI_LANGS = [
   {
     "value": "pl",
     "title": "PL / Polski",
-    "voice": false
+    "voice": true
   },
   {
     "value": "pt",
