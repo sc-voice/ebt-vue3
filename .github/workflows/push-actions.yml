@@ -1,5 +1,6 @@
 name: push-actions
 on: [push]
+  workflow_dispatch: # Allows manual trigger from Github UI
 jobs:
   build-job:
     runs-on: ubuntu-24.04
