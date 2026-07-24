@@ -17,6 +17,7 @@ import {
       { value: 'fr', title: 'FR / Français', voice: true },
       { value: 'it', title: 'IT / Italiano', voice: true },
       { value: 'jpn', title: 'JPN / 日本語', voice: true },
+      { value: 'pl', title: 'PL / Polski', voice: true },
       { value: 'pt', title: 'PT / Português', voice: true },
       { value: 'ru', title: 'RU / Русский', voice: true },
     ]);
@@ -33,7 +34,7 @@ import {
       { value: 'jpn', title: 'JPN / 日本語', voice: true },
       { value: 'nb', title: 'NB / Norsk', voice: false },
       { value: 'nl', title: 'NL / Nederlands', voice: false },
-      { value: 'pl', title: 'PL / Polski', voice: false },
+      { value: 'pl', title: 'PL / Polski', voice: true },
       { value: 'pt', title: 'PT / Português', voice: true },
       { value: 'ro', title: 'RO / Română', voice: false },
       { value: 'ru', title: 'RU / Русский', voice: true },
