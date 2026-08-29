@@ -64,6 +64,13 @@ export const useSettingsStore = defineStore('settings', {
             addCard: null,
             defaultLang: this.langTrans,
           });
+          // If URL specifies a sutta not in saved cards, ignore saved cards
+          // so EbtCards can create a new card from the URL
+          let urlPath = window.location.hash.replace(/^.*\/#/, '');
+          let [ , context ] = urlPath.split('/');
+          if (context && !pathCard) {
+            savedState = null;
+          }
           if (serverUrl === "https://s1.sc-voice.net/scv") {
             savedState.serverUrl = EbtSettings.SERVERS[0].value;
             dbg && console.log(msg, "[2]serverUrl", savedState.serverUrl);

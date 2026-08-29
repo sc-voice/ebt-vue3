@@ -126,6 +126,7 @@ export default class EbtSettings {
   }
 
   static get INITIAL_STATE() {
+    const SHOW_TUTORIAL = false; 
     const msg = 'EbtSettings.INITIAL_STATE';
     const dbg = 0;
     let NAV_LANG = typeof navigator === 'undefined'
@@ -173,12 +174,12 @@ export default class EbtSettings {
       speakTranslation: true,
       sutta_uid: undefined,
       swooshVolume: 2,
-      tutorAsk: true,
-      tutorClose: true,
-      tutorPlay: true,
-      tutorSearch: true,
-      tutorSettings: true,
-      tutorWiki: true,
+      tutorAsk: SHOW_TUTORIAL,
+      tutorClose: SHOW_TUTORIAL,
+      tutorPlay: SHOW_TUTORIAL,
+      tutorSearch: SHOW_TUTORIAL,
+      tutorSettings: SHOW_TUTORIAL,
+      tutorWiki: SHOW_TUTORIAL,
       theme: 'dark',
       translator: 'sujato',
       vnameRoot: 'Aditi',
